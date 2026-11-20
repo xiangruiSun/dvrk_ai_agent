@@ -3,8 +3,8 @@ DVRK TECHNICAL RETRIEVAL (RAG) - REQUIREMENTS OVERVIEW
 
 Status
 ------
-IN PROGRESS. Tasks R01, R02, R03, R04 and R08 are built and measured. R05, R06, R07, R09 and R10
-are specified below and not built. A task has its own file once it is built.
+BUILT. All ten tasks are built and measured on real data. Each has its own file, and each file
+ends with what the task does not do.
 
 Purpose
 -------
@@ -60,9 +60,17 @@ Change log       CHANGELOG.md of sawIntuitiveResearchKit at commit 7435458: 19 r
 Schemas          The 18 JSON Schemas of the dVRK configuration files, with the description of
                  every property. Several documentation pages only embed these schemas, so the
                  schemas are the only place their content exists as text.
-Licences         The documentation and the source repository state no licence. The text is used
-                 locally to build indexes and is not redistributed. Evidence files contain unit
-                 identifiers and short query excerpts, not pages.
+Site notes       The README and note files that four dVRK sites (JHU, UCL, CUHK, WPI) publish
+                 beside their configuration files in the github.com/dvrk-config organization, at
+                 pinned commits: 8 files, 11 sections. They are public; here each site's notes
+                 are a private collection that only that site may read (R07). The release each
+                 site's files are written for is read from its CMakeLists.txt (R05).
+Earlier docs     The documentation at an earlier commit (6f0167f, two months before), used to
+                 measure incremental sync (R09).
+Licences         The documentation and the source repository state no licence; of the site
+                 repositories only JHU's states one (MIT). The text is used locally to build
+                 indexes and is not redistributed. Evidence files contain unit identifiers and
+                 short query excerpts, not pages.
 
 Models
 ------
@@ -80,32 +88,32 @@ R03 Lexical and dense indexing     built    two tokenizers, BM25, two local embe
                                             persistent embedding cache
 R04 Retrieval strategies           built    lexical, dense and reciprocal-rank fusion as named
                                             configurations; filters applied inside the search
-R05 Applicability                  planned  The site profile (hardware generation, installed
+R05 Applicability                  built    The site profile (hardware generation, installed
                                             release) filters and annotates results. Renames are
-                                            read from the change log ("console" became "system"
-                                            in 2.4.0) so a question in old terms finds new pages
-                                            and the answer says which term applies to the site.
-R06 Grounded procedure answers     planned  A token-budgeted evidence bundle; a structured
+                                            read from the change log ("console.json" became
+                                            "system.json" in 2.4.0); a result says which name
+                                            applies at the site's release.
+R06 Grounded procedure answers     built    A token-budgeted evidence bundle; a structured
                                             answer of ordered steps, each with citations; every
                                             command, file name, key and number in the answer must
-                                            occur word for word in a cited unit; a statement of
-                                            which generation and release it applies to;
-                                            abstention when the evidence does not answer.
-R07 Trust, access and injection    planned  Official text ranks above maintainer replies, and
-                                            those above other replies, and an answer says which
-                                            it relies on. A site's own service notes are a
-                                            private collection filtered inside retrieval and
-                                            inside the cache. Thread text is untrusted: planted
-                                            instructions must not change an answer.
+                                            occur word for word in a cited unit; abstention with
+                                            a named cause when the evidence does not answer.
+R07 Trust, access and untrusted    built    Standing (official, maintainer, community) as a
+    text                                    measured ranking option and as a mark on every
+                                            answer step. A site's own notes are a private
+                                            collection filtered inside retrieval and inside the
+                                            cache. Text addressed to an automated reader is
+                                            found by rules and kept from the model.
 R08 Evaluation protocol            built    labels from links and replies, three query
                                             categories, development and test splits, nDCG,
                                             recall, MRR, paired bootstrap, a written selection
                                             policy, the test set scored once and locked
-R09 Service and operations         planned  HTTP API and CLI; index versions that are built,
-                                            validated, activated and rolled back; incremental
-                                            sync from upstream by commit and by thread update
-                                            time; latency and cache metrics; release gates.
-R10 Use by the agents              planned  search_docs, search_threads and search_by_log_line
+R09 Service and operations         built    HTTP API and CLI; index versions that are built,
+                                            validated, activated and rolled back; sync that
+                                            reports exactly what changed; latency and cache
+                                            metrics; release gates that refuse a worse or
+                                            incomplete version.
+R10 Use by the agents              built    search_docs, search_threads and search_by_log_line
                                             as agent tools over HTTP with timeout and retry; the
                                             agents' grounding guard checks cited unit ids.
 
@@ -123,5 +131,8 @@ Design rules
 6. Fail loudly: an embedding that is not finite, a count that does not match, a cross-reference
    that points nowhere and a duplicate identifier are reported, not worked around.
 7. Text never leaves the machine. Embedding and generation use local models only.
-8. Measured results are written by scripts/rag_experiments.py into verification/ and are never
-   typed into these files.
+8. Measured results are written by scripts/rag_experiments.py and scripts/rag_verify.py into
+   verification/ and are never typed into these files.
+9. A decision that a measurement overturned stays visible: widening queries with renamed plain
+   words (R05), ranking by standing (R07) and the first regression gate (R09) were all built,
+   measured and then switched off or replaced, and the evidence files keep the numbers.

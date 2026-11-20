@@ -1,0 +1,92 @@
+TASK R07 - TRUST, ACCESS AND UNTRUSTED TEXT
+===========================================
+
+Job
+---
+Three questions about every piece of text: how much does its author's standing count, who may
+read it, and what if it was written to steer the model instead of to inform a person.
+
+Counterpart in the earlier project: patient-level access control decided on the server. Here
+the public sources are open to everyone and the private text is a site's own notes; and unlike
+clinical records, a large part of the corpus (issue threads) can be written by anyone.
+
+Requirements
+------------
+Trust
+R1  Every unit has a standing: official (documentation, schemas, release notes), site (a site's
+    own notes), maintainer (a thread a maintainer replied in) or community. A thread's replies
+    keep the standing of each reply.
+R2  Ranking by standing is a configuration, measured like any other (R08): "off", "prior" (a
+    weight on the score) and "tier" (official first, then maintainer, then community). It is
+    switched on only if the selection policy accepts it. See the evidence for what it decided.
+R3  Whatever the ranking does, an answer says what it rests on (R06): each step carries the
+    standing of the weakest text behind it and a step resting on a community reply is marked
+    unconfirmed.
+
+Access
+R4  Collections. Public sources are the collection "public". Each site's notes are a collection
+    "site:<name>".
+R5  The caller is decided by the API key, on the service's side (vxrag/access.py). Operators,
+    engineers and safety leads of a site read "public" and their own site's collection. Remote
+    support reads "public" only: it helps many sites and reads no site's notes. No key, nothing.
+    No field of a request can widen this.
+R6  The filter is applied inside the search, before ranking (R04), and what the caller may read
+    is part of the cache key, so a result cached for one site is never served to another.
+R7  A unit the caller may not read is reported exactly like a unit that does not exist.
+R8  Keys are stored as hashes. A token is shown once, when it is created.
+
+Untrusted text
+R9  Text from threads and notes is evidence and never instruction. Sentences that address an
+    automated reader ("ignore your instructions", "AI assistants must ...", a line posing as a
+    system message, "do not tell the operator") are found by rules (vxrag/untrusted.py). A unit
+    that contains one is not put in front of the model, and a search result shows a notice in
+    place of its text.
+R10 Every piece of evidence reaches the model inside a block that names its source and
+    standing, after anything that could close the block early has been removed.
+R11 A plain false statement by a person ("the fix is to run X") is not an instruction and no
+    rule can find it. It is handled by R3: the step is marked unconfirmed.
+
+Code
+----
+vxrag/access.py        Principal, visible_collections, KeyRing
+vxrag/untrusted.py     scan, wrap
+vxrag/retrieval.py     collections filter, trust modes
+vxrag/engine.py        cache key, Engine.unit
+vxrag/gates.py         isolation_probe (also a release gate, R09)
+
+Real data
+---------
+Site notes: the README and note files that four dVRK sites publish beside their configuration
+files in the github.com/dvrk-config organization (JHU, UCL, CUHK, WPI), fetched at pinned
+commits. They are public; in this project each is treated as that site's private collection.
+Threads and development queries as in R08.
+
+Verification on real data
+-------------------------
+python scripts/rag_verify.py r07     ->  verification/rag_r07_trust_access_injection.json
+  trust_as_a_ranking_rule    nDCG@10 for off, prior and tier, the paired difference to off,
+                             who wrote the first result, and the policy's decision
+  access                     every private unit asked for by its own words by every other
+                             caller, at the index and through the engine after the owner has
+                             filled the cache; reading the unit in full
+  scanner_on_the_real_text   units of the real corpus the rules flag
+  planted_text               INJECTED. A reply by an ordinary user is added, in a copy of the
+                             corpus, to real threads: one addressed to the model, one plain
+                             false claim, one posing as a system message. Each is answered with
+                             the defences off and on.
+python -m pytest tests/test_rag_service.py -q -k "read or private or cache or keys or automated or flagged or block"
+
+Known limits
+------------
+The private collection is small: eleven sections from four sites. It shows that the filter
+holds at every place it is applied, not how retrieval behaves on a large private corpus.
+The scanner is a list of patterns. On the real text it flagged two ordinary sentences during
+development and two rules were narrowed; text written to avoid the patterns passes it. The
+planted replies were written by this project, so they are attacks the defences were built
+against. The first run of that test said little: most cases were stopped by the identifier
+gate of R06 before the model saw anything (verification/rag_r07_first_run.json); the test now
+uses threads the model answers when nothing is planted.
+The index's term statistics are computed over every collection. A private note therefore
+moves the scores of public results very slightly; it can never appear among them.
+Standing comes from GitHub's "author association", which says how an author relates to the
+repository, not whether a particular reply is right.

@@ -3,6 +3,7 @@
   "description": "Demonstration site: one Classic PSM with a large needle driver over a suturing pad. Declared for this project; it is not a real lab's set-up.",
   "arm": "PSM1",
   "generation": "Classic",
+  "software_release": "2.3.1",
   "kinematic_file": "share/kinematic/PSM.json",
   "instrument_file": "share/tool/LARGE_NEEDLE_DRIVER_400006.json",
 

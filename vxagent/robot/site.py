@@ -41,6 +41,7 @@ class Site:
     poses: dict[str, NamedPose] = field(default_factory=dict)
     jaw_angles: dict[str, float] = field(default_factory=dict)
     source: dict[str, Any] = field(default_factory=dict)
+    software_release: str = ""             # the dVRK release the site runs; retrieval is filtered for it
 
     def twin(self) -> KinematicTwin:
         return KinematicTwin(self.chain, self.home_q, jaw=self.jaw_angles.get("open", 0.0))
@@ -71,7 +72,8 @@ def build_site(spec: dict[str, Any], chain: Chain) -> Site:
     site = Site(name=spec["name"], arm=spec["arm"], generation=spec["generation"], chain=chain, home_q=home_q,
                 scene=scene, profile=_profile(spec["safety_profile"]),
                 jaw_angles={k: math.radians(v) for k, v in spec["jaw_deg"].items()},
-                source={"site_file": spec.get("_file", ""), **chain.source})
+                source={"site_file": spec.get("_file", ""), **chain.source},
+                software_release=spec.get("software_release", ""))
     for name, ps in spec["named_poses"].items():
         if "joints_si" in ps:
             q = np.array(ps["joints_si"], dtype=float)

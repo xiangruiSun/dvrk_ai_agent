@@ -24,7 +24,7 @@ from .metrics import mrr_at_k, ndcg_at_k, paired_bootstrap, recall_at_k, unlabel
 
 
 def run(index: Index, queries: list[Query], strategy: str, split: str, k: int = 10,
-        latency_probe: int = 25) -> dict[str, Any]:
+        latency_probe: int = 25, **search_options: Any) -> dict[str, Any]:
     qs = [q for q in queries if q.split == split]
     index.prepare(strategy)
     for part in _parts(strategy):                       # embed all query texts in one batch
@@ -33,7 +33,7 @@ def run(index: Index, queries: list[Query], strategy: str, split: str, k: int = 
     rows = []
     excluded_returned = 0
     for q in qs:
-        hits = index.search(q.text, strategy, k=k, exclude_units=q.exclude)
+        hits = index.search(q.text, strategy, k=k, exclude_units=q.exclude, **search_options)
         ranked = [h.unit_id for h in hits]
         excluded_returned += len(set(ranked) & q.exclude)
         rows.append({"qid": q.qid, "category": q.category, "generation": q.generation,
@@ -49,7 +49,7 @@ def run(index: Index, queries: list[Query], strategy: str, split: str, k: int = 
     try:
         for q in qs[:latency_probe]:
             t0 = time.perf_counter()
-            index.search(q.text, strategy, k=k, exclude_units=q.exclude)
+            index.search(q.text, strategy, k=k, exclude_units=q.exclude, **search_options)
             lat.append((time.perf_counter() - t0) * 1000)
     finally:
         for e in embedders:

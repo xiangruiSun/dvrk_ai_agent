@@ -15,7 +15,7 @@ from typing import Any
 
 from . import rst
 from .config import Settings, get_settings
-from .store import CorpusStore, Unit
+from .store import PUBLIC_SOURCES, CorpusStore, Unit
 
 MAINTAINER = {"OWNER", "MEMBER", "COLLABORATOR", "CONTRIBUTOR"}
 MIN_SECTION_CHARS = 40
@@ -37,7 +37,7 @@ def _generation(path: str) -> str:
 # ------------------------------------------------------------------------------ documentation
 
 def read_docs(s: Settings) -> tuple[list[Unit], dict[str, Any]]:
-    root = s.sources_dir / "docs"
+    root = s.sources_dir / s.docs_folder
     units: list[Unit] = []
     report: dict[str, Any] = {"files": 0, "sections": 0, "stub_sections": 0, "code_blocks": 0, "references": 0,
                               "labels": 0}
@@ -219,13 +219,108 @@ def read_schemas(s: Settings) -> tuple[list[Unit], dict[str, Any]]:
     return units, report
 
 
+# ------------------------------------------------------------------------------ a site's own notes
+
+ATX = re.compile(r"^(#{1,4})\s+(.+?)\s*#*\s*$")
+
+
+def split_markdown(text: str) -> list[tuple[list[str], str]]:
+    """Sections of a Markdown or plain-text note: (heading path, body). Fenced code is never cut."""
+    lines = text.replace("\r\n", "\n").split("\n")
+    out: list[tuple[list[str], str]] = []
+    path: list[tuple[int, str]] = []
+    body: list[str] = []
+    fenced = False
+
+    def flush() -> None:
+        content = "\n".join(body).strip()
+        if content or path:
+            out.append(([t for _, t in path], content))
+        body.clear()
+
+    def open_section(level: int, title: str) -> None:
+        flush()
+        while path and path[-1][0] >= level:
+            path.pop()
+        path.append((level, title))
+
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if line.strip().startswith("```"):
+            fenced = not fenced
+        nxt = lines[i + 1].strip() if i + 1 < len(lines) else ""
+        m = None if fenced else ATX.match(line)
+        if m:
+            open_section(len(m.group(1)), m.group(2))
+        elif not fenced and line.strip() and len(nxt) >= 3 and set(nxt) <= {"="}:
+            open_section(1, line.strip())
+            i += 1
+        elif not fenced and line.strip() and len(nxt) >= 3 and set(nxt) <= {"-"} and not line.lstrip().startswith(("*", "-")):
+            open_section(2, line.strip())
+            i += 1
+        else:
+            body.append(line)
+        i += 1
+    flush()
+    return [(p, b) for p, b in out if b]
+
+
+def read_site_notes(s: Settings) -> tuple[list[Unit], dict[str, Any]]:
+    """Notes a site keeps beside its configuration files. Each site's notes are a collection of
+    their own, `site:<name>`, which retrieval shows to that site only (vxrag/access.py)."""
+    root = s.sources_dir / "sites"
+    manifest_path = s.sources_dir / "MANIFEST.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8")).get("sites", {}) if manifest_path.exists() else {}
+    units: list[Unit] = []
+    report: dict[str, Any] = {"sites": 0, "files": 0, "sections": 0, "by_site": {}}
+    for site_dir in sorted(p for p in root.glob("*") if p.is_dir()):
+        site = site_dir.name
+        info = manifest.get(site, {})
+        report["sites"] += 1
+        n = 0
+        for f in sorted(site_dir.rglob("*")):
+            if not f.is_file() or f.suffix.lower() not in (".md", ".txt"):
+                continue
+            rel = f.relative_to(site_dir).as_posix()
+            report["files"] += 1
+            doc_id = f"note:{site}/{rel.rsplit('.', 1)[0]}"
+            system = rel.split("/")[0] if "/" in rel else ""
+            seen: dict[str, int] = {}
+            for i, (path, body) in enumerate(split_markdown(f.read_text(encoding="utf-8", errors="replace"))):
+                title = path[-1] if path else rel
+                anchor = rst.slug(title) or "top"
+                seen[anchor] = seen.get(anchor, 0) + 1
+                if seen[anchor] > 1:
+                    anchor = f"{anchor}-{seen[anchor]}"
+                units.append(Unit(
+                    unit_id=f"{doc_id}#{anchor}", doc_id=doc_id, source="note", kind="section", ord=i, title=title,
+                    path=[f"{site} site notes", rel, *path], text=body, generation=_generation_of_system(system),
+                    authority="site", collection=f"site:{site}",
+                    meta={"site": site, "file": rel, "system": system, "release": info.get("release", ""),
+                          "repository": info.get("repository", ""), "commit": info.get("commit", "")},
+                    content_hash=_hash(title, body)))
+                n += 1
+        report["sections"] += n
+        report["by_site"][site] = {"sections": n, "release": info.get("release", "")}
+    return units, report
+
+
+def _generation_of_system(system: str) -> str:
+    """A site names its systems, and a system built from Si arms carries "Si" in its name."""
+    if not system:
+        return "both"
+    return "Si" if re.search(r"(?:^|-)Si(?:$|-)", system) else "Classic"
+
+
 # ------------------------------------------------------------------------------ run
 
-READERS = {"doc": read_docs, "thread": read_threads, "changelog": read_changelog, "schema": read_schemas}
+READERS = {"doc": read_docs, "thread": read_threads, "changelog": read_changelog, "schema": read_schemas,
+           "note": read_site_notes}
 
 
 def ingest(store: CorpusStore | None = None, settings: Settings | None = None,
-           sources: tuple[str, ...] = ("doc", "thread", "changelog", "schema")) -> dict[str, Any]:
+           sources: tuple[str, ...] = PUBLIC_SOURCES) -> dict[str, Any]:
     s = settings or get_settings()
     store = store or CorpusStore(s.db_path)
     report: dict[str, Any] = {"sources": {}, "problems": []}
@@ -249,6 +344,6 @@ def ingest(store: CorpusStore | None = None, settings: Settings | None = None,
                             "references_to_unknown_labels": len([1 for _, t in refs if t not in labels]),
                             "unknown_labels": dangling[:25]}
     report["corpus_hash"] = store.corpus_hash()
-    report["units"] = store.counts()
+    report["units"] = store.counts(sources)
     store.log_run(report)
     return report

@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from report_rag import rag
+from report_rag_tasks import SECTIONS as RAG_TASKS      # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 VER = ROOT / "verification"
@@ -126,7 +127,8 @@ def t01(d: dict[str, Any]) -> str:
     return "\n".join(out)
 
 
-SECTIONS = [("t01_tool_calling", t01), ("rag_experiments", lambda d: rag(d, table))]
+SECTIONS = [("t01_tool_calling", t01), ("rag_experiments", lambda d: rag(d, table)),
+            *[(name, lambda d, fn=fn: fn(d, table)) for name, fn in RAG_TASKS]]
 
 
 def main() -> int:

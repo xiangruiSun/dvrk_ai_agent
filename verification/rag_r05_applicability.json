@@ -1,0 +1,223 @@
+{
+ "task": "rag_r05_applicability",
+ "ran": "2026-11-19 22:52:51",
+ "corpus_hash": "3818ea9d0d22e2b2",
+ "strategy": "bm25:ident @ section_ctx",
+ "development_queries": 344,
+ "releases_known": 19,
+ "latest_release": "2.5.0",
+ "renames": [
+  {
+   "old": "PSM_HOMING_POWERING",
+   "new": "DVRK_HOMING_POWERING",
+   "renamed_in": "1.1.0",
+   "read_from": "changelog:1.1.0#api-changes",
+   "rule": "is_now",
+   "identifier_shaped": true
+  },
+  {
+   "old": ".rob",
+   "new": ".json",
+   "renamed_in": "1.3.0",
+   "read_from": "changelog:1.3.0#api-changes",
+   "rule": "extension",
+   "identifier_shaped": true
+  },
+  {
+   "old": "DVRK_CLUTCH",
+   "new": "DVRK_EFFORT_CARTESIAN",
+   "renamed_in": "1.4.0",
+   "read_from": "changelog:1.4.0#deprecated-features",
+   "rule": "use_instead",
+   "identifier_shaped": true
+  },
+  {
+   "old": "kinematic",
+   "new": "arm",
+   "renamed_in": "1.7.0",
+   "read_from": "changelog:1.7.0#deprecated-features",
+   "rule": "replaced_by",
+   "identifier_shaped": false
+  },
+  {
+   "old": "name_model",
+   "new": "name:model[version]",
+   "renamed_in": "2.1.0",
+   "read_from": "changelog:2.1.0#api-changes",
+   "rule": "used_to_be",
+   "identifier_shaped": true
+  },
+  {
+   "old": "mainQtArm",
+   "new": "sawIntuitiveResearchKitQtConsole",
+   "renamed_in": "2.2.0",
+   "read_from": "changelog:2.2.0#deprecated-features",
+   "rule": "use_instead",
+   "identifier_shaped": true
+  },
+  {
+   "old": "rotation",
+   "new": "base-frame",
+   "renamed_in": "2.2.0",
+   "read_from": "changelog:2.2.0#deprecated-features",
+   "rule": "use_instead",
+   "identifier_shaped": true
+  },
+  {
+   "old": "console",
+   "new": "system",
+   "renamed_in": "2.4.0",
+   "read_from": "changelog:2.4.0#deprecated-features",
+   "rule": "referring_to",
+   "identifier_shaped": false
+  },
+  {
+   "old": "console.json",
+   "new": "system.json",
+   "renamed_in": "2.4.0",
+   "read_from": "changelog:2.4.0#api-changes",
+   "rule": "was_now",
+   "identifier_shaped": true
+  }
+ ],
+ "questions_in_old_terms": {
+  "how": "development queries that use the new name of a renamed thing, rewritten by code to the old name",
+  "all": {
+   "queries": 49,
+   "ndcg@10_original": 0.5767,
+   "ndcg@10_in_old_terms": 0.4793,
+   "ndcg@10_in_old_terms_widened": 0.5027,
+   "widening_vs_not": {
+    "mean": 0.0233,
+    "low": -0.0037,
+    "high": 0.0544,
+    "wins": 8,
+    "losses": 4,
+    "ties": 37
+   }
+  },
+  "renames_of_identifiers": {
+   "queries": 0,
+   "ndcg@10_original": 0.0,
+   "ndcg@10_in_old_terms": 0.0,
+   "ndcg@10_in_old_terms_widened": 0.0,
+   "widening_vs_not": {
+    "mean": 0.0,
+    "low": 0.0,
+    "high": 0.0,
+    "wins": 0,
+    "losses": 0,
+    "ties": 0
+   }
+  },
+  "renames_of_plain_words_only": {
+   "queries": 49,
+   "ndcg@10_original": 0.5767,
+   "ndcg@10_in_old_terms": 0.4793,
+   "ndcg@10_in_old_terms_widened": 0.5027,
+   "widening_vs_not": {
+    "mean": 0.0233,
+    "low": -0.0037,
+    "high": 0.0544,
+    "wins": 8,
+    "losses": 4,
+    "ties": 37
+   }
+  },
+  "by_rename": {
+   "console->system": 20,
+   "kinematic->arm": 32
+  }
+ },
+ "queries_as_written": {
+  "how": "every rename, plain words included, added to the query",
+  "changed_by_widening": 63,
+  "of": 344,
+  "ndcg@10_before": 0.593,
+  "ndcg@10_after": 0.5645,
+  "difference": {
+   "mean": -0.0285,
+   "low": -0.0575,
+   "high": -0.0041,
+   "wins": 1,
+   "losses": 10,
+   "ties": 52
+  }
+ },
+ "as_deployed": {
+  "rule": "only identifier-shaped names are added to a query; a renamed plain word is reported as a note",
+  "development_queries_changed": 3,
+  "difference": {
+   "mean": 0.0916,
+   "low": 0.0,
+   "high": 0.2747,
+   "wins": 1,
+   "losses": 0,
+   "ties": 2
+  }
+ },
+ "hardware_generation": {
+  "Classic": {
+   "queries_answered_on_a_page_of_this_generation": 22,
+   "ndcg@10_unfiltered": 0.4111,
+   "ndcg@10_filtered": 0.4215,
+   "filter_vs_not": {
+    "mean": 0.0104,
+    "low": 0.0,
+    "high": 0.0267,
+    "wins": 2,
+    "losses": 0,
+    "ties": 20
+   },
+   "share_of_results_from_the_other_generation_unfiltered": 0.0331,
+   "share_of_results_from_the_other_generation_filtered": 0.0,
+   "queries_answered_only_on_the_other_generation": 11,
+   "their_ndcg@10_when_filtered_out": 0.0
+  },
+  "Si": {
+   "queries_answered_on_a_page_of_this_generation": 11,
+   "ndcg@10_unfiltered": 0.3696,
+   "ndcg@10_filtered": 0.3809,
+   "filter_vs_not": {
+    "mean": 0.0113,
+    "low": 0.0,
+    "high": 0.0276,
+    "wins": 2,
+    "losses": 0,
+    "ties": 9
+   },
+   "share_of_results_from_the_other_generation_unfiltered": 0.0953,
+   "share_of_results_from_the_other_generation_filtered": 0.0,
+   "queries_answered_only_on_the_other_generation": 22,
+   "their_ndcg@10_when_filtered_out": 0.0279
+  }
+ },
+ "release": {
+  "2.3.0": {
+   "release_notes_newer_than_the_site": 14,
+   "queries_with_such_a_note_in_top10_unfiltered": 16,
+   "queries_with_such_a_note_in_top10_filtered": 0,
+   "results_for_a_Classic_site": {
+    "total": 3440,
+    "applies": {
+     "True": 3415,
+     "check": 25
+    },
+    "carry_a_note_about_names": 25
+   }
+  },
+  "2.5.0": {
+   "release_notes_newer_than_the_site": 0,
+   "queries_with_such_a_note_in_top10_unfiltered": 0,
+   "queries_with_such_a_note_in_top10_filtered": 0,
+   "results_for_a_Classic_site": {
+    "total": 3440,
+    "applies": {
+     "True": 3417,
+     "check": 23
+    },
+    "carry_a_note_about_names": 23
+   }
+  }
+ }
+}

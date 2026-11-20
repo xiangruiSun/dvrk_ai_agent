@@ -271,8 +271,8 @@ def _wrap_up(llm: LLMClient, state: AgentState, cfg: AgentConfig, ctx: ToolConte
     where = _where(ctx)
     note = {"role": "user", "content":
             f"Stop now ({reason.replace('_', ' ')}). Do not request any tool. Using only the observations above, say "
-            "what was done, what was not done or could not be verified, and where the arm is."
-            + (f"\nThe robot's state right now, read by the system: {where}" if where else "")}
+            "what was done, and what was not done or could not be verified"
+            + (f", and where the arm is.\nThe robot's state right now, read by the system: {where}" if where else ".")}
     try:
         with ctx.tracer.span(ctx.run_id, "llm", f"{cfg.name}.wrap_up") as sp:
             resp = llm.chat(fit_context(state.messages + [note], cfg.context_tokens), tools=None, temperature=0.0)

@@ -1,0 +1,385 @@
+{
+ "task": "rag_r09_service_and_operations",
+ "ran": "2026-11-19 22:54:49",
+ "documentation_commits": {
+  "earlier": "6f0167fa75",
+  "current": "3b231b2a59"
+ },
+ "v1": {
+  "version": "v001-e6bfbf0d",
+  "units": {
+   "changelog": 73,
+   "doc": 694,
+   "note": 11,
+   "schema": 145,
+   "thread": 277
+  },
+  "status": "validated",
+  "gates": [
+   {
+    "gate": "integrity",
+    "passed": true,
+    "value": {
+     "hash_matches": true,
+     "dangling_references": 0
+    },
+    "limit": {
+     "hash_matches": true,
+     "dangling_references": 0
+    },
+    "detail": ""
+   },
+   {
+    "gate": "coverage",
+    "passed": true,
+    "value": {
+     "doc": 694,
+     "thread": 277,
+     "changelog": 73,
+     "schema": 145
+    },
+    "limit": {
+     "doc": 1,
+     "thread": 1,
+     "changelog": 1,
+     "schema": 1
+    },
+    "detail": ""
+   },
+   {
+    "gate": "quality",
+    "passed": true,
+    "value": 0.6944,
+    "limit": 0.6,
+    "detail": "320 development queries built from this version"
+   },
+   {
+    "gate": "exclusion",
+    "passed": true,
+    "value": 0,
+    "limit": 0,
+    "detail": ""
+   },
+   {
+    "gate": "latency",
+    "passed": true,
+    "value": 0.2,
+    "limit": 500.0,
+    "detail": ""
+   },
+   {
+    "gate": "isolation",
+    "passed": true,
+    "value": 0,
+    "limit": 0,
+    "detail": "44 searches for 11 private units as other callers; 11 found by their owner"
+   }
+  ],
+  "activated": true
+ },
+ "v2": {
+  "version": "v002-edf99d03",
+  "units": {
+   "changelog": 73,
+   "doc": 797,
+   "note": 11,
+   "schema": 145,
+   "thread": 277
+  },
+  "status": "validated",
+  "gates": [
+   {
+    "gate": "integrity",
+    "passed": true,
+    "value": {
+     "hash_matches": true,
+     "dangling_references": 0
+    },
+    "limit": {
+     "hash_matches": true,
+     "dangling_references": 0
+    },
+    "detail": ""
+   },
+   {
+    "gate": "coverage",
+    "passed": true,
+    "value": {
+     "doc": 797,
+     "thread": 277,
+     "changelog": 73,
+     "schema": 145
+    },
+    "limit": {
+     "doc": 625,
+     "thread": 249,
+     "changelog": 66,
+     "schema": 130
+    },
+    "detail": ""
+   },
+   {
+    "gate": "quality",
+    "passed": true,
+    "value": 0.6714,
+    "limit": 0.6,
+    "detail": "344 development queries built from this version"
+   },
+   {
+    "gate": "regression",
+    "passed": true,
+    "value": 0.6449,
+    "limit": 0.625,
+    "detail": "236 queries common to both versions; serving version 0.645; paired difference -0.0001 (-0.0055 to 0.0056)"
+   },
+   {
+    "gate": "exclusion",
+    "passed": true,
+    "value": 0,
+    "limit": 0,
+    "detail": ""
+   },
+   {
+    "gate": "latency",
+    "passed": true,
+    "value": 0.2,
+    "limit": 500.0,
+    "detail": ""
+   },
+   {
+    "gate": "isolation",
+    "passed": true,
+    "value": 0,
+    "limit": 0,
+    "detail": "44 searches for 11 private units as other callers; 11 found by their owner"
+   }
+  ],
+  "validation_seconds": 0.9,
+  "activated": true
+ },
+ "first_design_of_the_quality_gate": {
+  "compared": "each version's nDCG@10 on the development queries built from its own units",
+  "serving_version_on_its_own_queries": 0.6944,
+  "serving_queries": 320,
+  "new_version_on_its_own_queries": 0.6714,
+  "new_queries": 344,
+  "limit_it_applied": 0.6744,
+  "would_have_refused_the_update": true
+ },
+ "sync": {
+  "first_ingestion_units_written": 1200,
+  "changes": {
+   "doc": {
+    "added": 232,
+    "changed": 24,
+    "removed": 129
+   }
+  },
+  "change_events": 385,
+  "units_after": 1303,
+  "seconds": 0.13,
+  "third_run_change_events": 0
+ },
+ "embedding_reuse": {
+  "model": "nomic-embed-text",
+  "chunks_v1": 1338,
+  "chunks_v2": 1452,
+  "embedded_for_v1": 1320,
+  "embedded_for_v2": 195,
+  "reused_for_v2": 1257,
+  "seconds_v1": 14.3,
+  "seconds_v2": 2.5
+ },
+ "candidate_fixed_chunking": {
+  "version": "v003-edf99d03",
+  "status": "rejected",
+  "gates": [
+   {
+    "gate": "integrity",
+    "passed": true,
+    "value": {
+     "hash_matches": true,
+     "dangling_references": 0
+    },
+    "limit": {
+     "hash_matches": true,
+     "dangling_references": 0
+    },
+    "detail": ""
+   },
+   {
+    "gate": "coverage",
+    "passed": true,
+    "value": {
+     "doc": 797,
+     "thread": 277,
+     "changelog": 73,
+     "schema": 145
+    },
+    "limit": {
+     "doc": 717,
+     "thread": 249,
+     "changelog": 66,
+     "schema": 130
+    },
+    "detail": ""
+   },
+   {
+    "gate": "quality",
+    "passed": false,
+    "value": 0.5078,
+    "limit": 0.6,
+    "detail": "344 development queries built from this version"
+   },
+   {
+    "gate": "regression",
+    "passed": false,
+    "value": 0.5078,
+    "limit": 0.6514,
+    "detail": "344 queries common to both versions; serving version 0.6714; paired difference -0.1636 (-0.2028 to -0.127)"
+   },
+   {
+    "gate": "exclusion",
+    "passed": true,
+    "value": 0,
+    "limit": 0,
+    "detail": ""
+   },
+   {
+    "gate": "latency",
+    "passed": true,
+    "value": 0.2,
+    "limit": 500.0,
+    "detail": ""
+   },
+   {
+    "gate": "isolation",
+    "passed": true,
+    "value": 0,
+    "limit": 0,
+    "detail": "44 searches for 11 private units as other callers; 10 found by their owner"
+   }
+  ],
+  "activated": false,
+  "refusal": "v003-edf99d03 is rejected, not validated (failed: quality, regression); it cannot be activated"
+ },
+ "candidate_without_threads": {
+  "version": "v004-b7bdb411",
+  "injected": true,
+  "status": "rejected",
+  "gates": [
+   {
+    "gate": "integrity",
+    "passed": true,
+    "value": {
+     "hash_matches": true,
+     "dangling_references": 0
+    },
+    "limit": {
+     "hash_matches": true,
+     "dangling_references": 0
+    },
+    "detail": ""
+   },
+   {
+    "gate": "coverage",
+    "passed": false,
+    "value": {
+     "doc": 797,
+     "thread": 0,
+     "changelog": 73,
+     "schema": 145
+    },
+    "limit": {
+     "doc": 717,
+     "thread": 249,
+     "changelog": 66,
+     "schema": 130
+    },
+    "detail": "too few units: thread"
+   },
+   {
+    "gate": "quality",
+    "passed": false,
+    "value": null,
+    "limit": 0.6,
+    "detail": "no development queries can be built from this corpus"
+   },
+   {
+    "gate": "isolation",
+    "passed": true,
+    "value": 0,
+    "limit": 0,
+    "detail": "44 searches for 11 private units as other callers; 11 found by their owner"
+   }
+  ],
+  "activated": false,
+  "refusal": "v004-b7bdb411 is rejected, not validated (failed: coverage, quality); it cannot be activated"
+ },
+ "active_after_refusals": "v002-edf99d03",
+ "rollback": {
+  "served_in_turn": [
+   "v002-edf99d03",
+   "v001-e6bfbf0d",
+   "v002-edf99d03"
+  ],
+  "a_unit_added_by_the_sync": "doc:configuration/system/components/pedals#usb-foot-pedals",
+  "present_in_turn": [
+   true,
+   false,
+   true
+  ],
+  "pointer_log": [
+   "activate v001-e6bfbf0d",
+   "activate v002-edf99d03",
+   "rollback v001-e6bfbf0d",
+   "activate v002-edf99d03"
+  ]
+ },
+ "service": {
+  "queries": 344,
+  "index_version": "v002-edf99d03",
+  "http_ms_first_pass": {
+   "p50": 0.82,
+   "p95": 1.31
+  },
+  "http_ms_second_pass": {
+   "p50": 0.43,
+   "p95": 0.6
+  },
+  "cache_hit_rate": 0.522,
+  "engine_search_ms": {
+   "n": 688,
+   "p50_ms": 0.01,
+   "p95_ms": 0.67
+  },
+  "status_without_a_key": 401
+ },
+ "threads_updated_since_the_last_fetch": {
+  "jhu-dvrk/sawIntuitiveResearchKit": {
+   "since": "2026-06-17T12:44:08Z",
+   "threads_updated": 0
+  },
+  "jhu-dvrk/dvrk-ros": {
+   "since": "2023-12-01T02:56:59Z",
+   "threads_updated": 0
+  }
+ },
+ "serving": {
+  "version": "v001-edf99d03",
+  "units": {
+   "changelog": 73,
+   "doc": 797,
+   "note": 11,
+   "schema": 145,
+   "thread": 277
+  },
+  "measured": {
+   "dev_ndcg@10": 0.6714,
+   "dev_recall@10": 0.7931,
+   "dev_queries": 344,
+   "latency_p95_ms": 0.2
+  },
+  "public_corpus_hash": "3818ea9d0d22e2b2"
+ }
+}

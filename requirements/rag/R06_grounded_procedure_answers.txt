@@ -1,0 +1,81 @@
+TASK R06 - GROUNDED PROCEDURE ANSWERS
+=====================================
+
+Job
+---
+Answer a question from the person at the robot as ordered steps, where every command, file
+name, configuration key and number is one the cited evidence contains word for word, and say
+"the sources do not answer this" when they do not.
+
+Counterpart in the earlier project: an answer that compares retrieved patient cases, with a
+citation check and abstention. Here the answer is a procedure somebody will type into a
+terminal beside a robot, so the check is on the literal text of commands, not on whether a
+citation exists.
+
+Requirements
+------------
+R1  Evidence bundle (vxrag/answer.py build_bundle). Retrieved units in rank order within a
+    token budget (2,400 by default; tokens are estimated as characters / 4). A unit is shown as
+    the chunk that matched. A thread's replies are shown reply by reply, each marked with its
+    author's standing. Left out, and listed with the reason: a unit that does not apply to the
+    site (R05), a unit that contains text addressed to an automated reader (R07), and whatever
+    does not fit the budget.
+R2  The model returns a structure, not prose: answerable, steps (text and the ids it cites),
+    and what is missing. The structure is enforced by the model server's schema-constrained
+    output.
+R3  Checks by code on every step:
+      a citation must be a unit of the bundle;
+      every literal in the step must occur word for word in a unit the step cites. A literal is
+      anything in backticks, anything shaped like an identifier, a path or a file name, and
+      every number of two or more digits or with a decimal point;
+      the question's own words are not exempt. A term no evidence contains cannot be explained
+      by the evidence.
+R4  A failing answer is sent back once with the list of failures. Steps that still fail are
+    removed. If none is left the result is an abstention.
+R5  Abstention has a cause, and the result names it: retrieval (nothing found), gate (a short
+    question, of at most 30 words, names identifiers and none of them occurs in the retrieved
+    evidence; the model is not called), model (it said the evidence does not answer),
+    verification (no step survived the checks), model_error. A long description of a problem
+    is not gated: in the first run the gate stopped most thread questions on paths and file
+    names that were incidental to the problem (verification/rag_r06_first_run.json).
+R6  Standing. Each kept step carries the standing of the weakest text one of its literals rests
+    on: official (documentation, schemas, release notes, the site's own notes), maintainer, or
+    community. A step that rests on a community reply is marked unconfirmed, and the answer
+    states the weakest standing it relies on. This is computed from the cited text, not asked of
+    the model.
+R7  The answer states the generation and release it was filtered for and the renames it met.
+R8  The model is local. The client refuses an endpoint that is not on this machine.
+
+Code
+----
+vxrag/answer.py      build_bundle, render, literals, check_step, answer
+vxrag/llm.py         OllamaGenerator (local only), GenerationError
+vxrag/engine.py      Engine.answer
+
+Real data
+---------
+Development queries of R08: identifier questions ("What is `X` used for?") and thread
+questions (the title and opening post of a closed thread). Model: qwen3:14b through Ollama.
+
+Verification on real data
+-------------------------
+python scripts/rag_verify.py r06     ->  verification/rag_r06_grounded_answers.json
+  a_evidence_present    answered or abstained and why; whether a labelled unit was in the
+                        evidence; whether the answer cites one; steps proposed, rejected on the
+                        first pass, sent back, removed; literals checked; standing
+  b_evidence_removed    the same identifier questions after every unit that contains the
+                        identifier was removed from the search: as deployed, and with the gate
+                        switched off so that the model and the checks have to decide
+python -m pytest tests/test_rag_service.py -q -k "answer or literal or abstention or bundle or step"
+
+Known limits
+------------
+The checks cover what can be compared as text. A step can quote a real command from the right
+page and still describe it wrongly, put steps in the wrong order, or leave one out. No person
+and no second model has judged the answers; "cites a labelled unit" is the only measure of
+relevance and the labels are weak (R08).
+The gate makes abstention on a missing identifier certain by construction; the numbers with the
+gate switched off are the ones that say something about the model.
+A literal the model writes without backticks and that does not look like an identifier (a
+plain lower-case word used as a command name) is not checked.
+Token counts are estimates. One model, one temperature (0), one prompt.

@@ -9,7 +9,9 @@ be downloaded again.
 | `rosma/` | Recorded dVRK kinematics: 12 recordings by default (113.8 MB), 207 available (1.64 GB), plus `scores.csv` | ROSMA, Zenodo record 3932964 | CC BY 4.0 | `scripts/fetch_rosma.py` |
 | `sources/docs`, `sources/changelog` | dVRK documentation text (234 `.rst` files, 0.74 MB) and the change log | `jhu-dvrk/dvrk-readthedocs` at commit `3b231b2`; `CHANGELOG.md` of `sawIntuitiveResearchKit` at `7435458` | see note | `scripts/fetch_sources.py` |
 | `sources/issues` | 161 issue threads with 205 replies, fetched 2026-11-19. No author names: only the author's association with the repository | `sawIntuitiveResearchKit` and `dvrk-ros`, public GitHub API | public posts, no licence stated | `scripts/fetch_sources.py` |
-| `rag/` | The retrieval store and the embedding cache | produced here | | |
+| `sources/sites` | Notes that four dVRK sites (JHU, UCL, CUHK, WPI) keep beside their configuration files: 8 README and note files, 8 kB. Public; treated here as each site's private collection | `github.com/dvrk-config`, four repositories at pinned commits | MIT for JHU, none stated for the others | `scripts/fetch_sources.py` |
+| `sources/docs_previous` | The documentation at an earlier commit (`6f0167f`, 230 files), to measure incremental sync | `jhu-dvrk/dvrk-readthedocs` | see note | `scripts/fetch_sources.py --only docs-previous` |
+| `rag/` | The retrieval store, the embedding cache, the index versions (`indexes/`) and the hashed API keys | produced here | | |
 | `runtime/` | SQLite database with traces, approvals and commands; cached episode statistics | produced here | | |
 
 ## Licence note for the dVRK files and text

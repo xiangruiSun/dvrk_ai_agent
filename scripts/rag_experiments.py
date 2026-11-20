@@ -30,7 +30,7 @@ from vxrag.evaluation.labels import build_queries                 # noqa: E402
 from vxrag.evaluation.runner import compare, run, select          # noqa: E402
 from vxrag.ingest import ingest                                   # noqa: E402
 from vxrag.retrieval import Index                                 # noqa: E402
-from vxrag.store import CorpusStore                               # noqa: E402
+from vxrag.store import PUBLIC_SOURCES, CorpusStore               # noqa: E402
 
 OUT = ROOT / "verification"
 LOCK = OUT / "rag_final_test.lock.json"
@@ -50,8 +50,8 @@ def slim(r: dict[str, Any]) -> dict[str, Any]:
 
 def main() -> int:
     store = CorpusStore()
-    report = ingest(store)
-    units = store.units()
+    report = ingest(store)                         # the public sources: what the lock file's hash covers
+    units = store.units(PUBLIC_SOURCES)
     queries = build_queries(units)
     counts = Counter((q.category, q.split) for q in queries)
     log(f"corpus {report['units']} hash {report['corpus_hash']}; queries {dict(counts)}")

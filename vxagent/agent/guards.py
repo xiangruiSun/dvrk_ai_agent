@@ -29,7 +29,13 @@ _UNITS: list[tuple[str, re.Pattern[str]]] = [
     ("s", re.compile(_NUM + r"\s*(?:s|sec|secs|seconds?)\b(?!\s*/)", re.I)),
 ]
 _INTENT = re.compile(r"\bI(?:'ll| will)\s+(?:now\s+)?(?:proceed|call|retry|re-?run|use the|check|look|move|wait|request)", re.I)
-_CITE = re.compile(r"\[([A-Za-z][\w.\-]*[#:][\w.\-/#]+)\]")
+_ID = r"[A-Za-z][\w.\-]*[#:](?:[\w.\-/#]|\[\])+"            # doc:page#section, schema:file#arms[].name
+_CITE = re.compile(r"\[(" + _ID + r")\]")
+_QUOTED_ID = re.compile(r'"(' + _ID + r')"')
+_SEARCH_TOOLS = ("search_docs", "search_threads", "search_by_log_line")
+_NOTHING = re.compile(r"\b(?:could not|couldn't|cannot|can't|unable|not (?:be )?(?:found|reach|search)|nothing|"
+                      r"no (?:result|match|information|relevant)|did not find|unavailable|does not (?:cover|contain))",
+                      re.I)
 _STATE = re.compile(r"\b(?:arm|robot|psm1?|it)\s+(?:is|was|remains)\s+(now\s+)?(not\s+)?(enabled|homed)\b", re.I)
 
 
@@ -80,8 +86,25 @@ def collect(state: Any) -> tuple[dict[str, list[float]], list[float], dict[str, 
                 by_unit[unit].append(value)
         if isinstance(payload, dict) and "enabled" in payload and "homed" in payload:
             last_state = payload
-        ids.update(re.findall(r'"([A-Za-z][\w.\-]*[#:][\w.\-/#]+)"', m["content"]))
+        ids.update(_QUOTED_ID.findall(m["content"]))
     return by_unit, calc, last_state, ids
+
+
+def retrieved(state: Any) -> tuple[int, set[str]]:
+    """How many passages the search tools returned in this run, and every number written in
+    them. A number an answer quotes from a retrieved passage is grounded in that passage."""
+    found, numbers = 0, set()
+    for m in state.messages:
+        if m["role"] != "tool" or m.get("name") not in _SEARCH_TOOLS:
+            continue
+        try:
+            body = json.loads(m["content"])
+        except json.JSONDecodeError:
+            continue
+        for r in (body.get("result") or {}).get("results", []) if body.get("ok") else []:
+            found += 1
+            numbers.update(n.replace(",", ".") for n in re.findall(r"-?\d+(?:[.,]\d+)?", r.get("text", "")))
+    return found, numbers
 
 
 def _matches(stated: str, values: list[float]) -> bool:
@@ -96,6 +119,7 @@ def grounding_check(state: Any, ctx: ToolContext) -> list[str]:
     answer = state.answer_candidate
     problems: list[str] = []
     by_unit, calc, last_state, ids = collect(state)
+    passages, quoted = retrieved(state)
 
     # 1. Numbers with units.
     seen: set[tuple[str, str]] = set()
@@ -105,7 +129,7 @@ def grounding_check(state: Any, ctx: ToolContext) -> list[str]:
             if (unit, stated) in seen:
                 continue
             seen.add((unit, stated))
-            if _matches(stated, by_unit[unit] + calc):
+            if _matches(stated, by_unit[unit] + calc) or stated.replace(",", ".") in quoted:
                 continue
             label = unit.replace("_per_", "/")
             problems.append(f"You wrote {stated} {label}, but no tool returned that value in this conversation. "
@@ -125,6 +149,12 @@ def grounding_check(state: Any, ctx: ToolContext) -> list[str]:
     for cite in _CITE.findall(answer):
         if cite not in ids:
             problems.append(f"Citation [{cite}] is not an id returned by a tool. Cite only ids you retrieved.")
+
+    # 3b. An answer built on retrieved passages says which ones.
+    if passages and not _CITE.search(answer) and not _NOTHING.search(answer):
+        problems.append("You searched and received passages, but the answer cites none. Put the id of the passage "
+                        "each statement comes from in square brackets, or say that the passages do not answer the "
+                        "question.")
 
     # 4. An announcement is not an answer.
     if _INTENT.search(answer) and len(answer) < 700:

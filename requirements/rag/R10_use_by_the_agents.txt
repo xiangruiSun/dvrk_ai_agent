@@ -1,0 +1,79 @@
+TASK R10 - USE BY THE AGENTS
+============================
+
+Job
+---
+Give the agents (vxagent) the retrieval system as tools they call over HTTP, so that what an
+agent says about the dVRK comes from a passage it retrieved and cites, and so that a failure of
+the service is reported as a failure and not papered over from the model's memory.
+
+Counterpart in the earlier project: the agents call the case-retrieval service as a tool with
+timeout and retry. Here there are three tools shaped by the work at a robot, the caller's site
+decides what is returned, and the agents' grounding guard is extended to retrieved passages.
+
+Requirements
+------------
+R1  Three observe-tier tools (vxagent/tools/knowledge.py):
+      search_docs          documentation, configuration schemas and release notes
+      search_threads       issue threads and the site's own notes
+      search_by_log_line   one line pasted from a log or a terminal. The service removes time
+                           stamps, process ids, addresses, long numbers and home directories
+                           before searching (vxrag/logline.py), so a person's name in a path
+                           does not travel into a search service's memory
+R2  The agents import nothing from the retrieval package. They hold a URL and a key. The key
+    decides on the service's side which site's notes are visible and which generation and
+    release results are filtered for (R05, R07). The agent's outbound call is subject to the
+    on-prem egress rule.
+R3  A result carries, per passage: the id to cite, title, source, standing, the release it
+    speaks about, whether it applies to the site and why not, and at most 600 characters of
+    text. A passage that addresses an automated reader arrives without its text (R07).
+R4  Failures are typed. Timeout or no connection: knowledge_unavailable, retried as the observe
+    tier allows. A refused key: unauthorized, never retried. Bad arguments: invalid_arguments.
+    Each carries the hint not to answer from memory.
+R5  The grounding guard (vxagent/agent/guards.py):
+      a bracketed citation must be an id a tool returned in this run;
+      an answer given after passages were retrieved must cite at least one, unless it says that
+      nothing was found;
+      a number with a unit is accepted if it is written in a retrieved passage.
+R6  A separate agent profile (knowledge_assistant) holds these tools and no robot tool: looking
+    something up never moves anything.
+
+Code
+----
+vxagent/tools/knowledge.py    vxagent/agent/guards.py    vxagent/profiles.py (KNOWLEDGE)
+vxrag/logline.py              vxrag/service.py (/v1/search, /v1/search/log-line)
+
+Real data
+---------
+The active index version of R09. Development queries of R08. Model: qwen3:14b. The asking site
+is site-a, a site declared for this project (Classic, release from sites/site_a.json).
+
+Verification on real data
+-------------------------
+python scripts/rag_verify.py r10     ->  verification/rag_r10_agent_tools.json
+  a_questions                    identifier and thread questions asked through the agent:
+                                 stop reason, whether a labelled unit was returned and cited,
+                                 whether every citation was a returned id
+  b_filtered_out_for_this_site   questions whose only labelled answer is on a page that does
+                                 not apply to the site
+  c_faults                       INJECTED: a wrong key, one late response, the service
+                                 stopped, and a planted reply reached through the search tool
+  d_log_lines                    the few real log lines found in threads, searched raw and
+                                 cleaned
+python -m pytest tests/test_rag_service.py -q -k "agent or log_line"
+
+Known limits
+------------
+There are very few real log lines in the corpus, so the value of cleaning a line for retrieval
+is not established; what is established is what the cleaning removes.
+"Cites a labelled unit" is measured against weak labels; an agent can cite a different unit
+that also answers the question and be counted as a miss.
+The guard checks that a citation was returned, not that the sentence in front of it follows
+from the cited passage.
+A false claim written by an ordinary user in a thread reaches the agent as a passage, and in
+the verification run the agent repeated it. The answer endpoint marks such a step unconfirmed
+by code (R06); the search tools do not, and the agents do not yet call the answer endpoint.
+Until they do, the passage's `standing` and the prompt are the only protection.
+The asking site is declared, not real. Its release was chosen to lie before a rename.
+Only the knowledge assistant holds these tools so far; the operator, service-engineer and
+support agents receive them with agent tasks 06 and 11 to 13.

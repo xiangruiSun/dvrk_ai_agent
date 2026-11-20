@@ -13,17 +13,16 @@ The repository holds two packages, in the same relation as the earlier pair
 [deepwise_rag](https://github.com/xiangruiSun/deepwise_rag) and
 [ai_agent_tools_deepwise](https://github.com/xiangruiSun/ai_agent_tools_deepwise):
 
-- **`vxrag`**, a retrieval system over the dVRK documentation, issue threads, change log and
-  configuration schemas. It imports nothing from the agents and can be moved to its own repository
-  unchanged. Requirements: [`requirements/rag/`](requirements/rag/R00_overview.txt).
-- **`vxagent`**, the agent tools that will call it. Requirements:
+- **`vxrag`**, a retrieval system over the dVRK documentation, issue threads, change log,
+  configuration schemas and sites' own notes, run as an HTTP service. It imports nothing from the
+  agents and can be moved to its own repository unchanged. Requirements:
+  [`requirements/rag/`](requirements/rag/R00_overview.txt).
+- **`vxagent`**, the agent tools that call it over HTTP. Requirements:
   [`requirements/`](requirements/00_overview.txt).
 
-**Status: in progress.** Built and measured so far: the agents' task 01 (tool calling against a live
-system, with the kinematic twin and the safety filter), and the retrieval system's ingestion,
-chunking, lexical and dense indexing, retrieval strategies and evaluation protocol. Not built yet:
-agent tasks 02 to 15; grounded answers, applicability by hardware generation and release, trust and
-access, the service, and the agents' search tools.
+**Status.** The retrieval system is built: all ten of its tasks, each measured on real data. Of the
+agents, task 01 (tool calling against a live system, with the kinematic twin and the safety filter)
+and the search tools are built; agent tasks 02 to 15 are specified and not built.
 
 ## Central rule
 
@@ -54,9 +53,18 @@ checked by a safety filter that rejects, and never clips, anything outside the e
 | Indexing | BM25 with a plain and an identifier-aware tokenizer; two local embedding models with a persistent cache | `vxrag/lexical.py`, `vxrag/dense.py` |
 | Retrieval | Lexical, dense and reciprocal-rank fusion as named configurations; filters inside the search | `vxrag/retrieval.py` |
 | Evaluation | Labels built by code from the documentation's own links and from thread replies; paired bootstrap; a written selection policy; the test set scored once and locked | `vxrag/evaluation/`, `scripts/rag_experiments.py` |
+| Applicability | A site's hardware generation and release filter and annotate results; renames are read from the change log, so a result says which name applies at the site | `vxrag/applicability.py` |
+| Grounded answers | Ordered steps with citations; every command, file name, key and number must occur word for word in a cited unit; abstention with a named cause | `vxrag/answer.py`, `vxrag/llm.py` |
+| Trust and access | Standing of each source on every answer step; a site's notes are a private collection filtered inside the search and the cache; text addressed to an automated reader is kept from the model | `vxrag/access.py`, `vxrag/untrusted.py` |
+| Operations | Index versions (build, validate, activate, roll back), release gates, sync that reports exactly what changed | `vxrag/versions.py`, `vxrag/gates.py` |
+| Service | HTTP API with keys, validation, typed errors, a per-caller cache and metrics | `vxrag/service.py`, `vxrag/engine.py` |
+| Agent tools | `search_docs`, `search_threads`, `search_by_log_line` over HTTP; the grounding guard checks every citation | `vxagent/tools/knowledge.py` |
 
 ```bash
-.venv/Scripts/python -m vxrag.cli search "firewire nodes not found after power on"
+.venv/Scripts/python -m vxrag.cli search "where is console.json" --release 2.3.0 --generation Classic
+.venv/Scripts/python -m vxrag.cli answer "How do I calibrate the potentiometers of a PSM?" --generation Classic
+.venv/Scripts/python -m vxrag.cli index list
+.venv/Scripts/python -m vxrag.cli serve          # http://127.0.0.1:8310, needs a key: vxrag.cli keys add
 ```
 
 ## What is planned
@@ -67,7 +75,7 @@ checked by a safety filter that rejects, and never clips, anything outside the e
 | 03 | Event-driven trial runtime with recovery and re-verified resume | `03_event_driven_runtime.txt` |
 | 04 | Fault diagnosis strategies; plans checked against robot state | `04_diagnostic_reasoning_and_planning.txt` |
 | 05 | Runbooks as versioned skills, loaded on demand | `05_runbooks_as_skills.txt` |
-| 06 | Technical retrieval and site memory that expires | `06_memory_and_technical_retrieval.txt` |
+| 06 | Site memory that expires; retrieval tools for every role (the tools exist, see `requirements/rag/R10`) | `06_memory_and_technical_retrieval.txt` |
 | 07 | MCP servers at the robot boundary | `07_mcp_robot_boundary.txt` |
 | 08 | Multi-agent incident triage | `08_multi_agent_incident_triage.txt` |
 | 09 | Trial pipeline: pre-flight, rehearsal, run, verdict | `09_trial_pipeline.txt` |
@@ -86,8 +94,10 @@ python -m venv .venv
 ollama pull qwen3:14b
 .venv/Scripts/python scripts/fetch_dvrk_config.py           # dVRK kinematic files and schemas, 0.28 MB
 .venv/Scripts/python scripts/fetch_rosma.py                 # 12 recorded dVRK episodes, 114 MB, CC BY 4.0
-.venv/Scripts/python scripts/fetch_sources.py               # documentation text, change log, issue threads, 2 MB
+.venv/Scripts/python scripts/fetch_sources.py               # documentation text, change log, sites' notes, issue threads, 2 MB
+.venv/Scripts/python scripts/fetch_sources.py --only docs-previous   # an earlier documentation commit, for the sync measurement
 ollama pull nomic-embed-text && ollama pull bge-m3          # embedding models for dense retrieval, 1.5 GB
+.venv/Scripts/python -m vxrag.cli sync                      # all sources into the store; prints what changed
 ```
 
 ## Verify it
@@ -96,6 +106,7 @@ ollama pull nomic-embed-text && ollama pull bge-m3          # embedding models f
 .venv/Scripts/python -m pytest tests -q          # hermetic: made-up arm, scripted model, no downloads needed
 .venv/Scripts/python scripts/verify.py t01       # real recordings, real dVRK kinematics, real model
 .venv/Scripts/python scripts/rag_experiments.py  # retrieval experiments on the real corpus, then the test set once
+.venv/Scripts/python scripts/rag_verify.py       # R05, R06, R07, R09, R10: about 25 minutes with the model
 .venv/Scripts/python scripts/build_report.py     # verification/REPORT.md
 ```
 
@@ -105,9 +116,10 @@ scripts, never by hand.
 ## Data and licences
 
 See [`data/README.md`](data/README.md). ROSMA is CC BY 4.0. The dVRK configuration files, the
-documentation text and the issue threads are used locally and not redistributed here, because
-their repositories state no licence. Author names of issue posts are not stored. No data is
-committed to this repository. `sites/site_a.json` is a site declared for this project, not a real
+documentation text, the issue threads and the sites' notes are used locally and not redistributed
+here, because their repositories state no licence (one site repository is MIT). Author names of
+issue posts are not stored. No data is committed to this repository. The sites' notes are public;
+this project treats each as that site's private collection to exercise access control. `sites/site_a.json` is a site declared for this project, not a real
 lab's set-up.
 
 ## Related work

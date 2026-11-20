@@ -10,6 +10,16 @@ and software version, support threads where the answer is in the last comment, c
 keys, and recordings too large to read. Give each agent the right piece of it, for the system
 that is actually installed, and remember what is true of a site only for as long as it is true.
 
+Status of Part A
+----------------
+Retrieval is built, as its own package and service: requirements/rag/ (tasks R01 to R10), and
+the agents reach it through the three search tools of requirements/rag/R10. Part A below is
+kept as this task's first statement of the need. Where it differs from requirements/rag/, that
+is what was built and measured. Two differences came from the measurements: fusion of lexical
+and dense retrieval was not selected (R08), and a page written for the other hardware
+generation is never returned, marked or not (R05). What remains for this task is Part B
+(memory), similar episodes, and giving the search tools to every role.
+
 Part A - retrieval
 ------------------
 R1  Sources, each chunked for what it is:
@@ -57,8 +67,9 @@ R15 Persistence. Sessions, memories, traces, checkpoints and indexes survive a r
 
 Planned code
 ------------
-vxagent/rag/ingest.py, chunk.py, tokenize.py, bm25.py, dense.py, fuse.py, kb.py
-vxagent/rag/episodes.py      features and nearest neighbours
+vxrag/ (built)               retrieval, see requirements/rag/
+vxagent/tools/knowledge.py   (built) search_docs, search_threads, search_by_log_line
+vxagent/data/similar.py      features and nearest neighbours of recorded episodes
 vxagent/memory/working.py, stores.py, site.py
 scripts/fetch_docs.py, scripts/fetch_issues.py, scripts/fetch_rosma.py
 

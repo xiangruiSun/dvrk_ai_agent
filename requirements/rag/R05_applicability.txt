@@ -1,0 +1,82 @@
+TASK R05 - APPLICABILITY: HARDWARE GENERATION, RELEASE AND RENAMED THINGS
+==========================================================================
+
+Job
+---
+A dVRK site runs one release on arms of one generation. The documentation describes the newest
+release, a thread describes whatever was current when it was written, a release note describes
+its own release. Make retrieval answer for the site that asks: leave out what was written for
+the other generation or for a release the site does not run, and say when a name in a result is
+not the name at the site.
+
+Counterpart in the earlier project: "no record from after the query date". There the rule was
+about time and leakage of the future. Here it is about two axes at once (generation, release)
+and about names that changed, and the facts needed to apply it are not given as fields: they
+have to be read from the change log.
+
+Requirements
+------------
+R1  Site profile: hardware generation (Classic or Si) and release, either of which may be
+    unknown. It comes from the caller's key (R07) and may be narrowed per request, because one
+    site can run a Classic and a Si system. An invalid value is refused.
+R2  Releases and their dates are read from the change log. The release a unit speaks about is:
+    its own for a release note; the newest for documentation and schemas; the release current
+    on the day it was opened for a thread; the release a site's files are written for, for that
+    site's notes (read from the site repository's CMakeLists.txt).
+R3  Renames are read from the change log's own wording by a small set of patterns ("was X, now
+    Y", "X (was Y)", "X is now Y", "X has been replaced by Y", "use Y instead", "It used to be
+    Y"). Both names must be single terms; a phrase is not a rename. Each rename keeps the release
+    and the release note it was read from. Nothing is typed by hand.
+R4  A rename is identifier-shaped (a file name, a key, a class) or a plain word. The change log
+    says "console" became "system", and both are ordinary words with other meanings (the
+    surgeon's console is still a console).
+R5  Query widening. If a question uses one name of a renamed thing, the other name is added to
+    the search. Only identifier-shaped names are added. A renamed plain word is reported as a
+    note and not searched for. This rule was decided by measurement: adding plain words made the
+    development queries worse (see the evidence file).
+R6  Filters, inside the search (R04): a page under .../Classic/ or .../Si/ is a candidate only
+    for that generation; a release note of a release newer than the site's is not a candidate.
+R7  Annotation of every result: `applies` is true, false, or "check" (it applies, but a name it
+    uses is different at the site's release), with the reason in words: "uses `system.json`; at
+    release 2.3.0 this is `console.json` (renamed in 2.4.0)". Only identifier-shaped renames
+    produce such notes.
+R8  A search response lists the renames it met in the question and which name applies at the
+    site's release.
+
+Code
+----
+vxrag/applicability.py      SiteProfile, releases, release_at, extract_renames, Applicability
+vxrag/retrieval.py          generation and max_release filters
+vxrag/engine.py             profile from the key, widening, annotation of results
+
+Real data
+---------
+The change log of sawIntuitiveResearchKit (19 releases). The releases of four real sites, read
+from the CMakeLists.txt of their public configuration repositories. The development queries of
+R08.
+
+Verification on real data
+-------------------------
+python scripts/rag_verify.py r05     ->  verification/rag_r05_applicability.json
+  renames                    every rename found, with the release note it was read from
+  questions_in_old_terms     development queries that use a new name, rewritten by code to the
+                             old one: nDCG@10 as written, in old terms, and in old terms widened
+  queries_as_written         what widening with every rename does to queries nobody rewrote
+  as_deployed                the rule of R5 on the same queries
+  hardware_generation        share of results from the other generation with and without the
+                             filter; nDCG@10 for the queries answered on a page of a generation
+  release                    queries that had a too-new release note among their results
+python -m pytest tests/test_rag_service.py -q -k "rename or widened or applies or filters"
+
+Known limits
+------------
+Generation is known only from the folder a page is in. Most pages, every thread and every
+schema are marked "both", including text that is in fact about one generation.
+The rename patterns are precise rather than complete: a rename the change log describes in a
+sentence of another shape is missed, and nothing checks the list against a person's knowledge.
+Very few development queries contain an identifier-shaped renamed name (the evidence gives
+the count), so the rule of R5 is barely tested for the names it does add; it rests mainly on
+the measured harm of adding plain words.
+A thread's release is the one current when it was opened, not the one its author ran.
+The documentation exists only at its newest state, so "what did this page say at release 2.3"
+cannot be answered; the result says the page is newer than the site, and which names differ.

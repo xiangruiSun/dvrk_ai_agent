@@ -1,0 +1,98 @@
+TASK R09 - SERVICE AND OPERATIONS
+=================================
+
+Job
+---
+Run retrieval as a service that other programs call, and keep it correct while its sources
+change: know exactly what changed upstream, build a new index version from it, refuse to serve
+a version that is worse or incomplete, and go back to the previous one in one step.
+
+Counterpart in the earlier project: an API with index versions, change events and release
+gates over a clinical database that changes row by row. Here the sources change by commit
+(documentation) and by update time (threads), and a whole source can fail to download.
+
+Requirements
+------------
+Sync
+R1  Ingestion is idempotent (R01). Every unit added, changed or removed is written as a change
+    event. `sync` reports the events of this run by source, and whether a rebuild is needed.
+R2  Documentation is fetched at a pinned commit; threads can be fetched incrementally, only
+    those updated since the newest update already stored.
+
+Index versions (vxrag/versions.py)
+R3  A version is a folder with a snapshot of the units it was built from and a manifest
+    (configuration, hashes, counts, gate results). The snapshot makes it independent of the
+    store, so an older version serves exactly what it served before.
+R4  build -> validate -> activate. Only a validated version can be activated. The pointer to
+    the active version is one file, replaced atomically, with a log of every activation and
+    rollback.
+R5  rollback makes the previous version active again.
+R6  The service swaps versions in one assignment: a request sees the old version or the new
+    one, never a mixture.
+
+Release gates (vxrag/gates.py); thresholds are written there once
+R7  integrity    the snapshot hashes to what the manifest says; no cross-reference points nowhere
+    coverage     every public source is present and none has shrunk below 90% of the serving
+                 version (a source that failed to download would otherwise look like "removed
+                 upstream" and vanish silently)
+    quality      nDCG@10 on the development queries built from the version is at least 0.60
+    regression   on the development queries the version and the serving one have in common,
+                 the version is at most 0.02 below. Both are scored on the same queries
+    exclusion    no query got back a unit it had excluded
+    isolation    no caller receives a unit of a collection they may not read (R07)
+    latency      p95 per query within 500 ms
+R8  No gate calls a language model. They run on every build.
+
+Service (vxrag/service.py)
+R9  HTTP endpoints: /health, /v1/version, /v1/search, /v1/search/log-line, /v1/answer,
+    /v1/units/<id>, /v1/metrics. Requests are validated (lengths, ranges, known sources, the
+    shape of a release) and errors are typed: not_authorized, invalid_request, not_found,
+    too_large, no_active_index, no_model.
+R10 Every /v1 request carries a key (R07). The server listens on the loopback address unless
+    configured otherwise. Operations that change what is served are commands on the machine,
+    not endpoints.
+R11 Metrics: counts, latency percentiles per operation, cache hit rate. The query cache is
+    bounded and keyed by index version, by what the caller may read, and by the site profile.
+R12 Command line for everything: ingest, sync, search, answer, index build/validate/activate/
+    rollback/list, keys, serve.
+
+Code
+----
+vxrag/versions.py   vxrag/gates.py   vxrag/engine.py   vxrag/service.py   vxrag/cli.py
+scripts/fetch_sources.py (--only docs-previous, --only issues-since-last)
+
+Real data
+---------
+The documentation at two real commits of jhu-dvrk/dvrk-readthedocs two months apart. The
+threads, change log, schemas and site notes as before.
+
+Verification on real data
+-------------------------
+python scripts/rag_verify.py r09     ->  verification/rag_r09_service_and_operations.json
+  v1, v2                         the corpus at the earlier commit, then synced to the current
+                                 one: units, gates, activation
+  sync                           units added, changed and removed between the two commits; a
+                                 further run writes nothing
+  embedding_reuse                vectors a dense index computes for the second version and
+                                 how many it reuses
+  candidate_fixed_chunking       a worse configuration: which gates fail; activation refused
+  candidate_without_threads      INJECTED: the threads are missing; which gates fail
+  first_design_of_the_quality_gate   what the first version of the regression gate compared
+  rollback                       the version served before, during and after a rollback, and
+                                 whether a unit added by the sync is present in each
+  service                        the development queries over HTTP, twice: latency, cache
+python -m pytest tests/test_rag_service.py -q -k "version or sync or service or validated"
+
+Known limits
+------------
+One process, one machine, no load test: the latency figures are a single client on the
+loopback interface. The cache is in memory and is lost on restart.
+The regression gate needs queries common to both versions. After a restructuring of the
+documentation there are fewer of them, and what was added is covered only by the floor.
+A gate catches a version that is worse on the labelled queries. It says nothing about queries
+nobody labelled.
+The first design of the regression gate compared each version's score on its own queries and
+refused a correct update; the evidence keeps that comparison.
+Keys have no expiry and no rotation. There is no rate limit.
+Incremental thread sync was exercised against the live API and found no thread updated since
+the last fetch, so the merge path is covered by its code and not by a real update.
