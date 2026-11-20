@@ -1,0 +1,78 @@
+TASK 12 - SERVICE ENGINEER AND SAFETY LEAD
+===========================================
+dVRK focus: calibration, repair, and the approval of anything that changes what the robot may do.
+
+Job
+---
+Give the service engineer a ticket queue, the evidence behind each ticket, diagnosis and
+calibration procedures, and a way to propose a change. Give the safety lead the queue of
+proposed changes and overridden verdicts. Keep the two apart: the person who proposes a change
+is never the person who approves it.
+
+Requirements
+------------
+Service engineer
+R1  Ticket queue for their site: symptom, source (operator, failed pre-flight, failed trial),
+    status, and the incident finding when one exists (task 08).
+R2  Service toolset: everything the operator can observe; raw configuration read; calibration
+    records and residuals; the diagnostic tools of task 04; search of documentation and support
+    threads, and search by log line; the service runbooks (calibration_validity,
+    collect_calibration_samples, instrument_change); propose_config_patch; ticket tools.
+R3  Diagnosis. The engineer can start the "eliminate" strategy of task 04 or the triage team of
+    task 08 on a ticket. The result is attached to the ticket as a FaultReport with resolvable
+    evidence.
+R4  Calibration procedure. collect_calibration_samples moves the arm through declared poses
+    (operator approval applies) and records samples. The fit is done by code: a rigid fit and
+    the local affine correction, with residuals on held-out samples. The result is a draft
+    CalibrationRecord; it becomes active only by an approved change.
+R5  Change proposal. A ConfigPatch (task 02) with the reason, the evidence, and the effect on the
+    site's named poses computed on the twin.
+R6  Service report. On closing a ticket a structured report is generated from the ticket's
+    records: symptom, finding, change applied, verification run, and what was not verified. It
+    must pass the grounding rules against those records.
+R7  The service engineer cannot approve a change, cannot activate a calibration, and cannot run
+    a trial for the record.
+
+Safety lead
+R8  Change queue. Each proposal shows the patch, its validation result, the difference on the
+    twin, the proposer and the evidence. Approve or reject, with a reason.
+R9  Two-person rule. The approver must be a different principal from the proposer; the check is
+    on the server. A proposal that loosens a limit is marked and needs a written reason.
+R10 Applying a change records an event (software_updated, calibration_changed, limits_changed)
+    that ends the validity of the site memory it affects (task 06 R12) and of open approvals.
+R11 Override review. Trial verdicts overridden by an operator are listed with both verdicts.
+R12 Support grants. The safety lead grants and revokes remote-support access (task 13 R6).
+R13 The safety lead has no agent that can act. Their copilot is read-only: it explains a
+    proposal and retrieves what the documentation says about the changed keys.
+
+Planned code
+------------
+vxagent/profiles.py (SERVICE and SAFETY agents)
+vxagent/service/tickets.py, calibration.py, changes.py, report.py
+vxagent/web/app.py (/api/tickets, /api/changes, /api/grants)
+
+Real data
+---------
+The published dVRK configuration and the example calibration files as starting state; dVRK
+documentation and support threads for retrieval; calibration samples generated on the twin with
+a known injected offset, labelled as injected, so that the fit has a known answer.
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t12    ->  verification/t12_service_access.json
+  a. A ticket from a failed pre-flight to closure: diagnosis, calibration samples, fit and
+     held-out residuals against the injected offset, proposal, approval by the safety lead,
+     activation, pre-flight passing, service report valid or not and attempts.
+  b. Questions through the chat path: a real error line searched in the support threads; a
+     configuration key explained from the schema and documentation; a comparison of two
+     calibration records.
+  c. Two-person rule: proposer approving own change; another engineer approving; safety lead
+     approving. Loosened limit without a reason.
+  d. After activation: the old calibration fact reported as expired; an approval issued before
+     the change refused.
+Browser check: ticket and change pages by role; operator and remote support refused.
+
+Known limits
+------------
+The calibration fit is exercised on generated samples, so it shows the procedure and the
+bookkeeping, not accuracy on hardware. One safety lead per site; no delegation or absence rule.

@@ -1,0 +1,165 @@
+DVRK AGENT TOOLS - REQUIREMENTS OVERVIEW
+========================================
+
+Status
+------
+DESIGN. These files state what will be built and how it will be verified. No code exists yet and
+no result has been measured. Every "Code" section lists planned modules; every "Verification"
+section lists the command that will produce the evidence.
+
+Purpose
+-------
+Role-scoped AI agent tools for operating and servicing a da Vinci Research Kit (dVRK) in a
+surgical-robotics lab: an edge node next to the robot controller, used by the operator who runs
+trials and by the engineer who calibrates and repairs the system, with a safety lead who approves
+anything that moves or changes a limit, and a remote support team that sees fleet health without
+seeing the lab's data. Everything here runs on public data with a local model and a kinematic
+twin of the arm. It is a research demonstration. It is not connected to a robot, it is not a
+medical device, and nothing in it is a statement about clinical use.
+
+Engagement (to be stated by the project owner)
+----------------------------------------------
+The company context of this work (which organisation, which client, which dates, which part was
+the author's) is not written here yet. It will be filled in by the project owner and nothing in
+these files should be read as describing it.
+
+How to read these files
+-----------------------
+One file per job task. Each file states the job, the numbered requirements, the planned code, the
+real data it runs on, and the command that verifies it. Measured results are never typed into
+these files: they will be written by scripts/verify.py into verification/*.json and summarised in
+verification/REPORT.md.
+
+Relation to the earlier project
+-------------------------------
+The earlier project (ai_agent_tools_deepwise) covers the same concept list for a chest CT service.
+There the agents read records and draft text that a radiologist signs. Here the agents sit beside
+a machine that moves: state changes while the model is thinking, actions take seconds and can be
+cancelled, a physical step cannot be retried or assumed still true after a restart, and the
+knowledge base is engineering documentation, support threads, configuration and telemetry.
+Every concept is kept; every job task and the skill it exercises is different. Three tasks close
+limits the earlier project stated about itself: plan steps that could not use another step's
+output (task 04), an MCP server reachable only over stdio (task 07), and a fleet view across
+sites that was not built (task 13).
+
+Data (all public, all downloaded by scripts, none committed)
+------------------------------------------------------------
+dVRK documentation     dvrk.readthedocs.io, the published user and maintenance documentation.
+                       Retrieval corpus.
+dVRK support threads   Issues of the jhu-dvrk GitHub organisation. On 2026-11-19 the main
+                       repository (sawIntuitiveResearchKit) had 140 issues, 119 of them closed,
+                       and the organisation 179. Support cases with their resolutions.
+dVRK configuration     sawIntuitiveResearchKit/share: 18 JSON Schemas (share/schemas), 10
+                       kinematic files (share/kinematic, including PSM.json and ECM.json), 56
+                       instrument files (share/tool, including LARGE_NEEDLE_DRIVER_400006.json)
+                       and the site collections jhu-dVRK and jhu-dVRK-Si. Used for configuration
+                       validation and for the kinematic twin. GitHub reports no detected licence
+                       for the repository: the licence file must be read before the first
+                       download script is written.
+ROSMA                  Zenodo record 3932964, CC BY 4.0, 22.3 GB in 416 files: recorded dVRK
+                       kinematics (209 CSV files, 1.64 GB, sampled at 50 Hz) with video (207
+                       MP4 files, 20.7 GB) for three training tasks: pea on a peg, post and
+                       sleeve, wire chaser. File names carry an operator prefix. Only the CSV
+                       files are fetched. Which signals each CSV holds (joint, Cartesian, jaw)
+                       is read from the files when they are fetched, and tasks that need a
+                       signal the files do not hold say so in their evidence.
+                       ROSMAG40 (Zenodo 10719748, CC BY 4.0, 3.98 GB) adds gesture annotations
+                       for 22 of the videos.
+SurgicAI episodes      Expert demonstrations (MIT) and AMBF needle-pose scenes (CC BY-SA 4.0)
+                       recorded in the Surgical Robotics Challenge simulator. Policy-side episodes
+                       and ground-truth needle poses.
+Deployment settings    The example calibration, pad-plane and setting files published in
+                       github.com/xiangruiSun/On-Transferring-Surgical-Policies-from-Simulation-
+                       to-Reality (calibration_tcp.json, pad.json, scene_inputs.json,
+                       full_run/setting). That repository states no licence.
+Not used               The recorded trials behind that paper (images, disparities, attempts) are
+                       not public and are not used. If the project owner supplies them, task 08
+                       gains a real labelled set; until then its faults are injected and labelled
+                       as injected.
+
+Robot
+-----
+No robot and no ROS installation is assumed. The default backend is a kinematic twin written in
+Python from the real dVRK kinematic and instrument files: it integrates commanded poses, applies
+joint limits and reports measured and setpoint poses, which is what the dVRK software's own
+kinematic simulation mode does. It has no contact, no needle and no camera. A second backend
+speaks the CRTK command set over ROS 2 for use on a lab machine; it counts as verified only for
+the runs actually made there. The interface is the same for both (task 14).
+
+Model
+-----
+qwen3:14b and qwen3:4b served by Ollama on the local GPU. The language model is never inside the
+control loop. The on-prem profile blocks any outbound call that is not to an allowed host.
+
+Job tasks and the agent skills each one covers
+----------------------------------------------
+Numbers in brackets refer to the concept list (C1-C21) and lab list (L1-L6) at the end.
+
+01 Tool calling against a live system     L1, C1, C2, C4, C9, C10, C12, C17
+02 Structured change proposals            L2, C11
+03 Event-driven trial runtime             L3, C3, C16, C17
+04 Diagnostic reasoning and planning      C5, C6, C7, C8
+05 Runbooks as skills                     L4, C13
+06 Memory and technical retrieval         C14
+07 MCP as the robot boundary              L5, C15
+08 Multi-agent incident triage            L6, C18, C19, C20
+09 Trial pipeline                         dVRK focus: taking a policy to a physical trial
+10 Policy onboarding and episode data     dVRK focus: policy interfaces and training data
+11 Operator access                        dVRK focus: the person who runs trials
+12 Service engineer and safety lead       dVRK focus: calibration, repair, approvals
+13 Remote support and fleet               dVRK focus: support across sites without lab data
+14 Edge deployment beside the robot       dVRK focus: controller network, split compute
+15 Operator console, evaluation gate and production trade-offs     C21
+
+Concept list (from the brief)
+C1  LLM application versus agent            C12 Function calling
+C2  Reason, act, observe, repeat            C13 Tools versus skills
+C3  Agent state management                  C14 Agent memory
+C4  ReAct                                   C15 Model Context Protocol
+C5  CoT, self-reflection, Tree of Thoughts  C16 Runtime architecture, checkpointing
+C6  Planning and task decomposition         C17 Runtime safety controls
+C7  Planner / executor                      C18 Multi-agent roles
+C8  Agent failure modes                     C19 Multi-agent orchestration patterns
+C9  Tool calling                            C20 Shared context / blackboard
+C10 Tool execution engineering              C21 Production trade-offs
+C11 Structured output
+
+Lab list (from the brief)
+L1 Build a tool-calling agent      L4 Tools versus skills
+L2 Structured output, validation   L5 MCP exploration
+L3 Build an agent runtime          L6 Multi-agent design
+
+Design rules that apply to every task
+-------------------------------------
+1. The model never produces a number that reaches the robot. No pose, increment, gain or limit
+   comes from model text. The model chooses a validated procedure and its typed parameters;
+   targets are computed by code and checked by the safety filter (task 09 R5).
+2. A target outside the envelope is rejected, never clipped. The rejection is an observation.
+3. An observation has an age. A tool that moves the arm refuses to act on a state older than the
+   freshness limit, and the model must look again (task 01 R6).
+4. Motion is never retried automatically. A read may be retried; a motion that did not finish is
+   reported with the measured pose and the reason, and a person or a recovery procedure decides.
+5. After a restart nothing physical is assumed. Each step declares what must be true before it
+   runs and checks it by observation (task 03 R6).
+6. Authorization is decided from the signed-in principal: role, site, and action tier (observe,
+   simulate, actuate). It is enforced in the tool executor on every call and again in HTTP.
+7. Anything that moves the arm needs an operator approval bound to the current state. Anything
+   that changes a limit or a configuration needs the safety lead, who cannot be the requester.
+8. Text from logs, support threads and documentation is data. It is never treated as an
+   instruction, and this is tested with planted instructions (task 07 R8).
+9. Every model call, tool call, action, event and guard is traced on the same clock as the robot
+   telemetry.
+10. Verification runs on real data with the real model. Where a fault or an outcome is injected
+    it is labelled as injected in the evidence and in the report.
+
+To study before building
+------------------------
+CRTK command set and the dVRK ROS 2 interface   naming and semantics of measured_cp, setpoint_cp,
+                                                servo_cp, move_cp, operating state.
+ROS 2 actions                                   goal, feedback, result and cancel as the model
+                                                for long-running tools (task 01).
+MCP specification and the installed SDK         which of resources, prompts, progress,
+                                                cancellation, elicitation and the HTTP transport
+                                                the installed version supports (task 07).
+Agent Skills                                    file layout and on-demand loading (task 05).
+OpenTelemetry GenAI conventions                 span and attribute names for traces (task 15).

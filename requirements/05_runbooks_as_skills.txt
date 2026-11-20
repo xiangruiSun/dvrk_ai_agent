@@ -1,0 +1,77 @@
+TASK 05 - RUNBOOKS AS SKILLS
+=============================
+Covers: Lab 4; concept C13.
+
+Job
+---
+A lab runs on procedures: bring the system up, check the rig, calibrate, verify a grasp, recover.
+Package each procedure as a skill the agent can find, read and run, written as a file an
+engineer can review and version, and measure what that buys over a long list of atomic tools.
+
+Requirements
+------------
+R1  Atomic tools, each one operation (vxagent/tools/builtin.py): read state, read a pose,
+    check a target, move to a named pose, set the jaw, read a calibration record, search the
+    documentation, and the rest of the catalogue.
+R2  A runbook is a file (runbooks/<name>.yaml):
+      header   name, one-line summary, when to use it, tier, version, parameter schema,
+               preconditions and effects (the vocabulary of task 04)
+      steps    each with a tool, its arguments, the check that must pass after it, what to do
+               when the check fails (stop, recover, or go to a named step), and the id of the
+               documentation section the step was written from
+    Runbooks planned: bring_up, rig_check, calibration_validity, verify_grasp_retention,
+    return_to_start, instrument_change, collect_calibration_samples.
+R3  Loaded on demand. The agent's prompt carries only the index (name and summary). load_runbook
+    returns the full text of one; run_runbook executes it. The cost of the detail is paid only
+    when it is used.
+R4  Rules that live in the runbook and not in the prompt, for example in verify_grasp_retention:
+    close, lift, compare the needle observation before and after the lift, hold for two seconds,
+    observe again; movement alone is not retention.
+R5  Inner steps go through the tool executor, so each is validated, authorized, checked for
+    freshness, approved where needed and traced like a call the model made.
+R6  A runbook returns its own step list with the result of every check.
+R7  Versioning. A runbook has a version and a content hash. A run records which version it used.
+    Each runbook has a recorded reference trace on the twin; a changed runbook must reproduce
+    its reference outcomes or the change is refused by the test suite.
+R8  Tool retrieval. With the full catalogue the prompt is large and selection gets worse.
+    find_tools(query) returns the best matching tools and runbooks, and only those are offered
+    on the next turn.
+
+Comparison to report
+--------------------
+    Dimension            Atomic tools            Runbooks                Runbooks + find_tools
+    Planning             model orders every      one decision, then      one search, one
+                         step and every check    code                    decision
+    Reliability          depends on the model    checks fixed in the     as runbooks, plus the
+                         not skipping a check    file                    risk of a missed search
+    Prompt size          all schemas, always     index, then one file    a few schemas per turn
+    Maintainability      procedure lives in a    reviewed, versioned     same
+                         prompt                  file with a test
+    Flexibility          anything                what was written        anything it can find
+All three are kept.
+
+Planned code
+------------
+vxagent/skills/runbook.py    parse, validate, load on demand, run through the executor
+vxagent/skills/index.py      index and find_tools
+runbooks/*.yaml
+tests/runbooks/              reference traces
+
+Real data
+---------
+Runbook steps are written from the published dVRK procedures and from the run stages described
+in the paper's repository; each step cites the section it came from. They run on the twin.
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t05    ->  verification/t05_tools_vs_skills.json
+  The same service requests three ways. Per design: completed runs, every required check
+  performed, final state correct, model calls, tool calls made by the model, tokens, wall time,
+  tool errors, the size of the schemas in the prompt, and for the third arm whether the search
+  returned the right tool. Selection accuracy is also measured with the catalogue cut to 10
+  tools and at full size.
+
+Known limits
+------------
+Runbooks are linear with simple branches; they have no loops. Citing a documentation section
+shows where a step came from, not that the documentation is right for a particular site.

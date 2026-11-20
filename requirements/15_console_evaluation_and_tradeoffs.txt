@@ -1,0 +1,93 @@
+TASK 15 - OPERATOR CONSOLE, EVALUATION GATE AND PRODUCTION TRADE-OFFS
+=====================================================================
+Covers: concept C21 (reliability, latency, cost, security; workflow versus agent versus
+multi-agent), the console with four kinds of login, and the gate a change must pass.
+
+Part A - the console
+--------------------
+R1  One FastAPI process serves the API and a single-page app (plain JavaScript, no build step):
+    a machine on a lab network has no package registry to pull a front-end build from.
+R2  Four roles with different pages and different agent tools:
+      Operator         Robot, Trials, Run a trial, Copilot, What the copilot can do
+      Service engineer Tickets, Diagnosis, Calibration, Propose a change, Copilot
+      Safety lead      Change queue, Overridden verdicts, Support grants
+      Remote support   Fleet, Site health, Granted tickets, Assistant
+R3  Live view. Robot state, action progress, runtime events and agent steps arrive on one
+    server-sent event stream with event ids, so a reconnecting page resumes where it left off.
+    The page shows the age of the state it is displaying and greys it out when it is stale.
+R4  Trial timeline. Stages, events, safety rejections, approvals and model calls on one time
+    axis, with the twin's pose at the selected moment.
+R5  Login. Demo accounts; hashed passwords; signed, httpOnly, SameSite session cookie; lock-out
+    after repeated failures; logins audited.
+R6  Role, site and tier are read from the server-side user table on every request.
+R7  Every route declares the roles allowed; a refused request returns 403 and is audited.
+R8  Model output is rendered as text nodes only.
+R9  Every page carries a banner: research demonstration, kinematic twin, not connected to a
+    robot. The login page states what is recorded, what is injected and what is not modelled.
+
+Part B - the evaluation gate
+----------------------------
+A prompt edit, a model change or a new tool can break behaviour that no unit test covers.
+R10 Golden traces. Selected verification runs are stored as cases: the task, the principal, the
+    starting state, and every tool result in order.
+R11 Replay. A case is re-run against a candidate configuration (prompt, model, tool
+    descriptions) with tools answered from the recording. A call the recording has no answer
+    for ends the replay as "diverged" at that step, which is itself a result.
+R12 Trajectory assertions per case, in code: tools that must be called, tools that must not be,
+    order constraints (a look before a motion; rehearsal before approval), argument predicates,
+    stop reason, and the deterministic scorer of the task the case came from.
+R13 Comparison report between two configurations: cases passed, newly failing, newly passing,
+    diverged, tokens and model calls.
+R14 Gate. A change is accepted only if no safety assertion fails on any case and the pass count
+    does not drop. The thresholds are in the repository, not in a person's head.
+R15 Live sample. Replay cannot tell whether a new action sequence would have worked, so a small
+    fixed set of cases is also run live on the twin for every candidate.
+
+Part C - when to use what (to be read with the measured numbers in verification/REPORT.md)
+-----------------------------------------------------------------------------------------
+    Use a workflow when the steps and their order are known and a mistake moves metal.
+        Here: the trial pipeline and every runbook. The model writes two pieces of text and
+        cannot change the route.
+    Use a single agent when the question is open and reading is all it needs to do.
+        Here: the copilots. Reliability comes from typed tools, tiers, freshness, the grounding
+        guard and runbooks.
+    Use several agents when the evidence is of different kinds and too large for one context.
+        Here: incident triage. Whether it paid off is the measured result of task 08.
+
+    Trade-off      Lever in this system
+    Reliability    no model-authored numbers; reject without clipping; preconditions on every
+                   resume; rehearsal on the twin; two-person rule; the evaluation gate
+    Latency        model outside the control loop; small model for classification; runbooks cut
+                   model round trips; telemetry summarised by code before the model sees it
+    Cost           token budgets; context fitting; index-then-load for runbooks; local models
+    Security       role, site and tier in the executor; state-bound approvals; redaction at the
+                   edge; time-boxed grants; description pinning; tool text as data; egress guard
+
+Part D - putting it online
+--------------------------
+The public demonstration serves the twin only. Public mode refuses to start with a default
+secret or a source password, never sends passwords to the browser, listens on 127.0.0.1 behind a
+tunnel, rations agent jobs per visitor, sets security headers, and refuses to start if the
+robot backend is anything other than the twin.
+
+Planned code
+------------
+vxagent/web/app.py, public.py, static/
+vxagent/evals/cases.py, replay.py, assertions.py, compare.py
+scripts/verify.py, scripts/build_report.py, scripts/gate.py
+
+Verification (planned)
+----------------------
+python scripts/gate.py --baseline <config> --candidate <config>   ->  verification/gate_*.json
+  a. The baseline against itself: every case must pass and none may diverge.
+  b. Three planted regressions: a prompt with the "look before a motion" rule removed, a tool
+     description altered to invite a wrong argument, and the small model in place of the large
+     one for diagnosis. Reported: which cases fail, and whether the gate refuses each.
+python -m pytest tests -q      role and tier matrix, session forgery, lock-out, job limits,
+                               public-mode refusals, event-stream resume
+Browser run on the local console with all four logins, recorded with dates.
+
+Known limits
+------------
+Replay with recorded tool answers checks decisions up to the first divergence and nothing after
+it. Demo accounts and an in-memory job table. Visitors of a public demonstration share accounts.

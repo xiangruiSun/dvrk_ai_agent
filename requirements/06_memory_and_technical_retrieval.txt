@@ -1,0 +1,92 @@
+TASK 06 - MEMORY AND TECHNICAL RETRIEVAL
+=========================================
+Covers: concept C14 (working context, short-term history, long-term memory, retrieval,
+persistence).
+
+Job
+---
+The knowledge here is engineering knowledge: documentation that differs by hardware generation
+and software version, support threads where the answer is in the last comment, configuration
+keys, and recordings too large to read. Give each agent the right piece of it, for the system
+that is actually installed, and remember what is true of a site only for as long as it is true.
+
+Part A - retrieval
+------------------
+R1  Sources, each chunked for what it is:
+      documentation    one chunk per section; a code block or table is never split
+      support threads  the question, and the resolution (closing and maintainer comments) as
+                       separate chunks linked by thread number
+      configuration    one chunk per key path with its file, value and schema description
+      runbooks         the index entries of task 05
+R2  Metadata on every chunk: source, id, hardware generation (Classic, Si, both), software
+    version range where the source states one, arm type, date.
+R3  Site filter. Retrieval is filtered by the site profile (generation, installed version, arms)
+    before ranking. A chunk for another generation is not returned unless nothing else matches,
+    and then it is marked as not matching the site.
+R4  Hybrid search. BM25 with a tokenizer that keeps identifiers whole (measured_cp, PSM1, file
+    names, error strings) and also indexes their parts, a dense index from a local embedding
+    model, and reciprocal-rank fusion of the two. Identifier queries must not be lost to the
+    dense side; this is measured.
+R5  Query from a log line. search_by_log_line strips the variable parts of an error line
+    (numbers, timestamps, serials) and searches for what remains.
+R6  Abstention. Below a score threshold the tool returns "nothing found in the indexed sources".
+    The agent may not answer a documentation question without a retrieved id.
+R7  Similar episodes. Each recorded episode is reduced by code to a feature vector (duration,
+    path length, speed statistics, jaw events, pauses, workspace extent). search_similar_episodes
+    returns nearest neighbours with the features that made them near.
+R8  Citations in an answer are checked against the ids retrieved in that run (task 01 R12).
+
+Part B - memory
+---------------
+R9  Working context. Before every model call the history is fitted to a token budget: system
+    prompt and task kept, recent turns verbatim, older observations replaced by one-line stubs.
+    Robot state is never replayed from history: the current state is injected fresh each turn
+    and old state observations are stubbed first.
+R10 Short-term history. Turns of one conversation, persisted, keyed by user and session.
+R11 User memory. Durable preferences per user, written only through the remember tool, bounded,
+    de-duplicated. Credentials are refused.
+R12 Site memory. Facts about a site or a robot ("the camera-to-robot calibration of PSM1 was
+    last fitted on <date> with residual <x>"), each with its source and a list of events that
+    end its validity: ecm_moved, setup_joint_moved, instrument_changed, software_updated.
+    When such an event is recorded, the facts it ends are marked expired, kept for the record,
+    and no longer injected. An agent asked about an expired fact says it has expired and why.
+R13 Site memory is written by code from tool results, not from model text.
+R14 Isolation. User memory is keyed by user. Site memory is keyed by site and is never returned
+    to a principal of another site, nor to remote support without a grant (task 13).
+R15 Persistence. Sessions, memories, traces, checkpoints and indexes survive a restart.
+
+Planned code
+------------
+vxagent/rag/ingest.py, chunk.py, tokenize.py, bm25.py, dense.py, fuse.py, kb.py
+vxagent/rag/episodes.py      features and nearest neighbours
+vxagent/memory/working.py, stores.py, site.py
+scripts/fetch_docs.py, scripts/fetch_issues.py, scripts/fetch_rosma.py
+
+Real data
+---------
+The dVRK documentation, the jhu-dvrk support threads, the dVRK configuration files and the ROSMA
+kinematics subset.
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t06    ->  verification/t06_memory_and_retrieval.json
+  a. Retrieval reference set built by code, not by hand: closed threads whose maintainer reply
+     links a documentation page; the question is the thread's opening text and the reference is
+     the linked page. Reported: threads used, Recall@5, Recall@10, nDCG@10 for BM25 with a plain
+     tokenizer, BM25 with the identifier tokenizer, dense, and fused.
+  b. Site filter: the same questions as a Classic site and as an Si site; share of returned
+     chunks that match the site.
+  c. Abstention: questions about systems that are not the dVRK; share correctly refused.
+  d. Similar episodes on ROSMA: share of nearest neighbours that are the same task type as the
+     query episode, against the share expected by chance.
+  e. Site memory: a calibration fact is stored from a tool result, recalled in a new session,
+     then an ecm_moved event is recorded and the fact must be reported as expired. A principal
+     of the other site must recall nothing.
+  f. Working context: a long run under a small token budget; history size, size sent, and
+     whether the final answer still matches the code-computed figure.
+
+Known limits
+------------
+Version ranges exist only where the source states them; many chunks will carry "unknown" and are
+then not filtered by version. The reference set covers only threads that link a documentation
+page. Episode features are hand-chosen statistics, not learned embeddings.

@@ -1,0 +1,97 @@
+TASK 01 - TOOL CALLING AGAINST A LIVE SYSTEM
+=============================================
+Covers: Lab 1; concepts C1, C2, C4 (ReAct), C9, C10, C12, C17.
+
+Job
+---
+Build the loop every agent here runs on, for a system whose state changes while the model is
+thinking. A lookup returns in milliseconds and can be repeated. A motion takes seconds, reports
+progress, can be cancelled, and must not be repeated. The loop has to treat the two differently,
+and has to know how old its last look at the robot is.
+
+Requirements
+------------
+R1  Loop. model response -> tool execution -> observation -> next model response. Parallel calls
+    in one response are allowed for observe-tier tools only; a response that asks for two
+    motions, or a motion together with anything else, is refused with error_kind "not_parallel".
+R2  Tool definition. A name, a description written for the model, a Pydantic argument model
+    with extra="forbid", a tier (observe, simulate, actuate) and a kind (call or action). The
+    JSON Schema sent to the model is generated from the argument model. Every physical quantity
+    in an argument is a named choice or a bounded integer index, never a free number (design
+    rule 1): the model picks "named_pose: start", not coordinates.
+R3  Call tools return a result. Action tools follow goal, feedback, result:
+      accepted   the goal passed validation and was started; a handle is returned
+      feedback   progress events while it runs (fraction, measured pose, time left)
+      result     succeeded, aborted (with reason and measured pose), or canceled
+    The loop waits for the result up to the action's time limit and gives the model one digest of
+    the feedback, not every event.
+R4  Cancel. cancel_action(handle) stops a running action; the operator's stop button does the
+    same without the model. A canceled action reports where the arm stopped.
+R5  Function calling contract. The model only produces {name, arguments}. The application
+    validates and executes it. An unknown tool, or one not offered to this agent, returns
+    error_kind "unknown_tool" with the tools that are available.
+R6  Freshness. Every robot observation carries a state sequence number and a timestamp. An
+    actuate-tier call must name the sequence number it is based on. If the robot state has
+    changed since, or the observation is older than the freshness limit, the call is refused
+    with error_kind "stale_observation" and nothing moves.
+R7  Retry policy by tier. Observe-tier calls are retried on transient failure, at most
+    max_retries times with capped backoff. Simulate-tier calls are retried once. Actuate-tier
+    calls are never retried by the executor or by the loop.
+R8  Safety rejection. A motion whose computed target fails the safety filter of task 09 returns
+    error_kind "safety_rejected" with the rule that failed. The executor does not shrink the
+    motion to make it pass.
+R9  Idempotency. A write that is not a motion (open a ticket, save a record) executes once per
+    run per argument set. Motions carry a one-use command id; a repeat of the same id is refused.
+R10 Stopping conditions, all explicit and recorded as stop_reason:
+    final_answer, final_answer_unverified, max_iterations, token_budget, wall_clock,
+    loop_detected, tool_failures, awaiting_approval, llm_error, operator_stop, robot_fault,
+    safety_rejections (three rejected motions in a row).
+R11 When a run stops while an action is running, the action is cancelled first. When a limit
+    stops the run the model gets one final call without tools to say what was done, where the
+    arm is, and what is unfinished.
+R12 Grounding guard. Before a final answer is accepted a deterministic check compares it with
+    the tool results of the run: every number with a unit (mm, degrees, seconds, hertz) must be a
+    value a tool returned, within rounding; every statement of robot state (enabled, homed,
+    holding, fault) must match the last observation; every bracketed citation must be an id a
+    tool returned; an announcement of intent is not an answer. Problems are sent back at most
+    twice; an answer that still fails is returned with a visible "Not verified" note.
+R13 Observation size. Telemetry tools return statistics and a handle, never raw arrays. A second
+    tool reads a bounded window from a handle. No tool result exceeds the per-call size limit.
+R14 Observability. One span per model call, tool call and action, with latency, tokens, attempts,
+    error kind and the robot sequence number at start and end.
+
+Planned code
+------------
+vxagent/agent/loop.py        run_agent, AgentConfig, AgentState
+vxagent/agent/guards.py      grounding_check
+vxagent/tools/registry.py    Tool, ActionTool, ToolRegistry, Principal, ToolError
+vxagent/tools/executor.py    discovery, authorization, validation, freshness, approval,
+                             idempotency, timeout, retry by tier, trace
+vxagent/tools/actions.py     action handles, feedback digest, cancel
+vxagent/tools/builtin.py     the tool catalogue
+vxagent/llm/ollama.py        model adapter; vxagent/llm/scripted.py for tests
+
+Real data
+---------
+Recorded dVRK kinematics from ROSMA for questions about episodes. The kinematic twin built from
+the dVRK kinematic and instrument files for anything that moves.
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t01    ->  verification/t01_tool_calling.json
+  a. Questions about real recorded episodes whose answers are computed by code from the
+     recording (duration, path length, peak tip speed, number of jaw closures). Scored on the
+     figure the agent commits to.
+  b. Motion requests on the twin through named poses and runbook steps: completed, final pose
+     against the pose computed by code.
+  c. Fault injection with the real model: the documentation service down (retries, then the
+     agent reports it and still answers the rest); the robot state changed between the look and
+     the motion (stale_observation, then a fresh look); a motion cancelled half way; a target the
+     safety filter rejects; two motions requested in one response; a step limit of 3.
+python -m pytest tests -q       agent core with a scripted model
+
+Known limits
+------------
+The twin has no dynamics, so motion time is the commanded time and tracking error is zero unless
+injected. A tool thread that has timed out cannot be killed in Python; long analysis should run
+in a subprocess.

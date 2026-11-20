@@ -1,0 +1,92 @@
+TASK 03 - EVENT-DRIVEN TRIAL RUNTIME
+=====================================
+Covers: Lab 3; concepts C3, C16, C17.
+
+Job
+---
+A trial is a sequence of stages on a physical arm. Stages end because something happened: an
+action finished, a check failed, a watchdog fired, the operator pressed stop. A failed stage
+cannot simply be marked failed, because the arm is still somewhere, possibly holding a needle.
+And a run that is resumed after a restart cannot trust that what it did before is still true.
+
+Requirements
+------------
+R1  State. One JSON object per run: task state (site, arm, stage, outcome), observations (pose,
+    operating state, needle held or not, each with its sequence number), execution history,
+    usage, and what the run is waiting for.
+R2  Event log. Every change of state is an appended event (stage_started, action_result,
+    check_passed, check_failed, watchdog, operator_stop, approval, recovery_started, ...).
+    The state object can be rebuilt from the events alone, and this is tested.
+R3  Graph. Nodes are functions state -> partial update. Edges are fixed or conditional. A node
+    may wait for an event with a time limit. The graph is validated before it runs.
+R4  Conditional routing on results and events:
+      preflight    passed -> dry_run             failed -> stop (nothing moves)
+      dry_run      clean  -> wait for operator   rejections -> stop
+      reach        within tolerance -> grasp     not reached in the action budget -> recover
+      hold_check   needle held -> place          not held -> recover
+      any stage    operator_stop, robot_fault or watchdog -> recover
+R5  Watchdog. While a motion runs the runtime expects feedback at the control rate. Missing
+    feedback for longer than the limit cancels the action and raises a watchdog event.
+R6  Preconditions instead of "already done". Each node declares what must be true before it
+    runs (arm enabled and homed, calibration valid, needle held, ...). They are checked by
+    observation when the node is entered, on first entry and on every resume. A node whose
+    precondition no longer holds is not re-run and not skipped: the run routes to recovery.
+R7  Recovery. Each stage registers a recovery procedure (open the jaws if it is safe to, lift,
+    return to the start pose, as in the paper's "not held: stop, return to start"). Recovery is
+    itself a checked sequence of motions and needs the same approval as any motion unless the
+    operator pre-approved recovery for the run.
+R8  Checkpointing. The state and the next node are written to SQLite after every node, before
+    the next starts. A run can be resumed from its run id by a new process.
+R9  Restart rule. On start-up every run that was moving is marked needs_reverification. The arm
+    is assumed disabled. Nothing resumes until an operator asks for it, and then R6 applies.
+R10 Approvals are bound to the state they were given for: run, node, robot sequence number and
+    envelope version. An approval expires after its time limit or when any of those changes.
+    Rejection ends the run with outcome operator_rejected.
+R11 Safety limits per run: steps, wall clock, tokens, total path length, number of recoveries.
+R12 The language model is used at two nodes only: explaining a failed pre-flight, and writing
+    the trial summary. Neither can change the route. Everything else is a fixed workflow.
+R13 Traces. Every node, event, action, model call and tool call is a span on the robot clock.
+
+The graph (vxagent/pipelines/trial.py)
+--------------------------------------
+preflight -+-> stop -> END
+           +-> dry_run -+-> stop -> END
+                        +-> operator_go -> reach -> grasp -> hold_check -+-> place ---+
+                                                                         |            |
+                              any stage, on failure or a stop event  ----+-> recover -+
+                                                                                      |
+                                                              verdict -> confirm -> END
+
+Planned code
+------------
+vxagent/runtime/graph.py     Graph, Env, Limits, Checkpointer, Interrupt, WaitFor, RunResult
+vxagent/runtime/events.py    event log, rebuild state from events
+vxagent/runtime/watchdog.py
+vxagent/runtime/trace.py
+vxagent/store.py             SQLite: runs, events, spans, checkpoints, approvals, command ids
+vxagent/pipelines/trial.py
+
+Real data
+---------
+Commanded paths from the SurgicAI demonstrations, mapped into the site frame (task 10), executed
+on the twin. The twin has no needle, so "needle held" comes from an outcome source that is
+declared per run and recorded in the evidence (task 09 R8).
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t03    ->  verification/t03_runtime.json
+  a. A set of trials end to end on the twin: path taken, events, checkpoints, per-node time,
+     approval given and used.
+  b. Crash and resume in each stage: the process is killed, a new one starts; the run must be
+     needs_reverification, must not move before the operator resumes it, and must re-check its
+     preconditions. With the needle declared lost while the process was down, it must route to
+     recovery and must not enter place.
+  c. Watchdog: feedback is withheld during reach; the action must be cancelled and recovery run.
+  d. Stale approval: the arm is moved between approval and use; the approval must be refused.
+  e. Operator stop during descent; operator rejection at the go decision; step limit.
+  f. State rebuilt from the event log equals the checkpointed state for every run above.
+
+Known limits
+------------
+One process and SQLite: one edge node per robot. Recovery on the twin proves routing and
+ordering, not that a real arm holding a real needle is brought back safely.

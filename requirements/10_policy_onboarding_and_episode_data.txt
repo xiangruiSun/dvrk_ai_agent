@@ -1,0 +1,79 @@
+TASK 10 - POLICY ONBOARDING AND EPISODE DATA
+=============================================
+dVRK focus: policy interfaces and the data policies are trained and judged on.
+
+Job
+---
+A policy arrives from simulation with assumptions built in: what its observation vector means,
+in which frame and unit, how its actions are scaled, how fast it expects to run, and what range
+of poses it was trained on. Before it goes near a trial, write those assumptions down as a
+contract, check the contract against the site, and prove that the episodes used to train or
+judge it are clean and split without leakage.
+
+Requirements
+------------
+R1  PolicyContract (vxagent/structured/schemas.py): policy name and version, checkpoint hash,
+    source simulator, observation fields in order {name, frame, unit, size}, action space
+    {size, range, meaning per component}, action scales, control rate, start-pose and goal
+    ranges used in training, and the tasks it covers.
+R2  Contract extraction. A structured model call drafts the contract from the policy's published
+    description and configuration. Each field must point at the place in the source it came
+    from; a field with no resolvable source is left empty and sent to a person. The model does
+    not fill gaps.
+R3  Compatibility check against a site, in code (vxagent/policy/compat.py):
+      - every observation field can be produced from the site's frames and measurements
+      - units agree after conversion; a field whose magnitude suggests the wrong unit is flagged
+      - the control rate is achievable by the site's control loop
+      - scaled actions stay inside the safety profile's step limits
+      - coverage: the share of the site's workspace, start poses and targets that lies inside
+        the training range
+    The result is compatible, compatible within a stated sub-region, or not compatible, with
+    the failing items.
+R4  Out-of-range rule. A requested start pose or target outside the training range fails
+    pre-flight (task 09 R2). The answer is to re-scope or retrain, as in the published work,
+    never to run and see.
+R5  Adapter. The observation mapping and action mapping for a contract are generated from the
+    contract by code and round-trip tested: an episode mapped into policy space and back must
+    return the original poses within tolerance.
+R6  Episode schema. Recorded episodes from different sources are read into one schema with
+    declared frame, unit and rate. Streams a source does not contain are absent, not filled.
+R7  Episode checks (vxagent/data/quality.py): timestamps increase; sample-rate gaps; values
+    inside the arm's joint limits; workspace magnitude consistent with the declared unit;
+    one-step command jumps above a threshold; frozen signals; duplicate episodes by hash.
+    An episode is accepted, accepted with flags, or excluded, with the reason.
+R8  Split without leakage. Train and evaluation sets are split by operator or session, never by
+    episode, and the split is checked: no operator or session on both sides.
+R9  Dataset card, generated: source, licence, counts by task, excluded episodes by reason,
+    split, and what the data cannot show.
+R10 Authorization. These tools need the dataset scope. Remote support has no access to a site's
+    episodes without a grant (task 13).
+
+Planned code
+------------
+vxagent/policy/contract.py, compat.py, adapter.py
+vxagent/data/episodes.py, quality.py, split.py, card.py
+
+Real data
+---------
+The SurgicAI demonstrations and their published description for the contract and the adapter.
+The ROSMA kinematics files, whose names carry an operator prefix, for the checks and the split.
+The two published dVRK site collections for the compatibility check.
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t10    ->  verification/t10_policy_and_data.json
+  a. Contract extraction: fields filled with a resolvable source, fields left for a person,
+     attempts; compared with a hand-written reference contract committed beside it.
+  b. Compatibility of that contract with each site collection, and with the same site after the
+     workspace is moved so that part of it leaves the training range.
+  c. Adapter round trip on every demonstration: maximum position and rotation error.
+  d. Episode checks over both sources: accepted, flagged, excluded, by reason.
+  e. Negative controls: one episode rescaled by 1000, one with a planted jump, one duplicated,
+     one with shuffled timestamps. Each must be caught by the named check.
+  f. The split: operators and sessions per side, overlap (must be 0).
+
+Known limits
+------------
+A contract describes an interface, not behaviour: a compatible policy can still fail. Coverage
+is computed on position and a single rotation angle, not on the full pose distribution. The
+unit check is a magnitude heuristic.

@@ -1,0 +1,95 @@
+TASK 14 - EDGE DEPLOYMENT BESIDE THE ROBOT
+===========================================
+dVRK focus: the controller network, the control loop, and compute that is split across machines.
+
+Job
+---
+Make the agent stack run on a machine next to the robot controller: commands and measurements
+cross one narrow interface, the language model never sits in the control loop, perception may
+run on another machine and may be late or absent, nothing leaves the lab network, and losing
+the model or the perception machine degrades the system instead of breaking or endangering it.
+
+Requirements
+------------
+R1  One robot interface (vxagent/robot/backend.py), named after the CRTK command set the dVRK
+    software exposes: operating state and state commands (enable, disable, home), measured_cp,
+    measured_js, setpoint_cp, servo_cp, move_cp, and the jaw's measured and commanded position.
+    Nothing above this interface knows which backend is behind it.
+R2  Backend "twin" (default). Built from the dVRK kinematic file of the arm and the instrument
+    file: forward and inverse kinematics, joint limits, integration of servo and move commands
+    at the control rate, measured and setpoint poses. No contact, no dynamics, no camera.
+R3  Backend "ros2". The same interface over the dVRK ROS 2 topics, for a lab machine. It is
+    written against the published interface and is not counted as verified by anything run on
+    this PC. Runs made with it are recorded with the backend name.
+R4  Sender allowlist. The gateway accepts commands only from the local agent process and
+    serves state only to configured hosts.
+R5  Latency classes, kept apart by construction:
+      control      10 Hz, deterministic code only: the safety filter and the stage logic
+      perception   up to seconds, on its own process or machine, always with a time limit
+      agent        seconds to tens of seconds, the language model; never called from the
+                   control thread, and a control decision never waits for it
+    A test asserts that no model call occurs between a stage's first command and its result.
+R6  Split compute. Perception is a separate worker reached over the network with a queue, a
+    time limit and a health check, as the published system runs its stereo model on a second
+    GPU machine. A late or missing answer is "perception unavailable": pre-flight fails, a stage
+    in progress falls back to the carried needle pose where the stage allows it, and otherwise
+    stops. In this demonstration the worker serves recorded ground-truth needle poses and depth
+    from the AMBF scenes; the process boundary and its timing are real, the estimates are not
+    computed.
+R7  Degraded modes, each tested:
+      model server down        runbooks and the trial pipeline still run from the console with
+                               template summaries; the copilots say they are unavailable
+      perception worker down   pre-flight fails closed; no trial starts
+      retrieval index missing  agents answer robot questions and say documentation search is
+                               unavailable
+      fleet link down          the outbox grows; nothing else changes (task 13)
+R8  Model routing. Two local models. The small one (qwen3:4b) does classification work: routing
+    a request to a role, labelling a ticket's symptom class, choosing among the runbook index.
+    The large one (qwen3:14b) does diagnosis, planning and writing. The route is fixed per step
+    in code, and the accuracy and latency of the small model on its steps are measured against
+    the large one before it is trusted with them.
+R9  Egress guard. In the on-prem profile every outbound call must target this host or a name on
+    the allowlist (the perception worker, the fleet store). A blocked call fails before any
+    byte leaves.
+R10 Start-up rule. After a power cut or restart the node assumes the arm is disabled and marks
+    moving runs needs_reverification (task 03 R9).
+R11 Sizing. Per trial and per chat run: model time, tokens, perception time, control-loop
+    period and its jitter.
+
+Run it (planned)
+----------------
+python -m vxagent.robot.gateway --backend twin --site site-a     the robot gateway
+python -m vxagent.perception.worker                               the perception worker
+python -m uvicorn vxagent.web.app:app --port 8300                 console and API
+
+Planned code
+------------
+vxagent/robot/backend.py, twin.py, ros2_backend.py, gateway.py, kinematics.py
+vxagent/perception/worker.py, client.py
+vxagent/llm/router.py
+vxagent/config.py (profiles, assert_egress_allowed)
+
+Real data
+---------
+dVRK kinematic and instrument files; ROSMA joint and Cartesian recordings to check the twin's
+kinematics (task 09); AMBF needle-pose scenes for the perception worker.
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t14    ->  verification/t14_edge_deployment.json
+  a. Control loop on the twin: period, jitter, and the count of model calls made inside a
+     stage (must be 0), over the trials of task 09.
+  b. Perception worker: latency distribution; a request slower than the limit; the worker
+     stopped before pre-flight and during place.
+  c. Each degraded mode of R7: what still worked and what was reported.
+  d. Model routing: the small and the large model on the classification steps, on the labelled
+     thread set of task 04 and the service requests of task 05: accuracy, latency, tokens.
+  e. Egress guard: localhost and an allowlisted host allowed, another host blocked, and a model
+     client pointed at an external host failing before sending.
+  f. Gateway allowlist: a command from an unlisted host refused.
+
+Known limits
+------------
+The ros2 backend is unverified here. Timing on a Windows desktop is not real-time; jitter is
+reported as measured and is not a claim about a controller. No TLS between processes. One
+model server, so the two models share one GPU.

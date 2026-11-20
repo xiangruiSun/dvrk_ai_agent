@@ -1,0 +1,98 @@
+TASK 04 - DIAGNOSTIC REASONING, PLANNING AND FAILURE MODES
+===========================================================
+Covers: concepts C5 (CoT, self-reflection, Tree of Thoughts), C6, C7, C8.
+
+Job
+---
+"The policy worked in simulation and fails on the robot" has five families of cause: robot
+calibration, visual perception, policy observation and action transfer, physical control and
+safety, and task verification. Decide with measurements how much reasoning machinery finding
+the cause deserves, and make a multi-step service request run as a plan that has been checked
+against the state of the robot before anything is executed.
+
+Part A - reasoning strategies for diagnosis
+-------------------------------------------
+R1  Five strategies behind one function (vxagent/agent/strategies.py):
+      direct      1 call, names the cause class from the symptom text
+      cot         1 call, reasons step by step, then names the cause class
+      reflect     answer, critique against the retrieved documentation, revise; 3 calls
+      tot         3 independent lines of reasoning, an evaluator picks one; 4 calls
+      eliminate   keeps a ranked list of candidate causes; at each step asks the diagnostic tool
+                  that best separates the top candidates, updates the list from the result, and
+                  stops when one candidate remains or the check budget is spent
+    The first four use no tools. The fifth is ReAct with a declared hypothesis state.
+R2  Each returns the cause class, the checks run, the number of calls, tokens and latency.
+R3  The hypothesis state of "eliminate" is a typed object, not prose: candidates, the evidence
+    for and against each, and the next check with the reason it was chosen. It is validated
+    after every step; a candidate cannot be dropped without evidence against it.
+R4  Diagnostic tools are deterministic: compare commanded, setpoint and measured pose; residual
+    of a calibration record on held-out points; observation and action ranges of a run against
+    the policy's training range; safety-filter rejections by rule; perception confidence and
+    dropout over a window.
+Trade-off to be shown by the numbers: on a fault that leaves a signature in the data, a strategy
+that looks at the data should beat any amount of reasoning from the symptom alone.
+
+Part B - planning with preconditions and data flow
+--------------------------------------------------
+R5  Planner (vxagent/agent/planner.py). One structured model call turns a goal into a Plan:
+    steps {id, purpose, tool or runbook, arguments, depends_on}. At most 10 steps.
+R6  Data flow. An argument may be a literal or a reference to a field of an earlier step's
+    result ("$s2.calibration_id"). References are type-checked against the tool's result schema
+    before the plan runs.
+R7  Preconditions and effects. Every tool and runbook declares the facts it needs and the facts
+    it changes, over a small fixed vocabulary (powered, enabled, homed, calibration_valid,
+    instrument_matches, needle_visible, needle_held, in_workspace). The plan is executed
+    symbolically from the observed state before anything runs: a step whose preconditions are
+    not met by the state at that point is an error.
+R8  Plan validation also rejects: a tool that does not exist or is not allowed for this user
+    and tier; arguments that do not validate; dependencies on unknown steps; cycles; two motions
+    in the same parallel level.
+    Errors go back to the planner through the bounded repair loop of task 02.
+R9  Dry run. A plan containing motion is executed on the twin first; a plan that the safety
+    filter rejects on the twin is not offered for approval.
+R10 Executor. The dependency graph is run level by level. After each motion the observed state
+    is compared with the effects the step declared; a mismatch stops the plan.
+R11 One bounded re-plan from the observed state when a step fails or the state does not match.
+R12 Synthesis. A final model call writes the answer from the step results only.
+
+Part C - failure modes and their controls
+-----------------------------------------
+    Failure mode             Control                                          Where
+    infinite loop            identical-call counter, nudge at 2, stop at 3    agent/loop.py
+    goal drift               task re-anchored every 4 steps; plan limited     memory/working.py,
+                             to validated tools                               agent/planner.py
+    hallucinated tool        unknown_tool observation; plan validation        tools/executor.py
+    hallucinated result      grounding guard on numbers, state and ids        agent/guards.py
+    acting on an old look    sequence number and age on every motion          tools/executor.py
+    unsafe target            safety filter, reject without clipping           robot/safety.py
+    repeated motion          one-use command ids; no automatic retry          tools/executor.py
+    obeying a log line       tool text is data; injection probes              task 07
+    premature diagnosis      a candidate needs evidence against it to drop    agent/strategies.py
+    runaway cost or motion   iteration, token, time and path-length limits    agent/loop.py,
+                                                                              runtime/graph.py
+
+Real data
+---------
+Faults injected into the twin while it replays real commanded paths, each with a known cause
+class and labelled as injected: a constant offset in the camera-to-robot transform, a flipped
+axis, a unit scale error in the action mapping, a start pose outside the training range, a
+tightened joint limit, tracking error above the stop threshold, perception dropout. In addition,
+closed dVRK support threads whose cause is stated by a maintainer, with the cause class and the
+thread number committed as a hand-labelled reference set.
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t04    ->  verification/t04_reasoning_and_planning.json
+  a. Every strategy on every injected fault and on the labelled threads: cause class correct,
+     checks run, calls, tokens, latency. The threads have no telemetry, so "eliminate" is scored
+     on the injected set only and the report says so.
+  b. Service goals through the planner and executor on the twin, including one whose second
+     step needs the first step's output and one that is impossible from the observed state.
+     Recorded: plan, symbolic check result, dry-run result, step outcomes, re-plans, tokens.
+python -m pytest tests -q   plan validation (bad reference type, unmet precondition, two motions
+                            in one level, cycle), loop detection, hypothesis-state rules.
+
+Known limits
+------------
+The precondition vocabulary is small and hand-written. The injected faults are clean single
+faults; real failures overlap. Tree of Thoughts is one level deep.

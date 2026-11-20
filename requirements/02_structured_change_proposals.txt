@@ -1,0 +1,82 @@
+TASK 02 - STRUCTURED CHANGE PROPOSALS
+======================================
+Covers: Lab 2; concept C11.
+
+Job
+---
+On a robot the dangerous output is not a paragraph, it is an edit: a changed offset, a relaxed
+limit, a transform written in the wrong unit. The model therefore never writes a configuration
+file. It proposes a small typed change to an existing one, and the change is proven well formed,
+physically sensible and permitted before a person is asked to approve it.
+
+Requirements
+------------
+R1  Schemas in Pydantic (vxagent/structured/schemas.py), all with extra="forbid":
+    ConfigPatch      target file, list of operations {op: replace or add, path, value, unit},
+                     reason, evidence ids
+    RunSheet         site, arm, instrument, stage sequence, envelope profile, named start pose,
+                     acceptance criteria, operator
+    FaultReport      symptom, suspected cause class, component, evidence [{source id, locator}],
+                     next check (a runbook name), confidence
+    CalibrationRecord  method, frames, transform, residuals, sample count, valid_until events
+    PolicyContract   for task 10
+R2  A patch is the only way to change configuration. Paths outside a per-file allowlist are
+    refused. The patch is applied to a copy; the original is never edited in place.
+R3  Every field a rule checks is required (nullable where needed, never optional), and every
+    numeric value carries a unit from a closed list. Conversion to the file's unit is done by
+    code. The model never converts.
+R4  Three validation layers, kept separate:
+    Schema validation     Is it well formed? The patch against its Pydantic model, then the
+                          patched file against the dVRK project's own JSON Schema for that file
+                          type (share/schemas).
+    Physical validation   Is it sensible? (vxagent/structured/rules.py)
+       - the value after conversion lies inside the plausible range declared for that path
+       - a change of more than the declared step size for that path is refused as a single patch
+       - a rotation is orthonormal with determinant +1; a transform's last row is 0 0 0 1
+       - every frame named exists in the site's frame graph and the patch creates no cycle
+       - a limit may be tightened by the patch; loosening one is a different, flagged operation
+       - an instrument named must have a file in the instrument set
+       - every evidence id resolves to a record retrieved or measured in the same run
+    Authorization         May this caller do this here? A service engineer may propose for their
+                          site; only the safety lead may approve; the approver is not the
+                          proposer; a loosened limit needs a written reason.
+    A patch can pass the first two and still be refused by the third.
+R5  Generation in two modes: schema-constrained decoding, and free-text JSON with extraction.
+R6  Bounded repair. At most 3 attempts. After a failed attempt the model receives its own reply
+    and a numbered list of the exact errors. The function never returns an object that failed.
+R7  No fallback writes. If no valid patch is produced, nothing is proposed and the engineer is
+    shown the attempts. (A report can fall back to a template; a configuration change cannot.)
+R8  Dry application. An accepted patch is applied to the twin first; the named poses of the site
+    are recomputed and the differences in millimetres and degrees are shown beside the approval.
+R9  Each attempt records stage (json, schema, dvrk_schema, physical, ok, llm_error), errors,
+    tokens and latency.
+
+Planned code
+------------
+vxagent/structured/schemas.py, rules.py, generate.py, units.py
+vxagent/robot/config.py      load, patch on a copy, validate against share/schemas
+vxagent/robot/frames.py      frame graph
+
+Real data
+---------
+The dVRK JSON Schemas, kinematic files, instrument files and the two published site collections
+(jhu-dVRK and jhu-dVRK-Si). The example calibration and setting files of the paper's repository.
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t02    ->  verification/t02_structured_output.json
+  a. Every published configuration file of the two site collections is validated against its
+     schema as a baseline: files, passes, and the errors found, as they are.
+  b. A set of change requests in words, each with a hand-written reference patch committed
+     beside it. Per request and per mode: valid on first attempt, attempts, error stages, and
+     whether the accepted patch equals the reference.
+  c. Negative controls the schema alone accepts: a length given in millimetres where the file
+     expects metres, a transform that is not a rotation, a frame that does not exist, a limit
+     loosened inside a patch that claims to tighten. The physical rules must refuse each.
+  d. Authorization matrix: the same valid patch proposed by an operator, a service engineer and
+     remote support; approved by the proposer, by another engineer and by the safety lead.
+
+Known limits
+------------
+Plausible ranges and step sizes are declared by hand per path and cover only the paths on the
+allowlist. The dry application shows geometric effect on named poses, not effect on contact.

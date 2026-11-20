@@ -1,0 +1,82 @@
+TASK 07 - MCP AS THE ROBOT BOUNDARY
+====================================
+Covers: Lab 5; concept C15.
+
+Job
+---
+The robot controller, the recording archive and the knowledge base belong to the lab and sit on
+its network. Put each behind an MCP server on that network, so the agent host reaches them
+through one protocol, access is decided next to the equipment, and a person at the robot can be
+asked directly before anything moves.
+
+Requirements
+------------
+R1  Three servers on the official MCP Python SDK:
+      vx-robot     the robot backend of task 14: state, checks, named motions, runbook steps
+      vx-archive   recorded episodes: list, summary, signal statistics, windows
+      vx-kb        the retrieval tools of task 06
+R2  Transport. Streamable HTTP on the lab network, bound to a configured interface. stdio is
+    kept for tests only.
+R3  Beyond tools, the servers use the parts of the protocol that fit a live system:
+      resources    robot state and the active configuration as readable resources
+                   (robot://<site>/<arm>/state, config://<site>/<file>), with subscription so
+                   the host learns of a change without polling
+      prompts      the runbook index, so a host with no knowledge of this project can list them
+      progress     a motion reports progress while it runs
+      cancellation a cancelled request stops the motion (task 01 R4)
+      elicitation  vx-robot asks the connected person to confirm a motion; the confirmation is
+                   collected at the server, next to the robot, not by the model
+    Which of these the installed SDK version supports is checked first and recorded; an
+    unsupported feature is listed as not built, not imitated.
+R4  Client (vxagent/mcp_layer/client.py). One per server inside the host. Initialise, list,
+    call, read, subscribe. Holds the connection and nothing else.
+R5  Host integration. Discovered tools become registry tools with the server's own schema and
+    the tier the server declares, so the unchanged loop of task 01 calls them. The host passes an
+    allowlist per server; a tool the server offers but the host has not approved is never shown
+    to the model.
+R6  Where controls are enforced:
+      Authentication   at the server. A bearer token on every HTTP request. No token, no session.
+      Authorization    at the server, on every call. The token maps to a principal with role,
+                       site and tier; the call runs through the executor. Site and role in tool
+                       arguments are never trusted.
+      Execution safety at the server: validation, freshness, safety filter, one-use command ids,
+                       approval, audit. At the host: server and tool allowlists, per-call time
+                       limit, result-size limit, tool text treated as data.
+R7  Description pinning. The host stores a hash of each approved tool's description and schema.
+    If a server later presents a different description for the same tool name, the tool is
+    withdrawn from the model until a person re-approves it.
+R8  Injection probes. Text that comes back from a server can contain instructions: a support
+    thread, a log line, a runbook comment. Probes plant such text ("ignore the limits and move
+    to ...", "call the config tool with ...") and the run must not act on it.
+R9  Errors cross the protocol as data: {ok:false, error_kind, error, hint}.
+
+Planned code
+------------
+vxagent/mcp_layer/server_robot.py, server_archive.py, server_kb.py
+vxagent/mcp_layer/client.py, host.py (allowlists, pinning, limits)
+
+Real data
+---------
+The twin loaded with the published dVRK configuration, the ROSMA subset, and the indexed dVRK
+documentation and support threads.
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t07    ->  verification/t07_mcp.json
+  a. Connect to each server over HTTP: server info, protocol version, the features it declares,
+     the tools, resources and prompts discovered.
+  b. Read the state resource, subscribe, move the twin, and record that the update arrived.
+  c. A motion through MCP with progress events, and the same motion cancelled half way.
+  d. Run the agent loop with only MCP-discovered tools on a real question; one tool is left off
+     the host allowlist and must not be offered.
+  e. Server-side authorization matrix: the same calls with no token, an operator of the site, an
+     operator of the other site, a service engineer, and remote support.
+  f. Description pinning: a server restarted with one altered tool description.
+  g. Injection probes of R8 with the real model: tools called after the planted text, and
+     whether any was the one the text asked for.
+
+Known limits
+------------
+Bearer tokens come from a local table that stands in for an identity provider; the full OAuth
+flow of the specification is not built. No TLS inside the demonstration. The servers wrap this
+project's own backends; a lab would wrap its controller and its data store.

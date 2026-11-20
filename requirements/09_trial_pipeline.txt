@@ -1,0 +1,96 @@
+TASK 09 - TRIAL PIPELINE
+=========================
+dVRK focus: taking a simulation-trained policy to a physical trial. Uses the runtime of task 03
+and the validation of task 02. The stages and limits follow the published deployment framework
+(Sun, Wen, Liu and Munawar, "On Transferring Surgical Policies from Simulation to Reality:
+Perception, Calibration, and Safety Control", under review).
+
+Job
+---
+Take a requested trial from a run sheet to a confirmed record: check that the site is ready,
+rehearse on the twin, get the operator's go, run Reach, Grasp and Place under the safety filter,
+compute a verdict from measurements, and stop for the operator to confirm it.
+
+Requirements
+------------
+R1  Run sheet. A validated RunSheet (task 02) names the site, arm, instrument, start pose,
+    envelope profile, stage sequence and acceptance criteria. Nothing runs without one.
+R2  Pre-flight, all in code (vxagent/robot/preflight.py). The trial may start only when:
+      - the arm is powered, enabled and homed
+      - the installed instrument matches the run sheet and has an instrument file
+      - a camera-to-robot calibration record exists, is well formed, has not been ended by an
+        ECM move, a setup-joint move or an instrument change, and its residual is under the
+        site's limit
+      - the pad-plane and site records exist and are of the same session as the calibration
+      - the policy contract is compatible with the site (task 10)
+      - the start pose and the target lie inside the policy's training range and the workspace
+      - the perception source answered within its time limit (task 14)
+    Each failed check is returned with the runbook that repairs it.
+R3  Rehearsal. The full stage sequence is run on the twin through the same safety filter. Any
+    rejection ends the pipeline before the operator is asked.
+R4  Staged activation. The operator approves the run (task 03 R10). The first motion of each
+    stage is a single bounded step followed by a tracking check before the stage continues.
+R5  Safety filter (vxagent/robot/safety.py), applied to every Cartesian target at the control
+    rate of 10 Hz, with the published limits as the default profile:
+      - step size: at most 5 mm and 5 degrees in free space; at most 2 mm and 3 degrees within
+        20 mm of the needle or the phantom; smaller steps in hover, descent, lift and fine
+        alignment, set per stage in the profile
+      - a local workspace of +/- 40 mm
+      - joint-limit margins, from the kinematic and instrument files
+      - clearance of the instrument above the supporting surface, from the pad-plane record
+    A target that fails any rule is rejected without clipping. After a command, the requested
+    target is compared with the controller setpoint (to detect clipping by inverse kinematics)
+    and with the measured pose; a difference of more than 2 mm or 2 degrees stops execution.
+    A site may tighten the profile. Loosening it is a configuration change (task 02, task 12).
+R6  Reach. At most 200 policy actions. Success when the measured pose is within 5 mm and
+    15 degrees of the approach goal.
+R7  Grasp is a geometric procedure, not a learned policy: align the jaws to the needle, bounded
+    descent, close, lift, hold for two seconds.
+R8  Retention. Grasp succeeds only if the needle is observed to have moved with the jaws after
+    the lift and is still held after the hold. On a real system this comes from perception. On
+    the twin there is no needle, so the outcome comes from an outcome source declared in the run
+    sheet and written into the record: "recorded" or "injected". Not held: stop, recover.
+R9  Place. Motions toward the entry site, with the needle pose carried from the last reliable
+    needle-to-gripper relation while the needle is occluded. Approach heights above the entry
+    are taken from the profile (the published run uses 15, 8 and 3.5 mm).
+R10 Machine verdict, in code: reach tolerance met; needle held; needle tip height above and
+    lateral distance from the entry; number of rejections and stops; whether recovery ran.
+R11 Operator confirmation. The run pauses; the operator confirms or overrides the verdict with a
+    reason. An override is kept beside the machine verdict, never in place of it.
+R12 Trial record. A structured record of everything above. One model call writes a short summary
+    from the record; it must pass the grounding rules of task 01 against the record, otherwise a
+    template summary is used and marked as such.
+
+Simplifications, stated
+-----------------------
+The twin integrates commanded poses with joint limits. It has no contact, no tissue, no needle,
+no camera and no tracking error unless one is injected. The Reach and Place policies are
+represented by recorded expert rollouts from the SurgicAI demonstrations, mapped through the
+policy contract into the site frame; loading the trained policies themselves is an optional
+backend. Needle poses come from the recorded ground truth of the AMBF scenes. Insertion, release
+and thread handling are outside the pipeline, as they are outside the published evaluation.
+
+Planned code
+------------
+vxagent/robot/preflight.py, safety.py, twin.py, kinematics.py, verdict.py
+vxagent/pipelines/trial.py
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t09    ->  verification/t09_trial_pipeline.json
+  a. Safety filter boundary table: a case on each side of every limit in R5, including the
+     near-contact switch at 20 mm and the tracking stop. All must match.
+  b. Kinematic twin against the source: forward kinematics of the twin on recorded joint
+     positions from ROSMA compared with the Cartesian positions recorded in the same samples;
+     error statistics as measured. This needs both signals in the recordings; if they hold
+     only one, the check is reported as not possible and the twin is checked against the
+     kinematic file's own reference values instead.
+  c. Pre-flight matrix: one run per failed check of R2; the pipeline must stop before any
+     motion and name the repairing runbook.
+  d. Trials end to end on the twin with held and not-held outcomes: path, rejections, verdict.
+python scripts/verify.py t03    resume, watchdog and stale-approval cases (see task 03)
+
+Known limits
+------------
+Nothing here measures task success on a robot. The published success rates belong to the paper
+and its physical trials, and are not reproduced, re-measured or claimed by this pipeline.

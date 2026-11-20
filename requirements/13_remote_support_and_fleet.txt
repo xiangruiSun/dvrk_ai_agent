@@ -1,0 +1,68 @@
+TASK 13 - REMOTE SUPPORT AND FLEET
+===================================
+dVRK focus: the support team that keeps several sites running without seeing their research.
+
+Job
+---
+Let a support engineer outside the lab see whether each site's agents and robot node are
+healthy, what they cost and where they fail, across sites, and help with one ticket when the
+site asks, without the lab's recordings, images or unpublished results ever leaving the lab
+unless the lab says so for that ticket and that period.
+
+Requirements
+------------
+R1  Two sites. The demonstration runs two edge nodes with different published configurations:
+    a Classic system (jhu-dVRK) and an Si system (jhu-dVRK-Si).
+R2  Outbox. Each edge node writes operational records to a local outbox: run counts, model
+    calls, tokens, latency percentiles, error kinds, tool error rates, safety rejections by
+    rule, pre-flight failures by check, node health. Records carry counts, kinds and timings.
+    They carry no task text, no answers, no tool inputs or outputs, no poses and no file names.
+R3  Store and forward. The outbox is sent to the fleet store when a connection exists. A node
+    that is offline keeps working and keeps its outbox; on reconnection records arrive once,
+    in order, without duplicates.
+R4  Fleet view: sites, last contact, health, the figures of R2 over time, and sites whose
+    software or configuration version differs from the others.
+R5  Redaction is done at the edge, before the outbox, and tested by scanning outbox records for
+    payload fields.
+R6  Grant. To see the evidence of one ticket, support needs a grant from that site's safety
+    lead: one ticket, read-only, with an end time. The grant is checked at the edge node on
+    every call. It expires on its own, can be revoked, and every use is audited at the site.
+R7  Even with a grant, support cannot move the arm, propose or approve a change, or read
+    anything outside the ticket.
+R8  Support assistant. Tools: fleet_overview, site_health, ops_run_stats, ops_recent_failures,
+    version_drift, search of documentation and support threads, read_granted_ticket, calculator,
+    remember. It answers "which sites reject most at the workspace limit" from counts, and
+    "what do the dVRK threads say about this error kind" from retrieval.
+R9  Node health without data access: model server reachable and models installed, retrieval
+    index present, robot backend reachable, perception source latency, disk, pending approvals,
+    outbox backlog.
+R10 Audit at both ends: the site records who looked at what; the fleet store records who asked.
+
+Planned code
+------------
+vxagent/fleet/outbox.py, sync.py, store.py, redact.py
+vxagent/fleet/grants.py
+vxagent/profiles.py (SUPPORT agent), vxagent/web/app.py (/api/fleet/*)
+
+Real data
+---------
+Traces produced by the other tasks' verification runs on both sites.
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t13    ->  verification/t13_remote_support.json
+  a. Questions through the chat path with the real model: fleet health; error kinds by site;
+     version drift between the two sites; a request for a site's episode, which must be refused.
+  b. Redaction: every outbox record of the run scanned for payload fields; count found
+     (must be 0).
+  c. Store and forward: one node disconnected during a batch of runs, then reconnected;
+     records produced, delivered, duplicated (must be 0), out of order (must be 0).
+  d. Grant: read a ticket without a grant, with a grant, after expiry, after revocation, and a
+     different ticket under the same grant.
+Browser check: fleet pages for support; robot, trial, configuration and episode routes 403.
+
+Known limits
+------------
+Two nodes on one machine stand in for two labs. The fleet store is one SQLite file. Counts can
+still leak something about a lab's activity (how often it runs, when); that is accepted and
+stated to the site.

@@ -1,0 +1,76 @@
+TASK 08 - MULTI-AGENT INCIDENT TRIAGE
+======================================
+Covers: Lab 6 (optional advanced); concepts C18, C19, C20.
+
+Job
+---
+A trial failed. Produce an incident finding: the most likely cause class, the evidence for it,
+the evidence against the alternatives, and the runbook to run next. Do it with a team whose
+members each read one kind of data, and with a single agent that reads all of it, and measure
+whether the team is worth its cost.
+
+Requirements
+------------
+R1  Roles (vxagent/multi/team.py). The specialists follow the sim-to-real gaps:
+      Lead                  reads the incident, decides who looks, reconciles, writes the finding
+      Calibration analyst   calibration records, frame graph, residuals on held-out points
+      Perception analyst    needle pose estimates, confidence, dropout, occlusion flags
+      Interface analyst     observation and action ranges against the policy contract (task 10)
+      Control analyst       commanded, setpoint and measured pose; rejections by rule; tracking
+      Safety reviewer       deterministic checks first, then a structured review; can veto
+R2  Context isolation is the reason for the team. Each specialist is given only its own tools
+    and data stream. A specialist cannot read another's stream, only what was written to the
+    ledger. This is the claim to be tested against one agent holding every tool.
+R3  Orchestration patterns, all on the same roles:
+      handoff    the lead passes the incident to one specialist; that specialist either reports
+                 or hands it to another, with a hop limit
+      fan-out    all specialists run concurrently, then the lead reconciles
+      debate     the two best-supported cause classes are each argued by their specialist against
+                 the other's evidence for one round; the lead decides
+R4  Shared context is an evidence ledger (vxagent/multi/ledger.py), append-only. An entry is a
+    claim: cause class, supports or refutes, references {episode, signal, time window or record
+    id}, the measured value, the author. An entry whose references do not resolve to data is
+    refused when it is written. Agents exchange nothing outside the ledger.
+R5  Concurrent writes carry the ledger position last read; a reconciliation written against an
+    older position is refused and redone.
+R6  Veto. The safety reviewer refuses a finding that recommends loosening a limit, skipping a
+    re-calibration after an invalidating event, or continuing a trial with an unverified grasp.
+    A vetoed finding goes back to the lead once.
+R7  The single-agent baseline gets every tool and the same instructions in one loop.
+R8  Quality is scored without a model (score_finding): cause class equals the known cause; every
+    reference resolves; at least one piece of evidence against the runner-up; the recommended
+    runbook is the one mapped to that cause; nothing the safety reviewer would veto.
+R9  Measured per run: score, tokens, model calls, wall time, hops, ledger entries, refused
+    entries, vetoes. Below 4 of 5 counts as a failure.
+R10 The write-up must say from the numbers whether the team is justified, and for which faults.
+
+Planned code
+------------
+vxagent/multi/team.py, ledger.py, patterns.py, score.py
+
+Real data
+---------
+The injected-fault set of task 04 (real commanded paths on the twin, real ground-truth needle
+poses from the AMBF scenes, with the fault and the perception error injected and labelled).
+The paper's own failure causes for grasping (inaccurate needle fit, joint limit, phantom
+contact, needle displacement, jaw self-occlusion) are used as the names of sub-causes; the
+trials themselves are not public and are not used. If the project owner supplies them, part (a)
+is repeated on those trials and reported separately.
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t08    ->  verification/t08_multi_agent.json
+  a. Single agent and each pattern on the injected set. Per pattern: mean score, perfect
+     scores, failure rate, tokens, model calls, wall time, how often each check passed, and the
+     result split by cause class.
+  b. A two-fault incident (a calibration offset and perception dropout together): which faults
+     each design names.
+  c. Ledger without a model: concurrent writers; entries stored, stale reconciliations refused,
+     entries lost (must be 0); entries with unresolvable references refused.
+  d. Veto: an incident whose easiest "fix" is loosening the tracking limit.
+
+Known limits
+------------
+All agents share one model and one GPU, so concurrent specialists queue at the model server and
+the fan-out wall time is not that of a multi-GPU deployment. Injected faults are cleaner than
+real ones.

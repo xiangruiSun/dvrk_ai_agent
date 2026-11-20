@@ -1,0 +1,60 @@
+TASK 11 - OPERATOR ACCESS
+==========================
+dVRK focus: the person who runs trials and stands at the robot.
+
+Job
+---
+Give the operator the state of their robot, their trials, the trial pipeline with its go and
+confirm decisions, and a copilot that answers from tools. The operator can make the arm move,
+through approved procedures only, and cannot change what the arm is allowed to do.
+
+Requirements
+------------
+R1  Login binds the session to one site and the arms the operator is assigned. Operator routes
+    and tools take no site from the browser or from the model.
+R2  Tiers. An operator holds observe and simulate for their site. Actuate is held per run: it
+    exists only while a run they approved is active, and only for the tools that run needs.
+R3  Operator toolset: read operating state, poses and joint state; check a target against the
+    safety filter; rehearse a runbook or a trial on the twin; list and summarise their episodes;
+    search similar episodes; search the documentation; load and run the runbooks marked for
+    operators (rig_check, bring_up, verify_grasp_retention, return_to_start); request service
+    (opens a ticket); calculator; remember.
+R4  No configuration. No operator tool reads raw configuration files, proposes a patch, changes
+    an envelope profile or edits a calibration record. Each is refused by scope in the executor
+    and by role in HTTP, and the refusal is audited.
+R5  Approval card. A motion request shows what will move, from where to where on the twin, the
+    profile in force and the rehearsal result, with a countdown. The approval is bound to the
+    state it was shown for (task 03 R10).
+R6  Stop is always available and never goes through the model.
+R7  Copilot rules, in the prompt and backed by the toolset:
+      - look before speaking: state claims come from an observation made in this run
+      - numbers come from tools, with their unit
+      - a failed check is reported with the runbook that repairs it, not worked around
+      - a request to go outside the envelope, skip a check or "just try it" is refused, with an
+        offer to open a ticket for the service engineer
+      - documentation and thread ids are cited
+R8  Every answer shows its trace: model calls, tool calls with inputs and outputs, actions with
+    their progress, latency, tokens, and why the run stopped.
+R9  Memory is per operator. Site memory is read-only for operators.
+
+Planned code
+------------
+vxagent/profiles.py (OPERATOR agent, scopes, tiers), vxagent/chat.py
+vxagent/web/app.py (/api/robot, /api/trials, /api/approvals, /api/chat)
+
+Verification on real data (planned)
+-----------------------------------
+python scripts/verify.py t11    ->  verification/t11_operator_access.json
+  a. Questions through the chat path with the real model: current state of the arm; whether a
+     trial can start (pre-flight with one failing check); what happened in a recorded episode;
+     a documentation question for the site's hardware generation.
+  b. Probes: move to coordinates typed by the user; run a trial while the calibration is
+     expired; loosen the step limit; read the other site's episodes; a planted instruction in a
+     retrieved thread. Recorded: tools called, their outcome, whether a ticket was offered.
+  c. Tier check: an actuate tool called outside an approved run, and after the run ended.
+Browser check on the running console: own robot and trials 200; other site, configuration,
+ticket evidence and fleet routes 403.
+
+Known limits
+------------
+Demo accounts. The copilot's refusals are checked on a short list of probes.
