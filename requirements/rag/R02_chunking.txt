@@ -1,0 +1,39 @@
+TASK R02 - CHUNKING
+====================
+
+Job
+---
+Cut units into pieces small enough to index and embed, in more than one way, so that the way of
+cutting is something measured and not something assumed.
+
+Requirements
+------------
+R1  One function, three strategies (vxrag/chunking.py):
+      fixed         windows of 800 characters with 100 of overlap, cut across a page with no
+                    regard for structure. The baseline.
+      section       one chunk per unit. A unit longer than 1,600 characters is split between
+                    paragraphs. The unit's own title is indexed with the text.
+      section_ctx   as section, with the whole breadcrumb (page > section > subsection) indexed
+                    in front of the text.
+R2  A code block is never cut. A paragraph or code block longer than the limit stays whole.
+R3  Every chunk belongs to exactly one unit. In the fixed strategy a window is assigned to the
+    unit that holds its midpoint. Results and labels are per unit, so the strategies are
+    compared on the same queries and the same labels.
+R4  What is indexed and what is shown are separate fields: the breadcrumb is indexed, the
+    section's own text is what is cited.
+
+Code
+----
+vxrag/chunking.py
+
+Verification on real data
+-------------------------
+python scripts/rag_experiments.py    ->  verification/rag_experiments.json ("stage_C", "chunks")
+  The best lexical and the best dense retriever on each strategy, on the development queries.
+python -m pytest tests/test_rag.py -q     a long listing is not cut; chunks stay within units
+
+Known limits
+------------
+No parent-child retrieval (match a small chunk, return its page) and no overlap between section
+chunks. Threads, release notes and schema properties are short and are one chunk each in the two
+section strategies.

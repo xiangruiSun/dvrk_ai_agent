@@ -11,8 +11,9 @@ unless the lab says so for that ticket and that period.
 
 Requirements
 ------------
-R1  Two sites. The demonstration runs two edge nodes with different published configurations:
-    a Classic system (jhu-dVRK) and an Si system (jhu-dVRK-Si).
+R1  Two sites. The demonstration runs two edge nodes with different published arm files: a
+    Classic PSM (PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json) and an Si PSM
+    (PSM_Si_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_420006.json).
 R2  Outbox. Each edge node writes operational records to a local outbox: run counts, model
     calls, tokens, latency percentiles, error kinds, tool error rates, safety rejections by
     rule, pre-flight failures by check, node health. Records carry counts, kinds and timings.

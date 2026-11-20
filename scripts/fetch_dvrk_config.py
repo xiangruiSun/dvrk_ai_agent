@@ -18,7 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 REPO = "jhu-dvrk/sawIntuitiveResearchKit"
 COMMIT = "7435458dc847b95b9ff77723b33e4a177cfa4f43"      # main on 2026-11-19
-FOLDERS = ("share/kinematic/", "share/tool/", "share/schemas/")
+FOLDERS = ("share/kinematic/", "share/tool/", "share/schemas/", "share/arm/", "share/system/")
 SUFFIXES = (".json", ".md")
 UA = {"User-Agent": "generic-client"}
 

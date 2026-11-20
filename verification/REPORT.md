@@ -55,3 +55,86 @@ Tool sequences in the fault runs:
 - `arm_does_not_follow`: list_named_poses → get_robot_state → check_named_target → rehearse_move → move_to_named_pose (tracking_error)
 - `two_motions_requested_at_once`: get_robot_state → list_named_poses → check_named_target → move_to_named_pose → set_jaw
 - `step_limit_of_3`: list_named_poses → get_robot_state → move_to_named_pose
+
+## RAG: retrieval over the dVRK documentation, threads, change log and schemas
+
+Ran 2026-11-19 21:12:14. Evidence: `rag_experiments.json`. Corpus hash `3818ea9d0d22e2b2`.
+
+| Source | Units | Notes |
+|---|---|---|
+| Documentation sections | 797 | 216 pages, 169 stubs, 221 code blocks |
+| Issue threads | 277 | 161 threads (138 closed), 205 replies, 173 by maintainers |
+| Change log | 73 | 19 releases |
+| Configuration schemas | 145 | 18 schemas, 127 properties, 14 without a description |
+
+Cross-references: 548, pointing at an unknown label: 0.
+
+Queries: 421, labelled by code (built by code from cross-references, thread replies and rare identifiers; weak labels). identifier/dev: 122, identifier/test: 28, thread/dev: 88, thread/test: 20, xref/dev: 134, xref/test: 29.
+
+Development queries. The columns xref, thread and identifier are nDCG@10 for that query category.
+
+Baseline:
+
+| Strategy | Chunking | nDCG@10 | Recall@10 | MRR@10 | xref | thread | identifier | p95 ms |
+|---|---|---|---|---|---|---|---|---|
+| `bm25:plain` | fixed | 0.479 | 0.5809 | 0.4485 | 0.2938 | 0.3153 | 0.8005 | 0.2 |
+
+Stage E, tokenizers and embedding models:
+
+| Strategy | Chunking | nDCG@10 | Recall@10 | MRR@10 | xref | thread | identifier | p95 ms |
+|---|---|---|---|---|---|---|---|---|
+| `bm25:plain` | section | 0.6383 | 0.7878 | 0.5935 | 0.3522 | 0.7898 | 0.8432 | 0.2 |
+| `bm25:ident` | section | 0.6708 | 0.7931 | 0.638 | 0.3629 | 0.7752 | 0.9338 | 0.2 |
+| `dense:nomic-embed-text` | section | 0.6087 | 0.7912 | 0.5731 | 0.4754 | 0.8967 | 0.5472 | 183.9 |
+| `dense:bge-m3` | section | 0.557 | 0.7471 | 0.5151 | 0.3646 | 0.8431 | 0.5619 | 191.7 |
+
+Stage C, chunking:
+
+| Strategy | Chunking | nDCG@10 | Recall@10 | MRR@10 | xref | thread | identifier | p95 ms |
+|---|---|---|---|---|---|---|---|---|
+| `bm25:ident` | fixed | 0.5062 | 0.5974 | 0.4791 | 0.2928 | 0.3176 | 0.8766 | 0.2 |
+| `bm25:ident` | section | 0.6708 | 0.7931 | 0.638 | 0.3629 | 0.7752 | 0.9338 | 0.2 |
+| `bm25:ident` | section_ctx | 0.6732 | 0.796 | 0.6325 | 0.3792 | 0.7559 | 0.9366 | 0.1 |
+| `dense:nomic-embed-text` | fixed | 0.4092 | 0.5489 | 0.3713 | 0.3504 | 0.284 | 0.5642 | 175.8 |
+| `dense:nomic-embed-text` | section | 0.6087 | 0.7912 | 0.5731 | 0.4754 | 0.8967 | 0.5472 | 183.9 |
+| `dense:nomic-embed-text` | section_ctx | 0.5855 | 0.7771 | 0.5322 | 0.4908 | 0.8181 | 0.5217 | 183.0 |
+
+Stage R, fusion:
+
+| Strategy | Chunking | nDCG@10 | Recall@10 | MRR@10 | xref | thread | identifier | p95 ms |
+|---|---|---|---|---|---|---|---|---|
+| `bm25:ident` | section_ctx | 0.6732 | 0.796 | 0.6325 | 0.3792 | 0.7559 | 0.9366 | 0.1 |
+| `dense:nomic-embed-text` | section_ctx | 0.5855 | 0.7771 | 0.5322 | 0.4908 | 0.8181 | 0.5217 | 183.0 |
+| `rrf:bm25:ident+dense:nomic-embed-text` | section_ctx | 0.6477 | 0.8188 | 0.5978 | 0.4723 | 0.8317 | 0.7075 | 174.7 |
+| `rrf:bm25:ident+dense:nomic-embed-text+dense:bge-m3` | section_ctx | 0.6485 | 0.8372 | 0.5978 | 0.491 | 0.8448 | 0.6798 | 345.4 |
+
+Paired differences in nDCG@10 (95% bootstrap interval over queries):
+
+| Comparison | Mean difference | Interval | Wins / losses / ties |
+|---|---|---|---|
+| identifier tokenizer over plain tokenizer (BM25, section chunks) | 0.0326 | 0.0124 to 0.0535 | 64 / 38 / 242 |
+| section chunks with breadcrumb over fixed windows (best lexical) | 0.167 | 0.13 to 0.2057 | 133 / 35 / 176 |
+| fusion over the best lexical retriever | -0.0256 | -0.058 to 0.0071 | 96 / 86 / 162 |
+| fusion over the best dense retriever | 0.0622 | 0.0361 to 0.0881 | 130 / 56 / 158 |
+
+Selection policy: baseline `bm25:plain @ fixed` (nDCG@10 0.479), latency budget 500.0 ms p95. 9 of 10 candidates were a credible improvement within budget. Selected: `bm25:ident @ section_ctx`.
+
+Not accepted: `dense:nomic-embed-text @ fixed` (interval includes zero).
+
+Held-out test queries, scored once for the selected configuration (baseline shown for reference):
+
+| Configuration | Queries | nDCG@10 | Recall@5 | Recall@10 | MRR@10 | Unlabelled@10 |
+|---|---|---|---|---|---|---|
+| `bm25:ident` @ section_ctx | 77 | 0.7046 | 0.7554 | 0.8247 | 0.6751 | 0.874 |
+| `bm25:plain` @ fixed | 77 | 0.5122 | 0.5714 | 0.6277 | 0.4829 | 0.9091 |
+
+Difference on the test queries: 0.1924 (0.1139 to 0.2725); 37 wins, 9 losses, 31 ties.
+
+The labels are weak: they record what the authors linked or answered, so absolute scores understate quality, and the identifier category favours lexical retrieval by construction. Hardest development queries for the selected configuration:
+
+- `identifier`, nDCG 0.0: "What is `SAW_sawRobotIO1394` used for?". Expected `doc:software/compilation/cmake#compilation`, first result `thread:sawIntuitiveResearchKit/171#a`.
+- `identifier`, nDCG 0.0: "What is `dvrk::system` used for?". Expected `doc:configuration/overview#site-specific-files`, first result `schema:dvrk-system-settings#root`.
+- `identifier`, nDCG 0.0: "What is `dvrk_console::control_panel` used for?". Expected `doc:usage/other#prepare-and-launch`, first result `doc:software/applications/video-and-data#control-panel`.
+- `identifier`, nDCG 0.0: "What is `mtsIntuitiveResearchKitArmPSM` used for?". Expected `doc:development/api/arms#psm`, first result `schema:dvrk-arm#root`.
+- `thread`, nDCG 0.0: "Possible Issue in Syntax while defining rotation matricies". Expected `thread:dvrk-ros/15#a`, first result `doc:development/frames/arm#single-arm`.
+- `thread`, nDCG 0.0: "When adapter or instrument is inserted, PSM drops". Expected `thread:sawIntuitiveResearchKit/148#a`, first result `schema:dvrk-system-arm#simulation`.

@@ -1,0 +1,1301 @@
+{
+ "task": "rag_experiments",
+ "ran": "2026-11-19 21:12:14",
+ "corpus": {
+  "units": {
+   "changelog": 73,
+   "doc": 797,
+   "schema": 145,
+   "thread": 277
+  },
+  "hash": "3818ea9d0d22e2b2",
+  "validation": {
+   "labels": 276,
+   "references": 548,
+   "references_to_unknown_labels": 0,
+   "unknown_labels": []
+  },
+  "sources": {
+   "doc": {
+    "files": 216,
+    "sections": 797,
+    "stub_sections": 169,
+    "code_blocks": 221,
+    "references": 548,
+    "labels": 276,
+    "units": 797
+   },
+   "thread": {
+    "threads": 161,
+    "closed": 138,
+    "with_replies": 116,
+    "replies": 205,
+    "maintainer_replies": 173,
+    "units": 277
+   },
+   "changelog": {
+    "releases": 19,
+    "units": 73
+   },
+   "schema": {
+    "schemas": 18,
+    "properties": 127,
+    "without_description": 14,
+    "units": 145
+   }
+  }
+ },
+ "queries": {
+  "total": 421,
+  "by_category_and_split": {
+   "identifier/dev": 122,
+   "identifier/test": 28,
+   "thread/dev": 88,
+   "thread/test": 20,
+   "xref/dev": 134,
+   "xref/test": 29
+  },
+  "labels": "built by code from cross-references, thread replies and rare identifiers; weak labels"
+ },
+ "chunks": {
+  "fixed": 1385,
+  "section": 1441,
+  "section_ctx": 1441
+ },
+ "index_build_seconds": {
+  "fixed": {
+   "bm25:plain": 0.06,
+   "bm25:ident": 0.14,
+   "dense:nomic-embed-text": 0.02
+  },
+  "section": {
+   "bm25:plain": 0.06,
+   "bm25:ident": 0.14,
+   "dense:nomic-embed-text": 0.02,
+   "dense:bge-m3": 0.02
+  },
+  "section_ctx": {
+   "bm25:ident": 0.14,
+   "dense:nomic-embed-text": 0.02,
+   "dense:bge-m3": 0.02
+  }
+ },
+ "stage_E": [
+  {
+   "strategy": "bm25:plain",
+   "chunking": "section",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.6383,
+   "recall@5": 0.7127,
+   "recall@10": 0.7878,
+   "mrr@10": 0.5935,
+   "unlabelled@10": 0.8971,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.3522,
+     "recall@5": 0.4552,
+     "recall@10": 0.5672,
+     "mrr@10": 0.2821,
+     "unlabelled@10": 0.9142
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.7898,
+     "recall@5": 0.875,
+     "recall@10": 0.9318,
+     "mrr@10": 0.7435,
+     "unlabelled@10": 0.9068
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.8432,
+     "recall@5": 0.8784,
+     "recall@10": 0.9262,
+     "mrr@10": 0.8272,
+     "unlabelled@10": 0.8713
+    }
+   },
+   "latency_ms": {
+    "mean": 0.1,
+    "p95": 0.2,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  {
+   "strategy": "bm25:ident",
+   "chunking": "section",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.6708,
+   "recall@5": 0.7209,
+   "recall@10": 0.7931,
+   "mrr@10": 0.638,
+   "unlabelled@10": 0.8953,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.3629,
+     "recall@5": 0.4254,
+     "recall@10": 0.5672,
+     "mrr@10": 0.3003,
+     "unlabelled@10": 0.9149
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.7752,
+     "recall@5": 0.875,
+     "recall@10": 0.9091,
+     "mrr@10": 0.7324,
+     "unlabelled@10": 0.9091
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.9338,
+     "recall@5": 0.9344,
+     "recall@10": 0.9577,
+     "mrr@10": 0.9407,
+     "unlabelled@10": 0.8639
+    }
+   },
+   "latency_ms": {
+    "mean": 0.1,
+    "p95": 0.2,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  {
+   "strategy": "dense:nomic-embed-text",
+   "chunking": "section",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.6087,
+   "recall@5": 0.687,
+   "recall@10": 0.7912,
+   "mrr@10": 0.5731,
+   "unlabelled@10": 0.8977,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.4754,
+     "recall@5": 0.5821,
+     "recall@10": 0.709,
+     "mrr@10": 0.4231,
+     "unlabelled@10": 0.8963
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.8967,
+     "recall@5": 0.9318,
+     "recall@10": 0.9886,
+     "mrr@10": 0.8679,
+     "unlabelled@10": 0.9011
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.5472,
+     "recall@5": 0.6257,
+     "recall@10": 0.7391,
+     "mrr@10": 0.5252,
+     "unlabelled@10": 0.8967
+    }
+   },
+   "latency_ms": {
+    "mean": 165.2,
+    "p95": 183.9,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  {
+   "strategy": "dense:bge-m3",
+   "chunking": "section",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.557,
+   "recall@5": 0.6415,
+   "recall@10": 0.7471,
+   "mrr@10": 0.5151,
+   "unlabelled@10": 0.9035,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.3646,
+     "recall@5": 0.5,
+     "recall@10": 0.597,
+     "mrr@10": 0.3075,
+     "unlabelled@10": 0.9127
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.8431,
+     "recall@5": 0.8864,
+     "recall@10": 0.9773,
+     "mrr@10": 0.8012,
+     "unlabelled@10": 0.9023
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.5619,
+     "recall@5": 0.6202,
+     "recall@10": 0.7459,
+     "mrr@10": 0.5368,
+     "unlabelled@10": 0.8943
+    }
+   },
+   "latency_ms": {
+    "mean": 167.5,
+    "p95": 191.7,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  }
+ ],
+ "stage_C": [
+  {
+   "strategy": "bm25:ident",
+   "chunking": "fixed",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.5062,
+   "recall@5": 0.5499,
+   "recall@10": 0.5974,
+   "mrr@10": 0.4791,
+   "unlabelled@10": 0.9145,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.2928,
+     "recall@5": 0.3881,
+     "recall@10": 0.4701,
+     "mrr@10": 0.2148,
+     "unlabelled@10": 0.9194
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.3176,
+     "recall@5": 0.3295,
+     "recall@10": 0.3523,
+     "mrr@10": 0.3072,
+     "unlabelled@10": 0.9648
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.8766,
+     "recall@5": 0.8866,
+     "recall@10": 0.9139,
+     "mrr@10": 0.8933,
+     "unlabelled@10": 0.873
+    }
+   },
+   "latency_ms": {
+    "mean": 0.1,
+    "p95": 0.2,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  {
+   "strategy": "bm25:ident",
+   "chunking": "section",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.6708,
+   "recall@5": 0.7209,
+   "recall@10": 0.7931,
+   "mrr@10": 0.638,
+   "unlabelled@10": 0.8953,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.3629,
+     "recall@5": 0.4254,
+     "recall@10": 0.5672,
+     "mrr@10": 0.3003,
+     "unlabelled@10": 0.9149
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.7752,
+     "recall@5": 0.875,
+     "recall@10": 0.9091,
+     "mrr@10": 0.7324,
+     "unlabelled@10": 0.9091
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.9338,
+     "recall@5": 0.9344,
+     "recall@10": 0.9577,
+     "mrr@10": 0.9407,
+     "unlabelled@10": 0.8639
+    }
+   },
+   "latency_ms": {
+    "mean": 0.1,
+    "p95": 0.2,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  {
+   "strategy": "bm25:ident",
+   "chunking": "section_ctx",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.6732,
+   "recall@5": 0.7093,
+   "recall@10": 0.796,
+   "mrr@10": 0.6325,
+   "unlabelled@10": 0.8884,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.3792,
+     "recall@5": 0.4179,
+     "recall@10": 0.5746,
+     "mrr@10": 0.2979,
+     "unlabelled@10": 0.897
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.7559,
+     "recall@5": 0.8295,
+     "recall@10": 0.9091,
+     "mrr@10": 0.7077,
+     "unlabelled@10": 0.9091
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.9366,
+     "recall@5": 0.9426,
+     "recall@10": 0.9577,
+     "mrr@10": 0.9456,
+     "unlabelled@10": 0.8639
+    }
+   },
+   "latency_ms": {
+    "mean": 0.1,
+    "p95": 0.1,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  {
+   "strategy": "dense:nomic-embed-text",
+   "chunking": "fixed",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.4092,
+   "recall@5": 0.4646,
+   "recall@10": 0.5489,
+   "mrr@10": 0.3713,
+   "unlabelled@10": 0.9215,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.3504,
+     "recall@5": 0.4254,
+     "recall@10": 0.5448,
+     "mrr@10": 0.2673,
+     "unlabelled@10": 0.9097
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.284,
+     "recall@5": 0.2955,
+     "recall@10": 0.3182,
+     "mrr@10": 0.2732,
+     "unlabelled@10": 0.9682
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.5642,
+     "recall@5": 0.6298,
+     "recall@10": 0.7199,
+     "mrr@10": 0.5563,
+     "unlabelled@10": 0.9008
+    }
+   },
+   "latency_ms": {
+    "mean": 160.4,
+    "p95": 175.8,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  {
+   "strategy": "dense:nomic-embed-text",
+   "chunking": "section",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.6087,
+   "recall@5": 0.687,
+   "recall@10": 0.7912,
+   "mrr@10": 0.5731,
+   "unlabelled@10": 0.8977,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.4754,
+     "recall@5": 0.5821,
+     "recall@10": 0.709,
+     "mrr@10": 0.4231,
+     "unlabelled@10": 0.8963
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.8967,
+     "recall@5": 0.9318,
+     "recall@10": 0.9886,
+     "mrr@10": 0.8679,
+     "unlabelled@10": 0.9011
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.5472,
+     "recall@5": 0.6257,
+     "recall@10": 0.7391,
+     "mrr@10": 0.5252,
+     "unlabelled@10": 0.8967
+    }
+   },
+   "latency_ms": {
+    "mean": 165.2,
+    "p95": 183.9,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  {
+   "strategy": "dense:nomic-embed-text",
+   "chunking": "section_ctx",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.5855,
+   "recall@5": 0.6546,
+   "recall@10": 0.7771,
+   "mrr@10": 0.5322,
+   "unlabelled@10": 0.8916,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.4908,
+     "recall@5": 0.5522,
+     "recall@10": 0.7388,
+     "mrr@10": 0.4037,
+     "unlabelled@10": 0.8739
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.8181,
+     "recall@5": 0.8864,
+     "recall@10": 0.9432,
+     "mrr@10": 0.7793,
+     "unlabelled@10": 0.9057
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.5217,
+     "recall@5": 0.5997,
+     "recall@10": 0.6995,
+     "mrr@10": 0.4951,
+     "unlabelled@10": 0.9008
+    }
+   },
+   "latency_ms": {
+    "mean": 167.4,
+    "p95": 183.0,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  }
+ ],
+ "stage_R": [
+  {
+   "strategy": "bm25:ident",
+   "chunking": "section_ctx",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.6732,
+   "recall@5": 0.7093,
+   "recall@10": 0.796,
+   "mrr@10": 0.6325,
+   "unlabelled@10": 0.8884,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.3792,
+     "recall@5": 0.4179,
+     "recall@10": 0.5746,
+     "mrr@10": 0.2979,
+     "unlabelled@10": 0.897
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.7559,
+     "recall@5": 0.8295,
+     "recall@10": 0.9091,
+     "mrr@10": 0.7077,
+     "unlabelled@10": 0.9091
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.9366,
+     "recall@5": 0.9426,
+     "recall@10": 0.9577,
+     "mrr@10": 0.9456,
+     "unlabelled@10": 0.8639
+    }
+   },
+   "latency_ms": {
+    "mean": 0.1,
+    "p95": 0.1,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  {
+   "strategy": "dense:nomic-embed-text",
+   "chunking": "section_ctx",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.5855,
+   "recall@5": 0.6546,
+   "recall@10": 0.7771,
+   "mrr@10": 0.5322,
+   "unlabelled@10": 0.8916,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.4908,
+     "recall@5": 0.5522,
+     "recall@10": 0.7388,
+     "mrr@10": 0.4037,
+     "unlabelled@10": 0.8739
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.8181,
+     "recall@5": 0.8864,
+     "recall@10": 0.9432,
+     "mrr@10": 0.7793,
+     "unlabelled@10": 0.9057
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.5217,
+     "recall@5": 0.5997,
+     "recall@10": 0.6995,
+     "mrr@10": 0.4951,
+     "unlabelled@10": 0.9008
+    }
+   },
+   "latency_ms": {
+    "mean": 167.4,
+    "p95": 183.0,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  {
+   "strategy": "rrf:bm25:ident+dense:nomic-embed-text",
+   "chunking": "section_ctx",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.6477,
+   "recall@5": 0.7393,
+   "recall@10": 0.8188,
+   "mrr@10": 0.5978,
+   "unlabelled@10": 0.8849,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.4723,
+     "recall@5": 0.5896,
+     "recall@10": 0.709,
+     "mrr@10": 0.3793,
+     "unlabelled@10": 0.8731
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.8317,
+     "recall@5": 0.9205,
+     "recall@10": 0.9773,
+     "mrr@10": 0.7849,
+     "unlabelled@10": 0.9023
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.7075,
+     "recall@5": 0.7732,
+     "recall@10": 0.8251,
+     "mrr@10": 0.7027,
+     "unlabelled@10": 0.8852
+    }
+   },
+   "latency_ms": {
+    "mean": 160.3,
+    "p95": 174.7,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  {
+   "strategy": "rrf:bm25:ident+dense:nomic-embed-text+dense:bge-m3",
+   "chunking": "section_ctx",
+   "split": "dev",
+   "k": 10,
+   "queries": 344,
+   "ndcg@10": 0.6485,
+   "recall@5": 0.7301,
+   "recall@10": 0.8372,
+   "mrr@10": 0.5978,
+   "unlabelled@10": 0.8837,
+   "by_category": {
+    "xref": {
+     "queries": 134,
+     "ndcg@10": 0.491,
+     "recall@5": 0.597,
+     "recall@10": 0.7612,
+     "mrr@10": 0.3986,
+     "unlabelled@10": 0.8701
+    },
+    "thread": {
+     "queries": 88,
+     "ndcg@10": 0.8448,
+     "recall@5": 0.9318,
+     "recall@10": 0.9773,
+     "mrr@10": 0.8026,
+     "unlabelled@10": 0.9023
+    },
+    "identifier": {
+     "queries": 122,
+     "ndcg@10": 0.6798,
+     "recall@5": 0.7309,
+     "recall@10": 0.8197,
+     "mrr@10": 0.669,
+     "unlabelled@10": 0.8852
+    }
+   },
+   "latency_ms": {
+    "mean": 326.2,
+    "p95": 345.4,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  }
+ ],
+ "baseline": {
+  "strategy": "bm25:plain",
+  "chunking": "fixed",
+  "split": "dev",
+  "k": 10,
+  "queries": 344,
+  "ndcg@10": 0.479,
+  "recall@5": 0.5329,
+  "recall@10": 0.5809,
+  "mrr@10": 0.4485,
+  "unlabelled@10": 0.9166,
+  "by_category": {
+   "xref": {
+    "queries": 134,
+    "ndcg@10": 0.2938,
+    "recall@5": 0.3955,
+    "recall@10": 0.4627,
+    "mrr@10": 0.2178,
+    "unlabelled@10": 0.9201
+   },
+   "thread": {
+    "queries": 88,
+    "ndcg@10": 0.3153,
+    "recall@5": 0.3295,
+    "recall@10": 0.3409,
+    "mrr@10": 0.3073,
+    "unlabelled@10": 0.9659
+   },
+   "identifier": {
+    "queries": 122,
+    "ndcg@10": 0.8005,
+    "recall@5": 0.8306,
+    "recall@10": 0.8839,
+    "mrr@10": 0.8036,
+    "unlabelled@10": 0.877
+   }
+  },
+  "latency_ms": {
+   "mean": 0.1,
+   "p95": 0.2,
+   "probe_queries": 25
+  },
+  "gates": {
+   "excluded_units_returned": 0,
+   "exclusion_respected": true,
+   "split_isolation": true
+  }
+ },
+ "comparisons": {
+  "ident_vs_plain_tokenizer": {
+   "mean": 0.0326,
+   "low": 0.0124,
+   "high": 0.0535,
+   "wins": 64,
+   "losses": 38,
+   "ties": 242
+  },
+  "section_ctx_vs_fixed_chunking": {
+   "mean": 0.167,
+   "low": 0.13,
+   "high": 0.2057,
+   "wins": 133,
+   "losses": 35,
+   "ties": 176
+  },
+  "fusion_vs_best_lexical": {
+   "mean": -0.0256,
+   "low": -0.058,
+   "high": 0.0071,
+   "wins": 96,
+   "losses": 86,
+   "ties": 162
+  },
+  "fusion_vs_best_dense": {
+   "mean": 0.0622,
+   "low": 0.0361,
+   "high": 0.0881,
+   "wins": 130,
+   "losses": 56,
+   "ties": 158
+  }
+ },
+ "selection": {
+  "baseline": "bm25:plain @ fixed",
+  "baseline_ndcg@10": 0.479,
+  "latency_budget_ms": 500.0,
+  "decisions": [
+   {
+    "candidate": "bm25:plain @ section",
+    "ndcg@10": 0.6383,
+    "difference_to_baseline": {
+     "mean": 0.1592,
+     "low": 0.1204,
+     "high": 0.1987,
+     "wins": 129,
+     "losses": 45,
+     "ties": 170
+    },
+    "gates_passed": true,
+    "credible_improvement": true,
+    "p95_latency_ms": 0.2,
+    "within_latency_budget": true,
+    "accepted": true
+   },
+   {
+    "candidate": "bm25:ident @ section",
+    "ndcg@10": 0.6708,
+    "difference_to_baseline": {
+     "mean": 0.1918,
+     "low": 0.1525,
+     "high": 0.2304,
+     "wins": 141,
+     "losses": 38,
+     "ties": 165
+    },
+    "gates_passed": true,
+    "credible_improvement": true,
+    "p95_latency_ms": 0.2,
+    "within_latency_budget": true,
+    "accepted": true
+   },
+   {
+    "candidate": "dense:nomic-embed-text @ section",
+    "ndcg@10": 0.6087,
+    "difference_to_baseline": {
+     "mean": 0.1297,
+     "low": 0.0735,
+     "high": 0.184,
+     "wins": 162,
+     "losses": 102,
+     "ties": 80
+    },
+    "gates_passed": true,
+    "credible_improvement": true,
+    "p95_latency_ms": 183.9,
+    "within_latency_budget": true,
+    "accepted": true
+   },
+   {
+    "candidate": "dense:bge-m3 @ section",
+    "ndcg@10": 0.557,
+    "difference_to_baseline": {
+     "mean": 0.078,
+     "low": 0.0218,
+     "high": 0.1309,
+     "wins": 135,
+     "losses": 116,
+     "ties": 93
+    },
+    "gates_passed": true,
+    "credible_improvement": true,
+    "p95_latency_ms": 191.7,
+    "within_latency_budget": true,
+    "accepted": true
+   },
+   {
+    "candidate": "bm25:ident @ fixed",
+    "ndcg@10": 0.5062,
+    "difference_to_baseline": {
+     "mean": 0.0272,
+     "low": 0.0144,
+     "high": 0.0408,
+     "wins": 53,
+     "losses": 26,
+     "ties": 265
+    },
+    "gates_passed": true,
+    "credible_improvement": true,
+    "p95_latency_ms": 0.2,
+    "within_latency_budget": true,
+    "accepted": true
+   },
+   {
+    "candidate": "dense:nomic-embed-text @ fixed",
+    "ndcg@10": 0.4092,
+    "difference_to_baseline": {
+     "mean": -0.0698,
+     "low": -0.1032,
+     "high": -0.0353,
+     "wins": 63,
+     "losses": 105,
+     "ties": 176
+    },
+    "gates_passed": true,
+    "credible_improvement": false,
+    "p95_latency_ms": 175.8,
+    "within_latency_budget": true,
+    "accepted": false
+   },
+   {
+    "candidate": "bm25:ident @ section_ctx",
+    "ndcg@10": 0.6732,
+    "difference_to_baseline": {
+     "mean": 0.1942,
+     "low": 0.1553,
+     "high": 0.2327,
+     "wins": 153,
+     "losses": 33,
+     "ties": 158
+    },
+    "gates_passed": true,
+    "credible_improvement": true,
+    "p95_latency_ms": 0.1,
+    "within_latency_budget": true,
+    "accepted": true
+   },
+   {
+    "candidate": "dense:nomic-embed-text @ section_ctx",
+    "ndcg@10": 0.5855,
+    "difference_to_baseline": {
+     "mean": 0.1065,
+     "low": 0.0506,
+     "high": 0.1608,
+     "wins": 160,
+     "losses": 100,
+     "ties": 84
+    },
+    "gates_passed": true,
+    "credible_improvement": true,
+    "p95_latency_ms": 183.0,
+    "within_latency_budget": true,
+    "accepted": true
+   },
+   {
+    "candidate": "rrf:bm25:ident+dense:nomic-embed-text @ section_ctx",
+    "ndcg@10": 0.6477,
+    "difference_to_baseline": {
+     "mean": 0.1687,
+     "low": 0.1231,
+     "high": 0.2154,
+     "wins": 165,
+     "losses": 70,
+     "ties": 109
+    },
+    "gates_passed": true,
+    "credible_improvement": true,
+    "p95_latency_ms": 174.7,
+    "within_latency_budget": true,
+    "accepted": true
+   },
+   {
+    "candidate": "rrf:bm25:ident+dense:nomic-embed-text+dense:bge-m3 @ section_ctx",
+    "ndcg@10": 0.6485,
+    "difference_to_baseline": {
+     "mean": 0.1695,
+     "low": 0.12,
+     "high": 0.2184,
+     "wins": 167,
+     "losses": 75,
+     "ties": 102
+    },
+    "gates_passed": true,
+    "credible_improvement": true,
+    "p95_latency_ms": 345.4,
+    "within_latency_budget": true,
+    "accepted": true
+   }
+  ],
+  "selected": "bm25:ident @ section_ctx",
+  "selected_strategy": "bm25:ident",
+  "selected_chunking": "section_ctx",
+  "kept_baseline": false
+ },
+ "final_test": {
+  "selected": {
+   "strategy": "bm25:ident",
+   "chunking": "section_ctx",
+   "split": "test",
+   "k": 10,
+   "queries": 77,
+   "ndcg@10": 0.7046,
+   "recall@5": 0.7554,
+   "recall@10": 0.8247,
+   "mrr@10": 0.6751,
+   "unlabelled@10": 0.874,
+   "by_category": {
+    "xref": {
+     "queries": 29,
+     "ndcg@10": 0.4721,
+     "recall@5": 0.5517,
+     "recall@10": 0.6552,
+     "mrr@10": 0.4135,
+     "unlabelled@10": 0.8724
+    },
+    "thread": {
+     "queries": 20,
+     "ndcg@10": 0.7157,
+     "recall@5": 0.75,
+     "recall@10": 0.85,
+     "mrr@10": 0.6746,
+     "unlabelled@10": 0.915
+    },
+    "identifier": {
+     "queries": 28,
+     "ndcg@10": 0.9376,
+     "recall@5": 0.9702,
+     "recall@10": 0.9821,
+     "mrr@10": 0.9464,
+     "unlabelled@10": 0.8464
+    }
+   },
+   "latency_ms": {
+    "mean": 0.1,
+    "p95": 0.1,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  "baseline": {
+   "strategy": "bm25:plain",
+   "chunking": "fixed",
+   "split": "test",
+   "k": 10,
+   "queries": 77,
+   "ndcg@10": 0.5122,
+   "recall@5": 0.5714,
+   "recall@10": 0.6277,
+   "mrr@10": 0.4829,
+   "unlabelled@10": 0.9091,
+   "by_category": {
+    "xref": {
+     "queries": 29,
+     "ndcg@10": 0.3545,
+     "recall@5": 0.4483,
+     "recall@10": 0.5517,
+     "mrr@10": 0.2793,
+     "unlabelled@10": 0.9172
+    },
+    "thread": {
+     "queries": 20,
+     "ndcg@10": 0.3131,
+     "recall@5": 0.35,
+     "recall@10": 0.35,
+     "mrr@10": 0.3,
+     "unlabelled@10": 0.965
+    },
+    "identifier": {
+     "queries": 28,
+     "ndcg@10": 0.8178,
+     "recall@5": 0.8571,
+     "recall@10": 0.9048,
+     "mrr@10": 0.8244,
+     "unlabelled@10": 0.8607
+    }
+   },
+   "latency_ms": {
+    "mean": 0.1,
+    "p95": 0.1,
+    "probe_queries": 25
+   },
+   "gates": {
+    "excluded_units_returned": 0,
+    "exclusion_respected": true,
+    "split_isolation": true
+   }
+  },
+  "difference": {
+   "mean": 0.1924,
+   "low": 0.1139,
+   "high": 0.2725,
+   "wins": 37,
+   "losses": 9,
+   "ties": 31
+  }
+ },
+ "hardest_dev_queries_for_selected": [
+  {
+   "qid": "identifier:SAW_sawRobotIO1394",
+   "category": "identifier",
+   "ndcg": 0.0,
+   "query": "What is `SAW_sawRobotIO1394` used for?",
+   "expected": [
+    "doc:software/compilation/cmake#compilation"
+   ],
+   "returned_top3": [
+    "thread:sawIntuitiveResearchKit/171#a",
+    "thread:sawIntuitiveResearchKit/29#q",
+    "doc:software/applications/debug#sawrobotioqtconsole"
+   ]
+  },
+  {
+   "qid": "identifier:dvrk::system",
+   "category": "identifier",
+   "ndcg": 0.0,
+   "query": "What is `dvrk::system` used for?",
+   "expected": [
+    "doc:configuration/overview#site-specific-files",
+    "doc:development/api/console#system"
+   ],
+   "returned_top3": [
+    "schema:dvrk-system-settings#root",
+    "schema:dvrk-system#consoles",
+    "schema:dvrk-system#$id"
+   ]
+  },
+  {
+   "qid": "identifier:dvrk_console::control_panel",
+   "category": "identifier",
+   "ndcg": 0.0,
+   "query": "What is `dvrk_console::control_panel` used for?",
+   "expected": [
+    "doc:usage/other#prepare-and-launch"
+   ],
+   "returned_top3": [
+    "doc:software/applications/video-and-data#control-panel",
+    "doc:software/video-and-data/dvrk_console/control-panel#starting-the-panel",
+    "doc:usage/real#visualization"
+   ]
+  },
+  {
+   "qid": "identifier:mtsIntuitiveResearchKitArmPSM",
+   "category": "identifier",
+   "ndcg": 0.0,
+   "query": "What is `mtsIntuitiveResearchKitArmPSM` used for?",
+   "expected": [
+    "doc:development/api/arms#psm"
+   ],
+   "returned_top3": [
+    "schema:dvrk-arm#root",
+    "schema:dvrk-psm#root",
+    "doc:software/dvrk-system/components/teleop-psm#code"
+   ]
+  },
+  {
+   "qid": "thread:dvrk-ros/15",
+   "category": "thread",
+   "ndcg": 0.0,
+   "query": "Possible Issue in Syntax while defining rotation matricies",
+   "expected": [
+    "thread:dvrk-ros/15#a"
+   ],
+   "returned_top3": [
+    "doc:development/frames/arm#single-arm",
+    "thread:sawIntuitiveResearchKit/124#q",
+    "thread:sawIntuitiveResearchKit/97#a"
+   ]
+  },
+  {
+   "qid": "thread:sawIntuitiveResearchKit/148",
+   "category": "thread",
+   "ndcg": 0.0,
+   "query": "When adapter or instrument is inserted, PSM drops",
+   "expected": [
+    "thread:sawIntuitiveResearchKit/148#a"
+   ],
+   "returned_top3": [
+    "schema:dvrk-system-arm#simulation",
+    "doc:software/simulators#crtk-topics-and-command-behavior",
+    "doc:development/api/arms#psm"
+   ]
+  },
+  {
+   "qid": "thread:sawIntuitiveResearchKit/174",
+   "category": "thread",
+   "ndcg": 0.0,
+   "query": "Remove jhu configuration files from share",
+   "expected": [
+    "thread:sawIntuitiveResearchKit/174#a"
+   ],
+   "returned_top3": [
+    "doc:introduction/manual#overview",
+    "doc:software/compilation/vcs#repositories",
+    "changelog:2.2.0#api-changes"
+   ]
+  },
+  {
+   "qid": "thread:sawIntuitiveResearchKit/18",
+   "category": "thread",
+   "ndcg": 0.0,
+   "query": "Add different mode to \"arm\" classes (PSM, MTM, ECM)",
+   "expected": [
+    "thread:sawIntuitiveResearchKit/18#a"
+   ],
+   "returned_top3": [
+    "changelog:1.1.0#new-features",
+    "thread:sawIntuitiveResearchKit/37#q",
+    "thread:sawIntuitiveResearchKit/7#q"
+   ]
+  },
+  {
+   "qid": "thread:sawIntuitiveResearchKit/27",
+   "category": "thread",
+   "ndcg": 0.0,
+   "query": "Propagate IO errors to the Arm component",
+   "expected": [
+    "thread:sawIntuitiveResearchKit/27#a"
+   ],
+   "returned_top3": [
+    "changelog:1.1.0#new-features",
+    "doc:troubleshooting/potentiometers#visual-checks",
+    "thread:sawIntuitiveResearchKit/28#q"
+   ]
+  },
+  {
+   "qid": "thread:sawIntuitiveResearchKit/28",
+   "category": "thread",
+   "ndcg": 0.0,
+   "query": "Fix teleoperation to check Arms health condition",
+   "expected": [
+    "thread:sawIntuitiveResearchKit/28#a"
+   ],
+   "returned_top3": [
+    "changelog:1.1.0#new-features",
+    "thread:sawIntuitiveResearchKit/36#q",
+    "thread:sawIntuitiveResearchKit/36#a"
+   ]
+  },
+  {
+   "qid": "thread:sawIntuitiveResearchKit/38",
+   "category": "thread",
+   "ndcg": 0.0,
+   "query": "Timestamp ROS messages",
+   "expected": [
+    "thread:sawIntuitiveResearchKit/38#a"
+   ],
+   "returned_top3": [
+    "doc:software/dvrk-system/components/system#system",
+    "thread:sawIntuitiveResearchKit/43#q",
+    "doc:development/bridges/socket-streamer#description"
+   ]
+  },
+  {
+   "qid": "thread:sawIntuitiveResearchKit/5",
+   "category": "thread",
+   "ndcg": 0.0,
+   "query": "Code to manage different tools",
+   "expected": [
+    "thread:sawIntuitiveResearchKit/5#a"
+   ],
+   "returned_top3": [
+    "changelog:1.5.0#new-features",
+    "thread:sawIntuitiveResearchKit/4#q",
+    "doc:configuration/overview#shared-files"
+   ]
+  }
+ ]
+}

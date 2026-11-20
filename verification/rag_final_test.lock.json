@@ -1,0 +1,7 @@
+{
+ "strategy": "bm25:ident",
+ "chunking": "section_ctx",
+ "corpus_hash": "3818ea9d0d22e2b2",
+ "queries": 421,
+ "locked": "2026-11-19 21:12:14"
+}

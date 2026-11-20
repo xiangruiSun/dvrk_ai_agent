@@ -1,0 +1,43 @@
+TASK R03 - LEXICAL AND DENSE INDEXING
+======================================
+
+Job
+---
+Engineering questions are often one identifier: a topic name, a file name, a configuration key,
+part of an error line. Index the corpus so that such a token still finds its page, and so that a
+question in ordinary words finds a page that uses different ones.
+
+Requirements
+------------
+R1  Two tokenizers (vxrag/lexical.py):
+      plain   lower-case runs of letters and digits, without stop words
+      ident   the same, plus every identifier kept whole (measured_cp, /PSM1/servo_cp,
+              sawRobotIO1394-PSM1-12345.json), plus the parts of camelCase words
+R2  BM25 over chunks with either tokenizer.
+R3  Dense vectors from local embedding models served by Ollama: nomic-embed-text (with the task
+    prefixes it was trained with) and bge-m3. Vectors are normalised.
+R4  Persistent embedding cache keyed by model and exact text. Re-indexing after a change embeds
+    only what changed; an experiment that reuses a model embeds nothing.
+R5  Fail loudly: a vector that is empty or not finite, or a reply with the wrong number of
+    vectors, raises an error. A request that fails while the model server is swapping models is
+    retried up to three times and the retries are counted; after that it is an error.
+R6  The embedding client refuses an endpoint that is not on this machine.
+
+Code
+----
+vxrag/lexical.py, vxrag/dense.py
+
+Verification on real data
+-------------------------
+python scripts/rag_experiments.py    ->  verification/rag_experiments.json ("stage_E",
+                                         "comparisons", "index_build_seconds")
+  Both tokenizers and both embedding models on the development queries, with the paired
+  difference between the tokenizers and the time each index took to build.
+python -m pytest tests/test_rag.py -q     tokenizer output; a rare identifier ranks its unit first
+
+Known limits
+------------
+Indexes live in memory and are rebuilt at start-up; with about 1,400 chunks that takes under a
+second for BM25 and reads cached vectors for the dense index. Inputs longer than 6,000 characters
+are embedded on their first 6,000. No approximate nearest-neighbour search: the corpus is small
+enough for an exact product.

@@ -7,9 +7,12 @@ be downloaded again.
 |---|---|---|---|---|
 | `dvrk/share/kinematic`, `tool`, `schemas` | dVRK kinematic files, instrument files and JSON Schemas (84 files, 0.28 MB) | `jhu-dvrk/sawIntuitiveResearchKit` at commit `7435458` | see note | `scripts/fetch_dvrk_config.py` |
 | `rosma/` | Recorded dVRK kinematics: 12 recordings by default (113.8 MB), 207 available (1.64 GB), plus `scores.csv` | ROSMA, Zenodo record 3932964 | CC BY 4.0 | `scripts/fetch_rosma.py` |
+| `sources/docs`, `sources/changelog` | dVRK documentation text (234 `.rst` files, 0.74 MB) and the change log | `jhu-dvrk/dvrk-readthedocs` at commit `3b231b2`; `CHANGELOG.md` of `sawIntuitiveResearchKit` at `7435458` | see note | `scripts/fetch_sources.py` |
+| `sources/issues` | 161 issue threads with 205 replies, fetched 2026-11-19. No author names: only the author's association with the repository | `sawIntuitiveResearchKit` and `dvrk-ros`, public GitHub API | public posts, no licence stated | `scripts/fetch_sources.py` |
+| `rag/` | The retrieval store and the embedding cache | produced here | | |
 | `runtime/` | SQLite database with traces, approvals and commands; cached episode statistics | produced here | | |
 
-## Licence note for the dVRK files
+## Licence note for the dVRK files and text
 
 On 2026-11-19 the repository `jhu-dvrk/sawIntuitiveResearchKit` had no licence file at its root and
 GitHub reported no detected licence. The files are therefore used locally to build the kinematic

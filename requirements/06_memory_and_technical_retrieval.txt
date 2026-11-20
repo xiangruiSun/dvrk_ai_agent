@@ -70,10 +70,11 @@ kinematics subset.
 Verification on real data (planned)
 -----------------------------------
 python scripts/verify.py t06    ->  verification/t06_memory_and_retrieval.json
-  a. Retrieval reference set built by code, not by hand: closed threads whose maintainer reply
-     links a documentation page; the question is the thread's opening text and the reference is
-     the linked page. Reported: threads used, Recall@5, Recall@10, nDCG@10 for BM25 with a plain
-     tokenizer, BM25 with the identifier tokenizer, dense, and fused.
+  a. Retrieval itself is built and measured in the retrieval package: requirements/rag/ and
+     verification/rag_experiments.json. (The first plan, to label queries from threads whose
+     maintainer reply links a documentation page, did not survive the data: only 15 such links
+     exist. Labels are built from the documentation's own cross-references, thread replies and
+     rare identifiers instead.) Reported here: the same measures through the agent's tools.
   b. Site filter: the same questions as a Classic site and as an Si site; share of returned
      chunks that match the site.
   c. Abstention: questions about systems that are not the dVRK; share correctly refused.

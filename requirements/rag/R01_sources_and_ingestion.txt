@@ -1,0 +1,56 @@
+TASK R01 - SOURCES AND INGESTION
+=================================
+
+Job
+---
+Four kinds of source, none of them plain prose, have to become units a person could cite: a
+documentation section, the question and the replies of an issue thread, one category of one
+release in the change log, one property of a configuration schema.
+
+Requirements
+------------
+R1  reStructuredText reader (vxrag/rst.py). It does not render. It recovers the section tree
+    from heading adornments, the labels sections carry, every cross-reference with its target,
+    the words it is made with and the sentence it sits in, and code blocks kept whole. Inline
+    markup is removed; a literal keeps its backticks so identifiers stay recognisable. Figures,
+    tables of contents, raw HTML and includes (diagrams here) are dropped; notes and warnings
+    are kept.
+R2  Documentation units. One per section, with its breadcrumb, its labels, its references, its
+    public URL with the section anchor, and a hardware generation read from the path (Classic,
+    Si or both). A section with fewer than 40 characters is kept as a stub, because other pages
+    link to it, and is marked.
+R3  Thread units. Two per thread: the question (title and opening post) and the replies. Each
+    carries state, dates and labels. Authority is "maintainer" when a reply comes from someone
+    associated with the repository, otherwise "community". No author name is stored.
+R4  Change-log units. One per release and category (new features, API changes, bug fixes and so
+    on), with the release number and date.
+R5  Schema units. One per property, at any depth, with its key path, type, allowed values,
+    default, whether it is required, and its description. Properties without a description are
+    kept and counted.
+R6  Authoritative store (vxrag/store.py). SQLite. Every unit has a content hash. The store has a
+    corpus hash over all units.
+R7  Idempotent, incremental ingestion. Running it again on unchanged sources writes nothing. An
+    edited page updates only its units. A page or thread that has disappeared upstream is
+    removed. The report says how many units were added, changed, removed and unchanged.
+R8  Validation report: units per source, stubs, code blocks, properties without description,
+    duplicate identifiers, and every cross-reference whose label does not exist.
+
+Code
+----
+vxrag/rst.py, vxrag/ingest.py, vxrag/store.py, scripts/fetch_sources.py
+
+Verification on real data
+-------------------------
+python scripts/rag_experiments.py    ->  verification/rag_experiments.json ("corpus")
+  Units per source, the validation report and the corpus hash for the sources as fetched.
+python -m pytest tests/test_rag.py -q
+  The reader on a page with labels, a note, a figure, a literal and a code block; all four
+  adapters on a small corpus; a second run that writes nothing; a removed page that is removed
+  and whose incoming link is then reported.
+
+Known limits
+------------
+The reader handles the constructs this documentation uses, not all of reStructuredText: tables
+are kept as their raw text, substitutions are not expanded, and nested directives inside a note
+are flattened. Incremental ingestion compares content hashes after reading every file; it does
+not yet ask upstream what changed (R09).

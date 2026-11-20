@@ -16,3 +16,6 @@ _ref/
 
 # Verification console log (the JSON evidence and REPORT.md are committed)
 verification/run.log
+
+# Console logs of verification runs (the JSON evidence and REPORT.md are committed)
+verification/*.log

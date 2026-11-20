@@ -1,0 +1,59 @@
+TASK R08 - EVALUATION PROTOCOL
+===============================
+
+Job
+---
+Decide which tokenizer, model, chunking and fusion to use with measurements on this corpus, by a
+rule written before the numbers were seen, without anyone typing a relevance label.
+
+Requirements
+------------
+R1  Labels from structure (vxrag/evaluation/labels.py). Three categories:
+      xref        a sentence in the documentation that links to another page's section with its
+                  own words. Query: the sentence as a reader sees it. Relevant: the linked
+                  section (grade 2) and, for a link to the top of a page, the page's other
+                  sections (grade 1). The source section is removed from the candidates.
+      thread      a closed thread with replies. Query: its title and the start of its opening
+                  post. Relevant: its replies (grade 2). The opening post is removed from the
+                  candidates.
+      identifier  an identifier written as a literal in the documentation that occurs in at most
+                  three units. Query: the identifier in a short question. Relevant: those units.
+R2  Links without words of their own (where the rendered text is the target's title), links
+    within a page, links to stubs, and sentences of fewer than six words are not used.
+R3  Splits. A query is a test query when the hash of its id is divisible by five, otherwise a
+    development query. Tuning and selection use development queries only.
+R4  Metrics over units (vxrag/evaluation/metrics.py): nDCG@10 (gain 2^grade - 1), recall@5 and
+    recall@10 of grade-2 units, MRR@10, and the share of returned units that carry no label.
+R5  Latency is measured with the query-embedding cache switched off, so a dense strategy pays
+    for its model call.
+R6  Gates per run: no excluded unit among the results; no query from the wrong split.
+R7  Comparison: paired bootstrap over queries (2,000 resamples, fixed seed), 95% interval of the
+    mean nDCG@10 difference, with wins, losses and ties.
+R8  Selection policy (vxrag/evaluation/runner.py): gates, then nDCG@10 on development queries;
+    a candidate replaces the baseline (plain BM25 on fixed windows) only if the interval of its
+    difference lies above zero and its p95 latency is within 500 ms; among those, the highest
+    nDCG@10; otherwise the baseline is kept.
+R9  Final test. The selected configuration, and the baseline for reference, are scored on the
+    test queries. The selection is written to verification/rag_final_test.lock.json and a run
+    that would score the test queries for a different configuration is refused.
+R10 The report lists the hardest development queries for the selected configuration with what
+    was expected and what was returned.
+
+Code
+----
+vxrag/evaluation/labels.py, metrics.py, runner.py; scripts/rag_experiments.py
+
+Verification on real data
+-------------------------
+python scripts/rag_experiments.py    ->  verification/rag_experiments.json
+python -m pytest tests/test_rag.py -q     metrics against hand computation; the bootstrap on a
+                                          real difference and on noise; labels and exclusions
+
+Known limits
+------------
+The labels are weak. They record what the authors linked and answered, not everything an expert
+would accept, so absolute scores understate quality and a strategy that finds a correct page the
+author did not link gets no credit. The identifier category favours lexical retrieval by
+construction and is reported separately for that reason. Cross-reference queries are written in
+the documentation's own voice, not an operator's. There are no unanswerable queries yet
+(abstention belongs to R06) and no human-reviewed set.

@@ -45,15 +45,22 @@ sites that was not built (task 13).
 
 Data (all public, all downloaded by scripts, none committed)
 ------------------------------------------------------------
-dVRK documentation     dvrk.readthedocs.io, the published user and maintenance documentation.
-                       Retrieval corpus.
-dVRK support threads   Issues of the jhu-dvrk GitHub organisation. On 2026-11-19 the main
-                       repository (sawIntuitiveResearchKit) had 140 issues, 119 of them closed,
-                       and the organisation 179. Support cases with their resolutions.
+dVRK documentation     dvrk.readthedocs.io, the published user and maintenance documentation
+                       (234 reStructuredText files). Retrieval corpus.
+dVRK issue threads     161 threads of sawIntuitiveResearchKit and dvrk-ros (138 closed), with
+                       205 replies. Most were opened by the maintainers themselves as bug and
+                       enhancement notes; about a fifth by other users. They are not a help-desk
+                       archive, and are described as issue threads, not support cases.
+Retrieval system       The documentation, the threads, the change log and the configuration
+                       schemas are indexed by the package vxrag, specified in requirements/rag/
+                       and called by the agents as a tool.
 dVRK configuration     sawIntuitiveResearchKit/share: 18 JSON Schemas (share/schemas), 10
                        kinematic files (share/kinematic, including PSM.json and ECM.json), 56
                        instrument files (share/tool, including LARGE_NEEDLE_DRIVER_400006.json)
-                       and the site collections jhu-dVRK and jhu-dVRK-Si. Used for configuration
+                       12 arm files (share/arm) and 33 system files (share/system) for
+                       simulated arms and systems. The folders jhu-dVRK and jhu-dVRK-Si in that
+                       repository hold only a README: real site configurations live in the
+                       separate dvrk-config repositories and are not used. Used for configuration
                        validation and for the kinematic twin. GitHub reports no detected licence
                        for the repository: the licence file must be read before the first
                        download script is written.

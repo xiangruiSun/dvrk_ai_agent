@@ -57,14 +57,14 @@ Real data
 ---------
 The SurgicAI demonstrations and their published description for the contract and the adapter.
 The ROSMA kinematics files, whose names carry an operator prefix, for the checks and the split.
-The two published dVRK site collections for the compatibility check.
+The Classic and the Si PSM arm files published for simulated arms, for the compatibility check.
 
 Verification on real data (planned)
 -----------------------------------
 python scripts/verify.py t10    ->  verification/t10_policy_and_data.json
   a. Contract extraction: fields filled with a resolvable source, fields left for a person,
      attempts; compared with a hand-written reference contract committed beside it.
-  b. Compatibility of that contract with each site collection, and with the same site after the
+  b. Compatibility of that contract with each of the two sites, and with the same site after the
      workspace is moved so that part of it leaves the training range.
   c. Adapter round trip on every demonstration: maximum position and rotation error.
   d. Episode checks over both sources: accepted, flagged, excluded, by reason.

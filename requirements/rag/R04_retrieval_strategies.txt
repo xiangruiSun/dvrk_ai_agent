@@ -1,0 +1,37 @@
+TASK R04 - RETRIEVAL STRATEGIES
+================================
+
+Job
+---
+Turn a question into a ranked list of units, with every way of doing it available under a name,
+so that the choice between them is made by an experiment.
+
+Requirements
+------------
+R1  Strategies are names (vxrag/retrieval.py):
+      bm25:<tokenizer>                   lexical
+      dense:<model>                      embeddings
+      rrf:<strategy>+<strategy>[+...]    reciprocal-rank fusion, k = 60, of any of the above
+R2  Chunks are scored and units are returned. A unit's score is that of its best chunk, so a
+    long section does not win by having more chunks.
+R3  Filters are applied inside the search, before ranking: units to exclude, sources to include,
+    and hardware generation (a page written for the other generation is not a candidate).
+R4  A chunk that scored nothing is not a result. A query that matches nothing returns nothing.
+R5  Each result carries the unit id, the chunk that matched, its rank, and for a fused result the
+    rank each strategy gave it.
+
+Code
+----
+vxrag/retrieval.py
+
+Verification on real data
+-------------------------
+python scripts/rag_experiments.py    ->  verification/rag_experiments.json ("stage_R",
+                                         "comparisons", "selection", "final_test")
+python -m pytest tests/test_rag.py -q     one result per unit; filters; fusion order
+
+Known limits
+------------
+No reranking, no query rewriting from log lines, no expansion along the documentation's own
+links, and no routing of a query to a strategy by its type. Those are candidates for the same
+experiment protocol. The generation filter is exact: it does not yet read the site profile (R05).

@@ -10,6 +10,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from report_rag import rag
+
 ROOT = Path(__file__).resolve().parents[1]
 VER = ROOT / "verification"
 
@@ -124,7 +126,7 @@ def t01(d: dict[str, Any]) -> str:
     return "\n".join(out)
 
 
-SECTIONS = [("t01_tool_calling", t01)]
+SECTIONS = [("t01_tool_calling", t01), ("rag_experiments", lambda d: rag(d, table))]
 
 
 def main() -> int:

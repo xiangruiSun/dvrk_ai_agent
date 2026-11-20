@@ -59,14 +59,15 @@ vxagent/robot/frames.py      frame graph
 
 Real data
 ---------
-The dVRK JSON Schemas, kinematic files, instrument files and the two published site collections
-(jhu-dVRK and jhu-dVRK-Si). The example calibration and setting files of the paper's repository.
+The dVRK JSON Schemas, kinematic files, instrument files, and the published arm and system files
+for simulated arms (share/arm, share/system). The example calibration and setting files of the
+paper's repository.
 
 Verification on real data (planned)
 -----------------------------------
 python scripts/verify.py t02    ->  verification/t02_structured_output.json
-  a. Every published configuration file of the two site collections is validated against its
-     schema as a baseline: files, passes, and the errors found, as they are.
+  a. Every published arm and system file is validated against the schema it names as a
+     baseline: files, passes, and the errors found, as they are.
   b. A set of change requests in words, each with a hand-written reference patch committed
      beside it. Per request and per mode: valid on first attempt, attempts, error stages, and
      whether the accepted patch equals the reference.
