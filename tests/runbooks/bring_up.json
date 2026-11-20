@@ -1,0 +1,50 @@
+{
+ "case": "bring_up",
+ "runbook": "bring_up",
+ "version": "1",
+ "content_hash": "1b1fef76f4a3",
+ "outcome": {
+  "status": "completed",
+  "stopped_at": null,
+  "steps": [
+   {
+    "id": "look",
+    "tool": "get_robot_state",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "enable",
+    "tool": "enable_and_home",
+    "ok": true,
+    "checks": [
+     true,
+     true
+    ]
+   },
+   {
+    "id": "target",
+    "tool": "check_named_target",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "to_start",
+    "tool": "move_to_named_pose",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   }
+  ],
+  "facts_after": {
+   "enabled": true,
+   "homed": true,
+   "in_workspace": true
+  }
+ }
+}

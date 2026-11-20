@@ -1,0 +1,31 @@
+{
+ "case": "return_to_start",
+ "runbook": "return_to_start",
+ "version": "1",
+ "content_hash": "c01288c6ba44",
+ "outcome": {
+  "status": "completed",
+  "stopped_at": null,
+  "steps": [
+   {
+    "id": "open",
+    "tool": "set_jaw",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "back",
+    "tool": "move_to_named_pose",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   }
+  ],
+  "facts_after": {
+   "in_workspace": true
+  }
+ }
+}

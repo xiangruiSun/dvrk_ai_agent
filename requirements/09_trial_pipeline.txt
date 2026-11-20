@@ -5,6 +5,28 @@ and the validation of task 02. The stages and limits follow the published deploy
 (Sun, Wen, Liu and Munawar, "On Transferring Surgical Policies from Simulation to Reality:
 Perception, Calibration, and Safety Control", under review).
 
+As built
+--------
+Status: BUILT and verified on the twin. Results: verification/REPORT.md, section T09.
+Code: vxagent/pipelines/policy_trial.py, vxagent/robot/preflight.py. Tests: tests/test_policy_trial.py.
+Differences from the plan below:
+- Reach replays real SurgicAI expert rollouts: each recorded action goes through the adapter
+  generated from the policy contract (task 10) and through the safety filter. Every Approach
+  demonstration starts from one pose and goes to one goal, so a trial first brings the arm to
+  that start, anchored on the site's grasp pose.
+- The jaw component of the recorded actions is not used: the jaw belongs to the grasp procedure.
+- Place uses the published approach heights over the site's place pose; the Place
+  demonstrations are not replayed.
+- Staged activation: the first control step of each stage is sent alone and its tracking is
+  checked before the rest of the stage.
+- The needle is the declared needle of task 05. "recorded" outcomes do not exist here.
+- The verdict record, the operator's confirmation and an override with its reason are kept side
+  by side in the trial record.
+- The twin's kinematics are checked against ROSMA: forward kinematics of the recorded joint
+  values against the recorded positions, after one rigid transform per recording.
+Further limits: perception is a callable with a declared latency until task 14 gives it a process.
+(end of as built)
+
 Job
 ---
 Take a requested trial from a run sheet to a confirmed record: check that the site is ready,

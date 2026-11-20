@@ -1,0 +1,3118 @@
+{
+ "task": "t09_trial_pipeline",
+ "ran": "2026-11-20 04:54:51",
+ "model": "qwen3:14b",
+ "site": "site-a",
+ "backend": "twin",
+ "control_rate_hz": 10.0,
+ "needle": "DECLARED per run: the twin has no needle",
+ "not_measured": "task success on a robot; the published success rates belong to the paper's physical trials",
+ "a_safety_filter_boundaries": {
+  "cases": 21,
+  "match": 21,
+  "rows": [
+   {
+    "limit": "free-space step 5 mm: 4.9 mm",
+    "expected": "accepted",
+    "got": "accepted",
+    "rules_fired": [],
+    "match": true
+   },
+   {
+    "limit": "free-space step 5 mm: 5.1 mm",
+    "expected": "rejected",
+    "got": "rejected",
+    "rules_fired": [
+     "step_position"
+    ],
+    "match": true
+   },
+   {
+    "limit": "free-space rotation 5 deg: 4.9 deg",
+    "expected": "accepted",
+    "got": "accepted",
+    "rules_fired": [],
+    "match": true
+   },
+   {
+    "limit": "free-space rotation 5 deg: 5.1 deg",
+    "expected": "rejected",
+    "got": "rejected",
+    "rules_fired": [
+     "step_rotation"
+    ],
+    "match": true
+   },
+   {
+    "limit": "near step 2 mm: 1.9 mm",
+    "expected": "accepted",
+    "got": "accepted",
+    "rules_fired": [],
+    "match": true
+   },
+   {
+    "limit": "near step 2 mm: 2.1 mm",
+    "expected": "rejected",
+    "got": "rejected",
+    "rules_fired": [
+     "step_position"
+    ],
+    "match": true
+   },
+   {
+    "limit": "near rotation 3 deg: 2.9 deg",
+    "expected": "accepted",
+    "got": "accepted",
+    "rules_fired": [],
+    "match": true
+   },
+   {
+    "limit": "near rotation 3 deg: 3.1 deg",
+    "expected": "rejected",
+    "got": "rejected",
+    "rules_fired": [
+     "step_rotation"
+    ],
+    "match": true
+   },
+   {
+    "limit": "near zone starts 20 mm from the needle: a 3 mm step at 21.5 mm",
+    "expected": "accepted",
+    "got": "accepted",
+    "rules_fired": [],
+    "match": true
+   },
+   {
+    "limit": "near zone starts 20 mm from the needle: a 3 mm step at 19.5 mm",
+    "expected": "rejected",
+    "got": "rejected",
+    "rules_fired": [
+     "step_position"
+    ],
+    "match": true
+   },
+   {
+    "limit": "workspace +/- 40 mm: 39.9 mm",
+    "expected": "accepted",
+    "got": "accepted",
+    "rules_fired": [],
+    "match": true
+   },
+   {
+    "limit": "workspace +/- 40 mm: 40.1 mm",
+    "expected": "rejected",
+    "got": "rejected",
+    "rules_fired": [
+     "workspace"
+    ],
+    "match": true
+   },
+   {
+    "limit": "clearance 3 mm over the pad: 3.1 mm",
+    "expected": "accepted",
+    "got": "accepted",
+    "rules_fired": [],
+    "match": true
+   },
+   {
+    "limit": "clearance 3 mm over the pad: 2.9 mm",
+    "expected": "rejected",
+    "got": "rejected",
+    "rules_fired": [
+     "clearance"
+    ],
+    "match": true
+   },
+   {
+    "limit": "joint margin 5 deg: 5.2 deg from the wrist pitch limit",
+    "expected": "accepted",
+    "got": "accepted",
+    "rules_fired": [],
+    "match": true
+   },
+   {
+    "limit": "joint margin 5 deg: 4.8 deg from the wrist pitch limit",
+    "expected": "rejected",
+    "got": "rejected",
+    "rules_fired": [
+     "joint_margin"
+    ],
+    "match": true
+   },
+   {
+    "limit": "tracking stop 2 mm: 1.9 mm",
+    "expected": "accepted",
+    "got": "accepted",
+    "rules_fired": [],
+    "match": true
+   },
+   {
+    "limit": "tracking stop 2 mm: 2.1 mm",
+    "expected": "rejected",
+    "got": "rejected",
+    "rules_fired": [
+     "tracking_position"
+    ],
+    "match": true
+   },
+   {
+    "limit": "tracking stop 2 deg: 1.9 deg",
+    "expected": "accepted",
+    "got": "accepted",
+    "rules_fired": [],
+    "match": true
+   },
+   {
+    "limit": "tracking stop 2 deg: 2.1 deg",
+    "expected": "rejected",
+    "got": "rejected",
+    "rules_fired": [
+     "tracking_rotation"
+    ],
+    "match": true
+   },
+   {
+    "limit": "a set point that is not the requested target (clipped by inverse kinematics)",
+    "expected": "rejected",
+    "got": "rejected",
+    "rules_fired": [
+     "clipped"
+    ],
+    "match": true
+   }
+  ]
+ },
+ "b_twin_against_recordings": {
+  "what": "forward kinematics of the twin (PSM.json with LARGE_NEEDLE_DRIVER_400006.json) on the PSM1 joint values recorded in ROSMA, against the PSM1 positions recorded in the same samples. The recordings do not say which instrument was mounted or which frame the positions are in, so one rigid transform per recording is fitted first.",
+  "episodes": 12,
+  "median_of_the_median_residuals_mm": 0.001,
+  "largest_p95_residual_mm": 0.003,
+  "rows": [
+   {
+    "episode": "X01_Pea_on_a_Peg_01",
+    "samples_used": 600,
+    "samples_inside_the_joint_limits": 595,
+    "difference_without_alignment_mm_median": 222.31,
+    "residual_after_one_rigid_alignment_mm": {
+     "median": 0.001,
+     "p95": 0.001,
+     "max": 0.042
+    },
+    "rotation_of_the_alignment_deg": 150.0,
+    "translation_of_the_alignment_mm": [
+     -200.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   {
+    "episode": "X01_Post_and_Sleeve_01",
+    "samples_used": 593,
+    "samples_inside_the_joint_limits": 593,
+    "difference_without_alignment_mm_median": 218.23,
+    "residual_after_one_rigid_alignment_mm": {
+     "median": 0.001,
+     "p95": 0.002,
+     "max": 0.361
+    },
+    "rotation_of_the_alignment_deg": 150.0,
+    "translation_of_the_alignment_mm": [
+     -200.0,
+     0.0,
+     -0.0
+    ]
+   },
+   {
+    "episode": "X01_Wire_Chaser_I_01",
+    "samples_used": 200,
+    "samples_inside_the_joint_limits": 176,
+    "difference_without_alignment_mm_median": 212.02,
+    "residual_after_one_rigid_alignment_mm": {
+     "median": 0.001,
+     "p95": 0.003,
+     "max": 0.033
+    },
+    "rotation_of_the_alignment_deg": 150.0,
+    "translation_of_the_alignment_mm": [
+     -200.0,
+     -0.0,
+     0.0
+    ]
+   },
+   {
+    "episode": "X02_Pea_on_a_Peg_01",
+    "samples_used": 722,
+    "samples_inside_the_joint_limits": 722,
+    "difference_without_alignment_mm_median": 226.52,
+    "residual_after_one_rigid_alignment_mm": {
+     "median": 0.001,
+     "p95": 0.001,
+     "max": 0.135
+    },
+    "rotation_of_the_alignment_deg": 150.0,
+    "translation_of_the_alignment_mm": [
+     -200.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "episode": "X02_Post_and_Sleeve_01",
+    "samples_used": 797,
+    "samples_inside_the_joint_limits": 797,
+    "difference_without_alignment_mm_median": 215.47,
+    "residual_after_one_rigid_alignment_mm": {
+     "median": 0.001,
+     "p95": 0.001,
+     "max": 0.25
+    },
+    "rotation_of_the_alignment_deg": 150.0,
+    "translation_of_the_alignment_mm": [
+     -200.0,
+     -0.0,
+     0.0
+    ]
+   },
+   {
+    "episode": "X02_Wire_Chaser_I_01",
+    "samples_used": 214,
+    "samples_inside_the_joint_limits": 214,
+    "difference_without_alignment_mm_median": 212.67,
+    "residual_after_one_rigid_alignment_mm": {
+     "median": 0.0,
+     "p95": 0.001,
+     "max": 0.021
+    },
+    "rotation_of_the_alignment_deg": 150.0,
+    "translation_of_the_alignment_mm": [
+     -200.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   {
+    "episode": "X03_Pea_on_a_Peg_01",
+    "samples_used": 604,
+    "samples_inside_the_joint_limits": 604,
+    "difference_without_alignment_mm_median": 225.76,
+    "residual_after_one_rigid_alignment_mm": {
+     "median": 0.001,
+     "p95": 0.001,
+     "max": 0.117
+    },
+    "rotation_of_the_alignment_deg": 150.0,
+    "translation_of_the_alignment_mm": [
+     -200.0,
+     0.0,
+     -0.0
+    ]
+   },
+   {
+    "episode": "X03_Post_and_Sleeve_01",
+    "samples_used": 1081,
+    "samples_inside_the_joint_limits": 1070,
+    "difference_without_alignment_mm_median": 234.41,
+    "residual_after_one_rigid_alignment_mm": {
+     "median": 0.0,
+     "p95": 0.001,
+     "max": 0.13
+    },
+    "rotation_of_the_alignment_deg": 150.0,
+    "translation_of_the_alignment_mm": [
+     -200.0,
+     -0.0,
+     0.0
+    ]
+   },
+   {
+    "episode": "X03_Wire_Chaser_I_01",
+    "samples_used": 413,
+    "samples_inside_the_joint_limits": 413,
+    "difference_without_alignment_mm_median": 221.75,
+    "residual_after_one_rigid_alignment_mm": {
+     "median": 0.001,
+     "p95": 0.003,
+     "max": 0.179
+    },
+    "rotation_of_the_alignment_deg": 150.0,
+    "translation_of_the_alignment_mm": [
+     -200.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   {
+    "episode": "X04_Pea_on_a_Peg_01",
+    "samples_used": 920,
+    "samples_inside_the_joint_limits": 920,
+    "difference_without_alignment_mm_median": 228.53,
+    "residual_after_one_rigid_alignment_mm": {
+     "median": 0.001,
+     "p95": 0.003,
+     "max": 0.207
+    },
+    "rotation_of_the_alignment_deg": 150.0,
+    "translation_of_the_alignment_mm": [
+     -200.0,
+     -0.0,
+     0.0
+    ]
+   },
+   {
+    "episode": "X04_Post_and_Sleeve_01",
+    "samples_used": 726,
+    "samples_inside_the_joint_limits": 726,
+    "difference_without_alignment_mm_median": 214.37,
+    "residual_after_one_rigid_alignment_mm": {
+     "median": 0.0,
+     "p95": 0.002,
+     "max": 0.029
+    },
+    "rotation_of_the_alignment_deg": 150.0,
+    "translation_of_the_alignment_mm": [
+     -200.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   {
+    "episode": "X04_Wire_Chaser_I_01",
+    "samples_used": 275,
+    "samples_inside_the_joint_limits": 275,
+    "difference_without_alignment_mm_median": 213.21,
+    "residual_after_one_rigid_alignment_mm": {
+     "median": 0.0,
+     "p95": 0.001,
+     "max": 0.012
+    },
+    "rotation_of_the_alignment_deg": 150.0,
+    "translation_of_the_alignment_mm": [
+     -200.0,
+     -0.0,
+     0.0
+    ]
+   }
+  ]
+ },
+ "c_preflight_matrix": {
+  "cases": 10,
+  "as_expected": 10,
+  "motions_commanded_in_all_cases": 0,
+  "rows": [
+   {
+    "case": "arm not enabled",
+    "outcome": "preflight_failed",
+    "failed_checks": [
+     "arm is powered, enabled and homed, with no fault"
+    ],
+    "repairs_named": [
+     "bring_up"
+    ],
+    "expected_check": "arm is powered, enabled and homed, with no fault",
+    "expected_repair": "bring_up",
+    "motions_commanded": 0,
+    "robot_state_changed": false,
+    "as_expected": true
+   },
+   {
+    "case": "another instrument on the run sheet",
+    "outcome": "preflight_failed",
+    "failed_checks": [
+     "instrument is the one on the run sheet and has an instrument file"
+    ],
+    "repairs_named": [
+     "escalate_to_engineer"
+    ],
+    "expected_check": "instrument is the one on the run sheet and has an instrument file",
+    "expected_repair": "escalate_to_engineer",
+    "motions_commanded": 0,
+    "robot_state_changed": false,
+    "as_expected": true
+   },
+   {
+    "case": "no calibration record",
+    "outcome": "preflight_failed",
+    "failed_checks": [
+     "a calibration record exists"
+    ],
+    "repairs_named": [
+     "calibration_validity"
+    ],
+    "expected_check": "a calibration record exists",
+    "expected_repair": "calibration_validity",
+    "motions_commanded": 0,
+    "robot_state_changed": false,
+    "as_expected": true
+   },
+   {
+    "case": "calibration record with a scaled rotation",
+    "outcome": "preflight_failed",
+    "failed_checks": [
+     "the calibration record is well formed"
+    ],
+    "repairs_named": [
+     "calibration_validity"
+    ],
+    "expected_check": "the calibration record is well formed",
+    "expected_repair": "calibration_validity",
+    "motions_commanded": 0,
+    "robot_state_changed": false,
+    "as_expected": true
+   },
+   {
+    "case": "camera arm moved since the calibration",
+    "outcome": "preflight_failed",
+    "failed_checks": [
+     "the calibration has not been ended by an event"
+    ],
+    "repairs_named": [
+     "calibration_validity"
+    ],
+    "expected_check": "the calibration has not been ended by an event",
+    "expected_repair": "calibration_validity",
+    "motions_commanded": 0,
+    "robot_state_changed": false,
+    "as_expected": true
+   },
+   {
+    "case": "calibration off by 6 mm",
+    "outcome": "preflight_failed",
+    "failed_checks": [
+     "the calibration residual is under the site's limit"
+    ],
+    "repairs_named": [
+     "calibration_validity"
+    ],
+    "expected_check": "the calibration residual is under the site's limit",
+    "expected_repair": "calibration_validity",
+    "motions_commanded": 0,
+    "robot_state_changed": false,
+    "as_expected": true
+   },
+   {
+    "case": "scene records from another session",
+    "outcome": "preflight_failed",
+    "failed_checks": [
+     "pad-plane and site records are of the same session as the calibration"
+    ],
+    "repairs_named": [
+     "rig_check"
+    ],
+    "expected_check": "pad-plane and site records are of the same session as the calibration",
+    "expected_repair": "rig_check",
+    "motions_commanded": 0,
+    "robot_state_changed": false,
+    "as_expected": true
+   },
+   {
+    "case": "site whose near step is 1 mm",
+    "outcome": "preflight_failed",
+    "failed_checks": [
+     "the policy contract is compatible with the site"
+    ],
+    "repairs_named": [
+     "escalate_to_engineer"
+    ],
+    "expected_check": "the policy contract is compatible with the site",
+    "expected_repair": "escalate_to_engineer",
+    "motions_commanded": 0,
+    "robot_state_changed": false,
+    "as_expected": true
+   },
+   {
+    "case": "rollout that starts 30 mm from where the policy was trained",
+    "outcome": "preflight_failed",
+    "failed_checks": [
+     "the policy contract is compatible with the site",
+     "start and target lie in the policy's training range and inside the workspace"
+    ],
+    "repairs_named": [
+     "escalate_to_engineer"
+    ],
+    "expected_check": "start and target lie in the policy's training range and inside the workspace",
+    "expected_repair": "escalate_to_engineer",
+    "motions_commanded": 0,
+    "robot_state_changed": false,
+    "as_expected": true
+   },
+   {
+    "case": "perception answers after 0.9 s",
+    "outcome": "preflight_failed",
+    "failed_checks": [
+     "the perception source answered within its time limit"
+    ],
+    "repairs_named": [
+     "rig_check"
+    ],
+    "expected_check": "the perception source answered within its time limit",
+    "expected_repair": "rig_check",
+    "motions_commanded": 0,
+    "robot_state_changed": false,
+    "as_expected": true
+   }
+  ]
+ },
+ "d_trials": {
+  "trials": 20,
+  "as_expected": 20,
+  "machine_verdicts": {
+   "failed_recovered": 10,
+   "success": 10
+  },
+  "reach_within_5_mm_and_15_deg": 20,
+  "reach_error_mm_max": 0.66,
+  "reach_error_deg_max": 7.699,
+  "policy_actions_min_max": [
+   57,
+   65
+  ],
+  "motions_rejected_or_stopped": 0,
+  "arm_at_start_pose_at_the_end": 20,
+  "every_run_paused_for_the_operators_confirmation": true,
+  "summaries_written_by_the_model": 20,
+  "summaries_replaced_by_the_template": 0,
+  "override": {
+   "without_a_reason": "refused",
+   "operator_verdict": {
+    "decision": "override",
+    "by": "op.lee",
+    "verdict": "failed",
+    "reason": "The needle sat crooked in the jaw on video."
+   },
+   "machine_verdict": "success"
+  },
+  "runs": [
+   {
+    "rollout": "Approach_00",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the jaw opened 3.5 mm over the pad"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "place",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "success",
+     "why": null,
+     "reach_tolerance_met": true,
+     "needle_held": true,
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": false,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "success",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.05,
+     "error_deg": 4.301,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 58,
+     "control_steps": 59,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": {
+     "needle_held_on_arrival": true,
+     "release": "succeeded",
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0
+    },
+    "recovery": null,
+    "tip_travel_mm": 198.2,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "place:first_step",
+      "succeeded"
+     ],
+     [
+      "place",
+      "succeeded"
+     ],
+     [
+      "place:release",
+      "succeeded"
+     ],
+     [
+      "place:retreat",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 5,
+    "summary": "The machine verdict was success, with all tolerances met and no violations. The operator confirmed the outcome. The trial completed all stages successfully.",
+    "summary_source": "model",
+    "expected": "success",
+    "as_expected": true,
+    "seconds": 17.3
+   },
+   {
+    "rollout": "Approach_01",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the jaw opened 3.5 mm over the pad"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "place",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "success",
+     "why": null,
+     "reach_tolerance_met": true,
+     "needle_held": true,
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": false,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "override",
+     "by": "op.lee",
+     "verdict": "failed",
+     "reason": "The needle sat crooked in the jaw on video."
+    },
+    "override_test": {
+     "without_a_reason": "refused"
+    },
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.189,
+     "error_deg": 4.377,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 60,
+     "control_steps": 61,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": {
+     "needle_held_on_arrival": true,
+     "release": "succeeded",
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0
+    },
+    "recovery": null,
+    "tip_travel_mm": 199.09,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "place:first_step",
+      "succeeded"
+     ],
+     [
+      "place",
+      "succeeded"
+     ],
+     [
+      "place:release",
+      "succeeded"
+     ],
+     [
+      "place:retreat",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 5,
+    "summary": "The machine verdict was success. The operator's decision was to override and declare the trial as failed. The reason given was that the needle sat crooked in the jaw on video.",
+    "summary_source": "model",
+    "expected": "success",
+    "as_expected": true,
+    "seconds": 17.7
+   },
+   {
+    "rollout": "Approach_02",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the jaw opened 3.5 mm over the pad"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "place",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "success",
+     "why": null,
+     "reach_tolerance_met": true,
+     "needle_held": true,
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": false,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "success",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.198,
+     "error_deg": 4.242,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 63,
+     "control_steps": 64,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": {
+     "needle_held_on_arrival": true,
+     "release": "succeeded",
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0
+    },
+    "recovery": null,
+    "tip_travel_mm": 200.38,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "place:first_step",
+      "succeeded"
+     ],
+     [
+      "place",
+      "succeeded"
+     ],
+     [
+      "place:release",
+      "succeeded"
+     ],
+     [
+      "place:retreat",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 5,
+    "summary": "The machine verdict was success, with all tolerances met and no violations. The operator confirmed the outcome. The trial completed all stages successfully.",
+    "summary_source": "model",
+    "expected": "success",
+    "as_expected": true,
+    "seconds": 17.9
+   },
+   {
+    "rollout": "Approach_03",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the jaw opened 3.5 mm over the pad"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "place",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "success",
+     "why": null,
+     "reach_tolerance_met": true,
+     "needle_held": true,
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": false,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "success",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.364,
+     "error_deg": 6.398,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 59,
+     "control_steps": 60,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": {
+     "needle_held_on_arrival": true,
+     "release": "succeeded",
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0
+    },
+    "recovery": null,
+    "tip_travel_mm": 197.18,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "place:first_step",
+      "succeeded"
+     ],
+     [
+      "place",
+      "succeeded"
+     ],
+     [
+      "place:release",
+      "succeeded"
+     ],
+     [
+      "place:retreat",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 5,
+    "summary": "The machine verdict was success, with all tolerances met and no violations. The operator confirmed the outcome. The trial completed all stages successfully.",
+    "summary_source": "model",
+    "expected": "success",
+    "as_expected": true,
+    "seconds": 17.6
+   },
+   {
+    "rollout": "Approach_04",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the jaw opened 3.5 mm over the pad"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "place",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "success",
+     "why": null,
+     "reach_tolerance_met": true,
+     "needle_held": true,
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": false,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "success",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.451,
+     "error_deg": 3.694,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 57,
+     "control_steps": 58,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": {
+     "needle_held_on_arrival": true,
+     "release": "succeeded",
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0
+    },
+    "recovery": null,
+    "tip_travel_mm": 198.79,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "place:first_step",
+      "succeeded"
+     ],
+     [
+      "place",
+      "succeeded"
+     ],
+     [
+      "place:release",
+      "succeeded"
+     ],
+     [
+      "place:retreat",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 5,
+    "summary": "The machine verdict was success, with all tolerances met and no violations. The operator confirmed the outcome. The trial completed all stages successfully.",
+    "summary_source": "model",
+    "expected": "success",
+    "as_expected": true,
+    "seconds": 17.2
+   },
+   {
+    "rollout": "Approach_05",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the jaw opened 3.5 mm over the pad"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "place",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "success",
+     "why": null,
+     "reach_tolerance_met": true,
+     "needle_held": true,
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": false,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "success",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.616,
+     "error_deg": 4.46,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 61,
+     "control_steps": 62,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": {
+     "needle_held_on_arrival": true,
+     "release": "succeeded",
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0
+    },
+    "recovery": null,
+    "tip_travel_mm": 198.48,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "place:first_step",
+      "succeeded"
+     ],
+     [
+      "place",
+      "succeeded"
+     ],
+     [
+      "place:release",
+      "succeeded"
+     ],
+     [
+      "place:retreat",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 5,
+    "summary": "The machine verdict was success, with the reach tolerance met and the needle correctly placed. The operator's decision was to confirm the trial as a success. No recovery was required.",
+    "summary_source": "model",
+    "expected": "success",
+    "as_expected": true,
+    "seconds": 17.8
+   },
+   {
+    "rollout": "Approach_06",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the jaw opened 3.5 mm over the pad"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "place",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "success",
+     "why": null,
+     "reach_tolerance_met": true,
+     "needle_held": true,
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": false,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "success",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.66,
+     "error_deg": 6.392,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 59,
+     "control_steps": 60,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": {
+     "needle_held_on_arrival": true,
+     "release": "succeeded",
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0
+    },
+    "recovery": null,
+    "tip_travel_mm": 199.12,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "place:first_step",
+      "succeeded"
+     ],
+     [
+      "place",
+      "succeeded"
+     ],
+     [
+      "place:release",
+      "succeeded"
+     ],
+     [
+      "place:retreat",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 5,
+    "summary": "The machine verdict was success, with the reach tolerance met and the needle correctly placed. The operator's decision was to confirm the trial as a success. No recovery was required.",
+    "summary_source": "model",
+    "expected": "success",
+    "as_expected": true,
+    "seconds": 17.7
+   },
+   {
+    "rollout": "Approach_07",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the jaw opened 3.5 mm over the pad"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "place",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "success",
+     "why": null,
+     "reach_tolerance_met": true,
+     "needle_held": true,
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": false,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "success",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.452,
+     "error_deg": 2.172,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 63,
+     "control_steps": 64,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": {
+     "needle_held_on_arrival": true,
+     "release": "succeeded",
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0
+    },
+    "recovery": null,
+    "tip_travel_mm": 200.34,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "place:first_step",
+      "succeeded"
+     ],
+     [
+      "place",
+      "succeeded"
+     ],
+     [
+      "place:release",
+      "succeeded"
+     ],
+     [
+      "place:retreat",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 5,
+    "summary": "The machine verdict was success, with all tolerances met and no violations. The operator confirmed the outcome. The trial completed all stages successfully.",
+    "summary_source": "model",
+    "expected": "success",
+    "as_expected": true,
+    "seconds": 17.9
+   },
+   {
+    "rollout": "Approach_08",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the jaw opened 3.5 mm over the pad"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "place",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "success",
+     "why": null,
+     "reach_tolerance_met": true,
+     "needle_held": true,
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": false,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "success",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.307,
+     "error_deg": 7.699,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 59,
+     "control_steps": 60,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": {
+     "needle_held_on_arrival": true,
+     "release": "succeeded",
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0
+    },
+    "recovery": null,
+    "tip_travel_mm": 197.4,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "place:first_step",
+      "succeeded"
+     ],
+     [
+      "place",
+      "succeeded"
+     ],
+     [
+      "place:release",
+      "succeeded"
+     ],
+     [
+      "place:retreat",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 5,
+    "summary": "The machine verdict was success, with all tolerances met and no violations. The operator confirmed the outcome. The trial completed all stages successfully.",
+    "summary_source": "model",
+    "expected": "success",
+    "as_expected": true,
+    "seconds": 17.5
+   },
+   {
+    "rollout": "Approach_09",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the jaw opened 3.5 mm over the pad"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "place",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "success",
+     "why": null,
+     "reach_tolerance_met": true,
+     "needle_held": true,
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": false,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "success",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.2,
+     "error_deg": 3.776,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 61,
+     "control_steps": 62,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": {
+     "needle_held_on_arrival": true,
+     "release": "succeeded",
+     "needle_height_over_pad_mm_at_release": 3.5,
+     "lateral_distance_from_the_entry_mm": 0.0
+    },
+    "recovery": null,
+    "tip_travel_mm": 199.29,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "place:first_step",
+      "succeeded"
+     ],
+     [
+      "place",
+      "succeeded"
+     ],
+     [
+      "place:release",
+      "succeeded"
+     ],
+     [
+      "place:retreat",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 5,
+    "summary": "The machine verdict was success, with all tolerances met and no violations. The operator confirmed the outcome. The trial completed all stages successfully.",
+    "summary_source": "model",
+    "expected": "success",
+    "as_expected": true,
+    "seconds": 17.8
+   },
+   {
+    "rollout": "Approach_10",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": true,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the needle slipped out during the lift"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "recover",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "failed_recovered",
+     "why": "retention:not_held",
+     "reach_tolerance_met": true,
+     "needle_held": false,
+     "needle_height_over_pad_mm_at_release": null,
+     "lateral_distance_from_the_entry_mm": null,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": true,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "failed_recovered",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.381,
+     "error_deg": 4.063,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 59,
+     "control_steps": 60,
+     "violations": null
+    },
+    "needle_rose_mm": -4.0,
+    "place": null,
+    "recovery": {
+     "done": true,
+     "reason": "retention:not_held",
+     "from": "retention",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "tip_travel_mm": 148.1,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "recover:open_jaw",
+      "succeeded"
+     ],
+     [
+      "recover:lift",
+      "succeeded"
+     ],
+     [
+      "recover:return",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 4,
+    "summary": "The machine verdict was \"failed_recovered\" due to \"retention:not_held\". The operator confirmed the verdict with the decision \"confirm\". The recovery process was completed successfully, returning the arm to the start pose.",
+    "summary_source": "model",
+    "expected": "failed_recovered",
+    "as_expected": true,
+    "seconds": 14.6
+   },
+   {
+    "rollout": "Approach_11",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": true,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the needle slipped out during the lift"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "recover",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "failed_recovered",
+     "why": "retention:not_held",
+     "reach_tolerance_met": true,
+     "needle_held": false,
+     "needle_height_over_pad_mm_at_release": null,
+     "lateral_distance_from_the_entry_mm": null,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": true,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "failed_recovered",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.271,
+     "error_deg": 3.461,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 58,
+     "control_steps": 59,
+     "violations": null
+    },
+    "needle_rose_mm": -4.0,
+    "place": null,
+    "recovery": {
+     "done": true,
+     "reason": "retention:not_held",
+     "from": "retention",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "tip_travel_mm": 148.92,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "recover:open_jaw",
+      "succeeded"
+     ],
+     [
+      "recover:lift",
+      "succeeded"
+     ],
+     [
+      "recover:return",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 4,
+    "summary": "The machine verdict was \"failed_recovered\" due to \"retention:not_held\". The operator confirmed the verdict with the decision \"confirm\". The recovery process was completed successfully, returning the arm to the start pose.",
+    "summary_source": "model",
+    "expected": "failed_recovered",
+    "as_expected": true,
+    "seconds": 14.4
+   },
+   {
+    "rollout": "Approach_12",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": true,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the needle slipped out during the lift"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "recover",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "failed_recovered",
+     "why": "retention:not_held",
+     "reach_tolerance_met": true,
+     "needle_held": false,
+     "needle_height_over_pad_mm_at_release": null,
+     "lateral_distance_from_the_entry_mm": null,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": true,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "failed_recovered",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.288,
+     "error_deg": 6.995,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 58,
+     "control_steps": 59,
+     "violations": null
+    },
+    "needle_rose_mm": -4.0,
+    "place": null,
+    "recovery": {
+     "done": true,
+     "reason": "retention:not_held",
+     "from": "retention",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "tip_travel_mm": 149.93,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "recover:open_jaw",
+      "succeeded"
+     ],
+     [
+      "recover:lift",
+      "succeeded"
+     ],
+     [
+      "recover:return",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 4,
+    "summary": "The machine verdict was \"failed_recovered\" due to \"retention:not_held\". The operator confirmed the verdict with the decision \"confirm\". The recovery process was completed successfully, returning the arm to the start pose.",
+    "summary_source": "model",
+    "expected": "failed_recovered",
+    "as_expected": true,
+    "seconds": 14.6
+   },
+   {
+    "rollout": "Approach_13",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": true,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the needle slipped out during the lift"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "recover",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "failed_recovered",
+     "why": "retention:not_held",
+     "reach_tolerance_met": true,
+     "needle_held": false,
+     "needle_height_over_pad_mm_at_release": null,
+     "lateral_distance_from_the_entry_mm": null,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": true,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "failed_recovered",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.183,
+     "error_deg": 0.84,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 65,
+     "control_steps": 66,
+     "violations": null
+    },
+    "needle_rose_mm": -4.0,
+    "place": null,
+    "recovery": {
+     "done": true,
+     "reason": "retention:not_held",
+     "from": "retention",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "tip_travel_mm": 149.19,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "recover:open_jaw",
+      "succeeded"
+     ],
+     [
+      "recover:lift",
+      "succeeded"
+     ],
+     [
+      "recover:return",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 4,
+    "summary": "The machine verdict was \"failed_recovered\" due to \"retention:not_held\". The operator confirmed the decision. The recovery process was completed as preapproved.",
+    "summary_source": "model",
+    "expected": "failed_recovered",
+    "as_expected": true,
+    "seconds": 15.3
+   },
+   {
+    "rollout": "Approach_14",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": true
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the needle slipped out while it was held still"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "recover",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "failed_recovered",
+     "why": "retention:not_held",
+     "reach_tolerance_met": true,
+     "needle_held": false,
+     "needle_height_over_pad_mm_at_release": null,
+     "lateral_distance_from_the_entry_mm": null,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": true,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "failed_recovered",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.344,
+     "error_deg": 1.708,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 63,
+     "control_steps": 64,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": null,
+    "recovery": {
+     "done": true,
+     "reason": "retention:not_held",
+     "from": "retention",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "tip_travel_mm": 149.33,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "recover:open_jaw",
+      "succeeded"
+     ],
+     [
+      "recover:lift",
+      "succeeded"
+     ],
+     [
+      "recover:return",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 4,
+    "summary": "The machine verdict was \"failed_recovered\" due to \"retention:not_held\". The operator confirmed the verdict with the decision \"confirm\". The recovery process was completed successfully, returning the arm to the start pose.",
+    "summary_source": "model",
+    "expected": "failed_recovered",
+    "as_expected": true,
+    "seconds": 14.9
+   },
+   {
+    "rollout": "Approach_15",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": true
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the needle slipped out while it was held still"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "recover",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "failed_recovered",
+     "why": "retention:not_held",
+     "reach_tolerance_met": true,
+     "needle_held": false,
+     "needle_height_over_pad_mm_at_release": null,
+     "lateral_distance_from_the_entry_mm": null,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": true,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "failed_recovered",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.475,
+     "error_deg": 4.862,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 60,
+     "control_steps": 61,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": null,
+    "recovery": {
+     "done": true,
+     "reason": "retention:not_held",
+     "from": "retention",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "tip_travel_mm": 148.03,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "recover:open_jaw",
+      "succeeded"
+     ],
+     [
+      "recover:lift",
+      "succeeded"
+     ],
+     [
+      "recover:return",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 4,
+    "summary": "The machine verdict was \"failed_recovered\" due to \"retention:not_held\". The operator confirmed the verdict with the decision \"confirm\". The recovery process was completed successfully, returning the arm to the start pose.",
+    "summary_source": "model",
+    "expected": "failed_recovered",
+    "as_expected": true,
+    "seconds": 14.7
+   },
+   {
+    "rollout": "Approach_16",
+    "needle_declared": {
+     "grasp_succeeds": true,
+     "slips_on_lift": false,
+     "slips_while_holding": true
+    },
+    "needle_log": [
+     "the jaw closed on the needle",
+     "the needle slipped out while it was held still"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "recover",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "failed_recovered",
+     "why": "retention:not_held",
+     "reach_tolerance_met": true,
+     "needle_held": false,
+     "needle_height_over_pad_mm_at_release": null,
+     "lateral_distance_from_the_entry_mm": null,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": true,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "failed_recovered",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.394,
+     "error_deg": 4.644,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 60,
+     "control_steps": 61,
+     "violations": null
+    },
+    "needle_rose_mm": 14.0,
+    "place": null,
+    "recovery": {
+     "done": true,
+     "reason": "retention:not_held",
+     "from": "retention",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "tip_travel_mm": 146.3,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "recover:open_jaw",
+      "succeeded"
+     ],
+     [
+      "recover:lift",
+      "succeeded"
+     ],
+     [
+      "recover:return",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 4,
+    "summary": "The machine verdict was \"failed_recovered\" due to \"retention:not_held\". The operator confirmed the verdict with the decision \"confirm\". The recovery process was completed successfully, returning the arm to the start pose.",
+    "summary_source": "model",
+    "expected": "failed_recovered",
+    "as_expected": true,
+    "seconds": 14.5
+   },
+   {
+    "rollout": "Approach_17",
+    "needle_declared": {
+     "grasp_succeeds": false,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed and missed the needle"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "recover",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "failed_recovered",
+     "why": "retention:not_held",
+     "reach_tolerance_met": true,
+     "needle_held": false,
+     "needle_height_over_pad_mm_at_release": null,
+     "lateral_distance_from_the_entry_mm": null,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": true,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "failed_recovered",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.386,
+     "error_deg": 6.668,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 60,
+     "control_steps": 61,
+     "violations": null
+    },
+    "needle_rose_mm": 0.0,
+    "place": null,
+    "recovery": {
+     "done": true,
+     "reason": "retention:not_held",
+     "from": "retention",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "tip_travel_mm": 149.68,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "recover:open_jaw",
+      "succeeded"
+     ],
+     [
+      "recover:lift",
+      "succeeded"
+     ],
+     [
+      "recover:return",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 4,
+    "summary": "The machine verdict was \"failed_recovered\" due to \"retention:not_held\". The operator confirmed the verdict with the decision \"confirm\". The recovery process was completed successfully, returning the arm to the start pose.",
+    "summary_source": "model",
+    "expected": "failed_recovered",
+    "as_expected": true,
+    "seconds": 14.9
+   },
+   {
+    "rollout": "Approach_18",
+    "needle_declared": {
+     "grasp_succeeds": false,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed and missed the needle"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "recover",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "failed_recovered",
+     "why": "retention:not_held",
+     "reach_tolerance_met": true,
+     "needle_held": false,
+     "needle_height_over_pad_mm_at_release": null,
+     "lateral_distance_from_the_entry_mm": null,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": true,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "failed_recovered",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.407,
+     "error_deg": 6.252,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 59,
+     "control_steps": 60,
+     "violations": null
+    },
+    "needle_rose_mm": 0.0,
+    "place": null,
+    "recovery": {
+     "done": true,
+     "reason": "retention:not_held",
+     "from": "retention",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "tip_travel_mm": 149.18,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "recover:open_jaw",
+      "succeeded"
+     ],
+     [
+      "recover:lift",
+      "succeeded"
+     ],
+     [
+      "recover:return",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 4,
+    "summary": "The machine verdict was \"failed_recovered\" due to \"retention:not_held\". The operator confirmed the verdict with the decision \"confirm\". The recovery process was completed successfully, returning the arm to the start pose.",
+    "summary_source": "model",
+    "expected": "failed_recovered",
+    "as_expected": true,
+    "seconds": 14.5
+   },
+   {
+    "rollout": "Approach_19",
+    "needle_declared": {
+     "grasp_succeeds": false,
+     "slips_on_lift": false,
+     "slips_while_holding": false
+    },
+    "needle_log": [
+     "the jaw closed and missed the needle"
+    ],
+    "route": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "recover",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "paused_for": "operator_confirmation",
+    "machine_verdict": {
+     "machine": "failed_recovered",
+     "why": "retention:not_held",
+     "reach_tolerance_met": true,
+     "needle_held": false,
+     "needle_height_over_pad_mm_at_release": null,
+     "lateral_distance_from_the_entry_mm": null,
+     "motions_stopped_or_rejected": 0,
+     "stops": 0,
+     "recovery_ran": true,
+     "arm_at_start_pose": true,
+     "outcome_source": "declared"
+    },
+    "operator_verdict": {
+     "decision": "confirm",
+     "by": "op.lee",
+     "verdict": "failed_recovered",
+     "reason": null
+    },
+    "override_test": null,
+    "machine_verdict_kept_beside_an_override": true,
+    "reach": {
+     "error_mm": 0.217,
+     "error_deg": 5.917,
+     "status": "succeeded",
+     "reason": null,
+     "policy_actions": 58,
+     "control_steps": 59,
+     "violations": null
+    },
+    "needle_rose_mm": 0.0,
+    "place": null,
+    "recovery": {
+     "done": true,
+     "reason": "retention:not_held",
+     "from": "retention",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "tip_travel_mm": 148.56,
+    "motions": [
+     [
+      "stage:first_step",
+      "succeeded"
+     ],
+     [
+      "stage",
+      "succeeded"
+     ],
+     [
+      "reach:first_step",
+      "succeeded"
+     ],
+     [
+      "reach",
+      "succeeded"
+     ],
+     [
+      "grasp:descent:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:descent",
+      "succeeded"
+     ],
+     [
+      "grasp:close",
+      "succeeded"
+     ],
+     [
+      "grasp:lift:first_step",
+      "succeeded"
+     ],
+     [
+      "grasp:lift",
+      "succeeded"
+     ],
+     [
+      "recover:open_jaw",
+      "succeeded"
+     ],
+     [
+      "recover:lift",
+      "succeeded"
+     ],
+     [
+      "recover:return",
+      "succeeded"
+     ]
+    ],
+    "first_steps_checked": 4,
+    "summary": "The machine verdict was \"failed_recovered\" due to \"retention:not_held\". The operator confirmed the verdict with the decision \"confirm\". The recovery process was completed successfully, returning the arm to the start pose.",
+    "summary_source": "model",
+    "expected": "failed_recovered",
+    "as_expected": true,
+    "seconds": 14.7
+   }
+  ],
+  "rehearsal_rejection": {
+   "site": "site-a with the clearance over the pad raised to 6 mm",
+   "outcome": "rehearsal_rejected",
+   "rejected_in": [
+    "descent"
+   ],
+   "rule": [
+    "clearance"
+   ],
+   "operator_was_asked": false,
+   "motions_commanded": 0
+  }
+ }
+}

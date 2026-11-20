@@ -1,0 +1,55 @@
+{
+ "case": "verify_grasp_retention__slips_on_lift",
+ "runbook": "verify_grasp_retention",
+ "version": "1",
+ "content_hash": "a33c9a8e988a",
+ "outcome": {
+  "status": "recovered",
+  "stopped_at": "lifted",
+  "steps": [
+   {
+    "id": "before",
+    "tool": "observe_needle",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "close",
+    "tool": "set_jaw",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "gripped",
+    "tool": "observe_needle",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "lift",
+    "tool": "move_to_named_pose",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "lifted",
+    "tool": "observe_needle",
+    "ok": true,
+    "checks": [
+     false,
+     false
+    ],
+    "recovery": "completed"
+   }
+  ],
+  "facts_after": {}
+ }
+}

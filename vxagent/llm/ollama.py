@@ -8,7 +8,7 @@ from typing import Any
 
 import httpx
 
-from ..config import assert_egress_allowed, get_settings
+from ..config import EgressBlocked, assert_egress_allowed, get_settings
 from .base import LLMError, LLMResponse, ToolCall, Usage
 
 
@@ -46,7 +46,10 @@ class OllamaClient:
             body["tools"] = tools
         if json_schema is not None:
             body["format"] = json_schema
-        assert_egress_allowed(self.base_url)
+        try:
+            assert_egress_allowed(self.base_url)       # checked before a byte of the prompt leaves this machine
+        except EgressBlocked as exc:
+            raise LLMError("egress_blocked", str(exc)) from exc
         t0 = time.perf_counter()
         try:
             r = httpx.post(f"{self.base_url}/api/chat", json=body, timeout=timeout_s or self.default_timeout)
@@ -72,6 +75,18 @@ class OllamaClient:
         return LLMResponse(content=msg.get("content") or "", tool_calls=calls,
                            usage=Usage(data.get("prompt_eval_count") or 0, data.get("eval_count") or 0),
                            latency_ms=(time.perf_counter() - t0) * 1000, model=self.model)
+
+
+    def health(self, timeout_s: float = 2.0) -> dict[str, Any]:
+        """Whether the model server answers and whether this model is installed. No prompt is sent."""
+        try:
+            assert_egress_allowed(self.base_url)
+            r = httpx.get(f"{self.base_url}/api/tags", timeout=timeout_s)
+            names = [m.get("name", "") for m in r.json().get("models", [])]
+            return {"reachable": r.status_code == 200, "models_installed": len(names), "model": self.model,
+                    "model_installed": self.model in names}
+        except Exception as exc:                       # unreachable, blocked or not a model server
+            return {"reachable": False, "models_installed": 0, "model": self.model, "error": type(exc).__name__}
 
 
 def get_llm(model: str | None = None) -> OllamaClient:

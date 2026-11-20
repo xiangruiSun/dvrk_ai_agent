@@ -21,9 +21,12 @@ The repository holds two packages, in the same relation as the earlier pair
   [`requirements/`](requirements/00_overview.txt).
 
 **Status.** The retrieval system is built: all ten of its tasks, each measured on real data. Of the
-agents, tasks 01 (tool calling against a live system, with the kinematic twin and the safety filter),
-02 (configuration changes as checked patches) and 03 (the trial runtime), and the search tools, are
-built; agent tasks 04 to 15 are specified and not built.
+agents, tasks 01 to 10 are built and measured: tool calling against a live system with the kinematic
+twin and the safety filter, configuration changes as checked patches, the trial runtime, diagnosis and
+planning, runbooks, memory, MCP at the robot boundary, incident triage by several agents, the trial
+pipeline for a simulation-trained policy, and policy contracts with episode data checks. Tasks 11 to 15
+(the roles' consoles, the fleet, edge deployment, the evaluation gate) are being built. Each requirement
+file starts with an "As built" block that says what differs from its plan.
 
 ## Central rule
 
@@ -72,17 +75,10 @@ checked by a safety filter that rejects, and never clips, anything outside the e
 .venv/Scripts/python -m vxrag.cli serve          # http://127.0.0.1:8310, needs a key: vxrag.cli keys add
 ```
 
-## What is planned
+## What is being built
 
 | Task | Job | Requirement file |
 |---|---|---|
-| 04 | Fault diagnosis strategies; plans checked against robot state | `04_diagnostic_reasoning_and_planning.txt` |
-| 05 | Runbooks as versioned skills, loaded on demand | `05_runbooks_as_skills.txt` |
-| 06 | Site memory that expires; retrieval tools for every role (the tools exist, see `requirements/rag/R10`) | `06_memory_and_technical_retrieval.txt` |
-| 07 | MCP servers at the robot boundary | `07_mcp_robot_boundary.txt` |
-| 08 | Multi-agent incident triage | `08_multi_agent_incident_triage.txt` |
-| 09 | Trial pipeline: pre-flight, rehearsal, run, verdict | `09_trial_pipeline.txt` |
-| 10 | Policy interface contracts and episode data checks | `10_policy_onboarding_and_episode_data.txt` |
 | 11–13 | Operator, service engineer and safety lead, remote support and fleet | `11_…`, `12_…`, `13_…` |
 | 14 | Edge deployment beside the robot | `14_edge_deployment.txt` |
 | 15 | Console, evaluation gate and trade-offs | `15_console_evaluation_and_tradeoffs.txt` |

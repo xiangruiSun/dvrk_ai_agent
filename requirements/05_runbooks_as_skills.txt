@@ -2,6 +2,25 @@ TASK 05 - RUNBOOKS AS SKILLS
 =============================
 Covers: Lab 4; concept C13.
 
+As built
+--------
+Status: BUILT and verified. Results: verification/REPORT.md, section T05.
+Code: vxagent/skills/runbook.py, index.py; vxagent/robot/needle.py; runbooks/*.yaml;
+      tests/runbooks/*.json (reference traces), scripts/record_runbook_traces.py. Tests: tests/test_skills.py.
+Differences from the plan below:
+- Five runbooks are written: bring_up, rig_check, calibration_validity, verify_grasp_retention,
+  return_to_start. instrument_change and collect_calibration_samples belong to the service
+  engineer and arrive with task 12.
+- The twin has no needle. Procedures about the needle observe a DECLARED needle that follows the
+  arm (it is taken when the jaw closes at the grasp pose; it can be declared to slip on the lift
+  or while held). Everything it reports is a consequence of the declaration.
+- A step cites a documentation unit id of the retrieval corpus where one exists, and the paper's
+  framework otherwise. Only the first kind is checked by code.
+- In the atomic design the procedures are rendered from the same runbook files into the prompt,
+  so the three designs know the same procedure.
+Further limits: eight service requests, one model, one run each.
+(end of as built)
+
 Job
 ---
 A lab runs on procedures: bring the system up, check the rig, calibrate, verify a grasp, recover.

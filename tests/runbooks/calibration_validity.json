@@ -1,0 +1,29 @@
+{
+ "case": "calibration_validity",
+ "runbook": "calibration_validity",
+ "version": "1",
+ "content_hash": "4887abfff348",
+ "outcome": {
+  "status": "completed",
+  "stopped_at": null,
+  "steps": [
+   {
+    "id": "record",
+    "tool": "read_calibration_record",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "residual",
+    "tool": "calibration_residual",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   }
+  ],
+  "facts_after": {}
+ }
+}

@@ -2,6 +2,22 @@ TASK 08 - MULTI-AGENT INCIDENT TRIAGE
 ======================================
 Covers: Lab 6 (optional advanced); concepts C18, C19, C20.
 
+As built
+--------
+Status: BUILT and verified. Results: verification/REPORT.md, section T08.
+Code: vxagent/multi/ledger.py, team.py. Tests: tests/test_multi.py.
+Differences from the plan below:
+- The incidents are the injected faults of task 04 on recorded ROSMA motion. The AMBF scenes and
+  the paper's failure names are not used.
+- A specialist is one structured model call over its own check results; the ledger refuses a
+  claim whose number is not in the data or that points at another role's data.
+- The single agent gets every check result in one call and writes claims and finding together.
+- Debate: after the fan-out, the specialists who own the two best-supported causes each get one
+  call to test the other cause against their own data.
+- The runbook for a cause is a fixed table given to the lead, so that check is a lookup.
+Further limits: one run per incident and design; the specialists do not choose which checks to run.
+(end of as built)
+
 Job
 ---
 A trial failed. Produce an incident finding: the most likely cause class, the evidence for it,

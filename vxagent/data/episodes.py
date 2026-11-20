@@ -173,3 +173,22 @@ def window(ep: Episode, arm: str, signal: str, start_s: float, count: int) -> di
             "t_s": [round(float(x), 3) for x in t[sl]],
             "values": [[round(float(x) * scale, 3) for x in row] for row in values],
             "samples_returned": int(values.shape[0]), "samples_in_episode": int(len(t))}
+
+
+def raw_times(ep: Episode) -> np.ndarray:
+    """Time of every sample as the file gives it (milliseconds read correctly, nothing moved),
+    in seconds from the first sample. Used by the quality checks, which must see the record as
+    it is and not as the reader repaired it."""
+    times: list[float] = []
+    with ep.path.open(newline="", encoding="utf-8", errors="replace") as f:
+        reader = csv.reader(f)
+        width = len(next(reader))
+        for row in reader:
+            if len(row) < width or row[0].startswith("Date"):
+                continue
+            try:
+                times.append(_time(row[0]))
+            except ValueError:
+                continue
+    t = np.array(times, dtype=float)
+    return t - t[0]

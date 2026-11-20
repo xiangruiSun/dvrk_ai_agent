@@ -99,6 +99,9 @@ def _waypoints(rt: Runner) -> list[np.ndarray]:
 # ------------------------------------------------------------------------------ looking at the robot
 
 def needle_held(rt: Runner) -> bool:
+    model = rt.env.extras.get("needle")              # a declared needle that follows the arm (task 09)
+    if model is not None:
+        return bool(model.held)
     d = rt.state.get("data", {})
     if not d.get("grasp_done") or d.get("released"):
         return False

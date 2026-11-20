@@ -31,6 +31,8 @@ class KinematicTwin:
         # Where the arm is must outlive the process that commands it, as it does for a real arm.
         # With `persist` every change of state is written to that file (see restore()).
         self._persist = Path(persist) if persist else None
+        # Called with the new state after every change. The declared needle model listens here.
+        self.listeners: list[Any] = []
         self._lock = threading.RLock()
         self._home_q = chain.clamp(home_q)
         self._q = self._home_q.copy()
@@ -49,6 +51,10 @@ class KinematicTwin:
     def _bump(self) -> None:
         self._seq += 1
         self._stamp = time.time()
+        if self.listeners:
+            now = self.state()
+            for fn in self.listeners:
+                fn(now)
         if self._persist is not None:
             body = json.dumps({"q": [float(x) for x in self._q], "jaw": self._jaw, "powered": self._powered,
                                "enabled": self._enabled, "homed": self._homed, "fault": self._fault,
@@ -207,6 +213,14 @@ class KinematicTwin:
             if message:
                 self._enabled = False
                 self._active = None
+            self._bump()
+
+    def inject_power(self, on: bool) -> None:
+        """INJECTED: the arm's controller is switched off (or back on)."""
+        with self._lock:
+            self._powered = on
+            if not on:
+                self._enabled, self._homed, self._active = False, False, None
             self._bump()
 
     def perturb(self, dq: Any) -> None:

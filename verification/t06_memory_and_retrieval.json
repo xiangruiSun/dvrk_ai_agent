@@ -1,0 +1,423 @@
+{
+ "task": "t06_memory_and_retrieval",
+ "ran": "2026-11-20 04:53:22",
+ "model": "qwen3:14b",
+ "site": "site-a",
+ "b_site_filter_through_the_tools": {
+  "tool": "search_docs, called through the agents' tool executor; no model",
+  "questions": "development queries of the retrieval evaluation (the locked test set is not touched)",
+  "by_site": {
+   "Classic": {
+    "questions": 80,
+    "passages_returned": 400,
+    "passages_written_for_the_other_generation": 0,
+    "passages_marked_as_not_applying": 0
+   },
+   "Si": {
+    "questions": 80,
+    "passages_returned": 400,
+    "passages_written_for_the_other_generation": 0,
+    "passages_marked_as_not_applying": 0
+   }
+  },
+  "questions_whose_results_differ_between_the_two_sites": 31
+ },
+ "c_questions_about_other_systems": {
+  "note": "the search has no score threshold: it returns its best passages for any wording, so refusing is left to the agent and its guard",
+  "other_systems": 10,
+  "refused": 8,
+  "answered_with_a_citation": 2,
+  "searches_that_returned_passages_anyway": 9,
+  "dvrk_controls": 4,
+  "dvrk_controls_answered_with_a_citation": 4,
+  "dvrk_controls_wrongly_refused": 0,
+  "runs": [
+   {
+    "kind": "another system",
+    "question": "How do I calibrate the tool centre point on a UR5 teach pendant?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": false,
+    "says_nothing_was_found": true,
+    "refused": true,
+    "stop_reason": "final_answer",
+    "answer": "The provided passages do not address how to calibrate the tool centre point on a UR5 teach pendant. The information in the passages pertains to the dVRK system's calibration procedures, not the UR5 teach pendant."
+   },
+   {
+    "kind": "another system",
+    "question": "What is the payload limit of a KUKA LBR iiwa 14?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": false,
+    "says_nothing_was_found": true,
+    "refused": true,
+    "stop_reason": "final_answer",
+    "answer": "The passages returned do not answer the question about the payload limit of a KUKA LBR iiwa 14."
+   },
+   {
+    "kind": "another system",
+    "question": "How do I home a Franka Emika Panda after an emergency stop?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": true,
+    "says_nothing_was_found": false,
+    "refused": false,
+    "stop_reason": "final_answer",
+    "answer": "To home a Franka Emika Panda after an emergency stop, use the per-arm reset sequence provided by the control panel. This sequence disables, enables, and homes the arm [doc:software/video-and-data/dvrk_console/control-panel#operator-functions]."
+   },
+   {
+    "kind": "another system",
+    "question": "Which firmware does the Kinova Gen3 arm need for torque control?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": false,
+    "says_nothing_was_found": true,
+    "refused": true,
+    "stop_reason": "final_answer",
+    "answer": "The provided passages do not answer the question about the firmware required for torque control on the Kinova Gen3 arm."
+   },
+   {
+    "kind": "another system",
+    "question": "How do I reset the collision detection on an ABB YuMi?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": false,
+    "says_nothing_was_found": true,
+    "refused": true,
+    "stop_reason": "final_answer",
+    "answer": "No relevant information was found in the documentation about resetting collision detection on an ABB YuMi."
+   },
+   {
+    "kind": "another system",
+    "question": "What is the baud rate of the Dynamixel MX-64 bus?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": false,
+    "says_nothing_was_found": true,
+    "refused": true,
+    "stop_reason": "final_answer_unverified",
+    "answer": "The search did not return any information about the baud rate of the Dynamixel MX-64 bus.\n\n[Not verified against tool results: You searched and received passages, but the answer cites none. Put the id of the passage each statement comes from in square brackets, or say that the passages do not answer the question.]"
+   },
+   {
+    "kind": "another system",
+    "question": "How do I enable freedrive mode on a UR10e?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": false,
+    "says_nothing_was_found": true,
+    "refused": true,
+    "stop_reason": "final_answer",
+    "answer": "The passages do not answer the question."
+   },
+   {
+    "kind": "another system",
+    "question": "Where is the brake release on a Fanuc CRX-10iA?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": true,
+    "says_nothing_was_found": false,
+    "refused": false,
+    "stop_reason": "final_answer",
+    "answer": "The brake release for a Fanuc CRX-10iA is not directly mentioned in the provided documentation. However, the procedure for releasing brakes on an ECM (which may be similar to the Fanuc CRX-10iA) involves pressing the \"Release button for the brakes\" [doc:calibration/Classic/ecm-brakes#procedure]."
+   },
+   {
+    "kind": "another system",
+    "question": "How do I update the controller of a Sawyer robot from Rethink Robotics?",
+    "passages_returned_by_the_search": 0,
+    "cites_a_passage": false,
+    "says_nothing_was_found": true,
+    "refused": true,
+    "stop_reason": "final_answer",
+    "answer": "I cannot find any information about updating the controller of a Sawyer robot from Rethink Robotics in the provided documentation or threads."
+   },
+   {
+    "kind": "another system",
+    "question": "What is the repeatability of a Stäubli TX2-60?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": false,
+    "says_nothing_was_found": true,
+    "refused": true,
+    "stop_reason": "final_answer",
+    "answer": "The passages returned do not answer the question about the repeatability of a Stäubli TX2-60."
+   },
+   {
+    "kind": "dVRK (control)",
+    "question": "How are the potentiometers of a PSM calibrated?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": true,
+    "says_nothing_was_found": false,
+    "refused": false,
+    "stop_reason": "final_answer",
+    "answer": "The potentiometers of a PSM are calibrated by holding the arm in the zero position, either with the arm powered or not. When powered, the GUI arm widget can be used to control the joints' position and bring the arm close to the zero position. This calibration process is described in the documentation [doc:calibration/Classic/potentiometers#introduction]."
+   },
+   {
+    "kind": "dVRK (control)",
+    "question": "What does the emergency stop chain of the dVRK controllers look like?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": true,
+    "says_nothing_was_found": false,
+    "refused": false,
+    "stop_reason": "final_answer",
+    "answer": "The emergency stop chain of the dVRK controllers connects all controller boxes in a configured system using standardized 4-pin and 5-pin safety connectors. The monolithic e-stop chain is built to connect to a specific number of controllers, such as two or four controller boxes, and uses 4-pin connectors. If the controller box has a 5-pin connector, it is better to use that to connect the GND as well [doc:setup/estop#monolithic-e-stop-chain-not-recommended]."
+   },
+   {
+    "kind": "dVRK (control)",
+    "question": "How is the base frame of an arm set in the system configuration file?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": true,
+    "says_nothing_was_found": false,
+    "refused": false,
+    "stop_reason": "final_answer",
+    "answer": "The base frame of an arm is set in the system configuration file using the following parameters:\n\n1. `base_frame` in `dvrk-system-arm.schema.json` is an object that represents the base frame prepended to the forward kinematics [schema:dvrk-system-arm#base_frame].\n2. `base_frame.interface` in `dvrk-system-arm.schema.json` is a string that specifies the name of the required interface used to set the base frame on the arm using the function `set_base_frame` [schema:dvrk-system-arm#base_frame.interface].\n3. `base_frame.component` in `dvrk-system-arm.schema.json` is a string that specifies the name of the component that can provide the base frame at runtime [schema:dvrk-system-arm#base_frame.component]."
+   },
+   {
+    "kind": "dVRK (control)",
+    "question": "What is the tool detection setting of a PSM?",
+    "passages_returned_by_the_search": 4,
+    "cites_a_passage": true,
+    "says_nothing_was_found": false,
+    "refused": false,
+    "stop_reason": "final_answer",
+    "answer": "The tool detection setting of a PSM can be set to `AUTOMATIC`, `MANUAL`, or `FIXED` [doc:configuration/arm#instrument-detection]."
+   }
+  ]
+ },
+ "d_similar_episodes": {
+  "episodes": 12,
+  "features": [
+   "duration_s",
+   "psm1_path_mm",
+   "psm2_path_mm",
+   "psm1_mean_speed",
+   "psm1_peak_speed",
+   "psm2_mean_speed",
+   "psm1_extent_mm",
+   "psm2_extent_mm",
+   "psm1_pauses",
+   "psm2_share_of_travel"
+  ],
+  "nearest_neighbour_is_the_same_task": "10/12",
+  "expected_by_chance": 0.273,
+  "tasks": {
+   "Pea on a Peg": 4,
+   "Post and Sleeve": 4,
+   "Wire Chaser I": 4
+  },
+  "detail": [
+   {
+    "episode": "X01_Pea_on_a_Peg_01",
+    "nearest": "X02_Pea_on_a_Peg_01",
+    "same_task": true,
+    "distance": 2.677,
+    "closest_in": [
+     "psm2_path_mm",
+     "psm2_share_of_travel",
+     "psm2_mean_speed"
+    ]
+   },
+   {
+    "episode": "X01_Post_and_Sleeve_01",
+    "nearest": "X04_Post_and_Sleeve_01",
+    "same_task": true,
+    "distance": 2.261,
+    "closest_in": [
+     "psm2_share_of_travel",
+     "psm1_path_mm",
+     "psm1_extent_mm"
+    ]
+   },
+   {
+    "episode": "X01_Wire_Chaser_I_01",
+    "nearest": "X01_Post_and_Sleeve_01",
+    "same_task": false,
+    "distance": 2.747,
+    "closest_in": [
+     "psm2_share_of_travel",
+     "psm2_extent_mm",
+     "psm2_mean_speed"
+    ]
+   },
+   {
+    "episode": "X02_Pea_on_a_Peg_01",
+    "nearest": "X03_Pea_on_a_Peg_01",
+    "same_task": true,
+    "distance": 1.717,
+    "closest_in": [
+     "psm1_path_mm",
+     "psm2_path_mm",
+     "psm2_share_of_travel"
+    ]
+   },
+   {
+    "episode": "X02_Post_and_Sleeve_01",
+    "nearest": "X04_Post_and_Sleeve_01",
+    "same_task": true,
+    "distance": 1.879,
+    "closest_in": [
+     "psm1_extent_mm",
+     "psm1_path_mm",
+     "duration_s"
+    ]
+   },
+   {
+    "episode": "X02_Wire_Chaser_I_01",
+    "nearest": "X04_Wire_Chaser_I_01",
+    "same_task": true,
+    "distance": 1.737,
+    "closest_in": [
+     "psm2_share_of_travel",
+     "psm2_path_mm",
+     "psm1_pauses"
+    ]
+   },
+   {
+    "episode": "X03_Pea_on_a_Peg_01",
+    "nearest": "X02_Pea_on_a_Peg_01",
+    "same_task": true,
+    "distance": 1.717,
+    "closest_in": [
+     "psm1_path_mm",
+     "psm2_path_mm",
+     "psm2_share_of_travel"
+    ]
+   },
+   {
+    "episode": "X03_Post_and_Sleeve_01",
+    "nearest": "X02_Post_and_Sleeve_01",
+    "same_task": true,
+    "distance": 3.265,
+    "closest_in": [
+     "psm1_mean_speed",
+     "psm1_pauses",
+     "psm1_extent_mm"
+    ]
+   },
+   {
+    "episode": "X03_Wire_Chaser_I_01",
+    "nearest": "X01_Pea_on_a_Peg_01",
+    "same_task": false,
+    "distance": 3.541,
+    "closest_in": [
+     "psm2_mean_speed",
+     "psm1_pauses",
+     "psm2_share_of_travel"
+    ]
+   },
+   {
+    "episode": "X04_Pea_on_a_Peg_01",
+    "nearest": "X03_Pea_on_a_Peg_01",
+    "same_task": true,
+    "distance": 1.832,
+    "closest_in": [
+     "psm1_pauses",
+     "psm2_mean_speed",
+     "psm2_share_of_travel"
+    ]
+   },
+   {
+    "episode": "X04_Post_and_Sleeve_01",
+    "nearest": "X02_Post_and_Sleeve_01",
+    "same_task": true,
+    "distance": 1.879,
+    "closest_in": [
+     "psm1_extent_mm",
+     "psm1_path_mm",
+     "duration_s"
+    ]
+   },
+   {
+    "episode": "X04_Wire_Chaser_I_01",
+    "nearest": "X02_Wire_Chaser_I_01",
+    "same_task": true,
+    "distance": 1.737,
+    "closest_in": [
+     "psm2_share_of_travel",
+     "psm2_path_mm",
+     "psm1_pauses"
+    ]
+   }
+  ]
+ },
+ "e_site_memory": {
+  "written": {
+   "by": "the executor's hook after calibration_residual returned; no model text is stored",
+   "tools_called_by_the_agent": [
+    "read_calibration_record",
+    "calibration_residual"
+   ],
+   "facts_active_after": 1,
+   "fact": {
+    "fact_id": "fact:3",
+    "subject": "calibration",
+    "text": "camera-to-robot calibration cal-58d8: residual on held-out points 0.29 mm mean, 0.59 mm max (acceptance 1.0 mm)",
+    "value": {
+     "calibration_id": "cal-58d8",
+     "mean_mm": 0.29,
+     "max_mm": 0.59,
+     "acceptance_mm": 1.0,
+     "within_acceptance": true
+    },
+    "source": "calibration_residual in run run_db15a92f9f0d",
+    "recorded": "2026-11-20 04:54"
+   }
+  },
+  "recalled_in_a_new_session": {
+   "asked_by": "op.verify",
+   "tools_called": [
+    "recall_site_memory"
+   ],
+   "measured_again": false,
+   "value_in_memory_mm": 0.29,
+   "value_stated_mm": 0.29,
+   "correct": true,
+   "answer": "The mean residual of the camera-to-robot calibration when it was last measured was 0.29 mm. ANSWER: 0.29 mm."
+  },
+  "after_the_event": {
+   "event": {
+    "event_id": 3,
+    "kind": "ecm_moved",
+    "facts_expired": [
+     3
+    ]
+   },
+   "calibration_record_reported_valid": false,
+   "facts_active": 0,
+   "facts_expired": 1,
+   "answer_says_expired": true,
+   "answer_names_the_event": true,
+   "answer": "The camera-to-robot calibration residual is not current. It has expired since the event \"ecm_moved\" occurred. The calibration record indicates that it is no longer valid, and the residual values would need to be measured again."
+  },
+  "other_site_operator": {
+   "recall_tool": "unauthorized",
+   "context_block_chars": 0
+  },
+  "remote_support": {
+   "context_block_chars": 0
+  }
+ },
+ "f_working_context": {
+  "recordings": 8,
+  "runs": [
+   {
+    "run": "small budget",
+    "context_budget_tokens": 1500,
+    "history_tokens_at_the_end": 2258,
+    "largest_context_sent_tokens": 1644,
+    "model_calls": 10,
+    "tool_calls": 9,
+    "stop_reason": "final_answer",
+    "sum_computed_by_code_s": 964.968,
+    "sum_stated_s": 849.1261,
+    "correct": false,
+    "answer_tail": "ANSWER: 849.1261 s",
+    "prompt_tokens_used": 30243
+   },
+   {
+    "run": "large budget",
+    "context_budget_tokens": 12000,
+    "history_tokens_at_the_end": 2257,
+    "largest_context_sent_tokens": 2376,
+    "model_calls": 10,
+    "tool_calls": 9,
+    "stop_reason": "final_answer",
+    "sum_computed_by_code_s": 964.968,
+    "sum_stated_s": 964.968,
+    "correct": true,
+    "answer_tail": "ANSWER: 964.968 s",
+    "prompt_tokens_used": 34937
+   }
+  ]
+ }
+}

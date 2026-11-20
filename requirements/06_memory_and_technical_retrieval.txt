@@ -3,6 +3,24 @@ TASK 06 - MEMORY AND TECHNICAL RETRIEVAL
 Covers: concept C14 (working context, short-term history, long-term memory, retrieval,
 persistence).
 
+As built
+--------
+Status: BUILT and verified. Results: verification/REPORT.md, section T06 (and the RAG sections for Part A).
+Code: vxagent/memory/site.py, stores.py, working.py; vxagent/tools/memory.py; vxagent/data/similar.py.
+Tests: tests/test_memory.py.
+Differences from the plan below:
+- R6: the search has no score threshold. It returns its best passages for any wording, so
+  refusing a question about another robot is left to the agent and its grounding guard, and the
+  verification counts how often that works.
+- R7: the recordings have no jaw signal, so there are no jaw events among the episode features.
+  Twelve recordings are local; nearest-neighbour agreement is reported against chance.
+- R12: recording an event that ends a calibration also marks the calibration record itself
+  invalid. A first run showed the remembered fact expired while the record still read valid.
+- R9: the robot's current state can be put in front of the model on every turn. It is placed
+  beside the task, not at the end: placed last, the model answered it instead of the question.
+Further limits: site facts are written for one kind of tool result so far (a calibration residual).
+(end of as built)
+
 Job
 ---
 The knowledge here is engineering knowledge: documentation that differs by hardware generation

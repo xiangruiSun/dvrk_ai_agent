@@ -1,0 +1,1028 @@
+{
+ "task": "t10_policy_and_data",
+ "ran": "2026-11-20 05:00:19",
+ "model": "qwen3:14b",
+ "surgicai_tree": "b7ce5465ec",
+ "demonstrations_read_with": "a restricted unpickler that rebuilds arrays and plain containers only",
+ "a_contract_extraction": {
+  "files_given": {
+   "RL/Approach_env.py": 6738,
+   "RL/subtask_env.py": 10000
+  },
+  "fields": 17,
+  "model_calls": 1,
+  "tokens": 5299,
+  "error": null,
+  "fields_with_a_quotation_found_in_the_file": 0,
+  "fields_emptied_because_the_quotation_was_not_in_the_file": 0,
+  "fields_left_for_a_person": [
+   "observation_size",
+   "observation_layout",
+   "observation_translation_unit",
+   "observation_rotation_unit",
+   "pose_convention",
+   "rotation_convention",
+   "command_frame",
+   "action_size",
+   "action_low",
+   "action_high",
+   "action_meaning",
+   "action_step_size",
+   "max_episode_steps",
+   "success_translation_threshold",
+   "success_rotation_threshold_deg",
+   "control_rate_hz",
+   "training_start_range"
+  ],
+  "against_the_reference": {
+   "missed: left empty although the files state it": 14,
+   "rightly left for a person": 3
+  },
+  "rows": [
+   {
+    "field": "observation_size",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "observation_layout",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "observation_translation_unit",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "observation_rotation_unit",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "pose_convention",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "rotation_convention",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "command_frame",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "action_size",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "action_low",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "action_high",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "action_meaning",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "action_step_size",
+    "stated_in_the_files": false,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "rightly left for a person"
+   },
+   {
+    "field": "max_episode_steps",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "success_translation_threshold",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "success_rotation_threshold_deg",
+    "stated_in_the_files": true,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "missed: left empty although the files state it"
+   },
+   {
+    "field": "control_rate_hz",
+    "stated_in_the_files": false,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "rightly left for a person"
+   },
+   {
+    "field": "training_start_range",
+    "stated_in_the_files": false,
+    "value": null,
+    "status": "not stated in the sources",
+    "offered_by_the_model": null,
+    "file": null,
+    "quote": null,
+    "outcome": "rightly left for a person"
+   }
+  ],
+  "filled_from_the_demonstrations": {
+   "step_size_estimated_per_component": [
+    0.15,
+    0.15,
+    0.15,
+    0.05236,
+    0.05236,
+    0.05236,
+    0.05
+   ],
+   "largest_recorded_step": 0.1961,
+   "largest_recorded_rotation_step_deg": 2.698,
+   "distinct_start_to_goal_displacements": 2
+  }
+ },
+ "contract": {
+  "name": "SurgicAI Approach, expert demonstrations",
+  "version": "b7ce5465ec",
+  "source_simulator": "Surgical Robotics Challenge (AMBF)",
+  "observation_size": 21,
+  "translation_unit": "cm",
+  "rotation_unit": "rad",
+  "rotation_convention": "RPY",
+  "action_size": 7,
+  "action_low": -1.0,
+  "action_high": 1.0,
+  "step_translation": 0.15000000030347133,
+  "step_rotation_rad": 0.052359879912699976,
+  "step_jaw": 0.050000011920928955,
+  "max_episode_steps": 200,
+  "success_translation": 0.5,
+  "success_rotation_deg": 30.0,
+  "control_rate_hz": null,
+  "start_to_goal_min": [
+   -2.238534688949585,
+   -0.25582772493362427,
+   -4.0802717208862305
+  ],
+  "start_to_goal_max": [
+   -2.238358736038208,
+   -0.255756676197052,
+   -4.080177307128906
+  ],
+  "provenance": {
+   "observation_size": "not stated in the sources",
+   "observation_layout": "not stated in the sources",
+   "observation_translation_unit": "not stated in the sources",
+   "observation_rotation_unit": "not stated in the sources",
+   "pose_convention": "not stated in the sources",
+   "rotation_convention": "not stated in the sources",
+   "command_frame": "not stated in the sources",
+   "action_size": "not stated in the sources",
+   "action_low": "not stated in the sources",
+   "action_high": "not stated in the sources",
+   "action_meaning": "not stated in the sources",
+   "action_step_size": "not stated in the sources",
+   "max_episode_steps": "not stated in the sources",
+   "success_translation_threshold": "not stated in the sources",
+   "success_rotation_threshold_deg": "not stated in the sources",
+   "control_rate_hz": "not stated in the sources",
+   "training_start_range": "not stated in the sources",
+   "step sizes": "estimated from the demonstrations: median of (next pose - pose) / action",
+   "start_to_goal range": "measured on the demonstrations"
+  }
+ },
+ "b_compatibility": {
+  "Classic PSM (site-a)": {
+   "verdict": "compatible within a stated sub-region",
+   "sub_region": {
+    "start_offset_from_site_start_mm": [
+     37.4,
+     12.6,
+     18.8
+    ],
+    "goal": "pregrasp",
+    "tolerance_mm": 5.0
+   },
+   "items": [
+    {
+     "check": "the arm's pose can be read at the site",
+     "ok": true,
+     "detail": "measured pose of the arm, from the controller",
+     "blocks": true
+    },
+    {
+     "check": "the goal pose can be produced at the site",
+     "ok": null,
+     "detail": "the goal is the needle's grasp pose; this site has it as a declared pose, not as a measurement",
+     "blocks": false
+    },
+    {
+     "check": "the translation unit is a length the site can convert",
+     "ok": true,
+     "detail": "contract says 'cm'",
+     "blocks": true
+    },
+    {
+     "check": "the magnitude of the data agrees with the declared unit",
+     "ok": true,
+     "detail": "median distance of the tool tip from the base would be 127 mm",
+     "blocks": true
+    },
+    {
+     "check": "the policy's control rate is stated",
+     "ok": null,
+     "detail": "the sources do not state it; the site runs at 10 Hz and the trial steps the policy at that rate",
+     "blocks": false
+    },
+    {
+     "check": "one action on one axis stays inside the step limit near the needle",
+     "ok": true,
+     "detail": "1.50 mm and 3.00 deg per action; limit 2 mm and 3 deg",
+     "blocks": true
+    },
+    {
+     "check": "an action at its bound on all three axes stays inside the step limit near the needle",
+     "ok": false,
+     "detail": "2.60 mm against 2 mm: such an action would be rejected by the safety filter, not clipped",
+     "blocks": false
+    },
+    {
+     "check": "the site's start -> pregrasp lies in the trained start-to-goal range",
+     "ok": false,
+     "detail": "site displacement [15.0, 10.0, -22.0] mm; trained [-22.4, -2.6, -40.8] to [-22.4, -2.6, -40.8] mm; 43.7 mm outside",
+     "blocks": false
+    },
+    {
+     "check": "a trained start and goal, anchored on the site's grasp pose, are accepted by the safety filter",
+     "ok": true,
+     "detail": "accepted",
+     "blocks": true
+    }
+   ],
+   "failing": [
+    "an action at its bound on all three axes stays inside the step limit near the needle",
+    "the site's start -> pregrasp lies in the trained start-to-goal range"
+   ],
+   "open": [
+    "the goal pose can be produced at the site",
+    "the policy's control rate is stated"
+   ]
+  },
+  "Si PSM, same poses": {
+   "verdict": "compatible within a stated sub-region",
+   "sub_region": {
+    "start_offset_from_site_start_mm": [
+     37.4,
+     12.6,
+     18.8
+    ],
+    "goal": "pregrasp",
+    "tolerance_mm": 5.0
+   },
+   "items": [
+    {
+     "check": "the arm's pose can be read at the site",
+     "ok": true,
+     "detail": "measured pose of the arm, from the controller",
+     "blocks": true
+    },
+    {
+     "check": "the goal pose can be produced at the site",
+     "ok": null,
+     "detail": "the goal is the needle's grasp pose; this site has it as a declared pose, not as a measurement",
+     "blocks": false
+    },
+    {
+     "check": "the translation unit is a length the site can convert",
+     "ok": true,
+     "detail": "contract says 'cm'",
+     "blocks": true
+    },
+    {
+     "check": "the magnitude of the data agrees with the declared unit",
+     "ok": true,
+     "detail": "median distance of the tool tip from the base would be 127 mm",
+     "blocks": true
+    },
+    {
+     "check": "the policy's control rate is stated",
+     "ok": null,
+     "detail": "the sources do not state it; the site runs at 10 Hz and the trial steps the policy at that rate",
+     "blocks": false
+    },
+    {
+     "check": "one action on one axis stays inside the step limit near the needle",
+     "ok": true,
+     "detail": "1.50 mm and 3.00 deg per action; limit 2 mm and 3 deg",
+     "blocks": true
+    },
+    {
+     "check": "an action at its bound on all three axes stays inside the step limit near the needle",
+     "ok": false,
+     "detail": "2.60 mm against 2 mm: such an action would be rejected by the safety filter, not clipped",
+     "blocks": false
+    },
+    {
+     "check": "the site's start -> pregrasp lies in the trained start-to-goal range",
+     "ok": false,
+     "detail": "site displacement [15.0, 10.0, -22.0] mm; trained [-22.4, -2.6, -40.8] to [-22.4, -2.6, -40.8] mm; 43.7 mm outside",
+     "blocks": false
+    },
+    {
+     "check": "a trained start and goal, anchored on the site's grasp pose, are accepted by the safety filter",
+     "ok": true,
+     "detail": "accepted",
+     "blocks": true
+    }
+   ],
+   "failing": [
+    "an action at its bound on all three axes stays inside the step limit near the needle",
+    "the site's start -> pregrasp lies in the trained start-to-goal range"
+   ],
+   "open": [
+    "the goal pose can be produced at the site",
+    "the policy's control rate is stated"
+   ]
+  },
+  "site-a with the needle 20 mm further out": {
+   "verdict": "not compatible",
+   "sub_region": null,
+   "items": [
+    {
+     "check": "the arm's pose can be read at the site",
+     "ok": true,
+     "detail": "measured pose of the arm, from the controller",
+     "blocks": true
+    },
+    {
+     "check": "the goal pose can be produced at the site",
+     "ok": null,
+     "detail": "the goal is the needle's grasp pose; this site has it as a declared pose, not as a measurement",
+     "blocks": false
+    },
+    {
+     "check": "the translation unit is a length the site can convert",
+     "ok": true,
+     "detail": "contract says 'cm'",
+     "blocks": true
+    },
+    {
+     "check": "the magnitude of the data agrees with the declared unit",
+     "ok": true,
+     "detail": "median distance of the tool tip from the base would be 127 mm",
+     "blocks": true
+    },
+    {
+     "check": "the policy's control rate is stated",
+     "ok": null,
+     "detail": "the sources do not state it; the site runs at 10 Hz and the trial steps the policy at that rate",
+     "blocks": false
+    },
+    {
+     "check": "one action on one axis stays inside the step limit near the needle",
+     "ok": true,
+     "detail": "1.50 mm and 3.00 deg per action; limit 2 mm and 3 deg",
+     "blocks": true
+    },
+    {
+     "check": "an action at its bound on all three axes stays inside the step limit near the needle",
+     "ok": false,
+     "detail": "2.60 mm against 2 mm: such an action would be rejected by the safety filter, not clipped",
+     "blocks": false
+    },
+    {
+     "check": "the site's start -> pregrasp lies in the trained start-to-goal range",
+     "ok": false,
+     "detail": "site displacement [35.0, 10.0, -22.0] mm; trained [-22.4, -2.6, -40.8] to [-22.4, -2.6, -40.8] mm; 61.7 mm outside",
+     "blocks": false
+    },
+    {
+     "check": "a trained start and goal, anchored on the site's grasp pose, are accepted by the safety filter",
+     "ok": false,
+     "detail": "start: workspace; goal: ok",
+     "blocks": true
+    }
+   ],
+   "failing": [
+    "an action at its bound on all three axes stays inside the step limit near the needle",
+    "the site's start -> pregrasp lies in the trained start-to-goal range",
+    "a trained start and goal, anchored on the site's grasp pose, are accepted by the safety filter"
+   ],
+   "open": [
+    "the goal pose can be produced at the site",
+    "the policy's control rate is stated"
+   ]
+  },
+  "site-a with the near step tightened to 1 mm": {
+   "verdict": "not compatible",
+   "sub_region": null,
+   "items": [
+    {
+     "check": "the arm's pose can be read at the site",
+     "ok": true,
+     "detail": "measured pose of the arm, from the controller",
+     "blocks": true
+    },
+    {
+     "check": "the goal pose can be produced at the site",
+     "ok": null,
+     "detail": "the goal is the needle's grasp pose; this site has it as a declared pose, not as a measurement",
+     "blocks": false
+    },
+    {
+     "check": "the translation unit is a length the site can convert",
+     "ok": true,
+     "detail": "contract says 'cm'",
+     "blocks": true
+    },
+    {
+     "check": "the magnitude of the data agrees with the declared unit",
+     "ok": true,
+     "detail": "median distance of the tool tip from the base would be 127 mm",
+     "blocks": true
+    },
+    {
+     "check": "the policy's control rate is stated",
+     "ok": null,
+     "detail": "the sources do not state it; the site runs at 10 Hz and the trial steps the policy at that rate",
+     "blocks": false
+    },
+    {
+     "check": "one action on one axis stays inside the step limit near the needle",
+     "ok": false,
+     "detail": "1.50 mm and 3.00 deg per action; limit 1 mm and 3 deg",
+     "blocks": true
+    },
+    {
+     "check": "an action at its bound on all three axes stays inside the step limit near the needle",
+     "ok": false,
+     "detail": "2.60 mm against 1 mm: such an action would be rejected by the safety filter, not clipped",
+     "blocks": false
+    },
+    {
+     "check": "the site's start -> pregrasp lies in the trained start-to-goal range",
+     "ok": false,
+     "detail": "site displacement [15.0, 10.0, -22.0] mm; trained [-22.4, -2.6, -40.8] to [-22.4, -2.6, -40.8] mm; 43.7 mm outside",
+     "blocks": false
+    },
+    {
+     "check": "a trained start and goal, anchored on the site's grasp pose, are accepted by the safety filter",
+     "ok": true,
+     "detail": "accepted",
+     "blocks": true
+    }
+   ],
+   "failing": [
+    "one action on one axis stays inside the step limit near the needle",
+    "an action at its bound on all three axes stays inside the step limit near the needle",
+    "the site's start -> pregrasp lies in the trained start-to-goal range"
+   ],
+   "open": [
+    "the goal pose can be produced at the site",
+    "the policy's control rate is stated"
+   ]
+  },
+  "site-a, contract declaring metres": {
+   "verdict": "not compatible",
+   "sub_region": null,
+   "items": [
+    {
+     "check": "the arm's pose can be read at the site",
+     "ok": true,
+     "detail": "measured pose of the arm, from the controller",
+     "blocks": true
+    },
+    {
+     "check": "the goal pose can be produced at the site",
+     "ok": null,
+     "detail": "the goal is the needle's grasp pose; this site has it as a declared pose, not as a measurement",
+     "blocks": false
+    },
+    {
+     "check": "the translation unit is a length the site can convert",
+     "ok": true,
+     "detail": "contract says 'm'",
+     "blocks": true
+    },
+    {
+     "check": "the magnitude of the data agrees with the declared unit",
+     "ok": false,
+     "detail": "median distance of the tool tip from the base would be 12665 mm; a dVRK PSM works between 20 and 500 mm: the unit is probably wrong",
+     "blocks": true
+    },
+    {
+     "check": "the policy's control rate is stated",
+     "ok": null,
+     "detail": "the sources do not state it; the site runs at 10 Hz and the trial steps the policy at that rate",
+     "blocks": false
+    },
+    {
+     "check": "one action on one axis stays inside the step limit near the needle",
+     "ok": false,
+     "detail": "150.00 mm and 3.00 deg per action; limit 2 mm and 3 deg",
+     "blocks": true
+    },
+    {
+     "check": "an action at its bound on all three axes stays inside the step limit near the needle",
+     "ok": false,
+     "detail": "259.81 mm against 2 mm: such an action would be rejected by the safety filter, not clipped",
+     "blocks": false
+    },
+    {
+     "check": "the site's start -> pregrasp lies in the trained start-to-goal range",
+     "ok": false,
+     "detail": "site displacement [15.0, 10.0, -22.0] mm; trained [-2238.5, -255.8, -4080.3] to [-2238.4, -255.8, -4080.2] mm; 4649.4 mm outside",
+     "blocks": false
+    },
+    {
+     "check": "a trained start and goal, anchored on the site's grasp pose, are accepted by the safety filter",
+     "ok": false,
+     "detail": "start: workspace, joint_margin, joint_margin, joint_margin, unreachable; goal: ok",
+     "blocks": true
+    }
+   ],
+   "failing": [
+    "the magnitude of the data agrees with the declared unit",
+    "one action on one axis stays inside the step limit near the needle",
+    "an action at its bound on all three axes stays inside the step limit near the needle",
+    "the site's start -> pregrasp lies in the trained start-to-goal range",
+    "a trained start and goal, anchored on the site's grasp pose, are accepted by the safety filter"
+   ],
+   "open": [
+    "the goal pose can be produced at the site",
+    "the policy's control rate is stated"
+   ]
+  },
+  "kinematic_files": {
+   "Classic": {
+    "site_file": "site_a.json",
+    "arm": "PSM.json",
+    "instrument": "LARGE_NEEDLE_DRIVER_400006.json"
+   },
+   "Si": {
+    "site_file": "",
+    "arm": "PSM_Si.json",
+    "instrument": "LARGE_NEEDLE_DRIVER_420006.json"
+   }
+  }
+ },
+ "c_adapter_round_trip": {
+  "policy_to_site_and_back": {
+   "Approach": {
+    "episodes": 50,
+    "poses": 3026,
+    "largest_position_error_cm": 4.440892098500626e-16,
+    "largest_rotation_error_rad": 2.9802322387695312e-08,
+    "actions_replayed_from_the_start_end_within_cm": 1e-06,
+    "all_end_in_success": true
+   },
+   "Place": {
+    "episodes": 50,
+    "poses": 5679,
+    "largest_position_error_cm": 8.881784197001252e-16,
+    "largest_rotation_error_rad": 2.9802322387695312e-08,
+    "actions_replayed_from_the_start_end_within_cm": 1e-06,
+    "all_end_in_success": true
+   },
+   "Regrasp": {
+    "episodes": 50,
+    "poses": 3350,
+    "largest_position_error_cm": 1.7763568394002505e-15,
+    "largest_rotation_error_rad": 2.9802322387695312e-08,
+    "actions_replayed_from_the_start_end_within_cm": 1e-06,
+    "all_end_in_success": true
+   },
+   "Insert": {
+    "episodes": 50,
+    "poses": 5133,
+    "largest_position_error_cm": 1.7763568394002505e-15,
+    "largest_rotation_error_rad": 2.9802322387695312e-08,
+    "actions_replayed_from_the_start_end_within_cm": 1e-06,
+    "all_end_in_success": true
+   },
+   "Pullout": {
+    "episodes": 50,
+    "poses": 3929,
+    "largest_position_error_cm": 1.7763568394002505e-15,
+    "largest_rotation_error_rad": 2.9802322387695312e-08,
+    "actions_replayed_from_the_start_end_within_cm": 4.962627,
+    "all_end_in_success": true
+   }
+  },
+  "note": "replaying the recorded actions with the estimated step size from the recorded start reproduces the recorded end pose, which also checks the step size"
+ },
+ "d_episode_checks": {
+  "by_source": {
+   "ROSMA": {
+    "episodes": 12,
+    "accepted": 1,
+    "accepted_with_flags": 11,
+    "excluded": 0,
+    "flags": {
+     "seconds_field_late": 8,
+     "joint_limits": 3,
+     "sample_gaps": 6
+    },
+    "streams_absent": [
+     "jaw",
+     "commands",
+     "camera"
+    ]
+   },
+   "SurgicAI": {
+    "episodes": 250,
+    "accepted": 200,
+    "accepted_with_flags": 50,
+    "excluded": 0,
+    "flags": {
+     "jump": 50
+    },
+    "streams_absent": [
+     "time stamps",
+     "operator",
+     "joint values"
+    ]
+   }
+  },
+  "joint_limits_from": "PSM.json and LARGE_NEEDLE_DRIVER_400006.json",
+  "flagged": [
+   {
+    "episode": "X01_Pea_on_a_Peg_01",
+    "flags": [
+     {
+      "check": "seconds_field_late",
+      "detail": "2 samples carry a seconds field that is one sample late"
+     },
+     {
+      "check": "joint_limits",
+      "detail": "44 of 5997 samples have a joint outside the limits of the kinematic file (most often joint 6)"
+     }
+    ]
+   },
+   {
+    "episode": "X01_Post_and_Sleeve_01",
+    "flags": [
+     {
+      "check": "seconds_field_late",
+      "detail": "98 samples carry a seconds field that is one sample late"
+     }
+    ]
+   },
+   {
+    "episode": "X01_Wire_Chaser_I_01",
+    "flags": [
+     {
+      "check": "joint_limits",
+      "detail": "247 of 1992 samples have a joint outside the limits of the kinematic file (most often joint 6)"
+     }
+    ]
+   },
+   {
+    "episode": "X02_Pea_on_a_Peg_01",
+    "flags": [
+     {
+      "check": "seconds_field_late",
+      "detail": "17 samples carry a seconds field that is one sample late"
+     },
+     {
+      "check": "sample_gaps",
+      "detail": "3 gaps longer than 3 times the usual 20 ms"
+     }
+    ]
+   },
+   {
+    "episode": "X02_Post_and_Sleeve_01",
+    "flags": [
+     {
+      "check": "seconds_field_late",
+      "detail": "57 samples carry a seconds field that is one sample late"
+     },
+     {
+      "check": "sample_gaps",
+      "detail": "7 gaps longer than 3 times the usual 20 ms"
+     }
+    ]
+   },
+   {
+    "episode": "X02_Wire_Chaser_I_01",
+    "flags": [
+     {
+      "check": "sample_gaps",
+      "detail": "2 gaps longer than 3 times the usual 20 ms"
+     }
+    ]
+   },
+   {
+    "episode": "X03_Post_and_Sleeve_01",
+    "flags": [
+     {
+      "check": "seconds_field_late",
+      "detail": "42 samples carry a seconds field that is one sample late"
+     },
+     {
+      "check": "sample_gaps",
+      "detail": "10 gaps longer than 3 times the usual 20 ms"
+     },
+     {
+      "check": "joint_limits",
+      "detail": "102 of 10808 samples have a joint outside the limits of the kinematic file (most often joint 6)"
+     }
+    ]
+   },
+   {
+    "episode": "X03_Wire_Chaser_I_01",
+    "flags": [
+     {
+      "check": "seconds_field_late",
+      "detail": "26 samples carry a seconds field that is one sample late"
+     },
+     {
+      "check": "sample_gaps",
+      "detail": "4 gaps longer than 3 times the usual 20 ms"
+     }
+    ]
+   },
+   {
+    "episode": "X04_Pea_on_a_Peg_01",
+    "flags": [
+     {
+      "check": "sample_gaps",
+      "detail": "5 gaps longer than 3 times the usual 20 ms"
+     }
+    ]
+   },
+   {
+    "episode": "X04_Post_and_Sleeve_01",
+    "flags": [
+     {
+      "check": "seconds_field_late",
+      "detail": "145 samples carry a seconds field that is one sample late"
+     }
+    ]
+   },
+   {
+    "episode": "X04_Wire_Chaser_I_01",
+    "flags": [
+     {
+      "check": "seconds_field_late",
+      "detail": "55 samples carry a seconds field that is one sample late"
+     }
+    ]
+   },
+   {
+    "episode": "Pullout_00",
+    "flags": [
+     {
+      "check": "jump",
+      "detail": "47.9 mm between samples 0 and 1"
+     }
+    ]
+   },
+   {
+    "episode": "Pullout_01",
+    "flags": [
+     {
+      "check": "jump",
+      "detail": "50.1 mm between samples 0 and 1"
+     }
+    ]
+   },
+   {
+    "episode": "Pullout_02",
+    "flags": [
+     {
+      "check": "jump",
+      "detail": "49.8 mm between samples 0 and 1"
+     }
+    ]
+   },
+   {
+    "episode": "Pullout_03",
+    "flags": [
+     {
+      "check": "jump",
+      "detail": "47.3 mm between samples 0 and 1"
+     }
+    ]
+   },
+   {
+    "episode": "Pullout_04",
+    "flags": [
+     {
+      "check": "jump",
+      "detail": "50.4 mm between samples 0 and 1"
+     }
+    ]
+   },
+   {
+    "episode": "Pullout_05",
+    "flags": [
+     {
+      "check": "jump",
+      "detail": "50.2 mm between samples 0 and 1"
+     }
+    ]
+   },
+   {
+    "episode": "Pullout_06",
+    "flags": [
+     {
+      "check": "jump",
+      "detail": "49.8 mm between samples 0 and 1"
+     }
+    ]
+   },
+   {
+    "episode": "Pullout_07",
+    "flags": [
+     {
+      "check": "jump",
+      "detail": "47.6 mm between samples 0 and 1"
+     }
+    ]
+   },
+   {
+    "episode": "Pullout_08",
+    "flags": [
+     {
+      "check": "jump",
+      "detail": "48.2 mm between samples 0 and 1"
+     }
+    ]
+   }
+  ]
+ },
+ "e_negative_controls": {
+  "made_from": "X01_Pea_on_a_Peg_01",
+  "controls": [
+   {
+    "control": "control_rescaled_by_1000",
+    "must_be_caught_by": "unit_magnitude",
+    "caught": true,
+    "verdict": "excluded",
+    "flags": [
+     "seconds_field_late",
+     "unit_magnitude",
+     "jump",
+     "joint_limits"
+    ]
+   },
+   {
+    "control": "control_planted_jump",
+    "must_be_caught_by": "jump",
+    "caught": true,
+    "verdict": "accepted with flags",
+    "flags": [
+     "seconds_field_late",
+     "jump",
+     "joint_limits"
+    ]
+   },
+   {
+    "control": "control_shuffled_time_stamps",
+    "must_be_caught_by": "time_runs_backwards",
+    "caught": true,
+    "verdict": "excluded",
+    "flags": [
+     "time_runs_backwards",
+     "joint_limits",
+     "duplicate"
+    ]
+   },
+   {
+    "control": "control_duplicate",
+    "must_be_caught_by": "duplicate",
+    "caught": true,
+    "verdict": "excluded",
+    "flags": [
+     "seconds_field_late",
+     "joint_limits",
+     "duplicate"
+    ]
+   }
+  ],
+  "all_caught": true
+ },
+ "f_split": {
+  "by": "operator",
+  "train_operators": [
+   "X01",
+   "X02",
+   "X03"
+  ],
+  "evaluation_operators": [
+   "X04"
+  ],
+  "operators_on_both_sides": [],
+  "without_an_operator": [
+   "SurgicAI"
+  ],
+  "note": "episodes whose source names no operator or session are kept on the training side as one session",
+  "train_episodes": 259,
+  "evaluation_episodes": 3,
+  "overlap_of_operators": 0,
+  "dataset_card": "verification/t10_dataset_card.md"
+ },
+ "dataset_tool_by_role": [
+  {
+   "role": "operator",
+   "episode_quality": "ok"
+  },
+  {
+   "role": "service",
+   "episode_quality": "ok"
+  },
+  {
+   "role": "safety",
+   "episode_quality": "unauthorized"
+  },
+  {
+   "role": "support",
+   "episode_quality": "unauthorized"
+  }
+ ]
+}

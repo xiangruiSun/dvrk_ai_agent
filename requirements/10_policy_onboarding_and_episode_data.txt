@@ -2,6 +2,27 @@ TASK 10 - POLICY ONBOARDING AND EPISODE DATA
 =============================================
 dVRK focus: policy interfaces and the data policies are trained and judged on.
 
+As built
+--------
+Status: BUILT and verified. Results: verification/REPORT.md, section T10; verification/t10_dataset_card.md.
+Code: vxagent/policy/contract.py, compat.py, adapter.py; vxagent/data/surgicai.py, quality.py;
+      vxagent/tools/dataset.py; scripts/fetch_surgicai.py. Reference: evals/t10_reference_contract.json.
+Tests: tests/test_policy_data.py.
+Differences from the plan below:
+- The demonstrations are pickle files. They are read with a restricted unpickler that rebuilds
+  arrays and plain containers and refuses anything else; the environment sources are read as
+  text and never imported.
+- The contract is drafted from two source files. A field is kept only with a quotation that
+  occurs in the named file. What the files do not state (the step size, the control rate, the
+  range of start poses) is left empty by rule and filled from the demonstrations by code, with
+  that provenance written into the contract.
+- split.py and card.py are functions of vxagent/data/quality.py.
+- SurgicAI names no operator or session, so its episodes cannot be split by operator: they stay
+  on the training side as one session.
+Further limits: one policy (Approach). The checkpoint hash is not recorded because no checkpoint
+is loaded; the rollouts are the recorded expert demonstrations.
+(end of as built)
+
 Job
 ---
 A policy arrives from simulation with assumptions built in: what its observation vector means,

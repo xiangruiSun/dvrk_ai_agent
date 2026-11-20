@@ -299,7 +299,19 @@ from verify_t02 import t02                                                 # noq
 
 from verify_t03 import t03                                                 # noqa: E402
 
-TASKS = {"t01": t01, "t02": t02, "t03": t03}
+from verify_t04 import t04                                                 # noqa: E402
+
+from verify_t05 import t05                                                 # noqa: E402
+
+from verify_t06 import t06                                                 # noqa: E402
+
+from verify_t07 import t07                                                 # noqa: E402
+
+from verify_t08 import t08                                                 # noqa: E402
+from verify_t09 import t09                                                 # noqa: E402
+from verify_t10 import t10                                                 # noqa: E402
+
+TASKS = {"t01": t01, "t02": t02, "t03": t03, "t04": t04, "t05": t05, "t06": t06, "t07": t07, "t08": t08, "t09": t09, "t10": t10}
 
 
 def main() -> int:

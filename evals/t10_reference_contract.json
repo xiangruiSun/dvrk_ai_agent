@@ -1,0 +1,22 @@
+{
+  "about": "Reference for task 10: what the two SurgicAI source files given to the model (RL/Approach_env.py and the first 10,000 characters of RL/subtask_env.py, at the pinned commit) state about the policy interface, read by hand. 'stated': false means the files do not state it, and the right output is an empty field. 'must_contain' lists what a correct value has to contain, compared in lower case.",
+  "fields": {
+    "observation_size": {"stated": true, "must_contain": ["21"]},
+    "observation_layout": {"stated": true, "must_contain": ["goal"]},
+    "observation_translation_unit": {"stated": true, "must_contain": ["cm"]},
+    "observation_rotation_unit": {"stated": true, "must_contain": ["rad"]},
+    "pose_convention": {"stated": true, "must_contain": ["roll", "pitch", "yaw"]},
+    "rotation_convention": {"stated": true, "must_contain": ["rpy"]},
+    "command_frame": {"stated": true, "must_contain": ["servo_cp"]},
+    "action_size": {"stated": true, "must_contain": ["7"]},
+    "action_low": {"stated": true, "must_contain": ["-1"]},
+    "action_high": {"stated": true, "must_contain": ["1"]},
+    "action_meaning": {"stated": true, "must_contain": ["step_size"]},
+    "action_step_size": {"stated": false, "why": "the constructor's default is step_size=None; the value is passed in by training scripts that are not among the files"},
+    "max_episode_steps": {"stated": true, "must_contain": ["200"]},
+    "success_translation_threshold": {"stated": true, "must_contain": ["0.5"]},
+    "success_rotation_threshold_deg": {"stated": true, "must_contain": ["30"]},
+    "control_rate_hz": {"stated": false, "why": "no rate appears in either file"},
+    "training_start_range": {"stated": false, "why": "the only limits in the files are in commented-out lines of the reset function"}
+  }
+}

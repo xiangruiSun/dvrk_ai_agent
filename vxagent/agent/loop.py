@@ -26,7 +26,7 @@ from typing import Any, Callable
 
 from pydantic import BaseModel, Field
 
-from ..llm.base import LLMClient, LLMError, ToolCall
+from ..llm.base import LLMClient, LLMError, ToolCall, messages_tokens
 from ..memory.working import fit_context
 from ..robot.motion import state_report
 from ..store import dumps
@@ -48,6 +48,10 @@ class AgentConfig:
     context_tokens: int = 6000
     temperature: float = 0.0
     finalize_on_limit: bool = True
+    # Offer, besides tool_names, the tools the last find_tools call returned (task 05).
+    dynamic_tools: bool = False
+    # Put the robot's current state, read by code, in front of the model on every turn (task 06 R9).
+    inject_robot_state: bool = False
     # Optional check of a proposed final answer: returns a list of problems (empty = accept).
     answer_check: Callable[["AgentState", ToolContext], list[str]] | None = None
     max_answer_repairs: int = 2
@@ -77,6 +81,9 @@ class AgentState(BaseModel):
     answer_candidate: str = ""
     answer_repairs: int = 0
     guard_log: list[list[str]] = Field(default_factory=list)
+    schema_chars: int = 0            # largest set of tool schemas sent in one turn, in characters
+    context_tokens_sent: int = 0     # largest context sent in one turn, estimated tokens
+    injected_states: list[str] = Field(default_factory=list)   # robot states shown to the model by the system
 
     @property
     def total_tokens(self) -> int:
@@ -87,10 +94,23 @@ def run_agent(llm: LLMClient, registry: ToolRegistry, ctx: ToolContext, task: st
               config: AgentConfig | None = None, state: AgentState | None = None,
               on_step: Callable[[AgentState], None] | None = None) -> AgentState:
     cfg = config or AgentConfig()
-    tools = registry.allowed_for(ctx.principal, cfg.tool_names)
-    allowed = {t.name for t in tools}
-    tiers = {t.name: t.tier for t in tools}
-    schemas = [t.schema() for t in tools]
+    allowed: set[str] = set()
+    tiers: dict[str, str] = {}
+    schemas: list[dict[str, Any]] = []
+
+    def offer() -> None:
+        """The tools this turn may use. With dynamic_tools, what the last search returned is added."""
+        names = list(cfg.tool_names) if cfg.tool_names is not None else None
+        if cfg.dynamic_tools and names is not None:
+            names += [n for n in ctx.extras.get("offered_tools", []) if n not in names]
+        tools = registry.allowed_for(ctx.principal, names)
+        allowed.clear()
+        allowed.update(t.name for t in tools)
+        tiers.clear()
+        tiers.update({t.name: t.tier for t in tools})
+        schemas[:] = [t.schema() for t in tools]
+
+    offer()
     if state is None:
         if task is None:
             raise ValueError("task is required for a new run")
@@ -193,7 +213,17 @@ def run_agent(llm: LLMClient, registry: ToolRegistry, ctx: ToolContext, task: st
                 _cancel_running(ctx)
                 return stop("stopped", limit, _wrap_up(llm, state, cfg, ctx, limit) if cfg.finalize_on_limit else "")
 
-            context = fit_context(state.messages, cfg.context_tokens, anchor_task=state.task, iteration=state.iterations)
+            if cfg.dynamic_tools:
+                offer()
+            state.schema_chars = max(state.schema_chars, len(dumps(schemas)))
+            now = None
+            if cfg.inject_robot_state and ctx.robot is not None:
+                now = _where(ctx)
+                state.injected_states = (state.injected_states + [now])[-3:]
+                ctx.note_observed(ctx.robot.state().seq)       # a look by code is a look
+            context = fit_context(state.messages, cfg.context_tokens, anchor_task=state.task, iteration=state.iterations,
+                                  state_now=now)
+            state.context_tokens_sent = max(state.context_tokens_sent, messages_tokens(context))
             try:
                 with ctx.tracer.span(ctx.run_id, "llm", f"{cfg.name}.step{state.iterations + 1}",
                                      input={"messages": len(context), "tools": sorted(allowed)}) as sp:

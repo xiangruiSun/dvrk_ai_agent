@@ -108,6 +108,9 @@ def apply(db: Database, store: ConfigStore, proposal_id: int) -> dict[str, Any]:
     db.execute("UPDATE proposals SET status='applied', applied_version=? WHERE id=?", (version, proposal_id))
     if p["invalidates_calibration"]:
         set_calibration(db, p["site"], False, f"configuration change, proposal {proposal_id} ({p['target']})")
+        from ..memory.site import record_event            # what was noted about the old calibration expires too
+        record_event(db, p["site"], "instrument_changed" if any(o["path"] == "tool" for o in patch["operations"])
+                     else "base_frame_changed", p["decided_by"] or "", f"proposal {proposal_id}")
     return {"proposal": proposal_id, "target": p["target"], "version": version, "envelope_version": bumped,
             "calibration_invalidated": bool(p["invalidates_calibration"])}
 

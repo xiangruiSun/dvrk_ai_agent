@@ -1,0 +1,20 @@
+name: return_to_start
+summary: Open the jaw and bring the arm back to the start pose.
+when_to_use: At the end of a trial, after a failed grasp, or whenever the arm should be put back where a trial begins.
+tier: actuate
+version: "1"
+requires: [powered, enabled, homed]
+effects: {in_workspace: true}
+steps:
+  - id: open
+    tool: set_jaw
+    args: {jaw: open}
+    checks:
+      - {field: jaw, equals: open}
+    source: doc:development/api/arms#psm
+  - id: back
+    tool: move_to_named_pose
+    args: {named_pose: start}
+    checks:
+      - {field: final_error_mm, at_most: 1.0}
+    source: paper:deployment-framework/run-stages

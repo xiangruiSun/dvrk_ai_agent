@@ -184,6 +184,8 @@ class SiteFile(Strict):
     arm_file: str = ""
     system_file: str = ""
     frames: list[str] = Field(default_factory=list)
+    recordings: str = ""                       # which recorded episodes belong to this site ("rosma" or none)
+    calibration_poses_mm: list[list[float]] = Field(default_factory=list)   # offsets from start the calibration visits
     start_joints_si: list[float]
     up_axis: list[float] = Field(min_length=3, max_length=3)
     pad_below_start_mm: float

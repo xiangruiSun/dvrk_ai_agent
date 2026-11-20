@@ -3,10 +3,11 @@ DVRK AGENT TOOLS - REQUIREMENTS OVERVIEW
 
 Status
 ------
-IN PROGRESS. Tasks 01, 02 and 03 are built and verified, together with the kinematic twin and
-the safety filter they depend on (parts of tasks 09 and 14). The retrieval system (requirements/rag)
-is built. The other files state what will be built and how it will be verified: a section headed "Planned code" lists modules that do not exist yet, and a
-verification section marked "(planned)" has not been run.
+IN PROGRESS. Tasks 01 to 10 are built and verified. The retrieval system (requirements/rag) is
+built. Each of those requirement files starts with an "As built" block that says what differs from
+the plan written below it; the measured results are in verification/REPORT.md. In the files of
+tasks 11 to 15 a section headed "Planned code" still lists modules to come, and a verification
+section marked "(planned)" has not been run.
 
 Purpose
 -------

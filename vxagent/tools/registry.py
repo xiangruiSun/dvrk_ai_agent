@@ -32,6 +32,9 @@ class Principal:
     site: str = ""                 # the one site this principal belongs to ("" for none)
     tiers: frozenset[str] = frozenset({"observe"})
     display_name: str = ""
+    # A console operator does not hold actuate. With per_run, a motion tool may be requested inside
+    # an active run of this person that was registered with that tool (vxagent/access.py).
+    per_run: bool = False
 
 
 SYSTEM = Principal("system", "system", frozenset({"*"}), tiers=frozenset(TIERS), display_name="System")
@@ -103,7 +106,8 @@ class Tool:
             raise ValueError(f"unknown tier {self.tier!r}")
         if self.kind not in ("call", "action"):
             raise ValueError(f"unknown kind {self.kind!r}")
-        if self.tier == "actuate" and "based_on_seq" not in self.args_model.model_fields:
+        # A remote tool is validated, checked for freshness and approved by the server that owns it.
+        if self.tier == "actuate" and self.origin == "local" and "based_on_seq" not in self.args_model.model_fields:
             raise ValueError(f"{self.name}: an actuate tool must take based_on_seq")
         if self.max_retries is None:
             self.max_retries = {"observe": 2, "simulate": 1, "actuate": 0}[self.tier]
@@ -147,7 +151,7 @@ class ToolRegistry:
         """Tools this principal may even see. Hiding a tool is a convenience; the executor
         checks scope and tier again on every call."""
         pool = [self._tools[n] for n in (names or self.names()) if n in self._tools]
-        return [t for t in pool if is_allowed(principal, t)]
+        return [t for t in pool if is_allowed(principal, t) or may_request(principal, t)]
 
     def schemas(self, principal: Principal, names: list[str] | None = None) -> list[dict[str, Any]]:
         return [t.schema() for t in self.allowed_for(principal, names)]
@@ -157,3 +161,9 @@ def is_allowed(principal: Principal, tool: Tool) -> bool:
     if "*" in principal.scopes:
         return True
     return tool.scopes <= principal.scopes and tool.tier in principal.tiers
+
+
+def may_request(principal: Principal, tool: Tool) -> bool:
+    """A motion tool a per-run principal may ask for. Whether the run holds it is checked by the
+    executor on every call."""
+    return tool.tier == "actuate" and principal.per_run and tool.scopes <= principal.scopes

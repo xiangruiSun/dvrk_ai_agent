@@ -34,7 +34,7 @@ _CITE = re.compile(r"\[(" + _ID + r")\]")
 _QUOTED_ID = re.compile(r'"(' + _ID + r')"')
 _SEARCH_TOOLS = ("search_docs", "search_threads", "search_by_log_line")
 _NOTHING = re.compile(r"\b(?:could not|couldn't|cannot|can't|unable|not (?:be )?(?:found|reach|search)|nothing|"
-                      r"no (?:result|match|information|relevant)|did not find|unavailable|does not (?:cover|contain))",
+                      r"no (?:result|match|information|relevant)|did not find|unavailable|do(?:es)? not (?:cover|contain|answer|address))",
                       re.I)
 _STATE = re.compile(r"\b(?:arm|robot|psm1?|it)\s+(?:is|was|remains)\s+(now\s+)?(not\s+)?(enabled|homed)\b", re.I)
 
@@ -87,6 +87,17 @@ def collect(state: Any) -> tuple[dict[str, list[float]], list[float], dict[str, 
         if isinstance(payload, dict) and "enabled" in payload and "homed" in payload:
             last_state = payload
         ids.update(_QUOTED_ID.findall(m["content"]))
+    for text in getattr(state, "injected_states", []):       # a state the system showed the model is a look too
+        try:
+            payload = json.loads(text)
+        except json.JSONDecodeError:
+            continue
+        for key, value in _walk(payload):
+            unit = _unit_of(key)
+            if unit:
+                by_unit[unit].append(value)
+        if "enabled" in payload and "homed" in payload:
+            last_state = payload
     return by_unit, calc, last_state, ids
 
 

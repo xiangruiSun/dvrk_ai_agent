@@ -1,0 +1,48 @@
+name: rig_check
+summary: Check before a trial that the arm is ready, the poses of the trial are acceptable, the calibration holds and the needle is in view.
+when_to_use: Before every trial, and after anything on the rig has been touched. It moves nothing.
+tier: observe
+version: "1"
+requires: [powered]
+effects: {}
+steps:
+  - id: state
+    tool: get_robot_state
+    checks:
+      - {field: enabled, equals: true}
+      - {field: homed, equals: true}
+    source: doc:development/api/console#general
+  - id: start_pose
+    tool: check_named_target
+    args: {named_pose: start}
+    checks:
+      - {field: accepted, equals: true}
+    source: paper:deployment-framework/safety-filter
+  - id: grasp_pose
+    tool: check_named_target
+    args: {named_pose: pregrasp}
+    checks:
+      - {field: accepted, equals: true}
+    source: paper:deployment-framework/safety-filter
+  - id: place_pose
+    tool: check_named_target
+    args: {named_pose: place}
+    checks:
+      - {field: accepted, equals: true}
+    source: paper:deployment-framework/safety-filter
+  - id: calibration
+    tool: read_calibration_record
+    checks:
+      - {field: valid, equals: true, why: a change of instrument or base frame invalidates the calibration}
+    source: doc:development/frames/arm#patient-s-side
+  - id: residual
+    tool: calibration_residual
+    args: {calibration_id: $calibration.calibration_id}
+    checks:
+      - {field: within_acceptance, equals: true}
+    source: paper:deployment-framework/calibration
+  - id: needle
+    tool: observe_needle
+    checks:
+      - {field: visible, equals: true}
+    source: paper:deployment-framework/perception

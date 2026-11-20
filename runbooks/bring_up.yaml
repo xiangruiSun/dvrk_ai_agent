@@ -1,0 +1,31 @@
+name: bring_up
+summary: Enable and home the arm and put it at the start pose.
+when_to_use: After the controller has been powered on, or whenever the arm is not enabled and homed.
+tier: actuate
+version: "1"
+requires: [powered]
+effects: {enabled: true, homed: true, in_workspace: true}
+steps:
+  - id: look
+    tool: get_robot_state
+    checks:
+      - {field: powered, equals: true, why: nothing can be enabled without power}
+    source: doc:development/api/console#general
+  - id: enable
+    tool: enable_and_home
+    checks:
+      - {field: enabled, equals: true}
+      - {field: homed, equals: true}
+    source: doc:development/api/console#general
+  - id: target
+    tool: check_named_target
+    args: {named_pose: start}
+    checks:
+      - {field: accepted, equals: true, why: the start pose must lie inside the envelope before the arm is sent there}
+    source: paper:deployment-framework/safety-filter
+  - id: to_start
+    tool: move_to_named_pose
+    args: {named_pose: start}
+    checks:
+      - {field: final_error_mm, at_most: 1.0}
+    source: paper:deployment-framework/run-stages

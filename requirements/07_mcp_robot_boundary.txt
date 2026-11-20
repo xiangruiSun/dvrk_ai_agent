@@ -2,6 +2,23 @@ TASK 07 - MCP AS THE ROBOT BOUNDARY
 ====================================
 Covers: Lab 5; concept C15.
 
+As built
+--------
+Status: BUILT and verified. Results: verification/REPORT.md, section T07.
+Code: vxagent/mcp_layer/servers.py (the three servers), client.py, host.py. Tests: tests/test_mcp.py.
+Differences from the plan below:
+- Built on the official SDK, version 2.3.0 (protocol 2026-07-28), which was inspected and probed
+  before anything was written. In this protocol version a server cannot send a request of its
+  own over Streamable HTTP, so a motion's confirmation is an input-required round: the server
+  answers "input required", the client asks the connected person and repeats the call. The
+  answer is recorded and enforced at the server; the model has no parameter for it.
+- Subscriptions use subscriptions/listen. A change of the robot's state made outside the server
+  is published as well as one made through it.
+- The three servers are one module with three configurations, not three files.
+- stdio is not used, also not in tests: the tests run the servers over HTTP on this machine.
+Not built: the OAuth authorization flow (a local token table stands in), TLS.
+(end of as built)
+
 Job
 ---
 The robot controller, the recording archive and the knowledge base belong to the lab and sit on

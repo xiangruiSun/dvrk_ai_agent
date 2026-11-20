@@ -1,0 +1,70 @@
+{
+ "case": "rig_check",
+ "runbook": "rig_check",
+ "version": "1",
+ "content_hash": "d0858274dd26",
+ "outcome": {
+  "status": "completed",
+  "stopped_at": null,
+  "steps": [
+   {
+    "id": "state",
+    "tool": "get_robot_state",
+    "ok": true,
+    "checks": [
+     true,
+     true
+    ]
+   },
+   {
+    "id": "start_pose",
+    "tool": "check_named_target",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "grasp_pose",
+    "tool": "check_named_target",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "place_pose",
+    "tool": "check_named_target",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "calibration",
+    "tool": "read_calibration_record",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "residual",
+    "tool": "calibration_residual",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   },
+   {
+    "id": "needle",
+    "tool": "observe_needle",
+    "ok": true,
+    "checks": [
+     true
+    ]
+   }
+  ],
+  "facts_after": {}
+ }
+}

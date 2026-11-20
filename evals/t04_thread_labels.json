@@ -1,0 +1,134 @@
+{
+ "about": "Closed issue threads of the dVRK repositories in which a maintainer's reply states the cause, labelled by hand for task 04. Only the thread id, the class and a one-line reason in the labeller's own words are stored; the thread text is read from the local corpus. One labeller, not a dVRK maintainer.",
+ "classes": {
+  "software_defect": "a bug in the dVRK software, corrected by a change to the code",
+  "version_mismatch": "the user combined versions, branches or file formats that do not belong together",
+  "configuration": "the site's own configuration file is wrong or lacks an entry",
+  "hardware": "a physical cause: a connection, a cable, cooling, a board",
+  "environment": "the computer around the dVRK software: drivers, operating-system packages, network names",
+  "documentation": "the documentation gave a command or a name that is wrong",
+  "unsupported": "what the user tried is not supported by this version of the software or firmware"
+ },
+ "threads": [
+  [
+   "sawIntuitiveResearchKit",
+   59,
+   "version_mismatch",
+   "development branch needs the matching branches of its dependencies"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   72,
+   "software_defect",
+   "known bug in the jaw command, fixed in a release"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   82,
+   "software_defect",
+   "message printed late; fixed by a commit"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   87,
+   "software_defect",
+   "calibration utility broken by an update; fixed by a commit"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   98,
+   "software_defect",
+   "uninitialised desired positions; fixed in the controller code"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   140,
+   "software_defect",
+   "a file was modified by accident before a release"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   152,
+   "configuration",
+   "the console file lacked the camera-arm teleoperation entry"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   153,
+   "unsupported",
+   "that generation of arm was not supported at the time"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   186,
+   "version_mismatch",
+   "configuration files of an old format version used with new software"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   194,
+   "unsupported",
+   "the connection type asked about is not stable in that firmware"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   196,
+   "hardware",
+   "no data link between arm and controller"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   206,
+   "documentation",
+   "the documented launch command lacked a file suffix"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   215,
+   "software_defect",
+   "a regression in jaw limits, fixed on the development branch"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   221,
+   "hardware",
+   "the controller boards had no heat sinks"
+  ],
+  [
+   "sawIntuitiveResearchKit",
+   242,
+   "configuration",
+   "the base frames of the hand controllers were wrong in the system file"
+  ],
+  [
+   "dvrk-ros",
+   21,
+   "software_defect",
+   "vector size mismatch after an internal change"
+  ],
+  [
+   "dvrk-ros",
+   25,
+   "environment",
+   "host names not resolvable between the two computers"
+  ],
+  [
+   "dvrk-ros",
+   31,
+   "environment",
+   "the packaged video component used an old media library"
+  ],
+  [
+   "dvrk-ros",
+   35,
+   "environment",
+   "the frame grabber's driver library was missing"
+  ],
+  [
+   "dvrk-ros",
+   36,
+   "software_defect",
+   "a script not ready for Python 3, fixed on the development branch"
+  ]
+ ]
+}

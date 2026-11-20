@@ -22,7 +22,7 @@ from ..llm.base import ToolCall
 from ..robot.backend import BackendError
 from ..store import Database, dumps
 from .actions import ActionHandle
-from .registry import Tool, ToolContext, ToolError, ToolRegistry, is_allowed
+from .registry import Tool, ToolContext, ToolError, ToolRegistry, is_allowed, may_request
 
 _POOL = cf.ThreadPoolExecutor(max_workers=8, thread_name_prefix="tool")
 MAX_RESULT_CHARS = 6000
@@ -113,10 +113,16 @@ def _execute(registry: ToolRegistry, call: ToolCall, ctx: ToolContext, allowed: 
 
     # 2. Authorization by scope and tier, from the principal and not from the prompt.
     if not is_allowed(ctx.principal, tool):
-        refuse("missing scope or tier")
-        return done(ok=False, error_kind="unauthorized",
-                    error=f"role {ctx.principal.role!r} may not use {tool.name} ({tool.tier} tier)",
-                    hint="do not retry this tool")
+        if not may_request(ctx.principal, tool):
+            refuse("missing scope or tier")
+            return done(ok=False, error_kind="unauthorized",
+                        error=f"role {ctx.principal.role!r} may not use {tool.name} ({tool.tier} tier)",
+                        hint="do not retry this tool")
+        from .. import access                      # actuate is held per run, not by the person
+        held, why = access.run_allows(ctx.db, ctx.run_id, ctx.principal.user_id, tool.name)
+        if not held:
+            refuse(why)
+            return done(ok=False, error_kind="unauthorized", error=why, hint="do not retry this tool")
 
     # 3. Schema validation of the arguments the model produced.
     try:
@@ -142,7 +148,7 @@ def _execute(registry: ToolRegistry, call: ToolCall, ctx: ToolContext, allowed: 
 
     # 5. Freshness. A motion must be based on a state this run has looked at, and that state must
     #    still be the robot's state. The current number is not given back: the model has to look.
-    if tool.tier == "actuate":
+    if tool.tier == "actuate" and tool.origin == "local":
         if ctx.robot is None:
             return done(ok=False, error_kind="failed", error="no robot is connected")
         based_on = int(args.based_on_seq)
@@ -190,7 +196,7 @@ def _execute(registry: ToolRegistry, call: ToolCall, ctx: ToolContext, allowed: 
     # 7. Idempotency. A write that is not a motion happens once per run. A motion carries a
     #    one-use command id, so the same request can never move the arm twice.
     command_id = ""
-    if tool.tier == "actuate":
+    if tool.tier == "actuate" and tool.origin == "local":
         command_id = f"{ctx.run_id}:{call.id}"
         if ctx.db.one("SELECT command_id FROM commands WHERE command_id=?", (command_id,)):
             return done(ok=False, error_kind="duplicate_command",
@@ -238,8 +244,14 @@ def _execute(registry: ToolRegistry, call: ToolCall, ctx: ToolContext, allowed: 
                 ctx.memo[key] = out
             ctx.db.audit(ctx.principal.user_id, ctx.principal.role, f"tool:{tool.name}",
                          dumps(call.arguments)[:200], True)
+            sink = ctx.extras.get("on_result")           # site memory is written here, by code, from the result
+            if sink is not None:
+                sink(tool.name, out, call.id)
             return done(ok=True, content=out, attempts=attempts)
-        except OperatorStop:
+        except (OperatorStop, AwaitingApproval) as pause:  # a runbook's inner motion waits for the operator
+            if command_id and isinstance(pause, OperatorStop):      # the record says how the motion ended
+                ctx.db.execute("UPDATE commands SET status='stopped', seq_after=?, ended=? WHERE command_id=?",
+                               (ctx.robot.state().seq, time.time(), command_id))
             raise
         except cf.TimeoutError:
             last = ToolError("timeout", f"{tool.name} did not finish within {tool.timeout_s}s",

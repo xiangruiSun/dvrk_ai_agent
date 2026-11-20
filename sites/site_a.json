@@ -9,6 +9,11 @@
   "arm_file": "share/arm/PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json",
   "system_file": "share/system/system-PSM1_Classic_KIN_SIMULATED.json",
   "frames": ["world", "ECM", "pad", "camera"],
+  "recordings": "rosma",
+  "calibration_poses_mm": [
+    [20, 0, 0], [-20, 0, 0], [0, 20, 0], [0, -20, 0], [0, 0, 20], [20, 20, 10],
+    [-20, 20, -10], [20, -20, -10], [-20, -20, 10], [10, 0, -15], [-10, 10, 15], [0, -10, -20]
+  ],
 
   "start_joints_si": [0.0, 0.0, 0.12, 0.0, 0.0, 0.0],
   "up_axis": [0.0, 0.0, 1.0],

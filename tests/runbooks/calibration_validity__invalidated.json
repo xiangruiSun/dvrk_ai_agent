@@ -1,0 +1,21 @@
+{
+ "case": "calibration_validity__invalidated",
+ "runbook": "calibration_validity",
+ "version": "1",
+ "content_hash": "4887abfff348",
+ "outcome": {
+  "status": "stopped",
+  "stopped_at": "record",
+  "steps": [
+   {
+    "id": "record",
+    "tool": "read_calibration_record",
+    "ok": true,
+    "checks": [
+     false
+    ]
+   }
+  ],
+  "facts_after": {}
+ }
+}

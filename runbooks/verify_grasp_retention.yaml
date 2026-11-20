@@ -1,0 +1,50 @@
+name: verify_grasp_retention
+summary: Close the jaw on the needle and establish that the needle is really held, by lifting, comparing and waiting.
+when_to_use: When the open jaw is at the grasp pose over the needle and the needle has to be shown to be held before it is carried anywhere.
+tier: actuate
+version: "1"
+requires: [powered, enabled, homed]
+effects: {}
+recovery: return_to_start
+steps:
+  - id: before
+    tool: observe_needle
+    checks:
+      - {field: visible, equals: true}
+    source: paper:deployment-framework/run-stages
+  - id: close
+    tool: set_jaw
+    args: {jaw: closed}
+    checks:
+      - {field: jaw, equals: closed}
+    source: doc:development/api/arms#psm
+  - id: gripped
+    tool: observe_needle
+    checks:
+      - {field: held, equals: true}
+    on_fail: recover
+    source: paper:deployment-framework/run-stages
+  - id: lift
+    tool: move_to_named_pose
+    args: {named_pose: hover_needle}
+    checks:
+      - {field: final_error_mm, at_most: 1.0}
+    on_fail: recover
+    source: paper:deployment-framework/run-stages
+  - id: lifted
+    tool: observe_needle
+    checks:
+      - {field: held, equals: true}
+      - {field: height_over_pad_mm, above_step: gripped.height_over_pad_mm, by: 5.0, why: "the needle must have come up with the jaw; that the arm moved is not retention"}
+    on_fail: recover
+    source: paper:deployment-framework/run-stages
+  - id: wait
+    tool: hold
+    args: {seconds: 2}
+    source: paper:deployment-framework/run-stages
+  - id: still_held
+    tool: observe_needle
+    checks:
+      - {field: held, equals: true, why: a needle that drops within two seconds was not held}
+    on_fail: recover
+    source: paper:deployment-framework/run-stages

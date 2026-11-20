@@ -1,0 +1,19 @@
+name: calibration_validity
+summary: Say whether the camera-to-robot calibration can still be used, from its record and its residual on held-out points.
+when_to_use: When a grasp misses by a constant amount, after an instrument or base frame change, or when asked whether the calibration is valid.
+tier: observe
+version: "1"
+requires: []
+effects: {}
+steps:
+  - id: record
+    tool: read_calibration_record
+    checks:
+      - {field: valid, equals: true, why: a record invalidated by a configuration change must not be used whatever its residual}
+    source: doc:development/frames/arm#patient-s-side
+  - id: residual
+    tool: calibration_residual
+    args: {calibration_id: $record.calibration_id}
+    checks:
+      - {field: within_acceptance, equals: true}
+    source: paper:deployment-framework/calibration

@@ -13,9 +13,18 @@ from typing import Any
 from ..llm.base import messages_tokens
 
 
+STATE_TOOLS = ("get_robot_state",)
+
+
 def fit_context(messages: list[dict[str, Any]], budget_tokens: int, keep_recent: int = 6,
-                anchor_task: str | None = None, iteration: int = 0, reanchor_every: int = 4) -> list[dict[str, Any]]:
+                anchor_task: str | None = None, iteration: int = 0, reanchor_every: int = 4,
+                state_now: str | None = None) -> list[dict[str, Any]]:
     msgs = [dict(m) for m in messages]
+    # The robot's state is never replayed from history. Every look but the latest is reduced to a
+    # stub first, whatever the budget, so an old pose cannot be read as the current one.
+    looks = [i for i, m in enumerate(msgs) if m["role"] == "tool" and m.get("name") in STATE_TOOLS]
+    for i in looks[:-1]:
+        msgs[i]["content"] = "[an earlier look at the robot; it is out of date and has been removed]"
     head = 2 if len(msgs) > 1 and msgs[0]["role"] == "system" else 1
     keep = keep_recent
     while messages_tokens(msgs) > budget_tokens and keep >= 2:
@@ -33,4 +42,8 @@ def fit_context(messages: list[dict[str, Any]], budget_tokens: int, keep_recent:
     if anchor_task and iteration > 0 and iteration % reanchor_every == 0:
         msgs.append({"role": "user", "content": "Reminder of the task you are completing: " + anchor_task
                      + "\nIf you already have what you need, give the final answer now."})
+    if state_now:
+        # Next to the task, not at the end: placed last it was answered as if it were the question.
+        msgs.insert(head, {"role": "user", "content": "For reference, the robot's state right now, read by the system "
+                                                  "(report it only if the task asks for it): " + state_now})
     return msgs

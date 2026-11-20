@@ -2,6 +2,31 @@ TASK 04 - DIAGNOSTIC REASONING, PLANNING AND FAILURE MODES
 ===========================================================
 Covers: concepts C5 (CoT, self-reflection, Tree of Thoughts), C6, C7, C8.
 
+As built
+--------
+Status: BUILT and verified. Results: verification/REPORT.md, section T04.
+Code: vxagent/agent/strategies.py, planner.py, facts.py; vxagent/diagnostics/episode.py, tools.py;
+      vxagent/tools/service.py. Labels: evals/t04_thread_labels.json. Tests: tests/test_reasoning.py.
+Differences from the plan below:
+- The injected faults live in a small deployment pipeline on the twin (camera, calibration,
+  policy steps, action mapping, safety filter, arm) that replays stretches of recorded ROSMA
+  motion. Seven causes in four of the five families; nothing is injected for task verification.
+- The symptom text is written by code from what an operator could see (how the run ended and
+  how far the tip was). Several causes end the same way, which is the point of the comparison.
+- "eliminate" has a budget of three of the five checks. It is also run with all five allowed, to
+  tell choosing a check apart from reading its result.
+- The hypothesis state is typed and written by code only. The model reports what a result
+  changes (drops, supports, ranking, next check). The first design, in which the model rewrote
+  the whole state at every step, failed and is kept in verification/t04_first_run.json.
+- The threads are labelled with their own seven classes (software defect, version mismatch,
+  configuration, hardware, environment, documentation, unsupported), not with the five
+  sim-to-real families, which do not fit software issue threads. Twenty threads, one labeller.
+- A plan's motions are approved one by one through the tool executor; a plan is offered for that
+  only after the symbolic check and the rehearsal on the twin.
+Further limits: a candidate may be dropped citing a result that says nothing about it; code checks
+that the result exists, not that it is relevant. The synthesis is checked for numbers only.
+(end of as built)
+
 Job
 ---
 "The policy worked in simulation and fails on the robot" has five families of cause: robot
