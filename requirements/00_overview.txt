@@ -3,9 +3,10 @@ DVRK AGENT TOOLS - REQUIREMENTS OVERVIEW
 
 Status
 ------
-DESIGN. These files state what will be built and how it will be verified. No code exists yet and
-no result has been measured. Every "Code" section lists planned modules; every "Verification"
-section lists the command that will produce the evidence.
+IN PROGRESS. Task 01 is built and verified, together with the kinematic twin and the safety
+filter it depends on (parts of tasks 09 and 14). The other files state what will be built and how
+it will be verified: a section headed "Planned code" lists modules that do not exist yet, and a
+verification section marked "(planned)" has not been run.
 
 Purpose
 -------

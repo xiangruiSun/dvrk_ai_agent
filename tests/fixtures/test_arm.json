@@ -1,0 +1,14 @@
+/* A made-up three-joint arm in the dVRK kinematic file format. Not a real robot. */
+{
+    "DH": {
+        "convention": "modified",
+        "joints": [
+            {"name": "yaw", "alpha": 1.5708, "A": 0.0, "theta": 0.0, "D": 0.0, "type": "revolute",
+             "mode": "active", "offset": 1.5708, "qmin": -1.5, "qmax": 1.5},   // comment after a value
+            {"name": "pitch", "alpha": -1.5708, "A": 0.0, "theta": 0.0, "D": 0.0, "type": "revolute",
+             "mode": "active", "offset": -1.5708, "qmin": -0.9, "qmax": 0.9},
+            {"name": "insertion", "alpha": 1.5708, "A": 0.0, "theta": 0.0, "D": 0.0, "type": "prismatic",
+             "mode": "active", "offset": -0.40, "qmin": 0.0, "qmax": 0.25}
+        ]
+    }
+}

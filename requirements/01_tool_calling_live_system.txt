@@ -42,10 +42,14 @@ R8  Safety rejection. A motion whose computed target fails the safety filter of 
     motion to make it pass.
 R9  Idempotency. A write that is not a motion (open a ticket, save a record) executes once per
     run per argument set. Motions carry a one-use command id; a repeat of the same id is refused.
+    The id is derived from the model's call id, so the loop makes call ids unique within a run
+    even when the model server repeats them.
 R10 Stopping conditions, all explicit and recorded as stop_reason:
     final_answer, final_answer_unverified, max_iterations, token_budget, wall_clock,
     loop_detected, tool_failures, awaiting_approval, llm_error, operator_stop, robot_fault,
     safety_rejections (three rejected motions in a row).
+    A loop is the same call giving the same result three times in a row. Looking at the robot
+    again after something else happened is required behaviour, not a loop.
 R11 When a run stops while an action is running, the action is cancelled first. When a limit
     stops the run the model gets one final call without tools to say what was done, where the
     arm is, and what is unfinished.
@@ -60,8 +64,8 @@ R13 Observation size. Telemetry tools return statistics and a handle, never raw 
 R14 Observability. One span per model call, tool call and action, with latency, tokens, attempts,
     error kind and the robot sequence number at start and end.
 
-Planned code
-------------
+Code
+----
 vxagent/agent/loop.py        run_agent, AgentConfig, AgentState
 vxagent/agent/guards.py      grounding_check
 vxagent/tools/registry.py    Tool, ActionTool, ToolRegistry, Principal, ToolError
@@ -69,29 +73,48 @@ vxagent/tools/executor.py    discovery, authorization, validation, freshness, ap
                              idempotency, timeout, retry by tier, trace
 vxagent/tools/actions.py     action handles, feedback digest, cancel
 vxagent/tools/builtin.py     the tool catalogue
+vxagent/robot/               kinematics.py, twin.py, safety.py, motion.py, site.py, backend.py
+vxagent/data/episodes.py     recorded episodes: statistics and bounded windows
 vxagent/llm/ollama.py        model adapter; vxagent/llm/scripted.py for tests
 
 Real data
 ---------
-Recorded dVRK kinematics from ROSMA for questions about episodes. The kinematic twin built from
-the dVRK kinematic and instrument files for anything that moves.
+Recorded dVRK kinematics from ROSMA for questions about episodes (12 recordings: 4 operators,
+3 tasks). The kinematic twin built from the dVRK kinematic and instrument files (PSM.json and
+LARGE_NEEDLE_DRIVER_400006.json) for anything that moves. sites/site_a.json is declared for this
+project and is not a real lab's set-up.
 
-Verification on real data (planned)
------------------------------------
+Verification on real data
+-------------------------
 python scripts/verify.py t01    ->  verification/t01_tool_calling.json
-  a. Questions about real recorded episodes whose answers are computed by code from the
-     recording (duration, path length, peak tip speed, number of jaw closures). Scored on the
-     figure the agent commits to.
-  b. Motion requests on the twin through named poses and runbook steps: completed, final pose
-     against the pose computed by code.
-  c. Fault injection with the real model: the documentation service down (retries, then the
-     agent reports it and still answers the rest); the robot state changed between the look and
-     the motion (stale_observation, then a fresh look); a motion cancelled half way; a target the
-     safety filter rejects; two motions requested in one response; a step limit of 3.
-python -m pytest tests -q       agent core with a scripted model
+  a. One question per recorded episode whose answer is computed by code from the recording
+     (duration, PSM1 path length, PSM1 peak tip speed, and how much further PSM1 travelled than
+     PSM2, which needs two values and a subtraction). Scored on the figure the agent commits to
+     on its last line. The recordings have no jaw signal, so nothing is asked about the jaw.
+  b. Motion requests on the twin through named poses: bring-up, sequences, the jaw, and three
+     destinations the safety filter must reject (workspace, clearance, joint margin). A run
+     passes when the arm ends at the pose computed from the site file, nothing is left moving,
+     and a rejected destination leaves the arm where it was. The script gives the operator's
+     approvals and records how many.
+  c. Fault injection with the real model: the recording archive down (retries, then the agent
+     reports it and still answers the rest); the arm displaced between the look and the motion
+     (stale_observation, then a fresh look); the operator's stop half way through a motion; an
+     arm that accepts set points but does not follow; two motions asked for in one step; a step
+     limit of 3.
+  verification/t01_first_run.json keeps the first run. It led to three changes: safety
+  violations name both of their numbers (the model had read a bare "value" as a joint angle),
+  the operator prompt gained a rule that a requested motion is carried out or reported as not
+  done (the model had answered a question about two poses without moving to them), and the
+  script accepts the safety filter's verdict from either tool that asks it.
+python -m pytest tests -q       80 tests: kinematics, twin and safety filter on both sides of
+                                every limit; agent core with a scripted model; recordings
 
 Known limits
 ------------
+The grounding guard accepts a number if any tool returned that value under the same unit, so a
+wrong figure that happens to equal another returned value passes. It checks that a stated figure
+exists, not that it answers the question. Nothing checks that the agent did everything it was
+asked: a skipped step is caught only if the answer makes a claim the tools contradict.
 The twin has no dynamics, so motion time is the commanded time and tracking error is zero unless
 injected. A tool thread that has timed out cannot be killed in Python; long analysis should run
 in a subprocess.
