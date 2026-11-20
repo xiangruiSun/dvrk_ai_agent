@@ -56,6 +56,176 @@ Tool sequences in the fault runs:
 - `two_motions_requested_at_once`: get_robot_state → list_named_poses → check_named_target → move_to_named_pose → set_jaw
 - `step_limit_of_3`: list_named_poses → get_robot_state → move_to_named_pose
 
+## T02 Structured change proposals
+
+Ran 2026-11-20 03:03:40 with `qwen3:14b`. Files: the dVRK project's `share/arm`, `share/system` and `share/schemas` at commit `7435458dc8`, and this project's declared site file. Change requests and their reference patches: `evals/t02_change_requests.json` (written for this project). Evidence: `t02_structured_output.json`.
+
+Baseline. 44 published arm and system files, 18 schemas. 33 files name a schema of the set and were validated against it as they are: 30 pass, 3 fail. 11 files name no schema of the set (setup-joint files, older console files, files of other components) and were not validated.
+
+| Published file that fails the project's own schema | Error |
+|---|---|
+| `system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json` | consoles/0/teleop_PSMs/0/configure_parameter: Additional properties are not allowed ('align_mtm' was unexpected) |
+| `system/system-MTMR-PSMove-PSM1_from_ROS.json` | consoles/0/teleop_PSMs/0/configure_parameter: Additional properties are not allowed ('use_MTM_velocity' was unexpected) |
+| `system/system-MTMR-PSMove-PSM1_KIN_SIMULATED.json` | consoles/0/teleop_PSMs/0/configure_parameter: Additional properties are not allowed ('use_MTM_velocity' was unexpected) |
+
+So a patched file is not required to be free of schema errors. It is required to have no schema error the file did not already have, and the errors already there are reported.
+
+Change requests in words (17, at most 3 attempts each). A patch equals the reference when the patched file is the same and the limit declaration is the same.
+
+| Mode | Valid on first attempt | Accepted after repair | Nothing proposed | Equals the reference patch | Failed attempts by stage | Median tokens | Median seconds |
+|---|---|---|---|---|---|---|---|
+| constrained | 14/17 | 3 | 0 | 17/17 | physical: 3 | 2929 | 2.1 |
+| free | 14/17 | 3 | 0 | 17/17 | physical: 3 | 2929 | 1.8 |
+
+First attempts that failed, by the first error they got:
+
+| Error | Requests |
+|---|---|
+| limit_change is 'loosen' but the values say 'tighten' | site-joint-margin-rad (constrained), site-joint-margin-rad (free) |
+| limit_change is 'tighten' but the values say 'none' | system-teleop-scale (constrained), system-rotation-locked (constrained), system-teleop-scale (free), system-rotation-locked (free) |
+
+Values stated in one unit and stored in another. The conversion is done by code; the model names the unit and copies the number:
+
+| Request | Given | Unit given | Written to the file | Unit of the file |
+|---|---|---|---|---|
+| site-joint-margin-rad | 0.14 | rad | 8.02141 | deg |
+| system-base-translation | [-210, 0, 0] | mm | [-0.21, 0, 0] | m |
+| system-arm-period | 2 | ms | 0.002 | s |
+| arm-mounting-pitch | -45 | deg | -0.785398 | rad |
+
+The `reason` of a patch is free text and is not checked. Numbers in it that are not in the request or its records, not the value the file held and not the value the code wrote, so that the model must have computed them itself:
+
+| Request | Number in the model's reason | Value the code wrote to the file |
+|---|---|---|
+| site-joint-margin-rad (free) | 8.04 | 8.02141 |
+
+Negative controls, hand-written. Accepted by the patch schema and by the file's schema, refused by a physical rule: 16/16. Refused by the allowlist: 4/4. Accepted: 0.
+
+| Control | Refused at | First error |
+|---|---|---|
+| millimetres written as metres | physical | operation 1 (arms/PSM1/base_frame/transform/translation): [-210, 0, 0] m has a component outside the plausible range -2 to 2 m. The number would be plausible in 'mm': if the request gave it in mm, state unit 'mm' and leave the number as it is. |
+| transform whose rotation is scaled | physical | operation 1 (arms/PSM1/base_frame/transform): the rotation part is not orthonormal (R times its transpose differs from the identity by 0.21) |
+| transform that is a reflection | physical | operation 1 (arms/PSM1/base_frame/transform/rotation): the rotation part has determinant -1.000: it is a reflection, not a rotation |
+| transform with a wrong last row | physical | operation 1 (arms/PSM1/base_frame/transform): the last row of a transform must be 0 0 0 1, it is [0, 0, 0, 0] |
+| rotation changed by 90 degrees in one patch | physical | operation 1 (arms/PSM1/base_frame/transform/rotation): the rotation changes by 90.0 deg, more than the 10 deg one patch may change it by |
+| frame that does not exist | physical | frame 'Cart' is not a frame of this site (frames: ECM, PSM1, PSM2, camera, pad, world) |
+| two arms each based on the other | physical | the patch makes a frame its own ancestor: PSM1 -> PSM2 -> PSM1 |
+| limit loosened in a patch that says tighten | physical | limit_change is 'tighten' but the values say 'loosen': safety_profile/clearance_mm is loosened (3 to 2). A loosened limit must be declared as 'loosen'. |
+| limit loosened in a patch that says none | physical | limit_change is 'none' but the values say 'loosen': safety_profile/workspace_half_mm is loosened (40 to 45). A loosened limit must be declared as 'loosen'. |
+| limit moved by four times its step | physical | operation 1 (safety_profile/clearance_mm): a change from 3 to 12 mm is larger than the 5 mm one patch may change this value by |
+| step limit above the published 5 mm | physical | operation 1 (safety_profile/free_step_mm): 8 mm is outside the plausible range 0.5 to 5 mm for this path |
+| free-space step below the near step | physical | operation 1 (safety_profile/free_step_mm): a change from 5 to 1.5 mm is larger than the 2 mm one patch may change this value by |
+| length given in degrees | physical | operation 1 (safety_profile/clearance_mm): a value in 'deg' (angle) cannot be written where the file expects 'mm' (length) |
+| instrument that has no file | physical | operation 1 (tool): no instrument 'LARGE_NEEDLE_DRIVER:499999' in the instrument set (share/tool/index.json) |
+| fixed detection without an instrument | physical | tool_detection is FIXED, so the file must name the instrument in 'tool' |
+| evidence that is not a record of the run | physical | evidence 'meas:made-up' is not a record of this run (records: rec:1) |
+| arm told to move to zero when homing | allowlist | operation 1 (homing_zero_position): this path may not be changed by a patch to a dvrk-psm file. Use only the paths listed as allowed. |
+| arm pointed at another arm file | allowlist | operation 1 (arms/PSM1/arm_file): this path may not be changed by a patch to a dvrk-system file. Use only the paths listed as allowed. |
+| start joint values of the site | allowlist | operation 1 (start_joints_si): this path may not be changed by a patch to a vx-site file. Use only the paths listed as allowed. |
+| kinematic file of the arm | allowlist | operation 1 (kinematic): this path may not be changed by a patch to a dvrk-psm file. Use only the paths listed as allowed. |
+
+Authorization, the same valid patch and different people: 16/16 cases as expected; 12 refusals in the audit log.
+
+| Case | Allowed | Refused because |
+|---|---|---|
+| proposed by operator | no | role |
+| proposed by engineer of another site | no | site |
+| proposed by remote support | no | role |
+| proposed by safety lead | no | role |
+| proposed by engineer | yes |  |
+| approved by the proposer | no | role |
+| approved by second engineer | no | role |
+| approved by operator | no | role |
+| approved by remote support | no | role |
+| approved by safety lead of another site | no | site |
+| approved by safety lead | yes |  |
+| approved a second time | no | state |
+| proposed by a person holding both roles | yes |  |
+| approved by that same person | no | self_approval |
+| loosened limit approved without a reason | no | reason_required |
+| loosened limit approved with a written reason | yes |  |
+
+Dry application of the 17 reference patches to the twin's inputs. 4 have a geometric effect on the site's named poses:
+
+| Request | Named poses that move | Largest move (mm) | Largest turn (deg) | Largest change of height over the pad (mm) | Poses the safety filter would now reject | Calibration invalidated |
+|---|---|---|---|---|---|---|
+| site-pad-height | 0 | 0.0 | 0.0 | 6.0 | place, pregrasp | no |
+| site-hover-pose | 1 | 2.0 | 0.0 | 2.0 | none | no |
+| system-base-translation | 9 | 10.0 | 0.0 | 0.0 | none | yes |
+| arm-instrument | 9 | 2.1 | 0.0 | 1.66 | none | yes |
+
+Applied after approval: `site-clearance` became version 1 of `site/site_a.json` (envelope version 2); `system-base-translation` became version 1 of `system/system-dVRK-cart-simulated.json`, calibration marked invalid. Source files unchanged afterwards: yes (35 checked by hash). A proposal that had been checked against an older version of its file: `stale`, not applied.
+
+## T03 Event-driven trial runtime
+
+Ran 2026-11-20 03:04:59 on the kinematic twin of site-a at 10 Hz, in real time. `qwen3:14b` writes two texts and decides nothing. Approach paths: stretches of recorded PSM1 motion from ROSMA (Zenodo 3932964, CC BY 4.0), mapped into the site by rotation, uniform scale and translation. Needle held: DECLARED per run: the twin has no needle. Every fault below is injected. Evidence: `t03_runtime.json`.
+
+Trials end to end: 12 (one per recording; the needle is declared held in every second one). 6 ended as success and 6 as recovered, 12/12 as the declared outcome implies; arm back at the start pose in 12. Median 59 events and 12 checkpoints per run. The fit of the recorded stretches needed a scale of 1.119 to 1.185; the mapped paths leave the straight line by 0.86 to 7.03 mm. Summaries written by the model: 12; replaced by the template because of a number that was not among the facts, or an empty reply: 0.
+
+| Recording | Declared held | Route | Outcome | Waypoints | Tip travel (mm) | Events | Checkpoints | Approval bound to robot state / envelope |
+|---|---|---|---|---|---|---|---|---|
+| X01_Pea_on_a_Peg_01 | yes | preflight → dry_run → operator_go → reach → grasp → hold_check → place → verdict → confirm | success | 13 | 97.34 | 58 | 12 | 3 / 1 |
+| X01_Post_and_Sleeve_01 | no | preflight → dry_run → operator_go → reach → grasp → hold_check → recover → verdict → confirm | recovered | 17 | 78.92 | 59 | 12 | 3 / 1 |
+| X01_Wire_Chaser_I_01 | yes | preflight → dry_run → operator_go → reach → grasp → hold_check → place → verdict → confirm | success | 13 | 97.91 | 58 | 12 | 3 / 1 |
+| X02_Pea_on_a_Peg_01 | no | preflight → dry_run → operator_go → reach → grasp → hold_check → recover → verdict → confirm | recovered | 14 | 70.01 | 59 | 12 | 3 / 1 |
+| X02_Post_and_Sleeve_01 | yes | preflight → dry_run → operator_go → reach → grasp → hold_check → place → verdict → confirm | success | 25 | 116.43 | 58 | 12 | 3 / 1 |
+| X02_Wire_Chaser_I_01 | no | preflight → dry_run → operator_go → reach → grasp → hold_check → recover → verdict → confirm | recovered | 10 | 68.54 | 59 | 12 | 3 / 1 |
+| X03_Pea_on_a_Peg_01 | yes | preflight → dry_run → operator_go → reach → grasp → hold_check → place → verdict → confirm | success | 16 | 97.14 | 58 | 12 | 3 / 1 |
+| X03_Post_and_Sleeve_01 | no | preflight → dry_run → operator_go → reach → grasp → hold_check → recover → verdict → confirm | recovered | 18 | 77.65 | 59 | 12 | 3 / 1 |
+| X03_Wire_Chaser_I_01 | yes | preflight → dry_run → operator_go → reach → grasp → hold_check → place → verdict → confirm | success | 13 | 98.43 | 58 | 12 | 3 / 1 |
+| X04_Pea_on_a_Peg_01 | no | preflight → dry_run → operator_go → reach → grasp → hold_check → recover → verdict → confirm | recovered | 15 | 71.69 | 59 | 12 | 3 / 1 |
+| X04_Post_and_Sleeve_01 | yes | preflight → dry_run → operator_go → reach → grasp → hold_check → place → verdict → confirm | success | 14 | 95.56 | 58 | 12 | 3 / 1 |
+| X04_Wire_Chaser_I_01 | no | preflight → dry_run → operator_go → reach → grasp → hold_check → recover → verdict → confirm | recovered | 13 | 69.01 | 59 | 12 | 3 / 1 |
+
+Time per node in the first trial (seconds): preflight 0.233, dry_run 0.073, operator_go 0.053, reach 2.024, grasp 0.547, hold_check 0.003, place 3.689, verdict 0.001, confirm 0.662. Spans written for it: 5 action, 1 llm, 10 node.
+
+Crash and resume, 10 cases. How: each process is ended with os._exit(137) at a chosen control tick; the arm's state is in a file outside the process, as a real arm's is. Marked needs_reverification by the next process: 10/10. Resume without an operator refused: 10/10. Arm moved before the operator resumed: 0. First thing after the resume was a look at the robot: 10/10. Arm at the start pose at the end: 10/10.
+
+| Killed in | Arm then (mm from start) | Requirement that failed on resume | Times the node was entered | Place entered after resume | Motions after resume | Outcome |
+|---|---|---|---|---|---|---|
+| preflight | 0.0 | none | 2 | yes | reach, grasp, place, release, retreat | success |
+| dry run | 0.0 | none | 2 | yes | reach, grasp, place, release, retreat | success |
+| waiting for the operator | 0.0 | none | 3 | yes | reach, grasp, place, release, retreat | success |
+| reach | 8.904 | none | 2 | yes | reach, grasp, place, release, retreat | success |
+| grasp | 28.443 | none | 2 | yes | grasp, place, release, retreat | success |
+| hold check | 28.443 | none | 2 | yes | place, release, retreat | success |
+| place | 22.095 | none | 2 | yes | place, release, retreat | success |
+| recovery | 26.927 | none | 2 | no | recover:lift, recover:return | recovered |
+| place, needle lost while down | 22.095 | needle_held | 1 | no | recover:open_jaw, recover:lift, recover:return | recovered |
+| reach, controller restarted too | 14.539 | arm_ready | 1 | no | recover:lift, recover:return | recovered |
+
+Watchdog. Feedback of the reach motion is withheld after its fifth control step. Fired: yes, after 0.503 s of silence (limit 0.5 s); the reach was canceled after 9 of 19 planned control steps, so the arm went on moving for the length of the limit before it was stopped. Grasp entered: no. Route: preflight → dry_run → operator_go → recover → verdict → confirm. Outcome recovered, arm at the start pose: yes.
+
+Approvals bound to the state they were given for:
+
+| Between approval and use | What happened |
+|---|---|
+| the arm is displaced by 0.002 rad of yaw after the operator approved | approval refused (robot_state_changed: given for robot state 3, state at use 4); motions commanded 0; operator asked again: yes; with the new approval: success |
+| clearance over the pad 3 mm -> 4 mm, proposed by a service engineer and approved by the safety lead (proposal 1); envelope version 2 | run stopped at `operator_go` by the requirement envelope_unchanged (run sheet written for envelope 1); earlier approval used: no; operator asked again: no; motions commanded 0; outcome `stopped:precondition:envelope_unchanged` |
+| 0.8 s pass, with a limit of 0.5 s | approval refused (too_old); motions commanded 0; operator asked again: yes |
+
+First run (2026-11-20 02:58:56, kept in `t03_first_run.json`): after the envelope change the old approval was refused (envelope_changed), the operator was asked again, and with the new approval the run ended as `stopped:precondition:envelope_unchanged` with 0 motions. Nothing moved, but a person was asked for a decision that could not matter. The envelope is now a requirement of the go node itself, so the run stops before anyone is asked. The approval's own binding to the envelope version is still there and is covered by a test.
+
+Stops, rejections, limits and faults:
+
+| Case | Route | Outcome | Arm at start pose at the end | Notes |
+|---|---|---|---|---|
+| the operator's stop is set on the eighth control tick of the reach | preflight → dry_run → operator_go → recover → verdict → confirm | recovered | yes | stopped 8.41 mm from start; moved while waiting: no; recovery needed an approval although recovery was pre-approved: yes |
+| operator rejects the go | preflight → dry_run → operator_go → stop | operator_rejected | yes | motions commanded 0 |
+| nobody answers the go | preflight → dry_run → operator_go → stop | operator_timeout | yes | motions commanded 0 |
+| step limit mid trial | preflight → dry_run → operator_go → reach → recover → verdict → confirm | recovered | yes | limit of 5 node entries; 8 entries in all, the ones after the limit being recovery, verdict and summary |
+| path length limit | preflight → dry_run → operator_go → reach → recover → verdict → confirm | recovered | yes | limit of 30 mm of tip travel, checked before each node, so the motion that crosses the limit finishes; tip travel in all 77.65 mm, the travel after the limit being the recovery |
+| set points are accepted but the arm does not move, during the reach | preflight → dry_run → operator_go → reach → recover → verdict → confirm | recovered | yes | reach aborted (tracking_error) |
+| the arm reports a fault on the sixth control tick of the place motion | preflight → dry_run → operator_go → reach → grasp → hold_check → verdict → confirm | needs_manual_recovery | no | motions after the fault 0 |
+| calibration invalid at preflight | preflight → stop | preflight_failed | yes | motions commanded 0; failed: calibration is valid; explanation by model |
+| an approach path with a waypoint 1 mm over the pad (clearance is 3 mm) | preflight → dry_run → stop | dry_run_rejected | yes | motions commanded 0; rejected in reach by rule clearance |
+
+The explanation given for the failed pre-flight (model): "The trial did not start because the preflight check for calibration validity failed. The base frame of PSM1 changed due to an applied configuration change. Nothing was moved."
+
+State from the event log: 387/387 checkpoints of 35 runs equal the state rebuilt from the events up to that point (1838 events); the state a new process loads equals the rebuilt state in 35/35 runs.
+
+Found while building this task: ROSMA writes milliseconds without leading zeros and, in some samples, a seconds field that is one sample late. The reader was corrected while this task was built. 442 samples in 8 of 12 recordings were moved by one second; time now runs forward in every recording: yes. Figures of task 01 that are unchanged by the correction: 12/12.
+
 ## RAG: retrieval over the dVRK documentation, threads, change log and schemas
 
 Ran 2026-11-19 21:12:14. Evidence: `rag_experiments.json`. Corpus hash `3818ea9d0d22e2b2`.

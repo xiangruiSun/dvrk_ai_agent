@@ -35,6 +35,19 @@ CREATE TABLE IF NOT EXISTS audit (
     id INTEGER PRIMARY KEY AUTOINCREMENT, at REAL, user_id TEXT, role TEXT, action TEXT,
     resource TEXT, allowed INTEGER, detail TEXT);
 CREATE TABLE IF NOT EXISTS kv (k TEXT PRIMARY KEY, v TEXT);
+CREATE TABLE IF NOT EXISTS proposals (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, site TEXT, target TEXT, file_type TEXT, patch TEXT, patched TEXT,
+    proposer TEXT, status TEXT, created REAL, decided_by TEXT, decided REAL, decision_reason TEXT,
+    base_hash TEXT, limit_effect TEXT, invalidates_calibration INTEGER DEFAULT 0, effect TEXT,
+    applied_version INTEGER);
+CREATE TABLE IF NOT EXISTS events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, run_id TEXT, n INTEGER, type TEXT, data TEXT, at REAL,
+    robot_seq INTEGER);
+CREATE INDEX IF NOT EXISTS events_run ON events(run_id, n);
+CREATE TABLE IF NOT EXISTS checkpoints (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, run_id TEXT, n INTEGER, next_node TEXT, state TEXT, at REAL,
+    events_n INTEGER);
+CREATE INDEX IF NOT EXISTS checkpoints_run ON checkpoints(run_id, n);
 """
 
 

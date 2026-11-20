@@ -1,0 +1,89 @@
+{
+ "$id": "dvrk-system.schema.json",
+ "$version": "1",
+ "arms": [
+  {
+   "name": "PSM1",
+   "type": "PSM",
+   "arm_file": "arm.json",
+   "base_frame": {
+    "reference_frame": "ECM",
+    "transform": [
+     [
+      1,
+      0,
+      0,
+      -0.2
+     ],
+     [
+      0,
+      1,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      1
+     ]
+    ]
+   }
+  },
+  {
+   "name": "PSM2",
+   "type": "PSM",
+   "arm_file": "arm.json",
+   "base_frame": {
+    "reference_frame": "ECM",
+    "transform": [
+     [
+      1,
+      0,
+      0,
+      0.2
+     ],
+     [
+      0,
+      1,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      1
+     ]
+    ]
+   }
+  }
+ ],
+ "consoles": [
+  {
+   "name": "console",
+   "teleop_PSMs": [
+    {
+     "MTM": "MTMR",
+     "PSM": "PSM1",
+     "configure_parameter": {
+      "scale": 0.4,
+      "old_key": true
+     }
+    }
+   ]
+  }
+ ]
+}

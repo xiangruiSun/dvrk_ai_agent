@@ -21,8 +21,9 @@ The repository holds two packages, in the same relation as the earlier pair
   [`requirements/`](requirements/00_overview.txt).
 
 **Status.** The retrieval system is built: all ten of its tasks, each measured on real data. Of the
-agents, task 01 (tool calling against a live system, with the kinematic twin and the safety filter)
-and the search tools are built; agent tasks 02 to 15 are specified and not built.
+agents, tasks 01 (tool calling against a live system, with the kinematic twin and the safety filter),
+02 (configuration changes as checked patches) and 03 (the trial runtime), and the search tools, are
+built; agent tasks 04 to 15 are specified and not built.
 
 ## Central rule
 
@@ -42,6 +43,10 @@ checked by a safety filter that rejects, and never clips, anything outside the e
 | Agent loop | model → tool → observation → model, twelve explicit stop reasons; nothing keeps moving after a stop | `vxagent/agent/loop.py` |
 | Grounding guard | Rejects answers whose numbers, robot state or citations no tool returned | `vxagent/agent/guards.py` |
 | Recordings | Statistics and bounded windows of recorded dVRK episodes; raw recordings never reach the model | `vxagent/data/episodes.py` |
+| Change proposals | The model proposes a typed patch to one configuration file and never writes a file. Units converted by code; allowlist of paths; the dVRK project's own JSON Schemas; physical rules (range, step, rotation, frames, direction of a limit change, instruments, evidence); three attempts and no fallback | `vxagent/structured/`, `vxagent/robot/config.py`, `frames.py` |
+| Approval of changes | Engineer of the site proposes, safety lead of the site approves, never their own; a loosened limit needs a written reason; applied as a new version with the geometric effect on named poses shown first | `vxagent/structured/proposals.py`, `dryrun.py` |
+| Trial runtime | A graph of nodes whose requirements are checked by looking at the robot on every entry; event log from which the state is rebuilt; checkpoints; watchdog; recovery; approvals bound to robot state and envelope version; nothing resumes by itself after a restart | `vxagent/runtime/events.py`, `graph.py`, `watchdog.py` |
+| Trial pipeline | preflight, dry run on a copy, operator's go, reach along a recorded path, grasp, hold check, place, recover, verdict, summary | `vxagent/pipelines/trial.py`, `paths.py`, `trial_worker.py` |
 
 ## What is built: retrieval (`vxrag`)
 
@@ -71,8 +76,6 @@ checked by a safety filter that rejects, and never clips, anything outside the e
 
 | Task | Job | Requirement file |
 |---|---|---|
-| 02 | Configuration changes as typed, validated patches | `02_structured_change_proposals.txt` |
-| 03 | Event-driven trial runtime with recovery and re-verified resume | `03_event_driven_runtime.txt` |
 | 04 | Fault diagnosis strategies; plans checked against robot state | `04_diagnostic_reasoning_and_planning.txt` |
 | 05 | Runbooks as versioned skills, loaded on demand | `05_runbooks_as_skills.txt` |
 | 06 | Site memory that expires; retrieval tools for every role (the tools exist, see `requirements/rag/R10`) | `06_memory_and_technical_retrieval.txt` |
@@ -92,7 +95,7 @@ Needs Python 3.13 and [Ollama](https://ollama.com) with `qwen3:14b` (about 12 GB
 python -m venv .venv
 .venv/Scripts/python -m pip install -r requirements.txt     # Linux/macOS: .venv/bin/python
 ollama pull qwen3:14b
-.venv/Scripts/python scripts/fetch_dvrk_config.py           # dVRK kinematic files and schemas, 0.28 MB
+.venv/Scripts/python scripts/fetch_dvrk_config.py           # dVRK kinematic, instrument, arm and system files and schemas
 .venv/Scripts/python scripts/fetch_rosma.py                 # 12 recorded dVRK episodes, 114 MB, CC BY 4.0
 .venv/Scripts/python scripts/fetch_sources.py               # documentation text, change log, sites' notes, issue threads, 2 MB
 .venv/Scripts/python scripts/fetch_sources.py --only docs-previous   # an earlier documentation commit, for the sync measurement
@@ -105,6 +108,8 @@ ollama pull nomic-embed-text && ollama pull bge-m3          # embedding models f
 ```bash
 .venv/Scripts/python -m pytest tests -q          # hermetic: made-up arm, scripted model, no downloads needed
 .venv/Scripts/python scripts/verify.py t01       # real recordings, real dVRK kinematics, real model
+.venv/Scripts/python scripts/verify.py t02       # change requests against the real dVRK files and schemas, 2 minutes
+.venv/Scripts/python scripts/verify.py t03       # trials, crashes and faults on the twin in real time, 4 minutes
 .venv/Scripts/python scripts/rag_experiments.py  # retrieval experiments on the real corpus, then the test set once
 .venv/Scripts/python scripts/rag_verify.py       # R05, R06, R07, R09, R10: about 25 minutes with the model
 .venv/Scripts/python scripts/build_report.py     # verification/REPORT.md

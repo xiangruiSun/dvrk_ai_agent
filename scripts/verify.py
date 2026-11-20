@@ -295,7 +295,11 @@ def t01() -> dict[str, Any]:
     return out
 
 
-TASKS = {"t01": t01}
+from verify_t02 import t02                                                 # noqa: E402
+
+from verify_t03 import t03                                                 # noqa: E402
+
+TASKS = {"t01": t01, "t02": t02, "t03": t03}
 
 
 def main() -> int:

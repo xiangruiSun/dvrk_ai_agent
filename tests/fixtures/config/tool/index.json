@@ -1,0 +1,22 @@
+{
+ "instruments": [
+  {
+   "model": "000001",
+   "names": [
+    "TEST_TOOL"
+   ],
+   "description": "A made-up instrument. Not a real one.",
+   "generation": "Classic",
+   "file": "TEST_TOOL_000001.json"
+  },
+  {
+   "model": "000002",
+   "names": [
+    "GHOST_TOOL"
+   ],
+   "description": "Listed, but its file does not exist.",
+   "generation": "Classic",
+   "file": "GHOST_TOOL_000002.json"
+  }
+ ]
+}

@@ -1,0 +1,2824 @@
+{
+ "task": "t03_runtime",
+ "ran": "2026-11-20 03:04:59",
+ "model": "qwen3:14b",
+ "site": "site-a",
+ "backend": "twin",
+ "control_rate_hz": 10.0,
+ "needle_held": "DECLARED per run: the twin has no needle",
+ "approach_paths": "stretches of recorded PSM1 motion from ROSMA (Zenodo 3932964, CC BY 4.0), mapped into the site by rotation, uniform scale and translation",
+ "recorded_time_stamps": {
+  "note": "ROSMA writes milliseconds without leading zeros and, in some samples, a seconds field that is one sample late. The reader was corrected while this task was built.",
+  "episodes": 12,
+  "episodes_with_a_late_seconds_field": 8,
+  "samples_moved_by_one_second": 442,
+  "time_runs_forward_in_every_episode": true,
+  "figures_of_task_01_unchanged_by_the_correction": "12/12",
+  "per_episode": [
+   {
+    "episode": "X01_Pea_on_a_Peg_01",
+    "samples": 5997,
+    "timestamps_moved_by_one_second": 2,
+    "time_runs_forward": true
+   },
+   {
+    "episode": "X01_Post_and_Sleeve_01",
+    "samples": 5928,
+    "timestamps_moved_by_one_second": 98,
+    "time_runs_forward": true
+   },
+   {
+    "episode": "X01_Wire_Chaser_I_01",
+    "samples": 1992,
+    "timestamps_moved_by_one_second": 0,
+    "time_runs_forward": true
+   },
+   {
+    "episode": "X02_Pea_on_a_Peg_01",
+    "samples": 7218,
+    "timestamps_moved_by_one_second": 17,
+    "time_runs_forward": true
+   },
+   {
+    "episode": "X02_Post_and_Sleeve_01",
+    "samples": 7970,
+    "timestamps_moved_by_one_second": 57,
+    "time_runs_forward": true
+   },
+   {
+    "episode": "X02_Wire_Chaser_I_01",
+    "samples": 2139,
+    "timestamps_moved_by_one_second": 0,
+    "time_runs_forward": true
+   },
+   {
+    "episode": "X03_Pea_on_a_Peg_01",
+    "samples": 6037,
+    "timestamps_moved_by_one_second": 0,
+    "time_runs_forward": true
+   },
+   {
+    "episode": "X03_Post_and_Sleeve_01",
+    "samples": 10808,
+    "timestamps_moved_by_one_second": 42,
+    "time_runs_forward": true
+   },
+   {
+    "episode": "X03_Wire_Chaser_I_01",
+    "samples": 4124,
+    "timestamps_moved_by_one_second": 26,
+    "time_runs_forward": true
+   },
+   {
+    "episode": "X04_Pea_on_a_Peg_01",
+    "samples": 9200,
+    "timestamps_moved_by_one_second": 0,
+    "time_runs_forward": true
+   },
+   {
+    "episode": "X04_Post_and_Sleeve_01",
+    "samples": 7251,
+    "timestamps_moved_by_one_second": 145,
+    "time_runs_forward": true
+   },
+   {
+    "episode": "X04_Wire_Chaser_I_01",
+    "samples": 2748,
+    "timestamps_moved_by_one_second": 55,
+    "time_runs_forward": true
+   }
+  ]
+ },
+ "a_trials": {
+  "trials": 12,
+  "recordings_without_a_usable_stretch": 0,
+  "as_expected": 12,
+  "success": 6,
+  "recovered": 6,
+  "other": [],
+  "arm_back_at_start_pose": 12,
+  "summaries_written_by_the_model": 12,
+  "summaries_replaced_by_the_template": 0,
+  "scale_of_the_path_fit_min_max": [
+   1.119,
+   1.185
+  ],
+  "largest_distance_from_the_straight_line_mm_min_max": [
+   0.86,
+   7.03
+  ],
+  "median_events": 59,
+  "median_checkpoints": 12,
+  "runs": [
+   {
+    "run_id": "trial_c7f6e51666",
+    "outcome": "success",
+    "why": null,
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "events": 58,
+    "events_by_type": {
+     "run_created": 1,
+     "observed": 10,
+     "node_started": 10,
+     "check_passed": 14,
+     "node_finished": 9,
+     "approval_requested": 1,
+     "approval_used": 1,
+     "action_started": 5,
+     "action_result": 5,
+     "model_text": 1,
+     "run_finished": 1
+    },
+    "checkpoints": 12,
+    "seconds_per_node": {
+     "preflight": 0.233,
+     "dry_run": 0.073,
+     "operator_go": 0.053,
+     "reach": 2.024,
+     "grasp": 0.547,
+     "hold_check": 0.003,
+     "place": 3.689,
+     "verdict": 0.001,
+     "confirm": 0.662
+    },
+    "tip_travel_mm": 97.34,
+    "motions": [
+     {
+      "label": "reach",
+      "status": "succeeded",
+      "path_mm": 32.84
+     },
+     {
+      "label": "grasp",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "place",
+      "status": "succeeded",
+      "path_mm": 36.06
+     },
+     {
+      "label": "release",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "retreat",
+      "status": "succeeded",
+      "path_mm": 28.44
+     }
+    ],
+    "recovery": null,
+    "arm_at_start_pose_at_end": true,
+    "arm_busy_at_end": false,
+    "spans": {
+     "action": 5,
+     "llm": 1,
+     "node": 10
+    },
+    "episode": "X01_Pea_on_a_Peg_01",
+    "needle_held_declared": true,
+    "path_fit": {
+     "scale": 1.175,
+     "waypoints": 13,
+     "mapped_path_mm": 33.16,
+     "straight_line_mm": 28.44,
+     "largest_distance_from_the_straight_line_mm": 6.17,
+     "source": "ROSMA X01_Pea_on_a_Peg_01 PSM1 0.0-0.836 s",
+     "recorded_samples": 43,
+     "recorded_net_mm": 24.21,
+     "recorded_path_mm": 28.22
+    },
+    "waited_at": "operator_go",
+    "robot_seq_while_waiting": 3,
+    "approval": {
+     "id": 1,
+     "decided_by": "op.lee",
+     "status": "used",
+     "bound_to_robot_seq": 3,
+     "bound_to_envelope": "1"
+    },
+    "summary": "The trial was successful. All stages were completed without errors. The needle was correctly held as declared.",
+    "summary_source": "model",
+    "wall_seconds": 8.2,
+    "expected": "success",
+    "as_expected": true
+   },
+   {
+    "run_id": "trial_ad44ba1a8e",
+    "outcome": "recovered",
+    "why": "hold_check:not_held",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:not_held",
+     "recover:recovered",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "events": 59,
+    "events_by_type": {
+     "run_created": 1,
+     "observed": 10,
+     "node_started": 10,
+     "check_passed": 13,
+     "node_finished": 9,
+     "approval_requested": 1,
+     "approval_used": 1,
+     "action_started": 5,
+     "action_result": 5,
+     "check_failed": 1,
+     "recovery_started": 1,
+     "model_text": 1,
+     "run_finished": 1
+    },
+    "checkpoints": 12,
+    "seconds_per_node": {
+     "preflight": 0.01,
+     "dry_run": 0.046,
+     "operator_go": 0.002,
+     "reach": 2.534,
+     "grasp": 0.513,
+     "hold_check": 0.001,
+     "recover": 1.834,
+     "verdict": 0.001,
+     "confirm": 0.854
+    },
+    "tip_travel_mm": 78.92,
+    "motions": [
+     {
+      "label": "reach",
+      "status": "succeeded",
+      "path_mm": 38.89
+     },
+     {
+      "label": "grasp",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "recover:open_jaw",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "recover:lift",
+      "status": "succeeded",
+      "path_mm": 22.0
+     },
+     {
+      "label": "recover:return",
+      "status": "succeeded",
+      "path_mm": 18.03
+     }
+    ],
+    "recovery": {
+     "done": true,
+     "reason": "hold_check:not_held",
+     "from": "hold_check",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "arm_at_start_pose_at_end": true,
+    "arm_busy_at_end": false,
+    "spans": {
+     "action": 5,
+     "llm": 1,
+     "node": 10
+    },
+    "episode": "X01_Post_and_Sleeve_01",
+    "needle_held_declared": false,
+    "path_fit": {
+     "scale": 1.176,
+     "waypoints": 17,
+     "mapped_path_mm": 40.27,
+     "straight_line_mm": 28.44,
+     "largest_distance_from_the_straight_line_mm": 5.49,
+     "source": "ROSMA X01_Post_and_Sleeve_01 PSM1 0.0-1.558 s",
+     "recorded_samples": 79,
+     "recorded_net_mm": 24.19,
+     "recorded_path_mm": 34.24
+    },
+    "waited_at": "operator_go",
+    "robot_seq_while_waiting": 3,
+    "approval": {
+     "id": 2,
+     "decided_by": "op.lee",
+     "status": "used",
+     "bound_to_robot_seq": 3,
+     "bound_to_envelope": "1"
+    },
+    "summary": "The trial outcome was recovered. The needle was not held during the check as declared. Recovery steps included opening the jaw, lifting to the start height, and returning to the start pose.",
+    "summary_source": "model",
+    "wall_seconds": 6.1,
+    "expected": "recovered",
+    "as_expected": true
+   },
+   {
+    "run_id": "trial_25e2bda5bb",
+    "outcome": "success",
+    "why": null,
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "events": 58,
+    "events_by_type": {
+     "run_created": 1,
+     "observed": 10,
+     "node_started": 10,
+     "check_passed": 14,
+     "node_finished": 9,
+     "approval_requested": 1,
+     "approval_used": 1,
+     "action_started": 5,
+     "action_result": 5,
+     "model_text": 1,
+     "run_finished": 1
+    },
+    "checkpoints": 12,
+    "seconds_per_node": {
+     "preflight": 0.01,
+     "dry_run": 0.044,
+     "operator_go": 0.002,
+     "reach": 1.929,
+     "grasp": 0.508,
+     "hold_check": 0.001,
+     "place": 3.549,
+     "verdict": 0.001,
+     "confirm": 0.681
+    },
+    "tip_travel_mm": 97.91,
+    "motions": [
+     {
+      "label": "reach",
+      "status": "succeeded",
+      "path_mm": 33.41
+     },
+     {
+      "label": "grasp",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "place",
+      "status": "succeeded",
+      "path_mm": 36.06
+     },
+     {
+      "label": "release",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "retreat",
+      "status": "succeeded",
+      "path_mm": 28.44
+     }
+    ],
+    "recovery": null,
+    "arm_at_start_pose_at_end": true,
+    "arm_busy_at_end": false,
+    "spans": {
+     "action": 5,
+     "llm": 1,
+     "node": 10
+    },
+    "episode": "X01_Wire_Chaser_I_01",
+    "needle_held_declared": true,
+    "path_fit": {
+     "scale": 1.129,
+     "waypoints": 13,
+     "mapped_path_mm": 33.99,
+     "straight_line_mm": 28.44,
+     "largest_distance_from_the_straight_line_mm": 4.72,
+     "source": "ROSMA X01_Wire_Chaser_I_01 PSM1 0.0-0.787 s",
+     "recorded_samples": 41,
+     "recorded_net_mm": 25.18,
+     "recorded_path_mm": 30.1
+    },
+    "waited_at": "operator_go",
+    "robot_seq_while_waiting": 3,
+    "approval": {
+     "id": 3,
+     "decided_by": "op.lee",
+     "status": "used",
+     "bound_to_robot_seq": 3,
+     "bound_to_envelope": "1"
+    },
+    "summary": "The trial was successful. All stages were completed without errors. The needle was correctly held as declared.",
+    "summary_source": "model",
+    "wall_seconds": 6.8,
+    "expected": "success",
+    "as_expected": true
+   },
+   {
+    "run_id": "trial_89bf79ed8c",
+    "outcome": "recovered",
+    "why": "hold_check:not_held",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:not_held",
+     "recover:recovered",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "events": 59,
+    "events_by_type": {
+     "run_created": 1,
+     "observed": 10,
+     "node_started": 10,
+     "check_passed": 13,
+     "node_finished": 9,
+     "approval_requested": 1,
+     "approval_used": 1,
+     "action_started": 5,
+     "action_result": 5,
+     "check_failed": 1,
+     "recovery_started": 1,
+     "model_text": 1,
+     "run_finished": 1
+    },
+    "checkpoints": 12,
+    "seconds_per_node": {
+     "preflight": 0.01,
+     "dry_run": 0.043,
+     "operator_go": 0.002,
+     "reach": 2.002,
+     "grasp": 0.61,
+     "hold_check": 0.036,
+     "recover": 2.134,
+     "verdict": 0.055,
+     "confirm": 0.882
+    },
+    "tip_travel_mm": 70.01,
+    "motions": [
+     {
+      "label": "reach",
+      "status": "succeeded",
+      "path_mm": 29.98
+     },
+     {
+      "label": "grasp",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "recover:open_jaw",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "recover:lift",
+      "status": "succeeded",
+      "path_mm": 22.0
+     },
+     {
+      "label": "recover:return",
+      "status": "succeeded",
+      "path_mm": 18.03
+     }
+    ],
+    "recovery": {
+     "done": true,
+     "reason": "hold_check:not_held",
+     "from": "hold_check",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "arm_at_start_pose_at_end": true,
+    "arm_busy_at_end": false,
+    "spans": {
+     "action": 5,
+     "llm": 1,
+     "node": 10
+    },
+    "episode": "X02_Pea_on_a_Peg_01",
+    "needle_held_declared": false,
+    "path_fit": {
+     "scale": 1.178,
+     "waypoints": 14,
+     "mapped_path_mm": 33.03,
+     "straight_line_mm": 28.44,
+     "largest_distance_from_the_straight_line_mm": 2.15,
+     "source": "ROSMA X02_Pea_on_a_Peg_01 PSM1 0.0-0.844 s",
+     "recorded_samples": 44,
+     "recorded_net_mm": 24.14,
+     "recorded_path_mm": 28.03
+    },
+    "waited_at": "operator_go",
+    "robot_seq_while_waiting": 3,
+    "approval": {
+     "id": 4,
+     "decided_by": "op.lee",
+     "status": "used",
+     "bound_to_robot_seq": 3,
+     "bound_to_envelope": "1"
+    },
+    "summary": "The trial outcome was recovered. The needle was not held during the check as declared. Recovery steps included opening the jaw, lifting to the start height, and returning to the start pose.",
+    "summary_source": "model",
+    "wall_seconds": 6.6,
+    "expected": "recovered",
+    "as_expected": true
+   },
+   {
+    "run_id": "trial_aba43d1e34",
+    "outcome": "success",
+    "why": null,
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "events": 58,
+    "events_by_type": {
+     "run_created": 1,
+     "observed": 10,
+     "node_started": 10,
+     "check_passed": 14,
+     "node_finished": 9,
+     "approval_requested": 1,
+     "approval_used": 1,
+     "action_started": 5,
+     "action_result": 5,
+     "model_text": 1,
+     "run_finished": 1
+    },
+    "checkpoints": 12,
+    "seconds_per_node": {
+     "preflight": 0.214,
+     "dry_run": 0.072,
+     "operator_go": 0.056,
+     "reach": 3.177,
+     "grasp": 0.507,
+     "hold_check": 0.002,
+     "place": 3.553,
+     "verdict": 0.001,
+     "confirm": 0.641
+    },
+    "tip_travel_mm": 116.43,
+    "motions": [
+     {
+      "label": "reach",
+      "status": "succeeded",
+      "path_mm": 51.93
+     },
+     {
+      "label": "grasp",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "place",
+      "status": "succeeded",
+      "path_mm": 36.06
+     },
+     {
+      "label": "release",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "retreat",
+      "status": "succeeded",
+      "path_mm": 28.44
+     }
+    ],
+    "recovery": null,
+    "arm_at_start_pose_at_end": true,
+    "arm_busy_at_end": false,
+    "spans": {
+     "action": 5,
+     "llm": 1,
+     "node": 10
+    },
+    "episode": "X02_Post_and_Sleeve_01",
+    "needle_held_declared": true,
+    "path_fit": {
+     "scale": 1.168,
+     "waypoints": 25,
+     "mapped_path_mm": 54.45,
+     "straight_line_mm": 28.44,
+     "largest_distance_from_the_straight_line_mm": 7.03,
+     "source": "ROSMA X02_Post_and_Sleeve_01 PSM1 1.499-4.459 s",
+     "recorded_samples": 149,
+     "recorded_net_mm": 24.34,
+     "recorded_path_mm": 46.6
+    },
+    "waited_at": "operator_go",
+    "robot_seq_while_waiting": 3,
+    "approval": {
+     "id": 5,
+     "decided_by": "op.lee",
+     "status": "used",
+     "bound_to_robot_seq": 3,
+     "bound_to_envelope": "1"
+    },
+    "summary": "The trial was successful. All stages were completed without errors. The needle was correctly held as declared.",
+    "summary_source": "model",
+    "wall_seconds": 9.0,
+    "expected": "success",
+    "as_expected": true
+   },
+   {
+    "run_id": "trial_2050ea63e9",
+    "outcome": "recovered",
+    "why": "hold_check:not_held",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:not_held",
+     "recover:recovered",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "events": 59,
+    "events_by_type": {
+     "run_created": 1,
+     "observed": 10,
+     "node_started": 10,
+     "check_passed": 13,
+     "node_finished": 9,
+     "approval_requested": 1,
+     "approval_used": 1,
+     "action_started": 5,
+     "action_result": 5,
+     "check_failed": 1,
+     "recovery_started": 1,
+     "model_text": 1,
+     "run_finished": 1
+    },
+    "checkpoints": 12,
+    "seconds_per_node": {
+     "preflight": 0.01,
+     "dry_run": 0.04,
+     "operator_go": 0.002,
+     "reach": 1.523,
+     "grasp": 0.507,
+     "hold_check": 0.002,
+     "recover": 1.831,
+     "verdict": 0.001,
+     "confirm": 0.835
+    },
+    "tip_travel_mm": 68.54,
+    "motions": [
+     {
+      "label": "reach",
+      "status": "succeeded",
+      "path_mm": 28.51
+     },
+     {
+      "label": "grasp",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "recover:open_jaw",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "recover:lift",
+      "status": "succeeded",
+      "path_mm": 22.0
+     },
+     {
+      "label": "recover:return",
+      "status": "succeeded",
+      "path_mm": 18.03
+     }
+    ],
+    "recovery": {
+     "done": true,
+     "reason": "hold_check:not_held",
+     "from": "hold_check",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "arm_at_start_pose_at_end": true,
+    "arm_busy_at_end": false,
+    "spans": {
+     "action": 5,
+     "llm": 1,
+     "node": 10
+    },
+    "episode": "X02_Wire_Chaser_I_01",
+    "needle_held_declared": false,
+    "path_fit": {
+     "scale": 1.143,
+     "waypoints": 10,
+     "mapped_path_mm": 28.7,
+     "straight_line_mm": 28.44,
+     "largest_distance_from_the_straight_line_mm": 0.86,
+     "source": "ROSMA X02_Wire_Chaser_I_01 PSM1 0.0-1.201 s",
+     "recorded_samples": 62,
+     "recorded_net_mm": 24.89,
+     "recorded_path_mm": 25.12
+    },
+    "waited_at": "operator_go",
+    "robot_seq_while_waiting": 3,
+    "approval": {
+     "id": 6,
+     "decided_by": "op.lee",
+     "status": "used",
+     "bound_to_robot_seq": 3,
+     "bound_to_envelope": "1"
+    },
+    "summary": "The trial outcome was recovered. The needle was not held during the check as declared. Recovery steps included opening the jaw, lifting to the start height, and returning to the start pose.",
+    "summary_source": "model",
+    "wall_seconds": 4.9,
+    "expected": "recovered",
+    "as_expected": true
+   },
+   {
+    "run_id": "trial_271f75ff20",
+    "outcome": "success",
+    "why": null,
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "events": 58,
+    "events_by_type": {
+     "run_created": 1,
+     "observed": 10,
+     "node_started": 10,
+     "check_passed": 14,
+     "node_finished": 9,
+     "approval_requested": 1,
+     "approval_used": 1,
+     "action_started": 5,
+     "action_result": 5,
+     "model_text": 1,
+     "run_finished": 1
+    },
+    "checkpoints": 12,
+    "seconds_per_node": {
+     "preflight": 0.013,
+     "dry_run": 0.045,
+     "operator_go": 0.002,
+     "reach": 2.435,
+     "grasp": 0.507,
+     "hold_check": 0.001,
+     "place": 3.553,
+     "verdict": 0.001,
+     "confirm": 0.756
+    },
+    "tip_travel_mm": 97.14,
+    "motions": [
+     {
+      "label": "reach",
+      "status": "succeeded",
+      "path_mm": 32.64
+     },
+     {
+      "label": "grasp",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "place",
+      "status": "succeeded",
+      "path_mm": 36.06
+     },
+     {
+      "label": "release",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "retreat",
+      "status": "succeeded",
+      "path_mm": 28.44
+     }
+    ],
+    "recovery": null,
+    "arm_at_start_pose_at_end": true,
+    "arm_busy_at_end": false,
+    "spans": {
+     "action": 5,
+     "llm": 1,
+     "node": 10
+    },
+    "episode": "X03_Pea_on_a_Peg_01",
+    "needle_held_declared": true,
+    "path_fit": {
+     "scale": 1.175,
+     "waypoints": 16,
+     "mapped_path_mm": 33.7,
+     "straight_line_mm": 28.44,
+     "largest_distance_from_the_straight_line_mm": 3.62,
+     "source": "ROSMA X03_Pea_on_a_Peg_01 PSM1 3.191-6.111 s",
+     "recorded_samples": 147,
+     "recorded_net_mm": 24.21,
+     "recorded_path_mm": 28.68
+    },
+    "waited_at": "operator_go",
+    "robot_seq_while_waiting": 3,
+    "approval": {
+     "id": 7,
+     "decided_by": "op.lee",
+     "status": "used",
+     "bound_to_robot_seq": 3,
+     "bound_to_envelope": "1"
+    },
+    "summary": "The trial was successful. All stages were completed without errors. The needle was correctly held as declared.",
+    "summary_source": "model",
+    "wall_seconds": 7.6,
+    "expected": "success",
+    "as_expected": true
+   },
+   {
+    "run_id": "trial_645d14b5fc",
+    "outcome": "recovered",
+    "why": "hold_check:not_held",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:not_held",
+     "recover:recovered",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "events": 59,
+    "events_by_type": {
+     "run_created": 1,
+     "observed": 10,
+     "node_started": 10,
+     "check_passed": 13,
+     "node_finished": 9,
+     "approval_requested": 1,
+     "approval_used": 1,
+     "action_started": 5,
+     "action_result": 5,
+     "check_failed": 1,
+     "recovery_started": 1,
+     "model_text": 1,
+     "run_finished": 1
+    },
+    "checkpoints": 12,
+    "seconds_per_node": {
+     "preflight": 0.009,
+     "dry_run": 0.046,
+     "operator_go": 0.002,
+     "reach": 2.739,
+     "grasp": 0.51,
+     "hold_check": 0.001,
+     "recover": 1.837,
+     "verdict": 0.001,
+     "confirm": 0.831
+    },
+    "tip_travel_mm": 77.65,
+    "motions": [
+     {
+      "label": "reach",
+      "status": "succeeded",
+      "path_mm": 37.62
+     },
+     {
+      "label": "grasp",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "recover:open_jaw",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "recover:lift",
+      "status": "succeeded",
+      "path_mm": 22.0
+     },
+     {
+      "label": "recover:return",
+      "status": "succeeded",
+      "path_mm": 18.03
+     }
+    ],
+    "recovery": {
+     "done": true,
+     "reason": "hold_check:not_held",
+     "from": "hold_check",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "arm_at_start_pose_at_end": true,
+    "arm_busy_at_end": false,
+    "spans": {
+     "action": 5,
+     "llm": 1,
+     "node": 10
+    },
+    "episode": "X03_Post_and_Sleeve_01",
+    "needle_held_declared": false,
+    "path_fit": {
+     "scale": 1.177,
+     "waypoints": 18,
+     "mapped_path_mm": 38.37,
+     "straight_line_mm": 28.44,
+     "largest_distance_from_the_straight_line_mm": 5.73,
+     "source": "ROSMA X03_Post_and_Sleeve_01 PSM1 20.49-23.489 s",
+     "recorded_samples": 151,
+     "recorded_net_mm": 24.17,
+     "recorded_path_mm": 32.61
+    },
+    "waited_at": "operator_go",
+    "robot_seq_while_waiting": 3,
+    "approval": {
+     "id": 8,
+     "decided_by": "op.lee",
+     "status": "used",
+     "bound_to_robot_seq": 3,
+     "bound_to_envelope": "1"
+    },
+    "summary": "The trial outcome was recovered. The needle was not held during the check as declared. Recovery steps included opening the jaw, lifting to the start height, and returning to the start pose.",
+    "summary_source": "model",
+    "wall_seconds": 6.4,
+    "expected": "recovered",
+    "as_expected": true
+   },
+   {
+    "run_id": "trial_34de531d14",
+    "outcome": "success",
+    "why": null,
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "events": 58,
+    "events_by_type": {
+     "run_created": 1,
+     "observed": 10,
+     "node_started": 10,
+     "check_passed": 14,
+     "node_finished": 9,
+     "approval_requested": 1,
+     "approval_used": 1,
+     "action_started": 5,
+     "action_result": 5,
+     "model_text": 1,
+     "run_finished": 1
+    },
+    "checkpoints": 12,
+    "seconds_per_node": {
+     "preflight": 0.01,
+     "dry_run": 0.041,
+     "operator_go": 0.002,
+     "reach": 1.831,
+     "grasp": 0.51,
+     "hold_check": 0.001,
+     "place": 3.557,
+     "verdict": 0.001,
+     "confirm": 0.687
+    },
+    "tip_travel_mm": 98.43,
+    "motions": [
+     {
+      "label": "reach",
+      "status": "succeeded",
+      "path_mm": 33.93
+     },
+     {
+      "label": "grasp",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "place",
+      "status": "succeeded",
+      "path_mm": 36.06
+     },
+     {
+      "label": "release",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "retreat",
+      "status": "succeeded",
+      "path_mm": 28.44
+     }
+    ],
+    "recovery": null,
+    "arm_at_start_pose_at_end": true,
+    "arm_busy_at_end": false,
+    "spans": {
+     "action": 5,
+     "llm": 1,
+     "node": 10
+    },
+    "episode": "X03_Wire_Chaser_I_01",
+    "needle_held_declared": true,
+    "path_fit": {
+     "scale": 1.119,
+     "waypoints": 13,
+     "mapped_path_mm": 35.3,
+     "straight_line_mm": 28.44,
+     "largest_distance_from_the_straight_line_mm": 4.6,
+     "source": "ROSMA X03_Wire_Chaser_I_01 PSM1 0.381-3.341 s",
+     "recorded_samples": 149,
+     "recorded_net_mm": 25.42,
+     "recorded_path_mm": 31.55
+    },
+    "waited_at": "operator_go",
+    "robot_seq_while_waiting": 3,
+    "approval": {
+     "id": 9,
+     "decided_by": "op.lee",
+     "status": "used",
+     "bound_to_robot_seq": 3,
+     "bound_to_envelope": "1"
+    },
+    "summary": "The trial was successful. All stages were completed without errors. The needle was correctly held as declared.",
+    "summary_source": "model",
+    "wall_seconds": 6.8,
+    "expected": "success",
+    "as_expected": true
+   },
+   {
+    "run_id": "trial_0fd6f8c0bf",
+    "outcome": "recovered",
+    "why": "hold_check:not_held",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:not_held",
+     "recover:recovered",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "events": 59,
+    "events_by_type": {
+     "run_created": 1,
+     "observed": 10,
+     "node_started": 10,
+     "check_passed": 13,
+     "node_finished": 9,
+     "approval_requested": 1,
+     "approval_used": 1,
+     "action_started": 5,
+     "action_result": 5,
+     "check_failed": 1,
+     "recovery_started": 1,
+     "model_text": 1,
+     "run_finished": 1
+    },
+    "checkpoints": 12,
+    "seconds_per_node": {
+     "preflight": 0.012,
+     "dry_run": 0.044,
+     "operator_go": 0.002,
+     "reach": 2.236,
+     "grasp": 0.51,
+     "hold_check": 0.001,
+     "recover": 1.84,
+     "verdict": 0.001,
+     "confirm": 0.851
+    },
+    "tip_travel_mm": 71.69,
+    "motions": [
+     {
+      "label": "reach",
+      "status": "succeeded",
+      "path_mm": 31.66
+     },
+     {
+      "label": "grasp",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "recover:open_jaw",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "recover:lift",
+      "status": "succeeded",
+      "path_mm": 22.0
+     },
+     {
+      "label": "recover:return",
+      "status": "succeeded",
+      "path_mm": 18.03
+     }
+    ],
+    "recovery": {
+     "done": true,
+     "reason": "hold_check:not_held",
+     "from": "hold_check",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "arm_at_start_pose_at_end": true,
+    "arm_busy_at_end": false,
+    "spans": {
+     "action": 5,
+     "llm": 1,
+     "node": 10
+    },
+    "episode": "X04_Pea_on_a_Peg_01",
+    "needle_held_declared": false,
+    "path_fit": {
+     "scale": 1.166,
+     "waypoints": 15,
+     "mapped_path_mm": 32.91,
+     "straight_line_mm": 28.44,
+     "largest_distance_from_the_straight_line_mm": 2.43,
+     "source": "ROSMA X04_Pea_on_a_Peg_01 PSM1 0.291-3.251 s",
+     "recorded_samples": 149,
+     "recorded_net_mm": 24.38,
+     "recorded_path_mm": 28.21
+    },
+    "waited_at": "operator_go",
+    "robot_seq_while_waiting": 3,
+    "approval": {
+     "id": 10,
+     "decided_by": "op.lee",
+     "status": "used",
+     "bound_to_robot_seq": 3,
+     "bound_to_envelope": "1"
+    },
+    "summary": "The trial recovered after the hold check was not held. The robot completed all stages up to recovery, including reaching, grasping, and performing recovery steps. The needle was not held at the check, as declared.",
+    "summary_source": "model",
+    "wall_seconds": 5.8,
+    "expected": "recovered",
+    "as_expected": true
+   },
+   {
+    "run_id": "trial_55d2f08fb1",
+    "outcome": "success",
+    "why": null,
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "events": 58,
+    "events_by_type": {
+     "run_created": 1,
+     "observed": 10,
+     "node_started": 10,
+     "check_passed": 14,
+     "node_finished": 9,
+     "approval_requested": 1,
+     "approval_used": 1,
+     "action_started": 5,
+     "action_result": 5,
+     "model_text": 1,
+     "run_finished": 1
+    },
+    "checkpoints": 12,
+    "seconds_per_node": {
+     "preflight": 0.01,
+     "dry_run": 0.044,
+     "operator_go": 0.002,
+     "reach": 2.032,
+     "grasp": 0.511,
+     "hold_check": 0.001,
+     "place": 3.561,
+     "verdict": 0.001,
+     "confirm": 0.718
+    },
+    "tip_travel_mm": 95.56,
+    "motions": [
+     {
+      "label": "reach",
+      "status": "succeeded",
+      "path_mm": 31.06
+     },
+     {
+      "label": "grasp",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "place",
+      "status": "succeeded",
+      "path_mm": 36.06
+     },
+     {
+      "label": "release",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "retreat",
+      "status": "succeeded",
+      "path_mm": 28.44
+     }
+    ],
+    "recovery": null,
+    "arm_at_start_pose_at_end": true,
+    "arm_busy_at_end": false,
+    "spans": {
+     "action": 5,
+     "llm": 1,
+     "node": 10
+    },
+    "episode": "X04_Post_and_Sleeve_01",
+    "needle_held_declared": true,
+    "path_fit": {
+     "scale": 1.185,
+     "waypoints": 14,
+     "mapped_path_mm": 31.66,
+     "straight_line_mm": 28.44,
+     "largest_distance_from_the_straight_line_mm": 4.46,
+     "source": "ROSMA X04_Post_and_Sleeve_01 PSM1 0.0-1.525 s",
+     "recorded_samples": 78,
+     "recorded_net_mm": 24.01,
+     "recorded_path_mm": 26.73
+    },
+    "waited_at": "operator_go",
+    "robot_seq_while_waiting": 3,
+    "approval": {
+     "id": 11,
+     "decided_by": "op.lee",
+     "status": "used",
+     "bound_to_robot_seq": 3,
+     "bound_to_envelope": "1"
+    },
+    "summary": "The trial was successful. All stages were completed without errors. The needle was correctly held as declared.",
+    "summary_source": "model",
+    "wall_seconds": 7.2,
+    "expected": "success",
+    "as_expected": true
+   },
+   {
+    "run_id": "trial_2141546e8f",
+    "outcome": "recovered",
+    "why": "hold_check:not_held",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:not_held",
+     "recover:recovered",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "events": 59,
+    "events_by_type": {
+     "run_created": 1,
+     "observed": 10,
+     "node_started": 10,
+     "check_passed": 13,
+     "node_finished": 9,
+     "approval_requested": 1,
+     "approval_used": 1,
+     "action_started": 5,
+     "action_result": 5,
+     "check_failed": 1,
+     "recovery_started": 1,
+     "model_text": 1,
+     "run_finished": 1
+    },
+    "checkpoints": 12,
+    "seconds_per_node": {
+     "preflight": 0.01,
+     "dry_run": 0.045,
+     "operator_go": 0.002,
+     "reach": 2.029,
+     "grasp": 0.511,
+     "hold_check": 0.002,
+     "recover": 1.841,
+     "verdict": 0.001,
+     "confirm": 0.782
+    },
+    "tip_travel_mm": 69.01,
+    "motions": [
+     {
+      "label": "reach",
+      "status": "succeeded",
+      "path_mm": 28.98
+     },
+     {
+      "label": "grasp",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "recover:open_jaw",
+      "status": "succeeded",
+      "path_mm": 0.0
+     },
+     {
+      "label": "recover:lift",
+      "status": "succeeded",
+      "path_mm": 22.0
+     },
+     {
+      "label": "recover:return",
+      "status": "succeeded",
+      "path_mm": 18.03
+     }
+    ],
+    "recovery": {
+     "done": true,
+     "reason": "hold_check:not_held",
+     "from": "hold_check",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "arm_at_start_pose_at_end": true,
+    "arm_busy_at_end": false,
+    "spans": {
+     "action": 5,
+     "llm": 1,
+     "node": 10
+    },
+    "episode": "X04_Wire_Chaser_I_01",
+    "needle_held_declared": false,
+    "path_fit": {
+     "scale": 1.17,
+     "waypoints": 13,
+     "mapped_path_mm": 29.09,
+     "straight_line_mm": 28.44,
+     "largest_distance_from_the_straight_line_mm": 0.98,
+     "source": "ROSMA X04_Wire_Chaser_I_01 PSM1 0.0-1.323 s",
+     "recorded_samples": 68,
+     "recorded_net_mm": 24.3,
+     "recorded_path_mm": 24.85
+    },
+    "waited_at": "operator_go",
+    "robot_seq_while_waiting": 3,
+    "approval": {
+     "id": 12,
+     "decided_by": "op.lee",
+     "status": "used",
+     "bound_to_robot_seq": 3,
+     "bound_to_envelope": "1"
+    },
+    "summary": "The trial outcome was recovered. The needle was not held during the check as declared. Recovery steps included opening the jaw, lifting to the start height, and returning to the start pose.",
+    "summary_source": "model",
+    "wall_seconds": 5.4,
+    "expected": "recovered",
+    "as_expected": true
+   }
+  ]
+ },
+ "b_crash_and_resume": {
+  "how": "each process is ended with os._exit(137) at a chosen control tick; the arm's state is in a file outside the process, as a real arm's is",
+  "cases": 10,
+  "marked_needs_reverification": 10,
+  "resume_without_an_operator_refused": 10,
+  "arm_moved_before_the_operator_resumed": 0,
+  "looked_at_the_robot_first_after_resume": 10,
+  "finished_after_resume": 10,
+  "arm_at_start_pose_at_end": 10,
+  "runs": [
+   {
+    "case": "preflight",
+    "killed_in": "preflight",
+    "at_control_tick": 0,
+    "exit_code_of_killed_process": 137,
+    "run_id": "crash_preflight_87244",
+    "arm_when_killed": {
+     "seq": 3,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    },
+    "status_after_restart": "needs_reverification",
+    "marked_by_the_new_process": true,
+    "resume_without_an_operator": "refused",
+    "arm_moved_before_the_operator_resumed": false,
+    "controller_restarted_injected": false,
+    "needle_declared_lost_while_down": false,
+    "arm_after_restart": {
+     "seq": 3,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    },
+    "outcome": "success",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "why": null,
+    "observed_before_anything_else_after_resume": true,
+    "precondition_failed_after_resume": null,
+    "times_the_killed_node_was_entered": 2,
+    "place_entered_after_resume": true,
+    "interrupted_motions": [],
+    "motions_after_resume": [
+     "reach",
+     "grasp",
+     "place",
+     "release",
+     "retreat"
+    ],
+    "command_ids_unique": true,
+    "recovery": null,
+    "arm_at_end": {
+     "seq": 78,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    }
+   },
+   {
+    "case": "dry run",
+    "killed_in": "dry_run",
+    "at_control_tick": 0,
+    "exit_code_of_killed_process": 137,
+    "run_id": "crash_dry_run_96405",
+    "arm_when_killed": {
+     "seq": 3,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    },
+    "status_after_restart": "needs_reverification",
+    "marked_by_the_new_process": true,
+    "resume_without_an_operator": "refused",
+    "arm_moved_before_the_operator_resumed": false,
+    "controller_restarted_injected": false,
+    "needle_declared_lost_while_down": false,
+    "arm_after_restart": {
+     "seq": 3,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    },
+    "outcome": "success",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "why": null,
+    "observed_before_anything_else_after_resume": true,
+    "precondition_failed_after_resume": null,
+    "times_the_killed_node_was_entered": 2,
+    "place_entered_after_resume": true,
+    "interrupted_motions": [],
+    "motions_after_resume": [
+     "reach",
+     "grasp",
+     "place",
+     "release",
+     "retreat"
+    ],
+    "command_ids_unique": true,
+    "recovery": null,
+    "arm_at_end": {
+     "seq": 72,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    }
+   },
+   {
+    "case": "waiting for the operator",
+    "killed_in": "operator_go",
+    "at_control_tick": 0,
+    "exit_code_of_killed_process": 137,
+    "run_id": "crash_waiting_for_the_operator_4804",
+    "arm_when_killed": {
+     "seq": 3,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    },
+    "status_after_restart": "needs_reverification",
+    "marked_by_the_new_process": true,
+    "resume_without_an_operator": "refused",
+    "arm_moved_before_the_operator_resumed": false,
+    "controller_restarted_injected": false,
+    "needle_declared_lost_while_down": false,
+    "arm_after_restart": {
+     "seq": 3,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    },
+    "outcome": "success",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "why": null,
+    "observed_before_anything_else_after_resume": true,
+    "precondition_failed_after_resume": null,
+    "times_the_killed_node_was_entered": 3,
+    "place_entered_after_resume": true,
+    "interrupted_motions": [],
+    "motions_after_resume": [
+     "reach",
+     "grasp",
+     "place",
+     "release",
+     "retreat"
+    ],
+    "command_ids_unique": true,
+    "recovery": null,
+    "arm_at_end": {
+     "seq": 72,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    }
+   },
+   {
+    "case": "reach",
+    "killed_in": "reach",
+    "at_control_tick": 6,
+    "exit_code_of_killed_process": 137,
+    "run_id": "crash_reach_13364",
+    "arm_when_killed": {
+     "seq": 10,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 8.904,
+     "height_over_pad_mm": 37.9,
+     "jaw_closed": false
+    },
+    "status_after_restart": "needs_reverification",
+    "marked_by_the_new_process": true,
+    "resume_without_an_operator": "refused",
+    "arm_moved_before_the_operator_resumed": false,
+    "controller_restarted_injected": false,
+    "needle_declared_lost_while_down": false,
+    "arm_after_restart": {
+     "seq": 10,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 8.904,
+     "height_over_pad_mm": 37.9,
+     "jaw_closed": false
+    },
+    "outcome": "success",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "why": null,
+    "observed_before_anything_else_after_resume": true,
+    "precondition_failed_after_resume": null,
+    "times_the_killed_node_was_entered": 2,
+    "place_entered_after_resume": true,
+    "interrupted_motions": [
+     "reach"
+    ],
+    "motions_after_resume": [
+     "reach",
+     "grasp",
+     "place",
+     "release",
+     "retreat"
+    ],
+    "command_ids_unique": true,
+    "recovery": null,
+    "arm_at_end": {
+     "seq": 85,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    }
+   },
+   {
+    "case": "grasp",
+    "killed_in": "grasp",
+    "at_control_tick": 2,
+    "exit_code_of_killed_process": 137,
+    "run_id": "crash_grasp_23068",
+    "arm_when_killed": {
+     "seq": 23,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 28.443,
+     "height_over_pad_mm": 8.0,
+     "jaw_closed": false
+    },
+    "status_after_restart": "needs_reverification",
+    "marked_by_the_new_process": true,
+    "resume_without_an_operator": "refused",
+    "arm_moved_before_the_operator_resumed": false,
+    "controller_restarted_injected": false,
+    "needle_declared_lost_while_down": false,
+    "arm_after_restart": {
+     "seq": 23,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 28.443,
+     "height_over_pad_mm": 8.0,
+     "jaw_closed": false
+    },
+    "outcome": "success",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "why": null,
+    "observed_before_anything_else_after_resume": true,
+    "precondition_failed_after_resume": null,
+    "times_the_killed_node_was_entered": 2,
+    "place_entered_after_resume": true,
+    "interrupted_motions": [
+     "grasp"
+    ],
+    "motions_after_resume": [
+     "grasp",
+     "place",
+     "release",
+     "retreat"
+    ],
+    "command_ids_unique": true,
+    "recovery": null,
+    "arm_at_end": {
+     "seq": 71,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    }
+   },
+   {
+    "case": "hold check",
+    "killed_in": "hold_check",
+    "at_control_tick": 0,
+    "exit_code_of_killed_process": 137,
+    "run_id": "crash_hold_check_31150",
+    "arm_when_killed": {
+     "seq": 36,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 28.443,
+     "height_over_pad_mm": 8.0,
+     "jaw_closed": true
+    },
+    "status_after_restart": "needs_reverification",
+    "marked_by_the_new_process": true,
+    "resume_without_an_operator": "refused",
+    "arm_moved_before_the_operator_resumed": false,
+    "controller_restarted_injected": false,
+    "needle_declared_lost_while_down": false,
+    "arm_after_restart": {
+     "seq": 36,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 28.443,
+     "height_over_pad_mm": 8.0,
+     "jaw_closed": true
+    },
+    "outcome": "success",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "why": null,
+    "observed_before_anything_else_after_resume": true,
+    "precondition_failed_after_resume": null,
+    "times_the_killed_node_was_entered": 2,
+    "place_entered_after_resume": true,
+    "interrupted_motions": [],
+    "motions_after_resume": [
+     "place",
+     "release",
+     "retreat"
+    ],
+    "command_ids_unique": true,
+    "recovery": null,
+    "arm_at_end": {
+     "seq": 77,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    }
+   },
+   {
+    "case": "place",
+    "killed_in": "place",
+    "at_control_tick": 8,
+    "exit_code_of_killed_process": 137,
+    "run_id": "crash_place_40142",
+    "arm_when_killed": {
+     "seq": 48,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 22.095,
+     "height_over_pad_mm": 8.0,
+     "jaw_closed": true
+    },
+    "status_after_restart": "needs_reverification",
+    "marked_by_the_new_process": true,
+    "resume_without_an_operator": "refused",
+    "arm_moved_before_the_operator_resumed": false,
+    "controller_restarted_injected": false,
+    "needle_declared_lost_while_down": false,
+    "arm_after_restart": {
+     "seq": 48,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 22.095,
+     "height_over_pad_mm": 8.0,
+     "jaw_closed": true
+    },
+    "outcome": "success",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "place:next",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "why": null,
+    "observed_before_anything_else_after_resume": true,
+    "precondition_failed_after_resume": null,
+    "times_the_killed_node_was_entered": 2,
+    "place_entered_after_resume": true,
+    "interrupted_motions": [
+     "place"
+    ],
+    "motions_after_resume": [
+     "place",
+     "release",
+     "retreat"
+    ],
+    "command_ids_unique": true,
+    "recovery": null,
+    "arm_at_end": {
+     "seq": 81,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    }
+   },
+   {
+    "case": "recovery",
+    "killed_in": "recover",
+    "at_control_tick": 6,
+    "exit_code_of_killed_process": 137,
+    "run_id": "crash_recovery_49510",
+    "arm_when_killed": {
+     "seq": 39,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 26.927,
+     "height_over_pad_mm": 10.0,
+     "jaw_closed": false
+    },
+    "status_after_restart": "needs_reverification",
+    "marked_by_the_new_process": true,
+    "resume_without_an_operator": "refused",
+    "arm_moved_before_the_operator_resumed": false,
+    "controller_restarted_injected": false,
+    "needle_declared_lost_while_down": false,
+    "arm_after_restart": {
+     "seq": 39,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 26.927,
+     "height_over_pad_mm": 10.0,
+     "jaw_closed": false
+    },
+    "outcome": "recovered",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:not_held",
+     "recover:recovered",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "why": "hold_check:not_held",
+    "observed_before_anything_else_after_resume": true,
+    "precondition_failed_after_resume": null,
+    "times_the_killed_node_was_entered": 2,
+    "place_entered_after_resume": false,
+    "interrupted_motions": [
+     "recover:lift"
+    ],
+    "motions_after_resume": [
+     "recover:lift",
+     "recover:return"
+    ],
+    "command_ids_unique": true,
+    "recovery": {
+     "done": true,
+     "reason": "hold_check:not_held",
+     "from": "hold_check",
+     "steps": [
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "arm_at_end": {
+     "seq": 55,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    }
+   },
+   {
+    "case": "place, needle lost while down",
+    "killed_in": "place",
+    "at_control_tick": 8,
+    "exit_code_of_killed_process": 137,
+    "run_id": "crash_place,_needle_lost_while_down_56100",
+    "arm_when_killed": {
+     "seq": 43,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 22.095,
+     "height_over_pad_mm": 8.0,
+     "jaw_closed": true
+    },
+    "status_after_restart": "needs_reverification",
+    "marked_by_the_new_process": true,
+    "resume_without_an_operator": "refused",
+    "arm_moved_before_the_operator_resumed": false,
+    "controller_restarted_injected": false,
+    "needle_declared_lost_while_down": true,
+    "arm_after_restart": {
+     "seq": 43,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 22.095,
+     "height_over_pad_mm": 8.0,
+     "jaw_closed": true
+    },
+    "outcome": "recovered",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "reach:reached",
+     "grasp:next",
+     "hold_check:held",
+     "recover:recovered",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "why": "precondition:needle_held",
+    "observed_before_anything_else_after_resume": true,
+    "precondition_failed_after_resume": [
+     "needle_held"
+    ],
+    "times_the_killed_node_was_entered": 1,
+    "place_entered_after_resume": false,
+    "interrupted_motions": [
+     "place"
+    ],
+    "motions_after_resume": [
+     "recover:open_jaw",
+     "recover:lift",
+     "recover:return"
+    ],
+    "command_ids_unique": true,
+    "recovery": {
+     "done": true,
+     "reason": "precondition:needle_held",
+     "from": "place",
+     "steps": [
+      "opened the jaw",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "arm_at_end": {
+     "seq": 64,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    }
+   },
+   {
+    "case": "reach, controller restarted too",
+    "killed_in": "reach",
+    "at_control_tick": 6,
+    "exit_code_of_killed_process": 137,
+    "run_id": "crash_reach,_controller_restarted_too_63747",
+    "arm_when_killed": {
+     "seq": 10,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 14.539,
+     "height_over_pad_mm": 21.54,
+     "jaw_closed": false
+    },
+    "status_after_restart": "needs_reverification",
+    "marked_by_the_new_process": true,
+    "resume_without_an_operator": "refused",
+    "arm_moved_before_the_operator_resumed": false,
+    "controller_restarted_injected": true,
+    "needle_declared_lost_while_down": false,
+    "arm_after_restart": {
+     "seq": 11,
+     "enabled": false,
+     "homed": false,
+     "mm_from_start": 14.539,
+     "height_over_pad_mm": 21.54,
+     "jaw_closed": false
+    },
+    "outcome": "recovered",
+    "path": [
+     "preflight:passed",
+     "dry_run:clean",
+     "operator_go:go",
+     "recover:recovered",
+     "verdict:next",
+     "confirm:next"
+    ],
+    "why": "precondition:arm_ready",
+    "observed_before_anything_else_after_resume": true,
+    "precondition_failed_after_resume": [
+     "arm_ready"
+    ],
+    "times_the_killed_node_was_entered": 1,
+    "place_entered_after_resume": false,
+    "interrupted_motions": [
+     "reach"
+    ],
+    "motions_after_resume": [
+     "recover:lift",
+     "recover:return"
+    ],
+    "command_ids_unique": true,
+    "recovery": {
+     "done": true,
+     "reason": "precondition:arm_ready",
+     "from": "reach",
+     "steps": [
+      "enabled and homed the arm (homing does not move an arm that carries an instrument)",
+      "lifted to the height of the start pose",
+      "returned to the start pose"
+     ],
+     "preapproved": true,
+     "error_to_start_mm": 0.0
+    },
+    "arm_at_end": {
+     "seq": 22,
+     "enabled": true,
+     "homed": true,
+     "mm_from_start": 0.0,
+     "height_over_pad_mm": 30.0,
+     "jaw_closed": false
+    }
+   }
+  ]
+ },
+ "c_watchdog": {
+  "run_id": "trial_fbf747af70",
+  "outcome": "recovered",
+  "why": "watchdog",
+  "path": [
+   "preflight:passed",
+   "dry_run:clean",
+   "operator_go:go",
+   "recover:recovered",
+   "verdict:next",
+   "confirm:next"
+  ],
+  "events": 47,
+  "events_by_type": {
+   "run_created": 1,
+   "observed": 8,
+   "node_started": 8,
+   "check_passed": 12,
+   "node_finished": 6,
+   "approval_requested": 1,
+   "approval_used": 1,
+   "action_started": 3,
+   "action_result": 3,
+   "watchdog": 1,
+   "recovery_started": 1,
+   "model_text": 1,
+   "run_finished": 1
+  },
+  "checkpoints": 10,
+  "seconds_per_node": {
+   "preflight": 0.01,
+   "dry_run": 0.042,
+   "operator_go": 0.002,
+   "recover": 0.622,
+   "verdict": 0.001,
+   "confirm": 0.001
+  },
+  "tip_travel_mm": 42.0,
+  "motions": [
+   {
+    "label": "reach",
+    "status": "canceled",
+    "path_mm": 18.81
+   },
+   {
+    "label": "recover:lift",
+    "status": "succeeded",
+    "path_mm": 11.7
+   },
+   {
+    "label": "recover:return",
+    "status": "succeeded",
+    "path_mm": 11.49
+   }
+  ],
+  "recovery": {
+   "done": true,
+   "reason": "watchdog",
+   "from": "reach",
+   "steps": [
+    "lifted to the height of the start pose",
+    "returned to the start pose"
+   ],
+   "preapproved": true,
+   "error_to_start_mm": 0.0
+  },
+  "arm_at_start_pose_at_end": true,
+  "arm_busy_at_end": false,
+  "spans": {
+   "action": 3,
+   "node": 8
+  },
+  "injected": "feedback of the reach motion is withheld after its fifth control step",
+  "watchdog_fired": true,
+  "watchdog_limit_s": 0.5,
+  "feedback_silent_s_when_cancelled": 0.503,
+  "reach_action_status": "canceled",
+  "control_steps_before_cancel": 9,
+  "planned_control_steps": 19,
+  "grasp_entered": false
+ },
+ "d_stale_approvals": {
+  "arm_moved_after_approval": {
+   "injected": "the arm is displaced by 0.002 rad of yaw after the operator approved",
+   "approval_refused": true,
+   "why": "robot_state_changed",
+   "approved_for_robot_seq": 3,
+   "robot_seq_at_use": 4,
+   "status_after": "waiting",
+   "asked_again": true,
+   "motions_commanded": 0,
+   "after_a_new_approval": "success",
+   "arm_at_start_pose_at_end": true
+  },
+  "envelope_changed_after_approval": {
+   "change": "clearance over the pad 3 mm -> 4 mm, proposed by a service engineer and approved by the safety lead (proposal 1); envelope version 2",
+   "run_sheet_written_for_envelope": "1",
+   "outcome": "stopped:precondition:envelope_unchanged",
+   "stopped_by": "precondition_failed",
+   "requirement_that_failed": [
+    "envelope_unchanged"
+   ],
+   "at_node": "operator_go",
+   "approval_given_before_the_change_was_used": false,
+   "operator_asked_again": false,
+   "motions_commanded": 0,
+   "path": [
+    "preflight:passed",
+    "dry_run:clean",
+    "stop:next"
+   ]
+  },
+  "approval_older_than_its_limit": {
+   "limit_s": 0.5,
+   "used_after_s": 0.8,
+   "approval_refused": true,
+   "why": "too_old",
+   "asked_again": true,
+   "motions_commanded": 0
+  }
+ },
+ "e_stops_limits_faults": {
+  "operator_stop_during_reach": {
+   "run_id": "trial_e807d8fe27",
+   "outcome": "recovered",
+   "why": "operator_stop",
+   "path": [
+    "preflight:passed",
+    "dry_run:clean",
+    "operator_go:go",
+    "recover:recovered",
+    "verdict:next",
+    "confirm:next"
+   ],
+   "events": 51,
+   "events_by_type": {
+    "run_created": 1,
+    "observed": 9,
+    "node_started": 9,
+    "check_passed": 12,
+    "node_finished": 6,
+    "approval_requested": 2,
+    "approval_used": 2,
+    "action_started": 3,
+    "action_result": 3,
+    "operator_stop": 1,
+    "recovery_started": 1,
+    "model_text": 1,
+    "run_finished": 1
+   },
+   "checkpoints": 11,
+   "seconds_per_node": {
+    "preflight": 0.01,
+    "dry_run": 0.057,
+    "operator_go": 0.002,
+    "recover": 0.217,
+    "verdict": 0.001,
+    "confirm": 0.001
+   },
+   "tip_travel_mm": 23.22,
+   "motions": [
+    {
+     "label": "reach",
+     "status": "canceled",
+     "path_mm": 14.81
+    },
+    {
+     "label": "recover:lift",
+     "status": "succeeded",
+     "path_mm": 0.0
+    },
+    {
+     "label": "recover:return",
+     "status": "succeeded",
+     "path_mm": 8.41
+    }
+   ],
+   "recovery": {
+    "done": true,
+    "reason": "operator_stop",
+    "from": "reach",
+    "steps": [
+     "lifted to the height of the start pose",
+     "returned to the start pose"
+    ],
+    "preapproved": false,
+    "error_to_start_mm": 0.0
+   },
+   "arm_at_start_pose_at_end": true,
+   "arm_busy_at_end": false,
+   "spans": {
+    "action": 3,
+    "node": 9
+   },
+   "injected": "the operator's stop is set on the eighth control tick of the reach",
+   "arm_stopped_at": {
+    "mm_from_start": 8.41,
+    "height_over_pad_mm": 36.78
+   },
+   "waited_for": "recover",
+   "recovery_was_preapproved_for_the_run": true,
+   "recovery_still_needed_an_approval": true,
+   "arm_moved_while_waiting_for_the_operator": false
+  },
+  "operator_rejects_the_go": {
+   "run_id": "trial_e126147854",
+   "outcome": "operator_rejected",
+   "why": null,
+   "path": [
+    "preflight:passed",
+    "dry_run:clean",
+    "operator_go:rejected",
+    "stop:next"
+   ],
+   "events": 30,
+   "events_by_type": {
+    "run_created": 1,
+    "observed": 5,
+    "node_started": 5,
+    "check_passed": 12,
+    "node_finished": 4,
+    "approval_requested": 1,
+    "approval_rejected": 1,
+    "run_finished": 1
+   },
+   "checkpoints": 7,
+   "seconds_per_node": {
+    "preflight": 0.01,
+    "dry_run": 0.041,
+    "operator_go": 0.002,
+    "stop": 0.001
+   },
+   "tip_travel_mm": 0.0,
+   "motions": [],
+   "recovery": null,
+   "arm_at_start_pose_at_end": true,
+   "arm_busy_at_end": false,
+   "spans": {
+    "node": 5
+   },
+   "motions_commanded": 0
+  },
+  "nobody_answers_the_go": {
+   "run_id": "trial_9e71931e04",
+   "outcome": "operator_timeout",
+   "why": null,
+   "path": [
+    "preflight:passed",
+    "dry_run:clean",
+    "operator_go:timeout",
+    "stop:next"
+   ],
+   "events": 30,
+   "events_by_type": {
+    "run_created": 1,
+    "observed": 5,
+    "node_started": 5,
+    "check_passed": 12,
+    "node_finished": 4,
+    "approval_requested": 1,
+    "wait_timeout": 1,
+    "run_finished": 1
+   },
+   "checkpoints": 7,
+   "seconds_per_node": {
+    "preflight": 0.013,
+    "dry_run": 0.041,
+    "operator_go": 0.002,
+    "stop": 0.001
+   },
+   "tip_travel_mm": 0.0,
+   "motions": [],
+   "recovery": null,
+   "arm_at_start_pose_at_end": true,
+   "arm_busy_at_end": false,
+   "spans": {
+    "node": 5
+   },
+   "wait_limit_s": 0.5,
+   "motions_commanded": 0
+  },
+  "step_limit_mid_trial": {
+   "run_id": "trial_bc426bb16c",
+   "outcome": "recovered",
+   "why": "limit:steps",
+   "path": [
+    "preflight:passed",
+    "dry_run:clean",
+    "operator_go:go",
+    "reach:reached",
+    "recover:recovered",
+    "verdict:next",
+    "confirm:next"
+   ],
+   "events": 49,
+   "events_by_type": {
+    "run_created": 1,
+    "observed": 8,
+    "node_started": 8,
+    "check_passed": 13,
+    "node_finished": 7,
+    "approval_requested": 1,
+    "approval_used": 1,
+    "action_started": 3,
+    "action_result": 3,
+    "limit_reached": 1,
+    "recovery_started": 1,
+    "model_text": 1,
+    "run_finished": 1
+   },
+   "checkpoints": 11,
+   "seconds_per_node": {
+    "preflight": 0.01,
+    "dry_run": 0.048,
+    "operator_go": 0.002,
+    "reach": 2.438,
+    "recover": 1.333,
+    "verdict": 0.001,
+    "confirm": 0.001
+   },
+   "tip_travel_mm": 72.67,
+   "motions": [
+    {
+     "label": "reach",
+     "status": "succeeded",
+     "path_mm": 32.64
+    },
+    {
+     "label": "recover:lift",
+     "status": "succeeded",
+     "path_mm": 22.0
+    },
+    {
+     "label": "recover:return",
+     "status": "succeeded",
+     "path_mm": 18.03
+    }
+   ],
+   "recovery": {
+    "done": true,
+    "reason": "limit:steps",
+    "from": "grasp",
+    "steps": [
+     "lifted to the height of the start pose",
+     "returned to the start pose"
+    ],
+    "preapproved": true,
+    "error_to_start_mm": 0.0
+   },
+   "arm_at_start_pose_at_end": true,
+   "arm_busy_at_end": false,
+   "spans": {
+    "action": 3,
+    "node": 8
+   },
+   "limit": "5 node entries",
+   "steps_used": 8
+  },
+  "path_length_limit": {
+   "run_id": "trial_6ebac08d8c",
+   "outcome": "recovered",
+   "why": "limit:path_mm",
+   "path": [
+    "preflight:passed",
+    "dry_run:clean",
+    "operator_go:go",
+    "reach:reached",
+    "recover:recovered",
+    "verdict:next",
+    "confirm:next"
+   ],
+   "events": 49,
+   "events_by_type": {
+    "run_created": 1,
+    "observed": 8,
+    "node_started": 8,
+    "check_passed": 13,
+    "node_finished": 7,
+    "approval_requested": 1,
+    "approval_used": 1,
+    "action_started": 3,
+    "action_result": 3,
+    "limit_reached": 1,
+    "recovery_started": 1,
+    "model_text": 1,
+    "run_finished": 1
+   },
+   "checkpoints": 11,
+   "seconds_per_node": {
+    "preflight": 0.01,
+    "dry_run": 0.05,
+    "operator_go": 0.002,
+    "reach": 2.74,
+    "recover": 1.332,
+    "verdict": 0.001,
+    "confirm": 0.001
+   },
+   "tip_travel_mm": 77.65,
+   "motions": [
+    {
+     "label": "reach",
+     "status": "succeeded",
+     "path_mm": 37.62
+    },
+    {
+     "label": "recover:lift",
+     "status": "succeeded",
+     "path_mm": 22.0
+    },
+    {
+     "label": "recover:return",
+     "status": "succeeded",
+     "path_mm": 18.03
+    }
+   ],
+   "recovery": {
+    "done": true,
+    "reason": "limit:path_mm",
+    "from": "grasp",
+    "steps": [
+     "lifted to the height of the start pose",
+     "returned to the start pose"
+    ],
+    "preapproved": true,
+    "error_to_start_mm": 0.0
+   },
+   "arm_at_start_pose_at_end": true,
+   "arm_busy_at_end": false,
+   "spans": {
+    "action": 3,
+    "node": 8
+   },
+   "limit": "30 mm of tip travel",
+   "checked": "before each node, so the motion that crosses the limit finishes"
+  },
+  "arm_does_not_follow_during_reach": {
+   "run_id": "trial_da931edb95",
+   "outcome": "recovered",
+   "why": "reach:not_reached",
+   "path": [
+    "preflight:passed",
+    "dry_run:clean",
+    "operator_go:go",
+    "reach:not_reached",
+    "recover:recovered",
+    "verdict:next",
+    "confirm:next"
+   ],
+   "events": 48,
+   "events_by_type": {
+    "run_created": 1,
+    "observed": 8,
+    "node_started": 8,
+    "check_passed": 12,
+    "node_finished": 7,
+    "approval_requested": 1,
+    "approval_used": 1,
+    "action_started": 3,
+    "action_result": 3,
+    "check_failed": 1,
+    "recovery_started": 1,
+    "model_text": 1,
+    "run_finished": 1
+   },
+   "checkpoints": 10,
+   "seconds_per_node": {
+    "preflight": 0.01,
+    "dry_run": 0.043,
+    "operator_go": 0.002,
+    "reach": 0.006,
+    "recover": 0.01,
+    "verdict": 0.001,
+    "confirm": 0.002
+   },
+   "tip_travel_mm": 0.0,
+   "motions": [
+    {
+     "label": "reach",
+     "status": "aborted",
+     "path_mm": 0.0
+    },
+    {
+     "label": "recover:lift",
+     "status": "succeeded",
+     "path_mm": 0.0
+    },
+    {
+     "label": "recover:return",
+     "status": "succeeded",
+     "path_mm": 0.0
+    }
+   ],
+   "recovery": {
+    "done": true,
+    "reason": "reach:not_reached",
+    "from": "reach",
+    "steps": [
+     "lifted to the height of the start pose",
+     "returned to the start pose"
+    ],
+    "preapproved": true,
+    "error_to_start_mm": 0.0
+   },
+   "arm_at_start_pose_at_end": true,
+   "arm_busy_at_end": false,
+   "spans": {
+    "action": 3,
+    "node": 8
+   },
+   "injected": "set points are accepted but the arm does not move, during the reach",
+   "reach": {
+    "error_mm": 28.443,
+    "status": "aborted",
+    "reason": "tracking_error",
+    "control_steps": 0,
+    "from_waypoint": 0
+   }
+  },
+  "robot_fault_during_place": {
+   "run_id": "trial_c8a15ce749",
+   "outcome": "needs_manual_recovery",
+   "why": "robot_fault",
+   "path": [
+    "preflight:passed",
+    "dry_run:clean",
+    "operator_go:go",
+    "reach:reached",
+    "grasp:next",
+    "hold_check:held",
+    "verdict:next",
+    "confirm:next"
+   ],
+   "events": 56,
+   "events_by_type": {
+    "run_created": 1,
+    "observed": 11,
+    "node_started": 10,
+    "check_passed": 14,
+    "node_finished": 8,
+    "approval_requested": 1,
+    "approval_used": 1,
+    "action_started": 3,
+    "action_result": 3,
+    "robot_fault": 1,
+    "precondition_failed": 1,
+    "model_text": 1,
+    "run_finished": 1
+   },
+   "checkpoints": 13,
+   "seconds_per_node": {
+    "preflight": 0.012,
+    "dry_run": 0.045,
+    "operator_go": 0.002,
+    "reach": 2.236,
+    "grasp": 0.51,
+    "hold_check": 0.001,
+    "verdict": 0.001,
+    "confirm": 0.001
+   },
+   "tip_travel_mm": 43.65,
+   "motions": [
+    {
+     "label": "reach",
+     "status": "succeeded",
+     "path_mm": 31.66
+    },
+    {
+     "label": "grasp",
+     "status": "succeeded",
+     "path_mm": 0.0
+    },
+    {
+     "label": "place",
+     "status": "canceled",
+     "path_mm": 11.99
+    }
+   ],
+   "recovery": null,
+   "arm_at_start_pose_at_end": false,
+   "arm_busy_at_end": false,
+   "spans": {
+    "action": 3,
+    "node": 10
+   },
+   "injected": "the arm reports a fault on the sixth control tick of the place motion",
+   "motions_commanded_after_the_fault": 0,
+   "fault_at_end": "amplifier fault (injected)"
+  },
+  "calibration_invalid_at_preflight": {
+   "run_id": "trial_29677dcf7b",
+   "outcome": "preflight_failed",
+   "why": null,
+   "path": [
+    "preflight:failed",
+    "stop:next"
+   ],
+   "events": 20,
+   "events_by_type": {
+    "run_created": 1,
+    "observed": 2,
+    "node_started": 2,
+    "check_passed": 10,
+    "check_failed": 1,
+    "node_finished": 2,
+    "model_text": 1,
+    "run_finished": 1
+   },
+   "checkpoints": 4,
+   "seconds_per_node": {
+    "preflight": 0.009,
+    "stop": 0.872
+   },
+   "tip_travel_mm": 0.0,
+   "motions": [],
+   "recovery": null,
+   "arm_at_start_pose_at_end": true,
+   "arm_busy_at_end": false,
+   "spans": {
+    "llm": 1,
+    "node": 2
+   },
+   "failed_checks": [
+    "calibration is valid"
+   ],
+   "motions_commanded": 0,
+   "explanation": "The trial did not start because the preflight check for calibration validity failed. The base frame of PSM1 changed due to an applied configuration change. Nothing was moved.",
+   "explanation_source": "model"
+  },
+  "dry_run_rejects_the_path": {
+   "run_id": "trial_dryrun_1795162094",
+   "outcome": "dry_run_rejected",
+   "why": null,
+   "path": [
+    "preflight:passed",
+    "dry_run:rejected",
+    "stop:next"
+   ],
+   "events": 23,
+   "events_by_type": {
+    "run_created": 1,
+    "observed": 3,
+    "node_started": 3,
+    "check_passed": 11,
+    "node_finished": 3,
+    "check_failed": 1,
+    "run_finished": 1
+   },
+   "checkpoints": 5,
+   "seconds_per_node": {
+    "preflight": 0.01,
+    "dry_run": 0.01,
+    "stop": 0.001
+   },
+   "tip_travel_mm": 0.0,
+   "motions": [],
+   "recovery": null,
+   "arm_at_start_pose_at_end": true,
+   "arm_busy_at_end": false,
+   "spans": {
+    "node": 3
+   },
+   "injected": "an approach path with a waypoint 1 mm over the pad (clearance is 3 mm)",
+   "rejections": [
+    {
+     "stage": "reach",
+     "after_control_steps": 13,
+     "kind": "safety_rejected",
+     "violations": [
+      {
+       "rule": "clearance",
+       "height_over_pad_mm": 2.02,
+       "required_clearance_mm": 3.0,
+       "detail": "too close to the supporting surface"
+      }
+     ]
+    }
+   ],
+   "motions_commanded": 0
+  }
+ },
+ "f_state_from_events": {
+  "runs": 35,
+  "checkpoints_compared": 387,
+  "checkpoints_equal_to_the_state_rebuilt_from_events": 387,
+  "runs_whose_loaded_state_equals_the_rebuilt_state": 35,
+  "events_in_all_runs": 1838
+ }
+}

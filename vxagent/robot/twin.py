@@ -8,8 +8,11 @@ wherever they are used.
 """
 from __future__ import annotations
 
+import json
+import os
 import threading
 import time
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -21,9 +24,13 @@ from .kinematics import Chain
 class KinematicTwin:
     name = "twin"
 
-    def __init__(self, chain: Chain, home_q: Any, rate_hz: float = 10.0, jaw: float = 0.0):
+    def __init__(self, chain: Chain, home_q: Any, rate_hz: float = 10.0, jaw: float = 0.0,
+                 persist: Path | str | None = None):
         self.chain = chain
         self.rate_hz = rate_hz
+        # Where the arm is must outlive the process that commands it, as it does for a real arm.
+        # With `persist` every change of state is written to that file (see restore()).
+        self._persist = Path(persist) if persist else None
         self._lock = threading.RLock()
         self._home_q = chain.clamp(home_q)
         self._q = self._home_q.copy()
@@ -42,6 +49,37 @@ class KinematicTwin:
     def _bump(self) -> None:
         self._seq += 1
         self._stamp = time.time()
+        if self._persist is not None:
+            body = json.dumps({"q": [float(x) for x in self._q], "jaw": self._jaw, "powered": self._powered,
+                               "enabled": self._enabled, "homed": self._homed, "fault": self._fault,
+                               "seq": self._seq, "used": sorted(self._used)})
+            tmp = self._persist.with_suffix(".tmp")
+            tmp.write_text(body, encoding="utf-8")
+            os.replace(tmp, self._persist)
+
+    @classmethod
+    def restore(cls, chain: Chain, home_q: Any, persist: Path | str, rate_hz: float = 10.0, jaw: float = 0.0,
+                controller_restarted: bool = False) -> "KinematicTwin":
+        """The arm as the last process left it. A motion that was running is over: the
+        controller stops when nothing commands it. If the controller itself was restarted
+        (INJECTED when used), the arm comes back powered but neither enabled nor homed."""
+        twin = cls(chain, home_q, rate_hz, jaw)
+        path = Path(persist)
+        if path.exists():
+            saved = json.loads(path.read_text(encoding="utf-8"))
+            twin._q = chain.clamp(saved["q"])
+            twin._jaw = float(saved["jaw"])
+            twin._setpoint = chain.fk(twin._q)
+            twin._powered, twin._fault = bool(saved["powered"]), saved["fault"]
+            twin._enabled, twin._homed = bool(saved["enabled"]), bool(saved["homed"])
+            twin._seq, twin._used = int(saved["seq"]), set(saved["used"])
+        twin._persist = path
+        if controller_restarted:
+            twin._enabled, twin._homed = False, False
+            twin._bump()
+        # Otherwise the sequence number is the one the last process saw: a new process looking
+        # at the arm is not a change of the arm.
+        return twin
 
     def state(self) -> RobotState:
         with self._lock:
@@ -87,7 +125,8 @@ class KinematicTwin:
                 raise BackendError("robot_fault", f"the arm reports a fault: {self._fault}")
             if not self._enabled:
                 raise BackendError("robot_not_ready", "the arm must be enabled before homing")
-            self._q = self._home_q.copy()
+            # Homing does not move this arm. The dVRK software only drives a PSM to its zero
+            # position during homing when no instrument is present, and this twin always has one.
             self._setpoint = self.chain.fk(self._q)
             self._homed = True
             self._bump()

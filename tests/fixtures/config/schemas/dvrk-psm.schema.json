@@ -1,0 +1,50 @@
+{
+ "$schema": "http://json-schema.org/draft-07/schema#",
+ "$id": "dvrk-psm.schema.json",
+ "description": "Made-up minimal schema for tests. It is not the dVRK project's schema.",
+ "type": "object",
+ "required": [
+  "$id",
+  "$version",
+  "kinematic",
+  "generation"
+ ],
+ "properties": {
+  "$id": {
+   "type": "string"
+  },
+  "$version": {
+   "type": "string"
+  },
+  "kinematic": {
+   "type": "string"
+  },
+  "generation": {
+   "type": "string",
+   "enum": [
+    "Classic",
+    "Si"
+   ]
+  },
+  "tool_detection": {
+   "type": "string",
+   "enum": [
+    "AUTOMATIC",
+    "MANUAL",
+    "FIXED"
+   ]
+  },
+  "tool": {
+   "type": "string"
+  },
+  "mounting_pitch": {
+   "type": "number"
+  },
+  "re_home": {
+   "type": "boolean"
+  },
+  "homing_zero_position": {
+   "type": "boolean"
+  }
+ }
+}

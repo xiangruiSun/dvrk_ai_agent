@@ -56,7 +56,24 @@ def get_episode(episode_id: str, base: Path | None = None) -> Episode | None:
 
 
 def _time(stamp: str) -> float:
-    return datetime.strptime(stamp, "%Y-%m-%d.%H:%M:%S.%f").timestamp()
+    """The dataset writes the milliseconds without leading zeros: "17:15:25.2" is 25.002 s, not
+    25.2 s. (A first version of this function read the fraction as a decimal and put about one
+    sample in ten at the wrong time.)"""
+    base, _, ms = stamp.rpartition(".")
+    return datetime.strptime(base, "%Y-%m-%d.%H:%M:%S").timestamp() + int(ms) / 1000.0
+
+
+def _repair(times: list[float]) -> tuple[np.ndarray, int]:
+    """In some samples the seconds field is one sample late at a roll-over ("27.982" followed by
+    "27.2" where "28.2" is meant), which makes time run back by 0.98 s for one sample. Such a
+    sample is moved forward by one second. Returns the times and how many were moved."""
+    t = np.array(times, dtype=float)
+    moved = 0
+    for i in range(1, len(t)):
+        if t[i] < t[i - 1] - 0.5:
+            t[i] += 1.0
+            moved += 1
+    return t, moved
 
 
 def load(ep: Episode) -> tuple[np.ndarray, dict[str, np.ndarray]]:
@@ -79,8 +96,10 @@ def load(ep: Episode) -> tuple[np.ndarray, dict[str, np.ndarray]]:
             times.append(t)
             rows.append(vals)
     data = np.array(rows, dtype=float)
-    t = np.array(times) - times[0]
-    return t, {name: data[:, i] for i, name in enumerate(header[1:width])}
+    t, moved = _repair(times)
+    cols = {name: data[:, i] for i, name in enumerate(header[1:width])}
+    cols["_timestamps_repaired"] = np.array([moved])
+    return t - t[0], cols
 
 
 def _xyz(cols: dict[str, np.ndarray], arm: str, signal: str) -> np.ndarray:
@@ -96,6 +115,8 @@ def compute_stats(ep: Episode) -> dict[str, Any]:
         "sample_rate_hz": round(float(1.0 / np.median(dt[dt > 0])), 1) if np.any(dt > 0) else None,
         "signals_recorded": "position, orientation, velocity, wrench and joints of MTML, MTMR, PSM1, PSM2",
         "signals_absent": "jaw angle, camera calibration",
+        "timestamps_repaired": int(cols["_timestamps_repaired"][0]),
+        "time_runs_forward": bool(np.all(dt >= 0)),
     }
     for arm in ("PSM1", "PSM2"):
         p = _xyz(cols, arm, "position")
@@ -118,7 +139,7 @@ def stats(ep: Episode) -> dict[str, Any]:
     except (OSError, ValueError):
         cache = {}
     st = ep.path.stat()
-    key = f"{ep.path.name}:{st.st_size}:{int(st.st_mtime)}"
+    key = f"v2:{ep.path.name}:{st.st_size}:{int(st.st_mtime)}"      # v2: milliseconds read correctly
     if key not in cache:
         cache[key] = compute_stats(ep)
         cache_file.write_text(json.dumps(cache), encoding="utf-8")

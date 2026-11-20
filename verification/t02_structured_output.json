@@ -1,0 +1,2669 @@
+{
+ "task": "t02_structured_output",
+ "ran": "2026-11-20 03:03:40",
+ "model": "qwen3:14b",
+ "site": "site-a",
+ "dvrk_commit": "7435458dc8",
+ "requests_file": "evals/t02_change_requests.json",
+ "a_baseline": {
+  "files": 44,
+  "name_a_schema_of_the_set": 33,
+  "pass": 30,
+  "fail": [
+   {
+    "file": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+    "errors": [
+     "consoles/0/teleop_PSMs/0/configure_parameter: Additional properties are not allowed ('align_mtm' was unexpected)"
+    ]
+   },
+   {
+    "file": "system/system-MTMR-PSMove-PSM1_from_ROS.json",
+    "errors": [
+     "consoles/0/teleop_PSMs/0/configure_parameter: Additional properties are not allowed ('use_MTM_velocity' was unexpected)"
+    ]
+   },
+   {
+    "file": "system/system-MTMR-PSMove-PSM1_KIN_SIMULATED.json",
+    "errors": [
+     "consoles/0/teleop_PSMs/0/configure_parameter: Additional properties are not allowed ('use_MTM_velocity' was unexpected)"
+    ]
+   }
+  ],
+  "name_no_schema_of_the_set": [
+   "arm/suj-fixed-simulated.json",
+   "arm/suj-si-simulated.json",
+   "arm/suj-simulated.json",
+   "system/console-MTMR-ForceDimension-no-keyboard-PSM1_KIN_SIMULATED-Teleop.json",
+   "system/console-MTMR-Omni-PSM1_KIN_SIMULATED-Teleop.json",
+   "system/console-patient-cart-fixed-simulated.json",
+   "system/console-PSM1_SNAKE_KIN_SIMULATED.json",
+   "system/sawHaplyService-JHU-Imerse-0699-069E.json",
+   "system/sawHaplyService-JHU-Imerse-Right.json",
+   "system/sawPSMove-camera-MTMs.json",
+   "system/sawSensablePhantomDefault.json"
+  ],
+  "schemas": 18
+ },
+ "b_change_requests": {
+  "requests": 17,
+  "max_attempts": 3,
+  "by_mode": {
+   "constrained": {
+    "requests": 17,
+    "accepted": 17,
+    "valid_on_first_attempt": 14,
+    "accepted_after_repair": 3,
+    "nothing_proposed": 0,
+    "equals_reference": 17,
+    "accepted_but_different_from_reference": [],
+    "failed_attempts_by_stage": {
+     "physical": 3
+    },
+    "median_tokens": 2929,
+    "median_seconds": 2.1
+   },
+   "free": {
+    "requests": 17,
+    "accepted": 17,
+    "valid_on_first_attempt": 14,
+    "accepted_after_repair": 3,
+    "nothing_proposed": 0,
+    "equals_reference": 17,
+    "accepted_but_different_from_reference": [],
+    "failed_attempts_by_stage": {
+     "physical": 3
+    },
+    "median_tokens": 2929,
+    "median_seconds": 1.8
+   }
+  },
+  "runs": [
+   {
+    "id": "site-clearance",
+    "mode": "constrained",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2929,
+    "seconds": 2.4,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2812,
+      "completion_tokens": 117,
+      "latency_ms": 2371.4,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/clearance_mm\",\n      \"value\": 4.0,\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"The clearance the tip must keep over the pad is increased from 3 mm to 4 mm to ensure safer operation and prevent accidental contact with the pad.\",\n  \"evidence\": [\"note:foam-contact\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "safety_profile/clearance_mm",
+       "value": 4.0,
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "tighten",
+     "reason": "The clearance the tip must keep over the pad is increased from 3 mm to 4 mm to ensure safer operation and prevent accidental contact with the pad.",
+     "evidence": [
+      "note:foam-contact"
+     ]
+    }
+   },
+   {
+    "id": "site-pad-height",
+    "mode": "constrained",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2935,
+    "seconds": 2.1,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2817,
+      "completion_tokens": 118,
+      "latency_ms": 2125.9,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"pad_below_start_mm\",\n      \"value\": 24.0,\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The pad was measured to be 24 mm below the start pose, not 30 mm as previously recorded. This value needs to be updated in the site file.\",\n  \"evidence\": [\"meas:pad-height\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "pad_below_start_mm",
+       "value": 24.0,
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The pad was measured to be 24 mm below the start pose, not 30 mm as previously recorded. This value needs to be updated in the site file.",
+     "evidence": [
+      "meas:pad-height"
+     ]
+    }
+   },
+   {
+    "id": "site-free-step",
+    "mode": "constrained",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2904,
+    "seconds": 1.9,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2799,
+      "completion_tokens": 105,
+      "latency_ms": 1948.8,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/free_step_mm\",\n      \"value\": 4,\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"The largest step in free space was reduced from 5 mm to 4 mm to make motion smoother and safer.\",\n  \"evidence\": [\"note:overshoot\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "safety_profile/free_step_mm",
+       "value": 4,
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "tighten",
+     "reason": "The largest step in free space was reduced from 5 mm to 4 mm to make motion smoother and safer.",
+     "evidence": [
+      "note:overshoot"
+     ]
+    }
+   },
+   {
+    "id": "site-hover-pose",
+    "mode": "constrained",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2964,
+    "seconds": 2.4,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2823,
+      "completion_tokens": 141,
+      "latency_ms": 2395.5,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"named_poses/hover_needle/offset_mm\",\n      \"value\": [15.0, 10.0, -6.0],\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The offset of the hover_needle pose is being updated to [15, 10, -6] mm from the start pose, which is 2 mm higher than its current value of -8 mm.\",\n  \"evidence\": [\"note:hover\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "named_poses/hover_needle/offset_mm",
+       "value": [
+        15.0,
+        10.0,
+        -6.0
+       ],
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The offset of the hover_needle pose is being updated to [15, 10, -6] mm from the start pose, which is 2 mm higher than its current value of -8 mm.",
+     "evidence": [
+      "note:hover"
+     ]
+    }
+   },
+   {
+    "id": "site-tracking-stop",
+    "mode": "constrained",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2925,
+    "seconds": 2.1,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2808,
+      "completion_tokens": 117,
+      "latency_ms": 2120.1,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/tracking_stop_mm\",\n      \"value\": 1.5,\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"The request specifies that motion should stop when the position error exceeds 1.5 mm instead of the current 2 mm. This change makes the safety limit stricter.\",\n  \"evidence\": [\"note:tracking\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "safety_profile/tracking_stop_mm",
+       "value": 1.5,
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "tighten",
+     "reason": "The request specifies that motion should stop when the position error exceeds 1.5 mm instead of the current 2 mm. This change makes the safety limit stricter.",
+     "evidence": [
+      "note:tracking"
+     ]
+    }
+   },
+   {
+    "id": "site-workspace-wider",
+    "mode": "constrained",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2941,
+    "seconds": 2.1,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2822,
+      "completion_tokens": 119,
+      "latency_ms": 2141.4,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/workspace_half_mm\",\n      \"value\": 45.0,\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"loosen\",\n  \"reason\": \"The new phantom is wider than the pad, so the local workspace needs to be widened to plus or minus 45 mm around the start pose to accommodate it.\",\n  \"evidence\": [\"note:phantom-b\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "safety_profile/workspace_half_mm",
+       "value": 45.0,
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "loosen",
+     "reason": "The new phantom is wider than the pad, so the local workspace needs to be widened to plus or minus 45 mm around the start pose to accommodate it.",
+     "evidence": [
+      "note:phantom-b"
+     ]
+    }
+   },
+   {
+    "id": "site-near-steps",
+    "mode": "constrained",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2969,
+    "seconds": 2.7,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2806,
+      "completion_tokens": 163,
+      "latency_ms": 2668.2,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/near_step_mm\",\n      \"value\": 1.5,\n      \"unit\": \"mm\"\n    },\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/near_step_deg\",\n      \"value\": 2,\n      \"unit\": \"deg\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"The request specifies limiting steps near the needle and pad to 1.5 mm and 2 degrees, which are stricter than the current values of 2.0 mm and 3.0 degrees.\",\n  \"evidence\": [\"note:near\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm",
+     "deg"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "safety_profile/near_step_mm",
+       "value": 1.5,
+       "unit": "mm"
+      },
+      {
+       "op": "replace",
+       "path": "safety_profile/near_step_deg",
+       "value": 2,
+       "unit": "deg"
+      }
+     ],
+     "limit_change": "tighten",
+     "reason": "The request specifies limiting steps near the needle and pad to 1.5 mm and 2 degrees, which are stricter than the current values of 2.0 mm and 3.0 degrees.",
+     "evidence": [
+      "note:near"
+     ]
+    }
+   },
+   {
+    "id": "site-needle-position",
+    "mode": "constrained",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2954,
+    "seconds": 2.3,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2825,
+      "completion_tokens": 129,
+      "latency_ms": 2258.7,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"near_objects/needle/offset_mm\",\n      \"value\": [12.0, 14.0, -30.0],\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The needle's position has been updated to match the camera measurement of 12 mm, 14 mm, -30 mm from the start pose.\",\n  \"evidence\": [\"meas:needle\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "near_objects/needle/offset_mm",
+       "value": [
+        12.0,
+        14.0,
+        -30.0
+       ],
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The needle's position has been updated to match the camera measurement of 12 mm, 14 mm, -30 mm from the start pose.",
+     "evidence": [
+      "meas:needle"
+     ]
+    }
+   },
+   {
+    "id": "site-joint-margin-rad",
+    "mode": "constrained",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 2,
+    "valid_on_first_attempt": false,
+    "stages": [
+     "physical",
+     "ok"
+    ],
+    "tokens": 6039,
+    "seconds": 3.8,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "physical",
+      "errors": [
+       "limit_change is 'loosen' but the values say 'tighten': safety_profile/joint_margin_deg is tightened (5 to 8.02141)."
+      ],
+      "prompt_tokens": 2804,
+      "completion_tokens": 120,
+      "latency_ms": 2144.2,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/joint_margin_deg\",\n      \"value\": 0.14,\n      \"unit\": \"rad\"\n    }\n  ],\n  \"limit_change\": \"loosen\",\n  \"reason\": \"The request increases the room kept to the revolute joint limits from 5.0 degrees to 0.14 radians, which is a relaxation of the safety limit.\",\n  \"evidence\": [\"note:wrist\"]\n}"
+     },
+     {
+      "attempt": 2,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2995,
+      "completion_tokens": 120,
+      "latency_ms": 1652.5,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/joint_margin_deg\",\n      \"value\": 0.14,\n      \"unit\": \"rad\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"The request increases the room kept to the revolute joint limits from 5.0 degrees to 0.14 radians, which is a tightening of the safety limit.\",\n  \"evidence\": [\"note:wrist\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "rad"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "safety_profile/joint_margin_deg",
+       "value": 0.14,
+       "unit": "rad"
+      }
+     ],
+     "limit_change": "tighten",
+     "reason": "The request increases the room kept to the revolute joint limits from 5.0 degrees to 0.14 radians, which is a tightening of the safety limit.",
+     "evidence": [
+      "note:wrist"
+     ]
+    }
+   },
+   {
+    "id": "system-base-translation",
+    "mode": "constrained",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 1925,
+    "seconds": 2.1,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 1791,
+      "completion_tokens": 134,
+      "latency_ms": 2101.4,
+      "reply": "{\n  \"target\": \"system/system-dVRK-cart-simulated.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"arms/PSM1/base_frame/transform/translation\",\n      \"value\": [-0.21, 0.0, 0.0],\n      \"unit\": \"m\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The translation of PSM1's base frame was updated based on the new measurement, while the rotation was left unchanged as requested.\",\n  \"evidence\": [\"meas:psm1-base\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "m"
+    ],
+    "patch": {
+     "target": "system/system-dVRK-cart-simulated.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "arms/PSM1/base_frame/transform/translation",
+       "value": [
+        -0.21,
+        0.0,
+        0.0
+       ],
+       "unit": "m"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The translation of PSM1's base frame was updated based on the new measurement, while the rotation was left unchanged as requested.",
+     "evidence": [
+      "meas:psm1-base"
+     ]
+    }
+   },
+   {
+    "id": "system-arm-period",
+    "mode": "constrained",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 1889,
+    "seconds": 2.0,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 1763,
+      "completion_tokens": 126,
+      "latency_ms": 1972.2,
+      "reply": "{\n  \"target\": \"system/system-dVRK-cart-simulated.json\",\n  \"operations\": [\n    {\n      \"op\": \"add\",\n      \"path\": \"arms/PSM2/period\",\n      \"value\": 2,\n      \"unit\": \"ms\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The request specifies that the PSM2 arm component should run with a period of 2 ms. This change is necessary to adjust the timing of the arm component as per the user's instruction.\",\n  \"evidence\": [\"note:cpu\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "ms"
+    ],
+    "patch": {
+     "target": "system/system-dVRK-cart-simulated.json",
+     "operations": [
+      {
+       "op": "add",
+       "path": "arms/PSM2/period",
+       "value": 2,
+       "unit": "ms"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The request specifies that the PSM2 arm component should run with a period of 2 ms. This change is necessary to adjust the timing of the arm component as per the user's instruction.",
+     "evidence": [
+      "note:cpu"
+     ]
+    }
+   },
+   {
+    "id": "system-teleop-scale",
+    "mode": "constrained",
+    "target": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+    "accepted": true,
+    "attempts": 2,
+    "valid_on_first_attempt": false,
+    "stages": [
+     "physical",
+     "ok"
+    ],
+    "tokens": 4119,
+    "seconds": 4.1,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "physical",
+      "errors": [
+       "limit_change is 'tighten' but the values say 'none': no safety limit is changed."
+      ],
+      "prompt_tokens": 1813,
+      "completion_tokens": 146,
+      "latency_ms": 2194.0,
+      "reply": "{\n  \"target\": \"system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/scale\",\n      \"value\": 0.3,\n      \"unit\": \"ratio\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"The teleoperation scale was reduced from 0.4 to 0.3 to allow for finer control during needle handling, as noted by the operator.\",\n  \"evidence\": [\"note:scale\"]\n}"
+     },
+     {
+      "attempt": 2,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2015,
+      "completion_tokens": 145,
+      "latency_ms": 1930.2,
+      "reply": "{\n  \"target\": \"system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/scale\",\n      \"value\": 0.3,\n      \"unit\": \"ratio\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The teleoperation scale was reduced from 0.4 to 0.3 to allow for finer control during needle handling, as noted by the operator.\",\n  \"evidence\": [\"note:scale\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "ratio"
+    ],
+    "patch": {
+     "target": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/scale",
+       "value": 0.3,
+       "unit": "ratio"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The teleoperation scale was reduced from 0.4 to 0.3 to allow for finer control during needle handling, as noted by the operator.",
+     "evidence": [
+      "note:scale"
+     ]
+    }
+   },
+   {
+    "id": "system-rotation-locked",
+    "mode": "constrained",
+    "target": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+    "accepted": true,
+    "attempts": 2,
+    "valid_on_first_attempt": false,
+    "stages": [
+     "physical",
+     "ok"
+    ],
+    "tokens": 4085,
+    "seconds": 3.9,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "physical",
+      "errors": [
+       "limit_change is 'tighten' but the values say 'none': no safety limit is changed."
+      ],
+      "prompt_tokens": 1811,
+      "completion_tokens": 136,
+      "latency_ms": 2092.1,
+      "reply": "{\n  \"target\": \"system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json\",\n  \"operations\": [\n    {\n      \"op\": \"add\",\n      \"path\": \"consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/rotation_locked\",\n      \"value\": true,\n      \"unit\": \"none\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"Locking the instrument's orientation during teleoperation ensures stability and prevents unintended rotational movements, improving safety and control.\",\n  \"evidence\": [\"note:haply\"]\n}"
+     },
+     {
+      "attempt": 2,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2003,
+      "completion_tokens": 135,
+      "latency_ms": 1788.2,
+      "reply": "{\n  \"target\": \"system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json\",\n  \"operations\": [\n    {\n      \"op\": \"add\",\n      \"path\": \"consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/rotation_locked\",\n      \"value\": true,\n      \"unit\": \"none\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"Locking the instrument's orientation during teleoperation ensures stability and prevents unintended rotational movements, improving safety and control.\",\n  \"evidence\": [\"note:haply\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "none"
+    ],
+    "patch": {
+     "target": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+     "operations": [
+      {
+       "op": "add",
+       "path": "consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/rotation_locked",
+       "value": true,
+       "unit": "none"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "Locking the instrument's orientation during teleoperation ensures stability and prevents unintended rotational movements, improving safety and control.",
+     "evidence": [
+      "note:haply"
+     ]
+    }
+   },
+   {
+    "id": "system-audio-volume",
+    "mode": "constrained",
+    "target": "system/system-PSM1_Classic_KIN_SIMULATED.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 768,
+    "seconds": 1.6,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 653,
+      "completion_tokens": 115,
+      "latency_ms": 1628.1,
+      "reply": "{\n  \"target\": \"system/system-PSM1_Classic_KIN_SIMULATED.json\",\n  \"operations\": [\n    {\n      \"op\": \"add\",\n      \"path\": \"settings/audio_volume\",\n      \"value\": 0.3,\n      \"unit\": \"ratio\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The audio volume was set to 0.3 to ensure the audio cues are at an appropriate level for the shared lab environment.\",\n  \"evidence\": [\"note:audio\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "ratio"
+    ],
+    "patch": {
+     "target": "system/system-PSM1_Classic_KIN_SIMULATED.json",
+     "operations": [
+      {
+       "op": "add",
+       "path": "settings/audio_volume",
+       "value": 0.3,
+       "unit": "ratio"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The audio volume was set to 0.3 to ensure the audio cues are at an appropriate level for the shared lab environment.",
+     "evidence": [
+      "note:audio"
+     ]
+    }
+   },
+   {
+    "id": "arm-instrument",
+    "mode": "constrained",
+    "target": "arm/PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 848,
+    "seconds": 1.8,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 716,
+      "completion_tokens": 132,
+      "latency_ms": 1789.1,
+      "reply": "{\n  \"target\": \"arm/PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"tool\",\n      \"value\": \"MEGA_NEEDLE_DRIVER:400194\",\n      \"unit\": \"none\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The fixed instrument has been updated to the mega needle driver, model 400194, as requested.\",\n  \"evidence\": [\"index:400194\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "none"
+    ],
+    "patch": {
+     "target": "arm/PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "tool",
+       "value": "MEGA_NEEDLE_DRIVER:400194",
+       "unit": "none"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The fixed instrument has been updated to the mega needle driver, model 400194, as requested.",
+     "evidence": [
+      "index:400194"
+     ]
+    }
+   },
+   {
+    "id": "arm-fixed-detection",
+    "mode": "constrained",
+    "target": "arm/PSM_KIN_SIMULATED_MANUAL.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 850,
+    "seconds": 2.2,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 679,
+      "completion_tokens": 171,
+      "latency_ms": 2230.4,
+      "reply": "{\n  \"target\": \"arm/PSM_KIN_SIMULATED_MANUAL.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"tool_detection\",\n      \"value\": \"FIXED\",\n      \"unit\": \"none\"\n    },\n    {\n      \"op\": \"add\",\n      \"path\": \"tool\",\n      \"value\": \"LARGE_NEEDLE_DRIVER:400006\",\n      \"unit\": \"none\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The request specifies using fixed tool detection with the large needle driver, model 400006. This requires changing the tool_detection mode to FIXED and adding the corresponding tool entry.\",\n  \"evidence\": [\"index:400006\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "none",
+     "none"
+    ],
+    "patch": {
+     "target": "arm/PSM_KIN_SIMULATED_MANUAL.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "tool_detection",
+       "value": "FIXED",
+       "unit": "none"
+      },
+      {
+       "op": "add",
+       "path": "tool",
+       "value": "LARGE_NEEDLE_DRIVER:400006",
+       "unit": "none"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The request specifies using fixed tool detection with the large needle driver, model 400006. This requires changing the tool_detection mode to FIXED and adding the corresponding tool entry.",
+     "evidence": [
+      "index:400006"
+     ]
+    }
+   },
+   {
+    "id": "arm-mounting-pitch",
+    "mode": "constrained",
+    "target": "arm/PSM_Si_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_420006.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 850,
+    "seconds": 1.7,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 728,
+      "completion_tokens": 122,
+      "latency_ms": 1690.2,
+      "reply": "{\n  \"target\": \"arm/PSM_Si_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_420006.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"mounting_pitch\",\n      \"value\": -45,\n      \"unit\": \"deg\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The mounting pitch of the Si PSM has been set to -45 degrees as requested, reflecting its pitched-down orientation.\",\n  \"evidence\": [\"note:mount\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "deg"
+    ],
+    "patch": {
+     "target": "arm/PSM_Si_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_420006.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "mounting_pitch",
+       "value": -45,
+       "unit": "deg"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The mounting pitch of the Si PSM has been set to -45 degrees as requested, reflecting its pitched-down orientation.",
+     "evidence": [
+      "note:mount"
+     ]
+    }
+   },
+   {
+    "id": "site-clearance",
+    "mode": "free",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2929,
+    "seconds": 1.7,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2812,
+      "completion_tokens": 117,
+      "latency_ms": 1691.8,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/clearance_mm\",\n      \"value\": 4.0,\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"The clearance the tip must keep over the pad is increased from 3 mm to 4 mm to ensure safer operation and prevent accidental contact with the pad.\",\n  \"evidence\": [\"note:foam-contact\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "safety_profile/clearance_mm",
+       "value": 4.0,
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "tighten",
+     "reason": "The clearance the tip must keep over the pad is increased from 3 mm to 4 mm to ensure safer operation and prevent accidental contact with the pad.",
+     "evidence": [
+      "note:foam-contact"
+     ]
+    }
+   },
+   {
+    "id": "site-pad-height",
+    "mode": "free",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2935,
+    "seconds": 1.7,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2817,
+      "completion_tokens": 118,
+      "latency_ms": 1739.7,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"pad_below_start_mm\",\n      \"value\": 24.0,\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The pad was measured to be 24 mm below the start pose, not 30 mm as previously recorded. This value needs to be updated in the site file.\",\n  \"evidence\": [\"meas:pad-height\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "pad_below_start_mm",
+       "value": 24.0,
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The pad was measured to be 24 mm below the start pose, not 30 mm as previously recorded. This value needs to be updated in the site file.",
+     "evidence": [
+      "meas:pad-height"
+     ]
+    }
+   },
+   {
+    "id": "site-free-step",
+    "mode": "free",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2904,
+    "seconds": 1.6,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2799,
+      "completion_tokens": 105,
+      "latency_ms": 1639.1,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/free_step_mm\",\n      \"value\": 4,\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"The largest step in free space was reduced from 5 mm to 4 mm to make motion smoother and safer.\",\n  \"evidence\": [\"note:overshoot\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "safety_profile/free_step_mm",
+       "value": 4,
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "tighten",
+     "reason": "The largest step in free space was reduced from 5 mm to 4 mm to make motion smoother and safer.",
+     "evidence": [
+      "note:overshoot"
+     ]
+    }
+   },
+   {
+    "id": "site-hover-pose",
+    "mode": "free",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2964,
+    "seconds": 2.0,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2823,
+      "completion_tokens": 141,
+      "latency_ms": 2010.7,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"named_poses/hover_needle/offset_mm\",\n      \"value\": [15.0, 10.0, -6.0],\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The offset of the hover_needle pose is being updated to [15, 10, -6] mm from the start pose, which is 2 mm higher than its current value of -8 mm.\",\n  \"evidence\": [\"note:hover\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "named_poses/hover_needle/offset_mm",
+       "value": [
+        15.0,
+        10.0,
+        -6.0
+       ],
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The offset of the hover_needle pose is being updated to [15, 10, -6] mm from the start pose, which is 2 mm higher than its current value of -8 mm.",
+     "evidence": [
+      "note:hover"
+     ]
+    }
+   },
+   {
+    "id": "site-tracking-stop",
+    "mode": "free",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2925,
+    "seconds": 1.7,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2808,
+      "completion_tokens": 117,
+      "latency_ms": 1733.6,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/tracking_stop_mm\",\n      \"value\": 1.5,\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"The request specifies that motion should stop when the position error exceeds 1.5 mm instead of the current 2 mm. This change makes the safety limit stricter.\",\n  \"evidence\": [\"note:tracking\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "safety_profile/tracking_stop_mm",
+       "value": 1.5,
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "tighten",
+     "reason": "The request specifies that motion should stop when the position error exceeds 1.5 mm instead of the current 2 mm. This change makes the safety limit stricter.",
+     "evidence": [
+      "note:tracking"
+     ]
+    }
+   },
+   {
+    "id": "site-workspace-wider",
+    "mode": "free",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2941,
+    "seconds": 1.8,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2822,
+      "completion_tokens": 119,
+      "latency_ms": 1828.2,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/workspace_half_mm\",\n      \"value\": 45.0,\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"loosen\",\n  \"reason\": \"The new phantom is wider than the pad, so the local workspace needs to be widened to plus or minus 45 mm around the start pose to accommodate it.\",\n  \"evidence\": [\"note:phantom-b\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "safety_profile/workspace_half_mm",
+       "value": 45.0,
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "loosen",
+     "reason": "The new phantom is wider than the pad, so the local workspace needs to be widened to plus or minus 45 mm around the start pose to accommodate it.",
+     "evidence": [
+      "note:phantom-b"
+     ]
+    }
+   },
+   {
+    "id": "site-near-steps",
+    "mode": "free",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2969,
+    "seconds": 2.3,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2806,
+      "completion_tokens": 163,
+      "latency_ms": 2302.2,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/near_step_mm\",\n      \"value\": 1.5,\n      \"unit\": \"mm\"\n    },\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/near_step_deg\",\n      \"value\": 2,\n      \"unit\": \"deg\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"The request specifies limiting steps near the needle and pad to 1.5 mm and 2 degrees, which are stricter than the current values of 2.0 mm and 3.0 degrees.\",\n  \"evidence\": [\"note:near\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm",
+     "deg"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "safety_profile/near_step_mm",
+       "value": 1.5,
+       "unit": "mm"
+      },
+      {
+       "op": "replace",
+       "path": "safety_profile/near_step_deg",
+       "value": 2,
+       "unit": "deg"
+      }
+     ],
+     "limit_change": "tighten",
+     "reason": "The request specifies limiting steps near the needle and pad to 1.5 mm and 2 degrees, which are stricter than the current values of 2.0 mm and 3.0 degrees.",
+     "evidence": [
+      "note:near"
+     ]
+    }
+   },
+   {
+    "id": "site-needle-position",
+    "mode": "free",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 2954,
+    "seconds": 1.9,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2825,
+      "completion_tokens": 129,
+      "latency_ms": 1896.9,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"near_objects/needle/offset_mm\",\n      \"value\": [12.0, 14.0, -30.0],\n      \"unit\": \"mm\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The needle's position has been updated to match the camera measurement of 12 mm, 14 mm, -30 mm from the start pose.\",\n  \"evidence\": [\"meas:needle\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "mm"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "near_objects/needle/offset_mm",
+       "value": [
+        12.0,
+        14.0,
+        -30.0
+       ],
+       "unit": "mm"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The needle's position has been updated to match the camera measurement of 12 mm, 14 mm, -30 mm from the start pose.",
+     "evidence": [
+      "meas:needle"
+     ]
+    }
+   },
+   {
+    "id": "site-joint-margin-rad",
+    "mode": "free",
+    "target": "site/site_a.json",
+    "accepted": true,
+    "attempts": 2,
+    "valid_on_first_attempt": false,
+    "stages": [
+     "physical",
+     "ok"
+    ],
+    "tokens": 6054,
+    "seconds": 3.6,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "physical",
+      "errors": [
+       "limit_change is 'loosen' but the values say 'tighten': safety_profile/joint_margin_deg is tightened (5 to 8.02141)."
+      ],
+      "prompt_tokens": 2804,
+      "completion_tokens": 125,
+      "latency_ms": 1913.9,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/joint_margin_deg\",\n      \"value\": 0.14,\n      \"unit\": \"rad\"\n    }\n  ],\n  \"limit_change\": \"loosen\",\n  \"reason\": \"The room kept to the revolute joint limits was increased from 5.0 degrees to 0.14 radians (approximately 8.04 degrees), which loosens the safety limit.\",\n  \"evidence\": [\"note:wrist\"]\n}"
+     },
+     {
+      "attempt": 2,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 3000,
+      "completion_tokens": 125,
+      "latency_ms": 1713.8,
+      "reply": "{\n  \"target\": \"site/site_a.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"safety_profile/joint_margin_deg\",\n      \"value\": 0.14,\n      \"unit\": \"rad\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"The room kept to the revolute joint limits was increased from 5.0 degrees to 0.14 radians (approximately 8.04 degrees), which tightens the safety limit.\",\n  \"evidence\": [\"note:wrist\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "rad"
+    ],
+    "patch": {
+     "target": "site/site_a.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "safety_profile/joint_margin_deg",
+       "value": 0.14,
+       "unit": "rad"
+      }
+     ],
+     "limit_change": "tighten",
+     "reason": "The room kept to the revolute joint limits was increased from 5.0 degrees to 0.14 radians (approximately 8.04 degrees), which tightens the safety limit.",
+     "evidence": [
+      "note:wrist"
+     ]
+    }
+   },
+   {
+    "id": "system-base-translation",
+    "mode": "free",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 1925,
+    "seconds": 1.9,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 1791,
+      "completion_tokens": 134,
+      "latency_ms": 1928.8,
+      "reply": "{\n  \"target\": \"system/system-dVRK-cart-simulated.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"arms/PSM1/base_frame/transform/translation\",\n      \"value\": [-0.21, 0.0, 0.0],\n      \"unit\": \"m\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The translation of PSM1's base frame was updated based on the new measurement, while the rotation was left unchanged as requested.\",\n  \"evidence\": [\"meas:psm1-base\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "m"
+    ],
+    "patch": {
+     "target": "system/system-dVRK-cart-simulated.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "arms/PSM1/base_frame/transform/translation",
+       "value": [
+        -0.21,
+        0.0,
+        0.0
+       ],
+       "unit": "m"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The translation of PSM1's base frame was updated based on the new measurement, while the rotation was left unchanged as requested.",
+     "evidence": [
+      "meas:psm1-base"
+     ]
+    }
+   },
+   {
+    "id": "system-arm-period",
+    "mode": "free",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 1889,
+    "seconds": 1.8,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 1763,
+      "completion_tokens": 126,
+      "latency_ms": 1763.1,
+      "reply": "{\n  \"target\": \"system/system-dVRK-cart-simulated.json\",\n  \"operations\": [\n    {\n      \"op\": \"add\",\n      \"path\": \"arms/PSM2/period\",\n      \"value\": 2,\n      \"unit\": \"ms\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The request specifies that the PSM2 arm component should run with a period of 2 ms. This change is necessary to adjust the timing of the arm component as per the user's instruction.\",\n  \"evidence\": [\"note:cpu\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "ms"
+    ],
+    "patch": {
+     "target": "system/system-dVRK-cart-simulated.json",
+     "operations": [
+      {
+       "op": "add",
+       "path": "arms/PSM2/period",
+       "value": 2,
+       "unit": "ms"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The request specifies that the PSM2 arm component should run with a period of 2 ms. This change is necessary to adjust the timing of the arm component as per the user's instruction.",
+     "evidence": [
+      "note:cpu"
+     ]
+    }
+   },
+   {
+    "id": "system-teleop-scale",
+    "mode": "free",
+    "target": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+    "accepted": true,
+    "attempts": 2,
+    "valid_on_first_attempt": false,
+    "stages": [
+     "physical",
+     "ok"
+    ],
+    "tokens": 4119,
+    "seconds": 3.9,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "physical",
+      "errors": [
+       "limit_change is 'tighten' but the values say 'none': no safety limit is changed."
+      ],
+      "prompt_tokens": 1813,
+      "completion_tokens": 146,
+      "latency_ms": 2005.0,
+      "reply": "{\n  \"target\": \"system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/scale\",\n      \"value\": 0.3,\n      \"unit\": \"ratio\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"The teleoperation scale was reduced from 0.4 to 0.3 to allow for finer control during needle handling, as noted by the operator.\",\n  \"evidence\": [\"note:scale\"]\n}"
+     },
+     {
+      "attempt": 2,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2015,
+      "completion_tokens": 145,
+      "latency_ms": 1912.9,
+      "reply": "{\n  \"target\": \"system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/scale\",\n      \"value\": 0.3,\n      \"unit\": \"ratio\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The teleoperation scale was reduced from 0.4 to 0.3 to allow for finer control during needle handling, as noted by the operator.\",\n  \"evidence\": [\"note:scale\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "ratio"
+    ],
+    "patch": {
+     "target": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/scale",
+       "value": 0.3,
+       "unit": "ratio"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The teleoperation scale was reduced from 0.4 to 0.3 to allow for finer control during needle handling, as noted by the operator.",
+     "evidence": [
+      "note:scale"
+     ]
+    }
+   },
+   {
+    "id": "system-rotation-locked",
+    "mode": "free",
+    "target": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+    "accepted": true,
+    "attempts": 2,
+    "valid_on_first_attempt": false,
+    "stages": [
+     "physical",
+     "ok"
+    ],
+    "tokens": 4085,
+    "seconds": 3.7,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "physical",
+      "errors": [
+       "limit_change is 'tighten' but the values say 'none': no safety limit is changed."
+      ],
+      "prompt_tokens": 1811,
+      "completion_tokens": 136,
+      "latency_ms": 1883.9,
+      "reply": "{\n  \"target\": \"system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json\",\n  \"operations\": [\n    {\n      \"op\": \"add\",\n      \"path\": \"consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/rotation_locked\",\n      \"value\": true,\n      \"unit\": \"none\"\n    }\n  ],\n  \"limit_change\": \"tighten\",\n  \"reason\": \"Locking the instrument's orientation during teleoperation ensures stability and prevents unintended rotational movements, improving safety and control.\",\n  \"evidence\": [\"note:haply\"]\n}"
+     },
+     {
+      "attempt": 2,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 2003,
+      "completion_tokens": 135,
+      "latency_ms": 1809.8,
+      "reply": "{\n  \"target\": \"system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json\",\n  \"operations\": [\n    {\n      \"op\": \"add\",\n      \"path\": \"consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/rotation_locked\",\n      \"value\": true,\n      \"unit\": \"none\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"Locking the instrument's orientation during teleoperation ensures stability and prevents unintended rotational movements, improving safety and control.\",\n  \"evidence\": [\"note:haply\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "none"
+    ],
+    "patch": {
+     "target": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+     "operations": [
+      {
+       "op": "add",
+       "path": "consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/rotation_locked",
+       "value": true,
+       "unit": "none"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "Locking the instrument's orientation during teleoperation ensures stability and prevents unintended rotational movements, improving safety and control.",
+     "evidence": [
+      "note:haply"
+     ]
+    }
+   },
+   {
+    "id": "system-audio-volume",
+    "mode": "free",
+    "target": "system/system-PSM1_Classic_KIN_SIMULATED.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 768,
+    "seconds": 1.6,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 653,
+      "completion_tokens": 115,
+      "latency_ms": 1605.2,
+      "reply": "{\n  \"target\": \"system/system-PSM1_Classic_KIN_SIMULATED.json\",\n  \"operations\": [\n    {\n      \"op\": \"add\",\n      \"path\": \"settings/audio_volume\",\n      \"value\": 0.3,\n      \"unit\": \"ratio\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The audio volume was set to 0.3 to ensure the audio cues are at an appropriate level for the shared lab environment.\",\n  \"evidence\": [\"note:audio\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "ratio"
+    ],
+    "patch": {
+     "target": "system/system-PSM1_Classic_KIN_SIMULATED.json",
+     "operations": [
+      {
+       "op": "add",
+       "path": "settings/audio_volume",
+       "value": 0.3,
+       "unit": "ratio"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The audio volume was set to 0.3 to ensure the audio cues are at an appropriate level for the shared lab environment.",
+     "evidence": [
+      "note:audio"
+     ]
+    }
+   },
+   {
+    "id": "arm-instrument",
+    "mode": "free",
+    "target": "arm/PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 848,
+    "seconds": 1.8,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 716,
+      "completion_tokens": 132,
+      "latency_ms": 1766.8,
+      "reply": "{\n  \"target\": \"arm/PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"tool\",\n      \"value\": \"MEGA_NEEDLE_DRIVER:400194\",\n      \"unit\": \"none\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The fixed instrument has been updated to the mega needle driver, model 400194, as requested.\",\n  \"evidence\": [\"index:400194\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "none"
+    ],
+    "patch": {
+     "target": "arm/PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "tool",
+       "value": "MEGA_NEEDLE_DRIVER:400194",
+       "unit": "none"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The fixed instrument has been updated to the mega needle driver, model 400194, as requested.",
+     "evidence": [
+      "index:400194"
+     ]
+    }
+   },
+   {
+    "id": "arm-fixed-detection",
+    "mode": "free",
+    "target": "arm/PSM_KIN_SIMULATED_MANUAL.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 850,
+    "seconds": 2.2,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 679,
+      "completion_tokens": 171,
+      "latency_ms": 2195.3,
+      "reply": "{\n  \"target\": \"arm/PSM_KIN_SIMULATED_MANUAL.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"tool_detection\",\n      \"value\": \"FIXED\",\n      \"unit\": \"none\"\n    },\n    {\n      \"op\": \"add\",\n      \"path\": \"tool\",\n      \"value\": \"LARGE_NEEDLE_DRIVER:400006\",\n      \"unit\": \"none\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The request specifies using fixed tool detection with the large needle driver, model 400006. This requires changing the tool_detection mode to FIXED and adding the corresponding tool entry.\",\n  \"evidence\": [\"index:400006\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "none",
+     "none"
+    ],
+    "patch": {
+     "target": "arm/PSM_KIN_SIMULATED_MANUAL.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "tool_detection",
+       "value": "FIXED",
+       "unit": "none"
+      },
+      {
+       "op": "add",
+       "path": "tool",
+       "value": "LARGE_NEEDLE_DRIVER:400006",
+       "unit": "none"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The request specifies using fixed tool detection with the large needle driver, model 400006. This requires changing the tool_detection mode to FIXED and adding the corresponding tool entry.",
+     "evidence": [
+      "index:400006"
+     ]
+    }
+   },
+   {
+    "id": "arm-mounting-pitch",
+    "mode": "free",
+    "target": "arm/PSM_Si_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_420006.json",
+    "accepted": true,
+    "attempts": 1,
+    "valid_on_first_attempt": true,
+    "stages": [
+     "ok"
+    ],
+    "tokens": 850,
+    "seconds": 1.6,
+    "attempt_log": [
+     {
+      "attempt": 1,
+      "stage": "ok",
+      "errors": [],
+      "prompt_tokens": 728,
+      "completion_tokens": 122,
+      "latency_ms": 1624.3,
+      "reply": "{\n  \"target\": \"arm/PSM_Si_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_420006.json\",\n  \"operations\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"mounting_pitch\",\n      \"value\": -45,\n      \"unit\": \"deg\"\n    }\n  ],\n  \"limit_change\": \"none\",\n  \"reason\": \"The mounting pitch of the Si PSM has been set to -45 degrees as requested, reflecting its pitched-down orientation.\",\n  \"evidence\": [\"note:mount\"]\n}"
+     }
+    ],
+    "same_file_as_reference": true,
+    "same_limit_declaration": true,
+    "equals_reference": true,
+    "units_given": [
+     "deg"
+    ],
+    "patch": {
+     "target": "arm/PSM_Si_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_420006.json",
+     "operations": [
+      {
+       "op": "replace",
+       "path": "mounting_pitch",
+       "value": -45,
+       "unit": "deg"
+      }
+     ],
+     "limit_change": "none",
+     "reason": "The mounting pitch of the Si PSM has been set to -45 degrees as requested, reflecting its pitched-down orientation.",
+     "evidence": [
+      "note:mount"
+     ]
+    }
+   }
+  ]
+ },
+ "c_negative_controls": {
+  "accepted_by_both_schemas_refused_by_a_physical_rule": "16/16",
+  "refused_by_the_allowlist": "4/4",
+  "any_accepted": [],
+  "controls": [
+   {
+    "id": "millimetres written as metres",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (arms/PSM1/base_frame/transform/translation): [-210, 0, 0] m has a component outside the plausible range -2 to 2 m. The number would be plausible in 'mm': if the request gave it in mm, state unit 'mm' and leave the number as it is."
+    ]
+   },
+   {
+    "id": "transform whose rotation is scaled",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (arms/PSM1/base_frame/transform): the rotation part is not orthonormal (R times its transpose differs from the identity by 0.21)"
+    ]
+   },
+   {
+    "id": "transform that is a reflection",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (arms/PSM1/base_frame/transform/rotation): the rotation part has determinant -1.000: it is a reflection, not a rotation"
+    ]
+   },
+   {
+    "id": "transform with a wrong last row",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (arms/PSM1/base_frame/transform): the last row of a transform must be 0 0 0 1, it is [0, 0, 0, 0]"
+    ]
+   },
+   {
+    "id": "rotation changed by 90 degrees in one patch",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (arms/PSM1/base_frame/transform/rotation): the rotation changes by 90.0 deg, more than the 10 deg one patch may change it by"
+    ]
+   },
+   {
+    "id": "frame that does not exist",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "frame 'Cart' is not a frame of this site (frames: ECM, PSM1, PSM2, camera, pad, world)"
+    ]
+   },
+   {
+    "id": "two arms each based on the other",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "the patch makes a frame its own ancestor: PSM1 -> PSM2 -> PSM1"
+    ]
+   },
+   {
+    "id": "limit loosened in a patch that says tighten",
+    "target": "site/site_a.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "limit_change is 'tighten' but the values say 'loosen': safety_profile/clearance_mm is loosened (3 to 2). A loosened limit must be declared as 'loosen'."
+    ]
+   },
+   {
+    "id": "limit loosened in a patch that says none",
+    "target": "site/site_a.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "limit_change is 'none' but the values say 'loosen': safety_profile/workspace_half_mm is loosened (40 to 45). A loosened limit must be declared as 'loosen'."
+    ]
+   },
+   {
+    "id": "limit moved by four times its step",
+    "target": "site/site_a.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (safety_profile/clearance_mm): a change from 3 to 12 mm is larger than the 5 mm one patch may change this value by"
+    ]
+   },
+   {
+    "id": "step limit above the published 5 mm",
+    "target": "site/site_a.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (safety_profile/free_step_mm): 8 mm is outside the plausible range 0.5 to 5 mm for this path"
+    ]
+   },
+   {
+    "id": "free-space step below the near step",
+    "target": "site/site_a.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (safety_profile/free_step_mm): a change from 5 to 1.5 mm is larger than the 2 mm one patch may change this value by",
+     "safety_profile/near_step_mm (2) would be larger than safety_profile/free_step_mm (1.5): the step near the needle cannot exceed the free-space step"
+    ]
+   },
+   {
+    "id": "length given in degrees",
+    "target": "site/site_a.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (safety_profile/clearance_mm): a value in 'deg' (angle) cannot be written where the file expects 'mm' (length)"
+    ]
+   },
+   {
+    "id": "instrument that has no file",
+    "target": "arm/PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (tool): no instrument 'LARGE_NEEDLE_DRIVER:499999' in the instrument set (share/tool/index.json)"
+    ]
+   },
+   {
+    "id": "fixed detection without an instrument",
+    "target": "arm/PSM_KIN_SIMULATED_MANUAL.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "tool_detection is FIXED, so the file must name the instrument in 'tool'"
+    ]
+   },
+   {
+    "id": "evidence that is not a record of the run",
+    "target": "site/site_a.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "physical",
+    "expected_stage": "physical",
+    "as_expected": true,
+    "errors": [
+     "evidence 'meas:made-up' is not a record of this run (records: rec:1)"
+    ]
+   },
+   {
+    "id": "arm told to move to zero when homing",
+    "target": "arm/PSM_KIN_SIMULATED_MANUAL.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "allowlist",
+    "expected_stage": "allowlist",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (homing_zero_position): this path may not be changed by a patch to a dvrk-psm file. Use only the paths listed as allowed."
+    ]
+   },
+   {
+    "id": "arm pointed at another arm file",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "allowlist",
+    "expected_stage": "allowlist",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (arms/PSM1/arm_file): this path may not be changed by a patch to a dvrk-system file. Use only the paths listed as allowed."
+    ]
+   },
+   {
+    "id": "start joint values of the site",
+    "target": "site/site_a.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "allowlist",
+    "expected_stage": "allowlist",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (start_joints_si): this path may not be changed by a patch to a vx-site file. Use only the paths listed as allowed."
+    ]
+   },
+   {
+    "id": "kinematic file of the arm",
+    "target": "arm/PSM_KIN_SIMULATED_MANUAL.json",
+    "passes_pydantic_schema": true,
+    "refused": true,
+    "refused_at": "allowlist",
+    "expected_stage": "allowlist",
+    "as_expected": true,
+    "errors": [
+     "operation 1 (kinematic): this path may not be changed by a patch to a dvrk-psm file. Use only the paths listed as allowed."
+    ]
+   }
+  ]
+ },
+ "d_authorization": {
+  "cases": 16,
+  "as_expected": 16,
+  "refusals_written_to_the_audit_log": 12,
+  "matrix": [
+   {
+    "case": "proposed by operator",
+    "allowed": false,
+    "refusal": "role",
+    "expected_refusal": "role",
+    "as_expected": true
+   },
+   {
+    "case": "proposed by engineer of another site",
+    "allowed": false,
+    "refusal": "site",
+    "expected_refusal": "site",
+    "as_expected": true
+   },
+   {
+    "case": "proposed by remote support",
+    "allowed": false,
+    "refusal": "role",
+    "expected_refusal": "role",
+    "as_expected": true
+   },
+   {
+    "case": "proposed by safety lead",
+    "allowed": false,
+    "refusal": "role",
+    "expected_refusal": "role",
+    "as_expected": true
+   },
+   {
+    "case": "proposed by engineer",
+    "allowed": true,
+    "refusal": null,
+    "expected_refusal": null,
+    "as_expected": true
+   },
+   {
+    "case": "approved by the proposer",
+    "allowed": false,
+    "refusal": "role",
+    "expected_refusal": "role",
+    "as_expected": true
+   },
+   {
+    "case": "approved by second engineer",
+    "allowed": false,
+    "refusal": "role",
+    "expected_refusal": "role",
+    "as_expected": true
+   },
+   {
+    "case": "approved by operator",
+    "allowed": false,
+    "refusal": "role",
+    "expected_refusal": "role",
+    "as_expected": true
+   },
+   {
+    "case": "approved by remote support",
+    "allowed": false,
+    "refusal": "role",
+    "expected_refusal": "role",
+    "as_expected": true
+   },
+   {
+    "case": "approved by safety lead of another site",
+    "allowed": false,
+    "refusal": "site",
+    "expected_refusal": "site",
+    "as_expected": true
+   },
+   {
+    "case": "approved by safety lead",
+    "allowed": true,
+    "refusal": null,
+    "expected_refusal": null,
+    "as_expected": true
+   },
+   {
+    "case": "approved a second time",
+    "allowed": false,
+    "refusal": "state",
+    "expected_refusal": "state",
+    "as_expected": true
+   },
+   {
+    "case": "proposed by a person holding both roles",
+    "allowed": true,
+    "refusal": null,
+    "expected_refusal": null,
+    "as_expected": true
+   },
+   {
+    "case": "approved by that same person",
+    "allowed": false,
+    "refusal": "self_approval",
+    "expected_refusal": "self_approval",
+    "as_expected": true
+   },
+   {
+    "case": "loosened limit approved without a reason",
+    "allowed": false,
+    "refusal": "reason_required",
+    "expected_refusal": "reason_required",
+    "as_expected": true
+   },
+   {
+    "case": "loosened limit approved with a written reason",
+    "allowed": true,
+    "refusal": null,
+    "expected_refusal": null,
+    "as_expected": true
+   }
+  ]
+ },
+ "e_dry_application_and_apply": {
+  "effects": [
+   {
+    "id": "site-clearance",
+    "target": "site/site_a.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": "the arm's base frame",
+    "note": null,
+    "invalidates_calibration": false,
+    "limit_effect": "tighten",
+    "file_values": [
+     {
+      "path": "safety_profile/clearance_mm",
+      "before": 3.0,
+      "after": 4.0,
+      "stored_in": "mm",
+      "given": 4,
+      "given_in": "mm"
+     }
+    ]
+   },
+   {
+    "id": "site-pad-height",
+    "target": "site/site_a.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 6.0,
+    "newly_rejected_by_the_safety_filter": [
+     "place",
+     "pregrasp"
+    ],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": "the arm's base frame",
+    "note": null,
+    "invalidates_calibration": false,
+    "limit_effect": "none",
+    "file_values": [
+     {
+      "path": "pad_below_start_mm",
+      "before": 30.0,
+      "after": 24.0,
+      "stored_in": "mm",
+      "given": 24,
+      "given_in": "mm"
+     }
+    ]
+   },
+   {
+    "id": "site-free-step",
+    "target": "site/site_a.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": "the arm's base frame",
+    "note": null,
+    "invalidates_calibration": false,
+    "limit_effect": "tighten",
+    "file_values": [
+     {
+      "path": "safety_profile/free_step_mm",
+      "before": 5.0,
+      "after": 4.0,
+      "stored_in": "mm",
+      "given": 4,
+      "given_in": "mm"
+     }
+    ]
+   },
+   {
+    "id": "site-hover-pose",
+    "target": "site/site_a.json",
+    "poses_that_move": 1,
+    "largest_move_mm": 2.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 2.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": "the arm's base frame",
+    "note": null,
+    "invalidates_calibration": false,
+    "limit_effect": "none",
+    "file_values": [
+     {
+      "path": "named_poses/hover_needle/offset_mm",
+      "before": [
+       15.0,
+       10.0,
+       -8.0
+      ],
+      "after": [
+       15.0,
+       10.0,
+       -6.0
+      ],
+      "stored_in": "mm",
+      "given": [
+       15,
+       10,
+       -6
+      ],
+      "given_in": "mm"
+     }
+    ]
+   },
+   {
+    "id": "site-tracking-stop",
+    "target": "site/site_a.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": "the arm's base frame",
+    "note": null,
+    "invalidates_calibration": false,
+    "limit_effect": "tighten",
+    "file_values": [
+     {
+      "path": "safety_profile/tracking_stop_mm",
+      "before": 2.0,
+      "after": 1.5,
+      "stored_in": "mm",
+      "given": 1.5,
+      "given_in": "mm"
+     }
+    ]
+   },
+   {
+    "id": "site-workspace-wider",
+    "target": "site/site_a.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": "the arm's base frame",
+    "note": null,
+    "invalidates_calibration": false,
+    "limit_effect": "loosen",
+    "file_values": [
+     {
+      "path": "safety_profile/workspace_half_mm",
+      "before": 40.0,
+      "after": 45.0,
+      "stored_in": "mm",
+      "given": 45,
+      "given_in": "mm"
+     }
+    ]
+   },
+   {
+    "id": "site-near-steps",
+    "target": "site/site_a.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": "the arm's base frame",
+    "note": null,
+    "invalidates_calibration": false,
+    "limit_effect": "tighten",
+    "file_values": [
+     {
+      "path": "safety_profile/near_step_mm",
+      "before": 2.0,
+      "after": 1.5,
+      "stored_in": "mm",
+      "given": 1.5,
+      "given_in": "mm"
+     },
+     {
+      "path": "safety_profile/near_step_deg",
+      "before": 3.0,
+      "after": 2.0,
+      "stored_in": "deg",
+      "given": 2,
+      "given_in": "deg"
+     }
+    ]
+   },
+   {
+    "id": "site-needle-position",
+    "target": "site/site_a.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": "the arm's base frame",
+    "note": null,
+    "invalidates_calibration": false,
+    "limit_effect": "none",
+    "file_values": [
+     {
+      "path": "near_objects/needle/offset_mm",
+      "before": [
+       15.0,
+       10.0,
+       -30.0
+      ],
+      "after": [
+       12.0,
+       14.0,
+       -30.0
+      ],
+      "stored_in": "mm",
+      "given": [
+       12,
+       14,
+       -30
+      ],
+      "given_in": "mm"
+     }
+    ]
+   },
+   {
+    "id": "site-joint-margin-rad",
+    "target": "site/site_a.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": "the arm's base frame",
+    "note": null,
+    "invalidates_calibration": false,
+    "limit_effect": "tighten",
+    "file_values": [
+     {
+      "path": "safety_profile/joint_margin_deg",
+      "before": 5.0,
+      "after": 8.021409131831525,
+      "stored_in": "deg",
+      "given": 0.14,
+      "given_in": "rad"
+     }
+    ]
+   },
+   {
+    "id": "system-base-translation",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "poses_that_move": 9,
+    "largest_move_mm": 10.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": "the reference frame ECM",
+    "note": null,
+    "invalidates_calibration": true,
+    "limit_effect": "none",
+    "file_values": [
+     {
+      "path": "arms/PSM1/base_frame/transform/translation",
+      "before": [
+       -0.2,
+       0.0,
+       0.0
+      ],
+      "after": [
+       -0.21,
+       0.0,
+       0.0
+      ],
+      "stored_in": "m",
+      "given": [
+       -210,
+       0,
+       0
+      ],
+      "given_in": "mm"
+     }
+    ]
+   },
+   {
+    "id": "system-arm-period",
+    "target": "system/system-dVRK-cart-simulated.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": null,
+    "note": "the change is to PSM2; this site's arm is PSM1, so none of its named poses moves",
+    "invalidates_calibration": false,
+    "limit_effect": "none",
+    "file_values": [
+     {
+      "path": "arms/PSM2/period",
+      "before": null,
+      "after": 0.002,
+      "stored_in": "s",
+      "given": 2,
+      "given_in": "ms"
+     }
+    ]
+   },
+   {
+    "id": "system-teleop-scale",
+    "target": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": null,
+    "note": "this change has no geometric effect on the named poses",
+    "invalidates_calibration": false,
+    "limit_effect": "none",
+    "file_values": [
+     {
+      "path": "consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/scale",
+      "before": 0.4,
+      "after": 0.3,
+      "stored_in": "ratio",
+      "given": 0.3,
+      "given_in": "ratio"
+     }
+    ]
+   },
+   {
+    "id": "system-rotation-locked",
+    "target": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": null,
+    "note": "this change has no geometric effect on the named poses",
+    "invalidates_calibration": false,
+    "limit_effect": "none",
+    "file_values": [
+     {
+      "path": "consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/rotation_locked",
+      "before": null,
+      "after": true,
+      "stored_in": "none",
+      "given": true,
+      "given_in": "none"
+     }
+    ]
+   },
+   {
+    "id": "system-audio-volume",
+    "target": "system/system-PSM1_Classic_KIN_SIMULATED.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": null,
+    "note": "this change has no geometric effect on the named poses",
+    "invalidates_calibration": false,
+    "limit_effect": "none",
+    "file_values": [
+     {
+      "path": "settings/audio_volume",
+      "before": null,
+      "after": 0.3,
+      "stored_in": "ratio",
+      "given": 0.3,
+      "given_in": "ratio"
+     }
+    ]
+   },
+   {
+    "id": "arm-instrument",
+    "target": "arm/PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json",
+    "poses_that_move": 9,
+    "largest_move_mm": 2.1,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 1.66,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": "the arm's base frame, at the site's start joint values",
+    "note": null,
+    "invalidates_calibration": true,
+    "limit_effect": "none",
+    "file_values": [
+     {
+      "path": "tool",
+      "before": "LARGE_NEEDLE_DRIVER:400006",
+      "after": "MEGA_NEEDLE_DRIVER:400194",
+      "stored_in": "none",
+      "given": "MEGA_NEEDLE_DRIVER:400194",
+      "given_in": "none"
+     }
+    ]
+   },
+   {
+    "id": "arm-fixed-detection",
+    "target": "arm/PSM_KIN_SIMULATED_MANUAL.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": "the arm's base frame, at the site's start joint values",
+    "note": null,
+    "invalidates_calibration": true,
+    "limit_effect": "none",
+    "file_values": [
+     {
+      "path": "tool_detection",
+      "before": "MANUAL",
+      "after": "FIXED",
+      "stored_in": "none",
+      "given": "FIXED",
+      "given_in": "none"
+     },
+     {
+      "path": "tool",
+      "before": null,
+      "after": "LARGE_NEEDLE_DRIVER:400006",
+      "stored_in": "none",
+      "given": "LARGE_NEEDLE_DRIVER:400006",
+      "given_in": "none"
+     }
+    ]
+   },
+   {
+    "id": "arm-mounting-pitch",
+    "target": "arm/PSM_Si_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_420006.json",
+    "poses_that_move": 0,
+    "largest_move_mm": 0.0,
+    "largest_turn_deg": 0.0,
+    "largest_change_of_height_over_pad_mm": 0.0,
+    "newly_rejected_by_the_safety_filter": [],
+    "newly_accepted_by_the_safety_filter": [],
+    "expressed_in": null,
+    "note": "this change has no geometric effect on the named poses",
+    "invalidates_calibration": false,
+    "limit_effect": "none",
+    "file_values": [
+     {
+      "path": "mounting_pitch",
+      "before": 0.0,
+      "after": -0.7853981633974483,
+      "stored_in": "rad",
+      "given": -45,
+      "given_in": "deg"
+     }
+    ]
+   }
+  ],
+  "applied": [
+   {
+    "proposal": 4,
+    "target": "site/site_a.json",
+    "version": 1,
+    "envelope_version": "2",
+    "calibration_invalidated": false,
+    "id": "site-clearance",
+    "version_now": 1,
+    "value_in_new_version": [
+     4.0
+    ],
+    "calibration_now": {
+     "valid": true,
+     "why": "no change recorded since calibration",
+     "at": null
+    }
+   },
+   {
+    "proposal": 5,
+    "target": "system/system-dVRK-cart-simulated.json",
+    "version": 1,
+    "envelope_version": null,
+    "calibration_invalidated": true,
+    "id": "system-base-translation",
+    "version_now": 1,
+    "value_in_new_version": [
+     [
+      [
+       1.0,
+       0.0,
+       0.0,
+       -0.21
+      ],
+      [
+       0.0,
+       -0.866025404,
+       0.5,
+       0.0
+      ],
+      [
+       0.0,
+       -0.5,
+       -0.866025404,
+       0.0
+      ],
+      [
+       0.0,
+       0.0,
+       0.0,
+       1.0
+      ]
+     ]
+    ],
+    "calibration_now": {
+     "valid": false,
+     "why": "configuration change, proposal 5 (system/system-dVRK-cart-simulated.json)",
+     "at": 1795161898.9024293
+    }
+   }
+  ],
+  "source_files_unchanged": true,
+  "source_files_checked": 35,
+  "proposal_checked_against_an_older_version": "stale"
+ }
+}

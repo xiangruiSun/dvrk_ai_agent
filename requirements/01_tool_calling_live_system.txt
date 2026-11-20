@@ -115,6 +115,11 @@ The grounding guard accepts a number if any tool returned that value under the s
 wrong figure that happens to equal another returned value passes. It checks that a stated figure
 exists, not that it answers the question. Nothing checks that the agent did everything it was
 asked: a skipped step is caught only if the answer makes a claim the tools contradict.
+Found while building task 03: the reader of the recordings read the dataset's milliseconds, which
+are written without leading zeros, as a decimal fraction, which put about one sample in ten at
+the wrong time. It is corrected. None of the twelve figures verified above changes (checked by
+script, verification/t03_runtime.json); read_signal_window, which looks a time up, was affected
+and was not part of the verification.
 The twin has no dynamics, so motion time is the commanded time and tracking error is zero unless
 injected. A tool thread that has timed out cannot be killed in Python; long analysis should run
 in a subprocess.

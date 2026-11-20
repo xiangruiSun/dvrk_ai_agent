@@ -1,0 +1,82 @@
+{
+ "$schema": "http://json-schema.org/draft-07/schema#",
+ "$id": "dvrk-system.schema.json",
+ "description": "Made-up minimal schema for tests. It is not the dVRK project's schema.",
+ "type": "object",
+ "required": [
+  "$id",
+  "$version"
+ ],
+ "additionalProperties": false,
+ "properties": {
+  "$id": {
+   "type": "string"
+  },
+  "$version": {
+   "type": "string"
+  },
+  "arms": {
+   "type": "array",
+   "items": {
+    "$ref": "test-arm-entry.schema.json"
+   }
+  },
+  "consoles": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string"
+     },
+     "teleop_PSMs": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+        "MTM": {
+         "type": "string"
+        },
+        "PSM": {
+         "type": "string"
+        },
+        "configure_parameter": {
+         "type": "object",
+         "additionalProperties": false,
+         "properties": {
+          "scale": {
+           "type": "number",
+           "exclusiveMinimum": 0,
+           "maximum": 1
+          },
+          "rotation_locked": {
+           "type": "boolean"
+          },
+          "ignore_jaw": {
+           "type": "boolean"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "settings": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "audio_volume": {
+     "type": "number",
+     "exclusiveMinimum": 0,
+     "maximum": 1
+    },
+    "chatty": {
+     "type": "boolean"
+    }
+   }
+  }
+ }
+}

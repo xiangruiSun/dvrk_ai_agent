@@ -1,0 +1,188 @@
+{
+  "about": "Change requests in words for task 02, each with a hand-written reference patch. Targets are the published dVRK files for simulated arms and systems (share/arm, share/system) and this project's declared site file. The records are what the engineer would have in front of them; they were written for this project and are not measurements of a real robot.",
+  "requests": [
+    {
+      "id": "site-clearance",
+      "target": "site/site_a.json",
+      "request": "Raise the clearance the tip must keep over the pad from 3 mm to 4 mm.",
+      "records": {"note:foam-contact": "Engineer's note: with the large needle driver the jaw touches the pad foam at a commanded height of 3 mm."},
+      "reference": {"limit_change": "tighten", "operations": [
+        {"op": "replace", "path": "safety_profile/clearance_mm", "value": 4, "unit": "mm"}]}
+    },
+    {
+      "id": "site-pad-height",
+      "target": "site/site_a.json",
+      "request": "The pad was measured again: it is 24 mm below the start pose, not 30 mm. Update the site file.",
+      "records": {"meas:pad-height": "Height gauge: pad surface 24.0 mm below the tool tip at the start pose."},
+      "reference": {"limit_change": "none", "operations": [
+        {"op": "replace", "path": "pad_below_start_mm", "value": 24, "unit": "mm"}]}
+    },
+    {
+      "id": "site-free-step",
+      "target": "site/site_a.json",
+      "request": "Reduce the largest step in free space to 4 mm.",
+      "records": {"note:overshoot": "Engineer's note: 5 mm steps look abrupt on video at the control rate used here."},
+      "reference": {"limit_change": "tighten", "operations": [
+        {"op": "replace", "path": "safety_profile/free_step_mm", "value": 4, "unit": "mm"}]}
+    },
+    {
+      "id": "site-hover-pose",
+      "target": "site/site_a.json",
+      "request": "Set the offset of the hover_needle pose to 15, 10, -6 mm from the start pose. That is 2 mm higher than it is now.",
+      "records": {"note:hover": "Operator's note: at hover_needle the needle is hidden behind the jaw in the camera view."},
+      "reference": {"limit_change": "none", "operations": [
+        {"op": "replace", "path": "named_poses/hover_needle/offset_mm", "value": [15, 10, -6], "unit": "mm"}]}
+    },
+    {
+      "id": "site-tracking-stop",
+      "target": "site/site_a.json",
+      "request": "Stop a motion when the position error exceeds 1.5 mm instead of 2 mm.",
+      "records": {"note:tracking": "Engineer's note: position error in free motion has stayed below 0.4 mm in every logged trial."},
+      "reference": {"limit_change": "tighten", "operations": [
+        {"op": "replace", "path": "safety_profile/tracking_stop_mm", "value": 1.5, "unit": "mm"}]}
+    },
+    {
+      "id": "site-workspace-wider",
+      "target": "site/site_a.json",
+      "request": "The new phantom is wider than the pad. Widen the local workspace to plus or minus 45 mm around the start pose.",
+      "records": {"note:phantom-b": "Engineer's note: phantom B is 86 mm wide; its suture line ends 43 mm from the centre."},
+      "reference": {"limit_change": "loosen", "operations": [
+        {"op": "replace", "path": "safety_profile/workspace_half_mm", "value": 45, "unit": "mm"}]}
+    },
+    {
+      "id": "site-near-steps",
+      "target": "site/site_a.json",
+      "request": "Near the needle and the pad, limit each step to 1.5 mm and 2 degrees.",
+      "records": {"note:near": "Engineer's note: the needle was pushed sideways twice during approach in last week's trials."},
+      "reference": {"limit_change": "tighten", "operations": [
+        {"op": "replace", "path": "safety_profile/near_step_mm", "value": 1.5, "unit": "mm"},
+        {"op": "replace", "path": "safety_profile/near_step_deg", "value": 2, "unit": "deg"}]}
+    },
+    {
+      "id": "site-needle-position",
+      "target": "site/site_a.json",
+      "request": "The needle now lies at 12, 14, -30 mm from the start pose. Update its position.",
+      "records": {"meas:needle": "Camera measurement: needle centre at 12 mm, 14 mm, -30 mm from the start pose in the arm's base frame."},
+      "reference": {"limit_change": "none", "operations": [
+        {"op": "replace", "path": "near_objects/needle/offset_mm", "value": [12, 14, -30], "unit": "mm"}]}
+    },
+    {
+      "id": "site-joint-margin-rad",
+      "target": "site/site_a.json",
+      "request": "Increase the room kept to the revolute joint limits to 0.14 rad.",
+      "records": {"note:wrist": "Engineer's note: the wrist pitch cable is audible within about 8 degrees of its limit."},
+      "reference": {"limit_change": "tighten", "operations": [
+        {"op": "replace", "path": "safety_profile/joint_margin_deg", "value": 0.14, "unit": "rad"}]}
+    },
+    {
+      "id": "system-base-translation",
+      "target": "system/system-dVRK-cart-simulated.json",
+      "request": "PSM1's base was measured again. Set the translation of its base frame to -210, 0, 0 mm. Leave the rotation as it is.",
+      "records": {"meas:psm1-base": "Tape measurement: PSM1 remote centre 210 mm from the camera frame origin along -x."},
+      "reference": {"limit_change": "none", "operations": [
+        {"op": "replace", "path": "arms/PSM1/base_frame/transform/translation", "value": [-210, 0, 0], "unit": "mm"}]}
+    },
+    {
+      "id": "system-arm-period",
+      "target": "system/system-dVRK-cart-simulated.json",
+      "request": "Run the PSM2 arm component with a period of 2 ms.",
+      "records": {"note:cpu": "Engineer's note: the simulation PC drops cycles when both arm components run at the default period."},
+      "reference": {"limit_change": "none", "operations": [
+        {"op": "add", "path": "arms/PSM2/period", "value": 2, "unit": "ms"}]}
+    },
+    {
+      "id": "system-teleop-scale",
+      "target": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+      "request": "Set the teleoperation scale between MTMR and PSM1 to 0.3.",
+      "records": {"note:scale": "Operator's note: at 0.4 the instrument tip moves too far for fine needle handling."},
+      "reference": {"limit_change": "none", "operations": [
+        {"op": "replace", "path": "consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/scale", "value": 0.3, "unit": "ratio"}]}
+    },
+    {
+      "id": "system-rotation-locked",
+      "target": "system/system-MTMR-Haply-PSM1_KIN_SIMULATED-Teleop.json",
+      "request": "Lock the instrument's orientation during teleoperation of PSM1 with MTMR.",
+      "records": {"note:haply": "Engineer's note: the hand controller used here reports position only, so orientation commands are noise."},
+      "reference": {"limit_change": "none", "operations": [
+        {"op": "add", "path": "consoles/console/teleop_PSMs/MTMR-PSM1/configure_parameter/rotation_locked", "value": true, "unit": "none"}]}
+    },
+    {
+      "id": "system-audio-volume",
+      "target": "system/system-PSM1_Classic_KIN_SIMULATED.json",
+      "request": "Set the audio volume of the system to 0.3.",
+      "records": {"note:audio": "Operator's note: the audio cues are too loud in the shared lab."},
+      "reference": {"limit_change": "none", "operations": [
+        {"op": "add", "path": "settings/audio_volume", "value": 0.3, "unit": "ratio"}]}
+    },
+    {
+      "id": "arm-instrument",
+      "target": "arm/PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json",
+      "request": "This arm now carries the mega needle driver, model 400194. Change the fixed instrument.",
+      "records": {"index:400194": "Instrument index entry: name MEGA_NEEDLE_DRIVER, model 400194, generation Classic."},
+      "reference": {"limit_change": "none", "operations": [
+        {"op": "replace", "path": "tool", "value": "MEGA_NEEDLE_DRIVER:400194", "unit": "none"}]}
+    },
+    {
+      "id": "arm-fixed-detection",
+      "target": "arm/PSM_KIN_SIMULATED_MANUAL.json",
+      "request": "Use fixed tool detection on this arm, with the large needle driver, model 400006.",
+      "records": {"index:400006": "Instrument index entry: name LARGE_NEEDLE_DRIVER, model 400006, generation Classic."},
+      "reference": {"limit_change": "none", "operations": [
+        {"op": "replace", "path": "tool_detection", "value": "FIXED", "unit": "none"},
+        {"op": "add", "path": "tool", "value": "LARGE_NEEDLE_DRIVER:400006", "unit": "none"}]}
+    },
+    {
+      "id": "arm-mounting-pitch",
+      "target": "arm/PSM_Si_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_420006.json",
+      "request": "This Si PSM is mounted pitched 45 degrees down. Set its mounting pitch to -45 degrees.",
+      "records": {"note:mount": "Engineer's note: the arm is on the patient cart mount, pitched down by 45 degrees."},
+      "reference": {"limit_change": "none", "operations": [
+        {"op": "replace", "path": "mounting_pitch", "value": -45, "unit": "deg"}]}
+    }
+  ],
+
+  "negative_controls": [
+    {"id": "millimetres written as metres", "target": "system/system-dVRK-cart-simulated.json", "expect": "physical", "says": "plausible range",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "arms/PSM1/base_frame/transform/translation", "value": [-210, 0, 0], "unit": "m"}]}},
+    {"id": "transform whose rotation is scaled", "target": "system/system-dVRK-cart-simulated.json", "expect": "physical", "says": "not orthonormal",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "arms/PSM1/base_frame/transform", "value": [[1.1, 0, 0, -0.2], [0, -0.9526, 0.55, 0], [0, -0.55, -0.9526, 0], [0, 0, 0, 1]], "unit": "m"}]}},
+    {"id": "transform that is a reflection", "target": "system/system-dVRK-cart-simulated.json", "expect": "physical", "says": "reflection",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "arms/PSM1/base_frame/transform/rotation", "value": [[1, 0, 0], [0, 1, 0], [0, 0, -1]], "unit": "none"}]}},
+    {"id": "transform with a wrong last row", "target": "system/system-dVRK-cart-simulated.json", "expect": "physical", "says": "last row",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "arms/PSM1/base_frame/transform", "value": [[1, 0, 0, -0.2], [0, -0.866025404, 0.5, 0], [0, -0.5, -0.866025404, 0], [0, 0, 0, 0]], "unit": "m"}]}},
+    {"id": "rotation changed by 90 degrees in one patch", "target": "system/system-dVRK-cart-simulated.json", "expect": "physical", "says": "rotation changes by",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "arms/PSM1/base_frame/transform/rotation", "value": [[1, 0, 0], [0, 0.5, 0.866025404], [0, -0.866025404, 0.5]], "unit": "none"}]}},
+    {"id": "frame that does not exist", "target": "system/system-dVRK-cart-simulated.json", "expect": "physical", "says": "is not a frame of this site",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "arms/PSM1/base_frame/reference_frame", "value": "Cart", "unit": "none"}]}},
+    {"id": "two arms each based on the other", "target": "system/system-dVRK-cart-simulated.json", "expect": "physical", "says": "its own ancestor",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "arms/PSM1/base_frame/reference_frame", "value": "PSM2", "unit": "none"},
+                                                      {"op": "replace", "path": "arms/PSM2/base_frame/reference_frame", "value": "PSM1", "unit": "none"}]}},
+    {"id": "limit loosened in a patch that says tighten", "target": "site/site_a.json", "expect": "physical", "says": "must be declared as 'loosen'",
+     "patch": {"limit_change": "tighten", "operations": [{"op": "replace", "path": "safety_profile/clearance_mm", "value": 2, "unit": "mm"}]}},
+    {"id": "limit loosened in a patch that says none", "target": "site/site_a.json", "expect": "physical", "says": "must be declared as 'loosen'",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "safety_profile/workspace_half_mm", "value": 45, "unit": "mm"}]}},
+    {"id": "limit moved by four times its step", "target": "site/site_a.json", "expect": "physical", "says": "one patch may change",
+     "patch": {"limit_change": "tighten", "operations": [{"op": "replace", "path": "safety_profile/clearance_mm", "value": 12, "unit": "mm"}]}},
+    {"id": "step limit above the published 5 mm", "target": "site/site_a.json", "expect": "physical", "says": "plausible range",
+     "patch": {"limit_change": "loosen", "operations": [{"op": "replace", "path": "safety_profile/free_step_mm", "value": 8, "unit": "mm"}]}},
+    {"id": "free-space step below the near step", "target": "site/site_a.json", "expect": "physical", "says": "cannot exceed the free-space step",
+     "patch": {"limit_change": "tighten", "operations": [{"op": "replace", "path": "safety_profile/free_step_mm", "value": 1.5, "unit": "mm"}]}},
+    {"id": "length given in degrees", "target": "site/site_a.json", "expect": "physical", "says": "cannot be written where the file expects",
+     "patch": {"limit_change": "tighten", "operations": [{"op": "replace", "path": "safety_profile/clearance_mm", "value": 4, "unit": "deg"}]}},
+    {"id": "instrument that has no file", "target": "arm/PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json", "expect": "physical", "says": "no instrument",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "tool", "value": "LARGE_NEEDLE_DRIVER:499999", "unit": "none"}]}},
+    {"id": "fixed detection without an instrument", "target": "arm/PSM_KIN_SIMULATED_MANUAL.json", "expect": "physical", "says": "must name the instrument",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "tool_detection", "value": "FIXED", "unit": "none"}]}},
+    {"id": "evidence that is not a record of the run", "target": "site/site_a.json", "expect": "physical", "says": "is not a record of this run", "evidence": ["meas:made-up"],
+     "patch": {"limit_change": "tighten", "operations": [{"op": "replace", "path": "safety_profile/clearance_mm", "value": 4, "unit": "mm"}]}},
+
+    {"id": "arm told to move to zero when homing", "target": "arm/PSM_KIN_SIMULATED_MANUAL.json", "expect": "allowlist", "says": "may not be changed",
+     "patch": {"limit_change": "none", "operations": [{"op": "add", "path": "homing_zero_position", "value": true, "unit": "none"}]}},
+    {"id": "arm pointed at another arm file", "target": "system/system-dVRK-cart-simulated.json", "expect": "allowlist", "says": "may not be changed",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "arms/PSM1/arm_file", "value": "arm/PSM_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_400006.json", "unit": "none"}]}},
+    {"id": "start joint values of the site", "target": "site/site_a.json", "expect": "allowlist", "says": "may not be changed",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "start_joints_si", "value": [0, 0, 0.2, 0, 0, 0], "unit": "none"}]}},
+    {"id": "kinematic file of the arm", "target": "arm/PSM_KIN_SIMULATED_MANUAL.json", "expect": "allowlist", "says": "may not be changed",
+     "patch": {"limit_change": "none", "operations": [{"op": "replace", "path": "kinematic", "value": "kinematic/PSM_Si.json", "unit": "none"}]}}
+  ]
+}

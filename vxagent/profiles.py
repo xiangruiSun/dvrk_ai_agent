@@ -1,7 +1,9 @@
 """Roles, scopes, tiers and the agent each role gets. This is the single place that decides
 which tools an operator, a service engineer, a safety lead and remote support can use.
 
-Only the operator is defined so far (task 11). The other roles arrive with tasks 12 and 13.
+The operator has an agent (task 11). The service engineer, the safety lead and remote support
+have scopes here because configuration changes (task 02) and trials (task 03) are decided by
+role; their agents arrive with tasks 12 and 13.
 """
 from __future__ import annotations
 
@@ -10,10 +12,19 @@ from .agent.loop import AgentConfig
 from .tools.registry import Principal
 
 ROLE_SCOPES: dict[str, frozenset[str]] = {
-    "operator": frozenset({"robot:read", "robot:move", "episodes:read", "knowledge:read"}),
+    "operator": frozenset({"robot:read", "robot:move", "episodes:read", "knowledge:read", "trial:run"}),
+    # Proposes configuration changes for their own site. Does not move the arm and does not approve.
+    "service": frozenset({"robot:read", "episodes:read", "knowledge:read", "config:read", "config:propose"}),
+    # Approves or rejects configuration changes of their site. Cannot propose one.
+    "safety": frozenset({"robot:read", "config:read", "config:approve"}),
+    # Helps many sites. Reads public knowledge only: no site's robot, recordings or configuration.
+    "support": frozenset({"knowledge:read"}),
 }
 ROLE_TIERS: dict[str, frozenset[str]] = {
     "operator": frozenset({"observe", "simulate", "actuate"}),
+    "service": frozenset({"observe", "simulate"}),
+    "safety": frozenset({"observe", "simulate"}),
+    "support": frozenset({"observe"}),
 }
 
 
