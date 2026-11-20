@@ -1,0 +1,24 @@
+name: instrument_change
+summary: Record that the instrument was exchanged, and confirm that the calibration is no longer used and the start pose is still acceptable.
+when_to_use: After an instrument has been taken off and another put on. For the service engineer. It moves nothing. A different instrument model also needs a configuration change.
+tier: observe
+version: "1"
+roles: [service]
+requires: [powered]
+effects: {calibration_valid: false}
+steps:
+  - id: state
+    tool: get_robot_state
+    source: doc:development/api/console#general
+  - id: event
+    tool: record_site_event
+    args: {kind: instrument_changed}
+    checks:
+      - {field: calibration_valid, equals: false, why: a calibration made with another instrument must not be used}
+    source: paper:deployment-framework/calibration
+  - id: start_pose
+    tool: check_named_target
+    args: {named_pose: start}
+    checks:
+      - {field: accepted, equals: true}
+    source: paper:deployment-framework/safety-filter

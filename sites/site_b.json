@@ -1,0 +1,79 @@
+{
+  "name": "site-b",
+  "description": "Second demonstration site: one Si PSM with a large needle driver over a suturing pad. Declared for this project; it is not a real lab's set-up.",
+  "arm": "PSM1",
+  "generation": "Si",
+  "software_release": "2.4.0",
+  "kinematic_file": "share/kinematic/PSM_Si.json",
+  "instrument_file": "share/tool/LARGE_NEEDLE_DRIVER_420006.json",
+  "arm_file": "share/arm/PSM_Si_KIN_SIMULATED_LARGE_NEEDLE_DRIVER_420006.json",
+  "system_file": "",
+  "frames": ["world", "ECM", "pad", "camera"],
+  "calibration_poses_mm": [
+    [20, 0, 0], [-20, 0, 0], [0, 20, 0], [0, -20, 0], [0, 0, 20], [20, 20, 10],
+    [-20, 20, -10], [20, -20, -10], [-20, -20, 10], [10, 0, -15], [-10, 10, 15], [0, -10, -20]
+  ],
+
+  "start_joints_si": [0.0, 0.0, 0.12, 0.0, 0.0, 0.0],
+  "up_axis": [0.0, 0.0, 1.0],
+  "pad_below_start_mm": 30.0,
+  "near_objects": [
+    {"name": "needle", "offset_mm": [15.0, 10.0, -30.0]}
+  ],
+  "jaw_deg": {"open": 40.0, "closed": 0.0},
+
+  "safety_profile": {
+    "name": "trial",
+    "version": "1",
+    "free_step_mm": 5.0,
+    "free_step_deg": 5.0,
+    "near_step_mm": 2.0,
+    "near_step_deg": 3.0,
+    "near_distance_mm": 20.0,
+    "workspace_half_mm": 40.0,
+    "tracking_stop_mm": 2.0,
+    "tracking_stop_deg": 2.0,
+    "joint_margin_deg": 5.0,
+    "joint_margin_mm": 5.0,
+    "clearance_mm": 3.0
+  },
+
+  "named_poses": {
+    "start": {
+      "description": "Start pose of a trial, centre of the local workspace.",
+      "offset_mm": [0.0, 0.0, 0.0]
+    },
+    "hover_needle": {
+      "description": "Above the needle, 22 mm over the pad.",
+      "offset_mm": [15.0, 10.0, -8.0]
+    },
+    "pregrasp": {
+      "description": "Directly over the needle, 8 mm over the pad.",
+      "offset_mm": [15.0, 10.0, -22.0]
+    },
+    "place": {
+      "description": "Where the needle is set down, 8 mm over the pad.",
+      "offset_mm": [-15.0, -10.0, -22.0]
+    },
+    "left_edge": {
+      "description": "30 mm to one side of start, same height.",
+      "offset_mm": [-30.0, 0.0, 0.0]
+    },
+    "right_edge": {
+      "description": "30 mm to the other side of start, same height.",
+      "offset_mm": [30.0, 0.0, 0.0]
+    },
+    "retract": {
+      "description": "Instrument withdrawn 60 mm up from start.",
+      "offset_mm": [0.0, 0.0, 60.0]
+    },
+    "pad_touch": {
+      "description": "1 mm over the pad, over the needle.",
+      "offset_mm": [15.0, 10.0, -29.0]
+    },
+    "wrist_limit": {
+      "description": "Start position with the wrist pitched to 78 degrees.",
+      "joints_si": [0.0, 0.0, 0.12, 0.0, 1.3614, 0.0]
+    }
+  }
+}

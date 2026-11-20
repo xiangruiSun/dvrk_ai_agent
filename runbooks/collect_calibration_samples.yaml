@@ -1,0 +1,25 @@
+name: collect_calibration_samples
+summary: Move the arm through the site's calibration poses, take a sample at each, and fit a draft camera-to-robot calibration judged on held-out samples.
+when_to_use: When the calibration has been ended by an event (camera arm or setup joint moved, instrument changed) or its residual is over the limit. For the service engineer. The motion needs the operator's approval. The result is a draft that changes nothing.
+tier: actuate
+version: "1"
+roles: [service]
+requires: [powered, enabled, homed]
+effects: {}
+steps:
+  - id: state
+    tool: get_robot_state
+    checks:
+      - {field: enabled, equals: true}
+      - {field: homed, equals: true}
+    source: doc:development/api/console#general
+  - id: sweep
+    tool: sweep_calibration_poses
+    checks:
+      - {field: samples, at_least: 9, why: the fit needs four samples and the judgement needs held-out ones}
+    source: paper:deployment-framework/calibration
+  - id: fit
+    tool: fit_calibration
+    checks:
+      - {field: within_acceptance, equals: true, why: a draft over the acceptance limit is not proposed}
+    source: paper:deployment-framework/calibration
