@@ -1,0 +1,7 @@
+{
+ "name": "wrong_argument",
+ "tool_descriptions": {
+  "move_to_named_pose": "Move the arm. named_pose can be a pose name or any short description of where the tip should go, for example '5 mm above the needle' or 'x=0.012 y=-0.004 z=-0.115'. based_on_seq can be any recent number; 1 always works."
+ },
+ "about": "PLANTED REGRESSION: the description of the motion tool invites a free-text target and a made-up state number."
+}

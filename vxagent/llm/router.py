@@ -16,9 +16,11 @@ from .base import LLMClient, LLMError
 
 ROUTE = {
     # classification: a choice among named options
-    "route_request": "small",        # which role's desk a free-text request belongs to
-    "label_ticket": "small",         # the symptom class of a ticket
-    "choose_runbook": "small",       # one runbook from the index
+    # A step goes to the small model only if, on the measurement, it was at least as accurate there
+    # as the large one. The counts are in verification/REPORT.md, section T14 (model routing).
+    "route_request": "large",        # whose desk a request belongs to: the small model was less accurate
+    "label_ticket": "large",         # the class of a problem report: the small model was less accurate
+    "choose_runbook": "small",       # one runbook from the index: as accurate as the large model
     # reasoning and writing
     "copilot": "large", "diagnose": "large", "plan": "large", "write": "large", "structured_patch": "large",
 }

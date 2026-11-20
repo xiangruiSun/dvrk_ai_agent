@@ -2,6 +2,33 @@ TASK 11 - OPERATOR ACCESS
 ==========================
 dVRK focus: the person who runs trials and stands at the robot.
 
+As built
+--------
+Status: BUILT and verified. Results: verification/REPORT.md, section T11.
+Code: vxagent/access.py (users, sessions, lock-out, actuate per run), vxagent/chat.py, vxagent/node.py,
+      vxagent/tools/trialtools.py, vxagent/profiles.py (OPERATOR_COPILOT), vxagent/web/app.py.
+Tests: tests/test_operator_access.py.
+Differences from the plan below:
+- The web layer is Starlette, which is on the machine with the MCP SDK, not FastAPI: nothing
+  further has to be installed on a lab network.
+- Actuate per run applies to console sessions. An operator's console principal holds observe and
+  simulate; a motion tool is accepted only inside an active run of that operator that was
+  registered with that tool, and then needs the approval card. The verification harnesses of
+  tasks 01 to 10 use a standing operator principal that holds actuate.
+- Starting a trial, the go and the verdict are console buttons. The copilot can check whether a
+  trial can start and rehearse it; it has no tool that starts one.
+- calibration_validity may also be run by the operator: it only reads.
+- The operator's copilot searches the documentation; thread search is offered to the service
+  engineer and to support.
+- An approval card is valid for 120 seconds and shows the rehearsal of a move to a named pose.
+- First run kept in verification/t11_first_run.json: the pre-flight tool returned a failed check
+  under its name, which states the requirement ("the calibration has not been ended by an
+  event"), and the copilot repeated the name as the reason. The pre-flight now writes a sentence
+  that says what is wrong for every failed check; the tool and the ticket carry that sentence.
+Further limits: most probes were refused by the copilot in words, without a tool call; "held" is
+judged on effects (nothing moved, no limit changed, no trial started), not on the wording.
+(end of as built)
+
 Job
 ---
 Give the operator the state of their robot, their trials, the trial pipeline with its go and

@@ -14,6 +14,7 @@ Stop reasons
     operator_stop            the operator pressed stop; running actions were canceled
     awaiting_approval        a motion needs the operator's decision; the run can be resumed
     llm_error                the model could not be reached or timed out
+    empty_reply              the model returned neither text nor a tool call, three times
 
 Whenever a run stops, any action still running is canceled first.
 """
@@ -84,6 +85,7 @@ class AgentState(BaseModel):
     schema_chars: int = 0            # largest set of tool schemas sent in one turn, in characters
     context_tokens_sent: int = 0     # largest context sent in one turn, estimated tokens
     injected_states: list[str] = Field(default_factory=list)   # robot states shown to the model by the system
+    empty_replies: int = 0           # replies with neither text nor a tool call, which were sent back
 
     @property
     def total_tokens(self) -> int:
@@ -247,6 +249,15 @@ def run_agent(llm: LLMClient, registry: ToolRegistry, ctx: ToolContext, task: st
 
             if not resp.tool_calls:                       # stopping condition: a plain answer
                 state.answer_candidate = resp.content.strip()
+                if not state.answer_candidate and state.empty_replies < 2:
+                    # Nothing at all is not an answer. (Seen with the real model on "Run the rig check".)
+                    state.empty_replies += 1
+                    state.messages.append({"role": "user", "content":
+                                           "Your reply was empty. Call the tool the request needs, or write the answer."})
+                    continue
+                if not state.answer_candidate:
+                    return stop("failed", "empty_reply", "The model returned an empty reply three times. Nothing was done "
+                                                         "beyond what the trace shows.")
                 if cfg.answer_check is not None and state.answer_repairs < cfg.max_answer_repairs:
                     with ctx.tracer.span(ctx.run_id, "guard", f"{cfg.name}.answer_check") as sp:
                         problems = cfg.answer_check(state, ctx)

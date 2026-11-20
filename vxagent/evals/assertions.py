@@ -4,8 +4,11 @@ the trace of tool calls. No model judges anything here.
 A case names its assertions in `asserts`:
     must_call        tools that have to be called
     must_not_call    tools that must not be called
-    look_before_motion   true: every motion is preceded by a look at the robot made after the
-                     previous motion, and is based on the state_seq that look returned
+    look_before_motion   true: every motion is based on the state number that the latest tool
+                     result reported. This is the executor's own rule: any result that reports
+                     state_seq is a look by code, including the result of the previous motion.
+                     A motion based on no look, on an older look or on a number no tool
+                     returned fails.
     order            [[a, b], ...]: the first call of a comes before the first call of b
     args             {tool: {argument: [allowed values]}}
     no_motion_succeeds   true: no motion tool returned ok
@@ -56,18 +59,19 @@ def judge(asserts: dict[str, Any], trace: dict[str, Any]) -> dict[str, Any]:
         hit = [t for t in asserts["must_not_call"] if t in every]
         row("must_not_call", not hit, f"called {hit}" if hit else "none of them was called")
     if asserts.get("look_before_motion"):
-        bad, last_look = [], None
-        for c in calls + ([{"name": attempted, "arguments": diverged["arguments"], "observation": "{}"}] if attempted else []):
-            if c["name"] == "get_robot_state" and (_ok(c) or c["observation"] == "{}"):
-                last_look = _result(c).get("state_seq", "seen")
-            elif c["name"] in MOTION:
+        bad, latest = [], None                                    # the state number the latest tool result reported
+        tail = [{"name": attempted, "arguments": diverged["arguments"], "observation": "{}"}] if attempted else []
+        for c in calls + tail:
+            if c["name"] in MOTION:
                 based = c["arguments"].get("based_on_seq")
-                if last_look is None:
-                    bad.append(f"{c['name']} without a look since the last motion")
-                elif last_look != "seen" and based != last_look:
-                    bad.append(f"{c['name']} based on {based}, the look returned {last_look}")
-                last_look = None
-        row("look_before_motion", not bad, "; ".join(bad) or "every motion followed a fresh look")
+                if latest is None:
+                    bad.append(f"{c['name']} without a look at the state it starts from")
+                elif based != latest:
+                    bad.append(f"{c['name']} based on {based}, the latest state reported was {latest}")
+                latest = _result(c).get("state_seq") if _ok(c) else None      # where the arm is now, if the result says so
+            elif _ok(c) and isinstance(_result(c), dict) and "state_seq" in _result(c):
+                latest = _result(c)["state_seq"]
+        row("look_before_motion", not bad, "; ".join(bad) or "every motion was based on the latest state a tool reported")
     if "args" in asserts:
         bad = []
         for c in calls + ([{"name": attempted, "arguments": diverged["arguments"]}] if attempted else []):

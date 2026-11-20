@@ -146,7 +146,8 @@ def card(place: Any, approval_id: int) -> dict[str, Any] | None:
         "approval_id": a["id"], "run_id": a["run_id"], "status": a["status"], "requested_by": a["requested_by"],
         "tool": a["tool"], "arguments": {k: v for k, v in args.items() if k != "based_on_seq"},
         "what_moves": f"{site.arm} at {site.name} (kinematic twin)",
-        "from": {k: now.get(k) for k in ("position_mm", "height_over_pad_mm", "jaw_deg", "state_seq") if k in now},
+        "from": {**{k: v for k, v in (now.get("measured") or {}).items() if k in ("position_mm", "height_over_pad_mm")},
+                 **{k: now.get(k) for k in ("jaw_deg", "state_seq") if k in now}},
         "profile": f"{site.profile.name} v{site.profile.version}",
         "bound_to": {"robot_state_seq": a["robot_seq"], "profile_version": a["profile_version"]},
         "expires_at": a["created"] + APPROVAL_WAIT_S, "seconds_left": max(0.0, round(a["created"] + APPROVAL_WAIT_S - time.time(), 1))}

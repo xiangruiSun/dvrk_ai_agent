@@ -72,6 +72,8 @@ class Gateway:
         gw = self
 
         class Handler(BaseHTTPRequestHandler):
+            disable_nagle_algorithm = True        # headers and body are two writes; neither should wait for the other
+
             def log_message(self, *a: Any) -> None:
                 pass
 
@@ -136,14 +138,17 @@ class GatewayBackend:
 
     def __init__(self, url: str, token: str, site: Any = None, timeout_s: float = 2.0):
         import httpx
-        self._http, self.url, self._token, self.site, self.timeout_s = httpx, url.rstrip("/"), token, site, timeout_s
+
+        from .. import net
+        self._http, self._client = httpx, net                    # one client kept open: a set point per control tick goes through it
+        self.url, self._token, self.site, self.timeout_s = url.rstrip("/"), token, site, timeout_s
         first = self._get()
         self.name, self.rate_hz = f"{first['name']}@gateway", float(first["rate_hz"])
         self.listeners: list[Any] = []
 
     def _get(self) -> dict[str, Any]:
         try:
-            r = self._http.get(f"{self.url}/state", timeout=self.timeout_s)
+            r = self._client.get(f"{self.url}/state", timeout=self.timeout_s)
         except self._http.HTTPError as exc:
             raise BackendError("robot_fault", f"the robot gateway cannot be reached: {type(exc).__name__}") from exc
         if r.status_code != 200:
@@ -152,7 +157,7 @@ class GatewayBackend:
 
     def _cmd(self, op: str, **args: Any) -> RobotState:
         try:
-            r = self._http.post(f"{self.url}/command", json={"op": op, "args": args},
+            r = self._client.post(f"{self.url}/command", json={"op": op, "args": args},
                                 headers={"Authorization": f"Bearer {self._token}"}, timeout=self.timeout_s)
         except self._http.HTTPError as exc:
             raise BackendError("robot_fault", f"the robot gateway cannot be reached: {type(exc).__name__}") from exc

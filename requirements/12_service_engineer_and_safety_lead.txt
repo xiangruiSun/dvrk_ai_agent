@@ -2,6 +2,35 @@ TASK 12 - SERVICE ENGINEER AND SAFETY LEAD
 ===========================================
 dVRK focus: calibration, repair, and the approval of anything that changes what the robot may do.
 
+As built
+--------
+Status: BUILT and verified. Results: verification/REPORT.md, section T12.
+Code: vxagent/service/tickets.py, diagnosis.py, calibration.py, changes.py, report.py, tools.py;
+      vxagent/profiles.py (SERVICE, SAFETY); runbooks/collect_calibration_samples.yaml,
+      instrument_change.yaml; vxagent/web/app.py. Tests: tests/test_service_access.py.
+Differences from the plan below:
+- Diagnosis on a ticket is started from the console, not by a copilot tool. It works on a
+  diagnostic run: recorded motion replayed through the deployment pipeline on a copy of the twin
+  with whatever was injected into the node's declared world. Every check it runs becomes a
+  ticket record, and the FaultReport is written by code around the cause the model names.
+- The calibration sweep is one action over all declared calibration poses under one approval
+  by an operator, not one approval per pose. The engineer holds the scope for this one tool and
+  no scope to move the arm otherwise.
+- The camera is DECLARED: what it sees is computed from a declared transform with declared
+  noise, and the camera move is INJECTED.
+- Activating a calibration goes through the same proposal record and the same two-person rule
+  as a configuration patch, as a change of kind "calibration".
+- Site events: limits_changed was added; a calibration change records calibration_redone; any
+  other configuration change records software_updated.
+- First run kept in verification/t12_first_run.json: the grounding guard refused two correct
+  answers because the unit was not at the end of the key that carried the number, and refused
+  values the engineer had stated in the request; and the copilot gave a ticket number where an
+  evidence record id was needed. Tool results now carry the unit in the key, values stated in
+  the request may be repeated, and the prompt says what an evidence id is.
+Further limits: one diagnostic run per ticket; the affine correction is stored with the record
+but the pre-flight residual check uses the rigid transform only.
+(end of as built)
+
 Job
 ---
 Give the service engineer a ticket queue, the evidence behind each ticket, diagnosis and

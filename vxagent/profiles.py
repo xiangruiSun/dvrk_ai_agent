@@ -146,6 +146,8 @@ SERVICE = AgentConfig(
         "effect unless a tool reports it applied.\n"
         "- Before proposing a change read the current value (read_config) and the paths that may be changed "
         "(describe_config_paths). Give values in the unit the engineer stated; the software converts.\n"
+        "- The evidence of a change is a list of record ids, written exactly as read_ticket returns them, for "
+        "example ticket:3/evidence/7. Read the ticket first. A ticket number alone is not an evidence id.\n"
         "- The engineer cannot approve a change, activate a calibration or run a trial for the record. Do not look "
         "for a way to do any of these.\n"
         "Be concise and specific."))

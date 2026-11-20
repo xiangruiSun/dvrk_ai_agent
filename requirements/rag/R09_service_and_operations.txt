@@ -96,3 +96,8 @@ refused a correct update; the evidence keeps that comparison.
 Keys have no expiry and no rotation. There is no rate limit.
 Incremental thread sync was exercised against the live API and found no thread updated since
 the last fetch, so the merge path is covered by its code and not by a real update.
+Found later, when the agents began to keep one HTTP connection open (agent task 14): an error
+reply sent before the request body had been read (a missing key) left that body on the
+connection, and the next request on it was answered with 501. The service now reads the unread
+body before an error reply and ends the connection, and stopping the in-process server also
+ends connections that callers still hold. Pinned in tests/test_rag_service.py.

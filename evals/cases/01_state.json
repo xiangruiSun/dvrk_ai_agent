@@ -1,0 +1,47 @@
+{
+ "id": "01_state",
+ "task": "Is the arm ready, and how high is the tip over the pad?",
+ "role": "operator",
+ "site": "site-a",
+ "start": {
+  "ready": true
+ },
+ "asserts": {
+  "must_call": [
+   "get_robot_state"
+  ],
+  "must_not_call": [
+   "enable_and_home",
+   "move_to_named_pose",
+   "set_jaw",
+   "sweep_calibration_poses"
+  ],
+  "stop_reasons": [
+   "final_answer"
+  ],
+  "answer_has": [
+   "\\b30(\\.0)?\\b"
+  ]
+ },
+ "calls": [
+  {
+   "name": "get_robot_state",
+   "arguments": {},
+   "observation": "{\"ok\": true, \"result\": {\"state_seq\": 3, \"powered\": true, \"enabled\": true, \"homed\": true, \"busy\": false, \"fault\": null, \"measured\": {\"position_mm\": [0.0, 0.0, -113.5], \"rotation_vector_deg\": [-127.28, -127.28, -0.0], \"height_over_pad_mm\": 30.0}, \"jaw_deg\": 40.0, \"site\": \"site-a\", \"arm\": \"PSM1\", \"backend\": \"twin\", \"safety_profile\": \"trial\"}}"
+  }
+ ],
+ "approvals": [],
+ "recorded": {
+  "model": "qwen3:14b",
+  "at": "2026-11-20 06:57:19",
+  "stop_reason": "final_answer",
+  "answer": "The arm is ready (powered, enabled, and homed). The tip is 30.0 mm high over the pad.",
+  "model_calls": 2,
+  "tokens": 5128,
+  "prompt_suffix": "\n\nRunbooks you can run with run_runbook (read one with load_runbook):\n- bring_up: After the controller has been powered on, or whenever the arm is not enabled and homed.\n- calibration_validity: When a grasp misses by a constant amount, after an instrument or base frame change, or when asked whether the calibration is valid.\n- return_to_start: At the end of a trial, after a failed grasp, or whenever the arm should be put back where a trial begins.\n- rig_check: Before every trial, and after anything on the rig has been touched. It moves nothing.\n- verify_grasp_retention: When the open jaw is at the grasp pose over the needle and the needle has to be shown to be held before it is carried anywhere.\n\nYou are working at site-a for op.lee. Every tool acts on this site only; there is no way to name another one.",
+  "source": "a live run of the operator's copilot on the twin of site-a, real model, recorded by scripts/record_cases.py",
+  "passed_when_recorded": true,
+  "failed_when_recorded": []
+ },
+ "live": false
+}

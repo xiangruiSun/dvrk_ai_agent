@@ -13,7 +13,7 @@ be downloaded again.
 | `sources/sites` | Notes that four dVRK sites (JHU, UCL, CUHK, WPI) keep beside their configuration files: 8 README and note files, 8 kB. Public; treated here as each site's private collection | `github.com/dvrk-config`, four repositories at pinned commits | MIT for JHU, none stated for the others | `scripts/fetch_sources.py` |
 | `sources/docs_previous` | The documentation at an earlier commit (`6f0167f`, 230 files), to measure incremental sync | `jhu-dvrk/dvrk-readthedocs` | see note | `scripts/fetch_sources.py --only docs-previous` |
 | `rag/` | The retrieval store, the embedding cache, the index versions (`indexes/`) and the hashed API keys | produced here | | |
-| `runtime/` | SQLite database with traces, approvals, commands, proposals, events and checkpoints; cached episode statistics; versions of changed configuration files (`t02_config/`); the database, the arm-state file and the configuration versions of the task 03 verification (`t03/`) | produced here | | |
+| `runtime/` | SQLite database with traces, approvals, commands, proposals, events and checkpoints; cached episode statistics; versions of changed configuration files (`t02_config/`); the database, the arm-state file and the configuration versions of the task 03 verification (`t03/`) ; one folder per edge node (`site-a/`, `site-b/`) with its database and configuration versions; `console.sqlite` (users with password hashes), `fleet.sqlite`, `demo_accounts.json` (generated passwords of the demonstration accounts) and `session_secret`; `verify/` (a fresh folder per verification of tasks 11 to 15) | produced here | | |
 
 ## Licence note for the dVRK files and text
 
@@ -34,7 +34,7 @@ file is checked against the MD5 published by Zenodo.
 
 ## Site files
 
-`sites/site_a.json` is **declared for this project**. It is not a real lab's set-up: the start
+`sites/site_a.json` (Classic PSM) and `sites/site_b.json` (Si PSM, the same layout on the published Si files) are **declared for this project**. What follows describes site A. It is not a real lab's set-up: the start
 pose, the pad and needle positions and the named poses were chosen so that every rule of the safety
 filter has a pose on each side of it. The step, workspace and tracking limits in its safety profile
 are the published ones (see `vxagent/robot/safety.py`); the joint-limit margin and the clearance

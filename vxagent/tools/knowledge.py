@@ -21,6 +21,7 @@ import httpx
 from pydantic import BaseModel, ConfigDict, Field
 
 from ..config import assert_egress_allowed
+from .. import net
 from .registry import Tool, ToolContext, ToolError, ToolRegistry
 
 KNOWLEDGE_READ = frozenset({"knowledge:read"})
@@ -39,7 +40,7 @@ class KnowledgeClient:
         assert_egress_allowed(url)
         self.calls += 1
         try:
-            r = httpx.post(url, json=body, headers={"Authorization": f"Bearer {self._key}"}, timeout=self.timeout_s)
+            r = net.post(url, json=body, headers={"Authorization": f"Bearer {self._key}"}, timeout=self.timeout_s)
         except httpx.TimeoutException as exc:
             raise ToolError("knowledge_unavailable", f"the retrieval service did not answer within {self.timeout_s}s",
                             retryable=True, hint=NO_MEMORY) from exc

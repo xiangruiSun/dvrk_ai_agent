@@ -47,6 +47,12 @@ def open_ticket(db: Database, site: str, symptom: str, source: str, opened_by: s
     return tid
 
 
+def preflight_symptom(failed: list[dict[str, Any]]) -> str:
+    """The symptom of a ticket opened for a failed pre-flight: what is wrong, in the words the
+    pre-flight wrote, not the names of the checks."""
+    return ("Pre-flight failed: " + "; ".join(f.get("problem") or f.get("check", "") for f in failed))[:600]
+
+
 def attach(db: Database, ticket_id: int, kind: str, data: dict[str, Any], by: str) -> int:
     if kind not in KINDS:
         raise ValueError(f"kind must be one of {KINDS}")

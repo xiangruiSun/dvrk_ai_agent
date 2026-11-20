@@ -24,6 +24,18 @@ from ..tools.service import load_calibration_record
 from .motion import check_goal
 
 PERCEPTION_LIMIT_S = 0.5
+PROBLEM = {
+    "arm is powered, enabled and homed, with no fault": "the arm is not ready ({detail})",
+    "instrument is the one on the run sheet and has an instrument file": "the installed instrument is not the one on the run sheet, or has no instrument file ({detail})",
+    "a calibration record exists": "there is no camera-to-robot calibration record for this site",
+    "the calibration record is well formed": "the calibration record is malformed ({detail})",
+    "the calibration has not been ended by an event": "the calibration is no longer valid: {detail}",
+    "the calibration residual is under the site's limit": "the calibration residual is over the site's limit ({detail})",
+    "pad-plane and site records are of the same session as the calibration": "the scene records are not of the same session as the calibration ({detail})",
+    "the policy contract is compatible with the site": "the policy contract is not compatible with the site ({detail})",
+    "start and target lie in the policy's training range and inside the workspace": "the start or the target is outside the policy's training range or the workspace ({detail})",
+    "the perception source answered within its time limit": "the perception source did not answer within its time limit ({detail})",
+}
 
 
 def run_preflight(robot: Any, site: Any, sheet: dict[str, Any], db: Any, *, start_T: np.ndarray, goal_T: np.ndarray,
@@ -32,7 +44,12 @@ def run_preflight(robot: Any, site: Any, sheet: dict[str, Any], db: Any, *, star
     out: list[dict[str, Any]] = []
 
     def check(name: str, ok: bool, detail: str, repair: str) -> None:
-        out.append({"check": name, "ok": bool(ok), "detail": detail, "repair": None if ok else repair})
+        row = {"check": name, "ok": bool(ok), "detail": detail, "repair": None if ok else repair}
+        if not ok:
+            # What is wrong, as a sentence written here. A check's name states the requirement, and a
+            # reader (or a model) who repeats the name as the reason says the opposite of what happened.
+            row["problem"] = PROBLEM.get(name, "a pre-flight requirement is not met: " + name).format(detail=detail)
+        out.append(row)
 
     s = robot.state()
     check("arm is powered, enabled and homed, with no fault", s.ready,

@@ -184,15 +184,16 @@ def test_nothing_leaves_the_lab_network(monkeypatch):
     for bad in ("https://api.example.com/v1/chat", "http://perception.lab.evil.org", "http://192.168.1.20:11434"):
         with pytest.raises(EgressBlocked):
             assert_egress_allowed(bad)
-    sent = []
-    monkeypatch.setattr(httpx, "post", lambda *a, **k: sent.append(a))
+    from vxagent import net
+    before = net.sent()
     with pytest.raises(LLMError) as e:
         OllamaClient(base_url="https://llm.example.com").chat([{"role": "user", "content": "the lab's unpublished result"}])
-    assert e.value.kind == "egress_blocked" and sent == []
+    assert e.value.kind == "egress_blocked" and net.sent() == before
     assert OllamaClient(base_url="https://llm.example.com").health()["reachable"] is False
     with pytest.raises(PerceptionUnavailable):
         PerceptionClient("http://gpu.example.com:8401")()
-    assert sent == []
+    assert net.sent() == before                                 # nothing was handed to the network layer
+    assert OllamaClient(base_url="http://127.0.0.1:9").health()["reachable"] is False and net.sent() == before + 1
 
 
 def test_the_route_of_a_step_is_fixed_in_code(tmp_path):

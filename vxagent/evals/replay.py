@@ -29,6 +29,7 @@ class Candidate:
     remove_from_prompt: list[str] = field(default_factory=list)   # exact sentences to take out
     add_to_prompt: str = ""
     tool_descriptions: dict[str, str] = field(default_factory=dict)
+    about: str = ""
 
     @classmethod
     def load(cls, path: Any) -> "Candidate":

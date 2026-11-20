@@ -1,0 +1,23 @@
+{
+  "about": "Requests to route to a role's desk, written and labelled by hand for task 14. One labeller. The classes are the four roles of the console.",
+  "requests": [
+    ["Move the arm to the hover pose over the needle.", "operator"],
+    ["Is the arm homed, and where is the tip right now?", "operator"],
+    ["Start the reach and grasp trial with the first rollout.", "operator"],
+    ["The needle dropped during the lift. What did the last trial record say?", "operator"],
+    ["Run the rig check before I begin.", "operator"],
+    ["The grasp misses by a constant few millimetres to one side. Find out why.", "service"],
+    ["The terminal prints 'Error: a bytes-like object is required' when the potentiometer script runs.", "service"],
+    ["Recalibrate the camera to the robot after the endoscope arm was bumped.", "service"],
+    ["What is tool_detection set to in the PSM arm file, and can it be FIXED?", "service"],
+    ["The instrument was swapped for a 5 mm needle driver. Update the configuration.", "service"],
+    ["A proposal to raise the near-step limit is waiting. Show me what it changes before I decide.", "safety"],
+    ["Which trial verdicts did operators override this week, and with what reasons?", "safety"],
+    ["Give the support engineer read access to ticket 14 until tomorrow.", "safety"],
+    ["Reject the change to the workspace limit; the reason given is not sufficient.", "safety"],
+    ["Which of our sites have not reported in for an hour?", "support"],
+    ["Compare the software release that each site runs.", "support"],
+    ["How many tokens did every site's copilots use this week?", "support"],
+    ["Across the labs, where do most pre-flight failures come from?", "support"]
+  ]
+}

@@ -8,6 +8,7 @@ from typing import Any
 import httpx
 
 from ..config import EgressBlocked, assert_egress_allowed
+from .. import net
 
 TIME_LIMIT_S = 0.5
 
@@ -26,7 +27,7 @@ class PerceptionClient:
         t0 = time.perf_counter()
         try:
             assert_egress_allowed(self.url)
-            r = httpx.post(f"{self.url}/estimate", json={"scene": self.scene}, timeout=self.time_limit_s)
+            r = net.post(f"{self.url}/estimate", json={"scene": self.scene}, timeout=self.time_limit_s)
             r.raise_for_status()
             out = r.json()
         except (httpx.HTTPError, EgressBlocked, ValueError) as exc:
@@ -43,7 +44,7 @@ class PerceptionClient:
     def health(self) -> dict[str, Any]:
         try:
             assert_egress_allowed(self.url)
-            r = httpx.get(f"{self.url}/health", timeout=self.time_limit_s)
+            r = net.get(f"{self.url}/health", timeout=self.time_limit_s)
             return {"reachable": r.status_code == 200, **(r.json() if r.status_code == 200 else {})}
         except (httpx.HTTPError, EgressBlocked, ValueError) as exc:
             return {"reachable": False, "error": type(exc).__name__}

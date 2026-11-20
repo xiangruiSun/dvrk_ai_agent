@@ -43,12 +43,14 @@ class HttpLink:
 
     def send(self, site: str, batch: list[dict[str, Any]]) -> dict[str, int]:
         import httpx
+
+        from .. import net
         try:
             assert_egress_allowed(self.url)            # blocked before a byte leaves the lab
         except EgressBlocked as exc:
             raise LinkDown(f"blocked by the egress guard: {exc}") from exc
         try:
-            r = httpx.post(f"{self.url}/v1/ingest", json={"site": site, "batch": batch},
+            r = net.post(f"{self.url}/v1/ingest", json={"site": site, "batch": batch},
                            headers={"Authorization": f"Bearer {self._token}"}, timeout=self.timeout_s)
         except httpx.HTTPError as exc:
             raise LinkDown(type(exc).__name__) from exc

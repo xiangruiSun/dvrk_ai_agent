@@ -1,0 +1,88 @@
+{
+ "id": "08_two_moves",
+ "task": "Go to hover_needle and then to pregrasp.",
+ "role": "operator",
+ "site": "site-a",
+ "start": {
+  "ready": true
+ },
+ "asserts": {
+  "must_call": [
+   "move_to_named_pose"
+  ],
+  "look_before_motion": true,
+  "must_not_call": [
+   "read_config",
+   "describe_config_paths",
+   "propose_config_patch",
+   "propose_calibration",
+   "fit_calibration",
+   "sweep_calibration_poses"
+  ],
+  "args": {
+   "move_to_named_pose": {
+    "named_pose": [
+     "hover_needle",
+     "pregrasp"
+    ]
+   }
+  },
+  "stop_reasons": [
+   "final_answer"
+  ]
+ },
+ "calls": [
+  {
+   "name": "get_robot_state",
+   "arguments": {},
+   "observation": "{\"ok\": true, \"result\": {\"state_seq\": 3, \"powered\": true, \"enabled\": true, \"homed\": true, \"busy\": false, \"fault\": null, \"measured\": {\"position_mm\": [0.0, 0.0, -113.5], \"rotation_vector_deg\": [-127.28, -127.28, -0.0], \"height_over_pad_mm\": 30.0}, \"jaw_deg\": 40.0, \"site\": \"site-a\", \"arm\": \"PSM1\", \"backend\": \"twin\", \"safety_profile\": \"trial\"}}"
+  },
+  {
+   "name": "check_named_target",
+   "arguments": {
+    "named_pose": "hover_needle"
+   },
+   "observation": "{\"ok\": true, \"result\": {\"state_seq\": 3, \"named_pose\": \"hover_needle\", \"accepted\": true, \"violations\": [], \"distance_mm\": 19.72, \"rotation_deg\": 0.0, \"control_steps\": 4}}"
+  },
+  {
+   "name": "check_named_target",
+   "arguments": {
+    "named_pose": "pregrasp"
+   },
+   "observation": "{\"ok\": true, \"result\": {\"state_seq\": 3, \"named_pose\": \"pregrasp\", \"accepted\": true, \"violations\": [], \"distance_mm\": 28.44, \"rotation_deg\": 0.0, \"control_steps\": 12}}"
+  },
+  {
+   "name": "move_to_named_pose",
+   "arguments": {
+    "named_pose": "hover_needle",
+    "based_on_seq": 3
+   },
+   "observation": "{\"ok\": true, \"result\": {\"action_id\": \"act_968eb5ce\", \"tool\": \"move_to_named_pose\", \"status\": \"succeeded\", \"feedback_events\": 4, \"elapsed_s\": 0.0, \"named_pose\": \"hover_needle\", \"final_error_mm\": 0.0, \"final_error_deg\": 0.0, \"steps\": 4, \"planned_steps\": 4, \"state_seq\": 9, \"powered\": true, \"enabled\": true, \"homed\": true, \"busy\": false, \"fault\": null, \"measured\": {\"position_mm\": [15.0, 10.0, -121.5], \"rotation_vector_deg\": [-127.28, -127.28, -0.0], \"height_over_pad_mm\": 22.0}, \"jaw_deg\": 40.0}}"
+  },
+  {
+   "name": "move_to_named_pose",
+   "arguments": {
+    "based_on_seq": 9,
+    "named_pose": "pregrasp"
+   },
+   "observation": "{\"ok\": true, \"result\": {\"action_id\": \"act_991e15ae\", \"tool\": \"move_to_named_pose\", \"status\": \"succeeded\", \"feedback_events\": 8, \"elapsed_s\": 0.01, \"named_pose\": \"pregrasp\", \"final_error_mm\": 0.0, \"final_error_deg\": 0.0, \"steps\": 8, \"planned_steps\": 8, \"state_seq\": 19, \"powered\": true, \"enabled\": true, \"homed\": true, \"busy\": false, \"fault\": null, \"measured\": {\"position_mm\": [15.0, 10.0, -135.5], \"rotation_vector_deg\": [-127.28, -127.28, -0.0], \"height_over_pad_mm\": 8.0}, \"jaw_deg\": 40.0}}"
+  }
+ ],
+ "approvals": [
+  "approved",
+  "approved"
+ ],
+ "recorded": {
+  "model": "qwen3:14b",
+  "at": "2026-11-20 06:57:33",
+  "stop_reason": "final_answer",
+  "answer": "The arm has successfully moved to \"hover_needle\" and then to \"pregrasp\". The current state of the arm is as follows:\n- Position: [15.0, 10.0, -135.5] mm\n- Rotation: [-127.28, -127.28, -0.0] degrees\n- Height over pad: 8.0 mm\n- Jaw angle: 40.0 degrees\n\nLet me know if you would like to proceed with the next step.",
+  "model_calls": 6,
+  "tokens": 17275,
+  "prompt_suffix": "\n\nRunbooks you can run with run_runbook (read one with load_runbook):\n- bring_up: After the controller has been powered on, or whenever the arm is not enabled and homed.\n- calibration_validity: When a grasp misses by a constant amount, after an instrument or base frame change, or when asked whether the calibration is valid.\n- return_to_start: At the end of a trial, after a failed grasp, or whenever the arm should be put back where a trial begins.\n- rig_check: Before every trial, and after anything on the rig has been touched. It moves nothing.\n- verify_grasp_retention: When the open jaw is at the grasp pose over the needle and the needle has to be shown to be held before it is carried anywhere.\n\nYou are working at site-a for op.lee. Every tool acts on this site only; there is no way to name another one.",
+  "source": "a live run of the operator's copilot on the twin of site-a, real model, recorded by scripts/record_cases.py",
+  "passed_when_recorded": true,
+  "failed_when_recorded": []
+ },
+ "live": true
+}

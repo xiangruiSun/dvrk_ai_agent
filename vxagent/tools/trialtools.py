@@ -39,7 +39,7 @@ def trial_preflight(a: NoArgs, ctx: ToolContext) -> dict[str, Any]:
         rows = _node(ctx).preflight_rows(ctx.principal.user_id)
     except FileNotFoundError as exc:
         raise ToolError("failed", f"the policy's demonstrations are not on this node: {exc}")
-    failed = [{"check": r["check"], "detail": r["detail"], "repair_runbook": r["repair"]} for r in rows if not r["ok"]]
+    failed = [{"problem": r["problem"], "repair_runbook": r["repair"]} for r in rows if not r["ok"]]
     ctx.extras["last_preflight_failed"] = failed or None
     return {"can_start": not failed, "checks_run": len(rows), "checks_failed": len(failed), "failed": failed,
             "note": "a failed check is repaired by its runbook or by the service engineer; it is not worked around"}

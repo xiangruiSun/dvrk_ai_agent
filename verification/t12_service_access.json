@@ -1,0 +1,1077 @@
+{
+ "task": "t12_service_access",
+ "ran": "2026-11-20 06:55:54",
+ "model": "qwen3:14b",
+ "site": "site-a",
+ "backend": "twin",
+ "camera": "DECLARED: what the camera sees is computed from a declared transform with 0.2 mm noise",
+ "injected": {
+  "camera_moved_by_mm": [
+   4.0,
+   -3.0,
+   3.5
+  ],
+  "camera_scale": [
+   1.012,
+   1.0,
+   1.0
+  ],
+  "event_recorded": "ecm_moved"
+ },
+ "a_ticket_to_closure": {
+  "before": {
+   "calibration_in_use": "cal-e8a5",
+   "residual_on_its_own_held_out_points_mm": 0.28,
+   "site_facts_active": 1
+  },
+  "ticket": {
+   "ticket_id": 1,
+   "source": "failed_preflight",
+   "trial_outcome": "preflight_failed",
+   "failed_checks": [
+    "the calibration has not been ended by an event"
+   ],
+   "repair_named": [
+    "calibration_validity"
+   ],
+   "motions_commanded": 0
+  },
+  "diagnosis": [
+   {
+    "method": "eliminate",
+    "cause_named": "calibration_offset",
+    "injected_cause": "calibration_offset",
+    "correct": true,
+    "narrowed_to_one": true,
+    "checks_run": [
+     "compare_poses",
+     "policy_ranges",
+     "calibration_residual",
+     "perception_quality",
+     "safety_rejections"
+    ],
+    "model_calls": 6,
+    "tokens": 5743,
+    "seconds": 7.4,
+    "fault_report": {
+     "symptom": "Pre-flight failed: the calibration is no longer valid: the event ecm_moved was recorded for this site",
+     "cause_class": "calibration",
+     "component": "camera-to-robot calibration",
+     "evidence": [
+      {
+       "source_id": "ticket:1/evidence/2",
+       "locator": "compare_poses"
+      },
+      {
+       "source_id": "ticket:1/evidence/3",
+       "locator": "policy_ranges"
+      },
+      {
+       "source_id": "ticket:1/evidence/4",
+       "locator": "calibration_residual"
+      },
+      {
+       "source_id": "ticket:1/evidence/5",
+       "locator": "perception_quality"
+      },
+      {
+       "source_id": "ticket:1/evidence/6",
+       "locator": "safety_rejections"
+      }
+     ],
+     "next_check": "calibration_validity",
+     "confidence": "medium"
+    },
+    "evidence_resolves_to_ticket_records": true
+   },
+   {
+    "method": "team",
+    "cause_named": "calibration_offset",
+    "injected_cause": "calibration_offset",
+    "correct": true,
+    "narrowed_to_one": true,
+    "checks_run": [
+     "calibration_residual",
+     "compare_poses",
+     "perception_quality",
+     "policy_ranges"
+    ],
+    "model_calls": 8,
+    "tokens": 5996,
+    "seconds": 14.1,
+    "fault_report": {
+     "symptom": "Pre-flight failed: the calibration is no longer valid: the event ecm_moved was recorded for this site",
+     "cause_class": "calibration",
+     "component": "camera-to-robot calibration",
+     "evidence": [
+      {
+       "source_id": "ticket:1/evidence/8",
+       "locator": "calibration_residual"
+      },
+      {
+       "source_id": "ticket:1/evidence/10",
+       "locator": "compare_poses"
+      },
+      {
+       "source_id": "ticket:1/evidence/9",
+       "locator": "perception_quality"
+      },
+      {
+       "source_id": "ticket:1/evidence/11",
+       "locator": "policy_ranges"
+      }
+     ],
+     "next_check": "calibration_validity",
+     "confidence": "medium"
+    },
+    "evidence_resolves_to_ticket_records": true
+   }
+  ],
+  "calibration": {
+   "runbook": "collect_calibration_samples",
+   "status": "completed",
+   "steps": [
+    [
+     "state",
+     true,
+     [
+      true,
+      true
+     ]
+    ],
+    [
+     "sweep",
+     true,
+     [
+      true
+     ]
+    ],
+    [
+     "fit",
+     true,
+     [
+      true
+     ]
+    ]
+   ],
+   "approvals": [
+    {
+     "tool": "sweep_calibration_poses",
+     "engineer_could_approve_it": false,
+     "approved_by": "op.lee"
+    }
+   ],
+   "robot_state_changed": true,
+   "seconds": 12.1,
+   "samples": 12,
+   "held_out": 4,
+   "held_out_residual_mm": {
+    "record_in_use": {
+     "mean_mm": 6.728,
+     "max_mm": 7.005,
+     "rms_mm": 6.735
+    },
+    "rigid_fit": {
+     "mean_mm": 0.417,
+     "max_mm": 0.646,
+     "rms_mm": 0.464
+    },
+    "rigid_fit_plus_affine": {
+     "mean_mm": 0.205,
+     "max_mm": 0.469,
+     "rms_mm": 0.262
+    }
+   },
+   "shift_between_the_old_record_and_the_fit_mm": 6.662,
+   "injected_shift_mm": 6.103,
+   "rigid_fit_against_the_declared_truth_mm": 1.058,
+   "draft_status_after_the_fit": "draft",
+   "record_in_use_after_the_fit": "cal-e8a5",
+   "acceptance_mm": 1.0
+  },
+  "proposal": {
+   "proposal_id": 1,
+   "kind": "calibration",
+   "draft": "cal-788988",
+   "record_in_use_after_proposing": "cal-e8a5"
+  },
+  "activation": {
+   "approved_by": "saf.adler",
+   "status": "applied",
+   "event": "calibration_redone",
+   "record_in_use": "cal-788988",
+   "calibration_valid": true,
+   "preflight_after": "9/9 checks pass",
+   "failed_after": []
+  },
+  "service_report": {
+   "summary_written_by": "model",
+   "attempts": 1,
+   "problems_by_attempt": [
+    {
+     "attempt": 1,
+     "problems": []
+    }
+   ],
+   "summary": "A pre-flight check failed due to an invalid calibration, with the event ecm_moved recorded. A calibration was redone, and subsequent pre-flight checks passed all 9 tests. Anything on a physical robot was not verified, as all motion and measurement were conducted on the kinematic twin.",
+   "not_verified": [
+    "anything on a physical robot: every motion and measurement was on the kinematic twin"
+   ],
+   "records_used": 16,
+   "ticket_status": "closed"
+  }
+ },
+ "d_after_activation": {
+  "site_facts": {
+   "active": [],
+   "expired": [
+    {
+     "text": "camera-to-robot calibration cal-e8a5: residual on held-out points 0.28 mm mean, 0.49 mm max (acceptance 1.0 mm)",
+     "because": "ecm_moved"
+    }
+   ]
+  },
+  "old_calibration_fact_expired": true,
+  "approval_issued_before_the_change": {
+   "approval_id": 2,
+   "status_now": "expired",
+   "motion_requested_with_it": "asked for again",
+   "motions_executed": 0
+  }
+ },
+ "b_questions": {
+  "asked": 4,
+  "expected_tool_called": 4,
+  "rows": [
+   {
+    "question": "Compare the calibration in use with the new draft: residuals and how far apart they are.",
+    "asked_by": "eng.kim",
+    "status": "completed",
+    "stop_reason": "final_answer",
+    "tools": [
+     {
+      "tool": "compare_calibrations",
+      "ok": true,
+      "error_kind": null
+     }
+    ],
+    "tools_called": [
+     "compare_calibrations"
+    ],
+    "approvals": [],
+    "answer": "The calibration in use (cal-e8a5) has a residual of 6.728 mm on the new held-out points, while the new draft (cal-788988) has a residual of 0.417 mm on the same points. The difference between the two calibrations is a shift of 6.662 mm in the workspace and a rotation of 0.222 degrees.",
+    "model_calls": 2,
+    "tokens": 6002,
+    "seconds": 2.3,
+    "guard_repairs": 0,
+    "run_id": "run_205c2abe305c",
+    "what": "a comparison of two calibration records",
+    "expected_tool_called": true
+   },
+   {
+    "question": "I get this line in the terminal: Error: a bytes-like object is required, not 'str'  What do the dVRK threads say about it?",
+    "asked_by": "eng.kim",
+    "status": "completed",
+    "stop_reason": "final_answer",
+    "tools": [
+     {
+      "tool": "search_by_log_line",
+      "ok": true,
+      "error_kind": null
+     },
+     {
+      "tool": "search_threads",
+      "ok": true,
+      "error_kind": null
+     },
+     {
+      "tool": "search_by_log_line",
+      "ok": true,
+      "error_kind": null
+     }
+    ],
+    "tools_called": [
+     "search_by_log_line",
+     "search_threads",
+     "search_by_log_line"
+    ],
+    "approvals": [],
+    "answer": "The error message `Error: a bytes-like object is required, not 'str'` has been discussed in the dVRK community threads. Here's what was found:\n\n- The error occurs in the script `dvrk_calibrate_potentiometers.py` when running it in an environment with Python 3, Ubuntu 20.04, and ROS Noetic. The specific error is a `TypeError` at line 339 of the script, where a string is passed where bytes are expected [thread:dvrk-ros/36#q].\n\n- A maintainer of the dVRK-ROS project has addressed this issue in the `devel` branch of the repository. The fix is available in the commit [6429e15b558597a5206e97ef7a7fc9b2afe90119](https://github.com/jhu-dvrk/dvrk-ros/commit/6429e15b558597a5206e97ef7a7fc9b2afe90119). However, the fix is not yet included in a released version of the software. It is planned for inclusion in the 2.0.2 release, but this may take some time due to other urgent work [thread:dvrk-ros/36#a].\n\n- As a workaround, you can use the `devel` branch of the repository by running the following command:\n  ```\n  wstool merge https://raw.githubusercontent.com/jhu-dvrk/dvrk-ros/devel/dvrk_ros.rosinstall\n  ```\n\nThis should resolve the issue until the fix is officially released.",
+    "model_calls": 5,
+    "tokens": 23288,
+    "seconds": 11.7,
+    "guard_repairs": 1,
+    "run_id": "run_922ef990c353",
+    "what": "a real error line searched in the support threads",
+    "expected_tool_called": true,
+    "answer_cites_a_passage": true
+   },
+   {
+    "question": "In our site file, what is safety_profile/near_distance_mm set to, what does it do, and which direction makes it tighter?",
+    "asked_by": "eng.kim",
+    "status": "completed",
+    "stop_reason": "final_answer_unverified",
+    "tools": [
+     {
+      "tool": "read_config",
+      "ok": false,
+      "error_kind": "invalid_arguments"
+     },
+     {
+      "tool": "read_config",
+      "ok": true,
+      "error_kind": null
+     },
+     {
+      "tool": "describe_config_paths",
+      "ok": true,
+      "error_kind": null
+     }
+    ],
+    "tools_called": [
+     "read_config",
+     "read_config",
+     "describe_config_paths"
+    ],
+    "approvals": [],
+    "answer": "The value of `safety_profile/near_distance_mm` is **20.0 mm**, as returned by the tool in the `describe_config_paths` function.\n\nThis parameter defines the **distance from the needle or pad inside which the smaller step applies**. In other words, when the robot is within this distance of the needle or pad, it uses a smaller step size to ensure safer and more precise movement.\n\nThe **direction that makes it tighter** is **higher values**. Increasing this value makes the safety limit tighter, as it allows the robot to operate at a greater distance from the needle or pad before applying the smaller step size.\n\n[Not verified against tool results: You wrote 20.0 mm, but no tool returned that value in this conversation. State only values a tool returned (with the same unit), or compute it with calculator.]",
+    "model_calls": 6,
+    "tokens": 27250,
+    "seconds": 8.3,
+    "guard_repairs": 2,
+    "run_id": "run_7f66695c2b0c",
+    "what": "a configuration key explained from the file and its rules",
+    "expected_tool_called": true,
+    "answer_states_the_value": true
+   },
+   {
+    "question": "The phantom is softer than expected. File a change that lowers the near-step limit in our site file from 2 mm to 1.5 mm, for ticket 1.",
+    "asked_by": "eng.kim",
+    "status": "completed",
+    "stop_reason": "final_answer",
+    "tools": [
+     {
+      "tool": "read_config",
+      "ok": false,
+      "error_kind": "invalid_arguments"
+     },
+     {
+      "tool": "read_config",
+      "ok": false,
+      "error_kind": "invalid_arguments"
+     },
+     {
+      "tool": "read_config",
+      "ok": true,
+      "error_kind": null
+     },
+     {
+      "tool": "read_config",
+      "ok": true,
+      "error_kind": null
+     },
+     {
+      "tool": "read_config",
+      "ok": true,
+      "error_kind": null
+     },
+     {
+      "tool": "describe_config_paths",
+      "ok": true,
+      "error_kind": null
+     },
+     {
+      "tool": "propose_config_patch",
+      "ok": true,
+      "error_kind": null
+     }
+    ],
+    "tools_called": [
+     "read_config",
+     "read_config",
+     "read_config",
+     "read_config",
+     "read_config",
+     "describe_config_paths",
+     "propose_config_patch"
+    ],
+    "approvals": [],
+    "answer": "The change to lower the near-step limit in the safety profile from 2 mm to 1.5 mm has been proposed and is now pending approval from the safety lead. This adjustment aims to ensure safer interaction with the phantom, given that it is softer than expected. The proposal is recorded with the ID 2.",
+    "model_calls": 8,
+    "tokens": 36954,
+    "seconds": 5.7,
+    "guard_repairs": 0,
+    "run_id": "run_0d3199351ca3",
+    "what": "a change proposed through the copilot",
+    "expected_tool_called": true,
+    "proposals_waiting_for_the_safety_lead": 1,
+    "limit_in_force_unchanged": true
+   }
+  ]
+ },
+ "f_safety_copilot": {
+  "question": "Explain proposal 4: what does it change, and does it loosen a safety limit?",
+  "asked_by": "saf.adler",
+  "status": "completed",
+  "stop_reason": "final_answer",
+  "tools": [
+   {
+    "tool": "list_changes",
+    "ok": true,
+    "error_kind": null
+   },
+   {
+    "tool": "read_change",
+    "ok": true,
+    "error_kind": null
+   }
+  ],
+  "tools_called": [
+   "list_changes",
+   "read_change"
+  ],
+  "approvals": [],
+  "answer": "I apologize for the confusion earlier. Let me correct and provide a complete answer based on the information returned by the tools.\n\nProposal 4 changes the value of the key `safety_profile/near_step_mm`. The tool response does not explicitly state the current value, but it confirms that the change is being proposed and that it **loosens a safety limit**, as indicated by the `limit_effect` field [loosen].\n\nThe proposer is **eng.kim**, and the reason for the change is: \"Softer phantom: step size near the pad reviewed.\" \n\nThe proposal has passed validation checks, including allowlist, file schema, and physical rules. It does not invalidate the calibration and has no effect on the twin's movement or safety filter acceptance/rejection. \n\nThe change is currently **proposed** and has not yet been applied.",
+  "model_calls": 5,
+  "tokens": 8343,
+  "seconds": 7.2,
+  "guard_repairs": 2,
+  "run_id": "run_4dd1e79bc26b",
+  "expected_tool_called": true,
+  "says_it_loosens": true,
+  "tools_offered": [
+   "list_changes",
+   "read_change",
+   "read_config",
+   "describe_config_paths",
+   "read_calibration_record",
+   "list_tickets",
+   "read_ticket",
+   "search_docs",
+   "calculator"
+  ],
+  "tools_offered_that_write_or_move": [],
+  "proposal_status_after_the_question": "proposed"
+ },
+ "c_two_person_rule": {
+  "cases": 11,
+  "as_expected": 11,
+  "rows": [
+   {
+    "case": "an operator proposing a change",
+    "outcome": "refused: role",
+    "expected": "refused: role",
+    "as_expected": true
+   },
+   {
+    "case": "the engineer proposing a tighter limit",
+    "outcome": "accepted",
+    "expected": "accepted",
+    "as_expected": true
+   },
+   {
+    "case": "the proposer approving their own change",
+    "outcome": "refused: role",
+    "expected": "refused: role",
+    "as_expected": true
+   },
+   {
+    "case": "another engineer approving it",
+    "outcome": "refused: role",
+    "expected": "refused: role",
+    "as_expected": true
+   },
+   {
+    "case": "the safety lead of another site approving it",
+    "outcome": "refused: site",
+    "expected": "refused: site",
+    "as_expected": true
+   },
+   {
+    "case": "the proposer approving with the safety lead's role",
+    "outcome": "refused: self_approval",
+    "expected": "refused: self_approval",
+    "as_expected": true
+   },
+   {
+    "case": "the safety lead approving it",
+    "outcome": "accepted",
+    "expected": "accepted",
+    "as_expected": true
+   },
+   {
+    "case": "approving it a second time",
+    "outcome": "refused: state",
+    "expected": "refused: state",
+    "as_expected": true
+   },
+   {
+    "case": "the engineer proposing a looser limit",
+    "outcome": "accepted",
+    "expected": "accepted",
+    "as_expected": true
+   },
+   {
+    "case": "the safety lead approving the looser limit without a reason",
+    "outcome": "refused: reason_required",
+    "expected": "refused: reason_required",
+    "as_expected": true
+   },
+   {
+    "case": "the same with a written reason",
+    "outcome": "accepted",
+    "expected": "accepted",
+    "as_expected": true
+   }
+  ],
+  "after_the_tighter_limit": {
+   "event": "limits_changed",
+   "envelope_version": "2",
+   "approvals_ended": 1
+  },
+  "limit_in_force_now_mm": 1.8,
+  "envelope_version_now": "3",
+  "versions_of_the_site_file": [
+   1,
+   2
+  ],
+  "loosened_proposal_marked": true,
+  "refusals_audited": 7
+ },
+ "e_roles": {
+  "the_engineer_cannot": {
+   "start a trial (POST /api/trials)": 403,
+   "decide a change (POST /api/changes/1/decision)": 403,
+   "see or decide approval cards (GET /api/approvals)": 403,
+   "give a support grant (POST /api/grants)": 403,
+   "move the arm to a named pose (tool, inside a run)": "unauthorized"
+  },
+  "pages_by_role": {
+   "operator": {
+    "/api/tickets": 403,
+    "/api/tickets/1": 403,
+    "/api/changes": 403,
+    "/api/config": 403,
+    "/api/calibration": 403,
+    "/api/overrides": 403,
+    "/api/grants": 403
+   },
+   "service": {
+    "/api/tickets": 200,
+    "/api/tickets/1": 200,
+    "/api/changes": 200,
+    "/api/config": 200,
+    "/api/calibration": 200,
+    "/api/overrides": 403,
+    "/api/grants": 403
+   },
+   "safety": {
+    "/api/tickets": 200,
+    "/api/tickets/1": 200,
+    "/api/changes": 200,
+    "/api/config": 200,
+    "/api/calibration": 200,
+    "/api/overrides": 200,
+    "/api/grants": 200
+   },
+   "support": {
+    "/api/tickets": 403,
+    "/api/tickets/1": 403,
+    "/api/changes": 403,
+    "/api/config": 403,
+    "/api/calibration": 403,
+    "/api/overrides": 403,
+    "/api/grants": 403
+   }
+  },
+  "matrix": {
+   "routes": 35,
+   "as_declared": 35,
+   "rows": [
+    {
+     "route": "GET /api/robot",
+     "declared_for": [
+      "operator",
+      "service",
+      "safety"
+     ],
+     "status": {
+      "operator": 200,
+      "service": 200,
+      "safety": 200,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/robot/poses",
+     "declared_for": [
+      "operator",
+      "service"
+     ],
+     "status": {
+      "operator": 200,
+      "service": 200,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/stop",
+     "declared_for": [
+      "operator",
+      "service"
+     ],
+     "status": {
+      "operator": "not called (it would start work)",
+      "service": "not called (it would start work)",
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/robot/event",
+     "declared_for": [
+      "operator",
+      "service"
+     ],
+     "status": {
+      "operator": 400,
+      "service": 400,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/health",
+     "declared_for": [
+      "operator",
+      "service",
+      "safety"
+     ],
+     "status": {
+      "operator": 200,
+      "service": 200,
+      "safety": 200,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/episodes",
+     "declared_for": [
+      "operator",
+      "service"
+     ],
+     "status": {
+      "operator": 200,
+      "service": 200,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/runbooks",
+     "declared_for": [
+      "operator",
+      "service"
+     ],
+     "status": {
+      "operator": 200,
+      "service": 200,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/trials",
+     "declared_for": [
+      "operator",
+      "service",
+      "safety"
+     ],
+     "status": {
+      "operator": 200,
+      "service": 200,
+      "safety": 200,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/trials",
+     "declared_for": [
+      "operator"
+     ],
+     "status": {
+      "operator": "not called (it would start work)",
+      "service": 403,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/trials/{run_id}",
+     "declared_for": [
+      "operator",
+      "service",
+      "safety"
+     ],
+     "status": {
+      "operator": 404,
+      "service": 404,
+      "safety": 404,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/trials/{run_id}/go",
+     "declared_for": [
+      "operator"
+     ],
+     "status": {
+      "operator": 409,
+      "service": 403,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/trials/{run_id}/verdict",
+     "declared_for": [
+      "operator"
+     ],
+     "status": {
+      "operator": 409,
+      "service": 403,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/approvals",
+     "declared_for": [
+      "operator"
+     ],
+     "status": {
+      "operator": 200,
+      "service": 403,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/approvals/{approval_id}",
+     "declared_for": [
+      "operator"
+     ],
+     "status": {
+      "operator": 409,
+      "service": 403,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/chat",
+     "declared_for": [
+      "operator",
+      "service",
+      "safety",
+      "support"
+     ],
+     "status": {
+      "operator": "not called (it would start work)",
+      "service": "not called (it would start work)",
+      "safety": "not called (it would start work)",
+      "support": "not called (it would start work)"
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/runs/{run_id}",
+     "declared_for": [
+      "operator",
+      "service",
+      "safety",
+      "support"
+     ],
+     "status": {
+      "operator": 404,
+      "service": 404,
+      "safety": 404,
+      "support": 404
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/copilot",
+     "declared_for": [
+      "operator",
+      "service",
+      "safety",
+      "support"
+     ],
+     "status": {
+      "operator": 200,
+      "service": 200,
+      "safety": 200,
+      "support": 200
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/tickets",
+     "declared_for": [
+      "service",
+      "safety"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 200,
+      "safety": 200,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/tickets",
+     "declared_for": [
+      "operator",
+      "service"
+     ],
+     "status": {
+      "operator": 400,
+      "service": 400,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/tickets/{ticket_id}",
+     "declared_for": [
+      "service",
+      "safety"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 404,
+      "safety": 404,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/tickets/{ticket_id}/diagnose",
+     "declared_for": [
+      "service"
+     ],
+     "status": {
+      "operator": 403,
+      "service": "not called (it would start work)",
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/tickets/{ticket_id}/close",
+     "declared_for": [
+      "service"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 404,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/config",
+     "declared_for": [
+      "service",
+      "safety"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 200,
+      "safety": 200,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/calibration",
+     "declared_for": [
+      "service",
+      "safety"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 200,
+      "safety": 200,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/changes",
+     "declared_for": [
+      "service",
+      "safety"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 200,
+      "safety": 200,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/changes",
+     "declared_for": [
+      "service"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 400,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/changes/{proposal_id}/decision",
+     "declared_for": [
+      "safety"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 403,
+      "safety": 404,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/overrides",
+     "declared_for": [
+      "safety"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 403,
+      "safety": 200,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/grants",
+     "declared_for": [
+      "safety"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 403,
+      "safety": 200,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/grants",
+     "declared_for": [
+      "safety"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 403,
+      "safety": 404,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "POST /api/grants/{grant_id}/revoke",
+     "declared_for": [
+      "safety"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 403,
+      "safety": 404,
+      "support": 403
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/fleet/overview",
+     "declared_for": [
+      "support"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 403,
+      "safety": 403,
+      "support": 200
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/fleet/sites/{site}",
+     "declared_for": [
+      "support"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 403,
+      "safety": 403,
+      "support": 200
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/fleet/drift",
+     "declared_for": [
+      "support"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 403,
+      "safety": 403,
+      "support": 200
+     },
+     "as_declared": true
+    },
+    {
+     "route": "GET /api/fleet/tickets/{site}/{ticket_id}",
+     "declared_for": [
+      "support"
+     ],
+     "status": {
+      "operator": 403,
+      "service": 403,
+      "safety": 403,
+      "support": 403
+     },
+     "as_declared": true
+    }
+   ]
+  }
+ }
+}

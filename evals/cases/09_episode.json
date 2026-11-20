@@ -1,0 +1,52 @@
+{
+ "id": "09_episode",
+ "task": "Summarise the recorded episode X01_Pea_on_a_Peg_01: how long is it and how far did PSM1 travel?",
+ "role": "operator",
+ "site": "site-a",
+ "start": {
+  "ready": true
+ },
+ "asserts": {
+  "must_call": [
+   "episode_summary"
+  ],
+  "must_not_call": [
+   "read_config",
+   "describe_config_paths",
+   "propose_config_patch",
+   "propose_calibration",
+   "fit_calibration",
+   "sweep_calibration_poses",
+   "enable_and_home",
+   "move_to_named_pose",
+   "set_jaw",
+   "sweep_calibration_poses"
+  ],
+  "stop_reasons": [
+   "final_answer"
+  ]
+ },
+ "calls": [
+  {
+   "name": "episode_summary",
+   "arguments": {
+    "episode_id": "X01_Pea_on_a_Peg_01"
+   },
+   "observation": "{\"ok\": true, \"result\": {\"episode_id\": \"X01_Pea_on_a_Peg_01\", \"operator\": \"X01\", \"task\": \"Pea on a Peg\", \"trial\": 1, \"samples\": 5997, \"duration_s\": 119.916, \"sample_rate_hz\": 50.0, \"signals_recorded\": \"position, orientation, velocity, wrench and joints of MTML, MTMR, PSM1, PSM2\", \"signals_absent\": \"jaw angle, camera calibration\", \"timestamps_repaired\": 2, \"time_runs_forward\": true, \"psm1_path_length_mm\": 2212.4, \"psm1_peak_speed_mm_per_s\": 103.1, \"psm1_mean_speed_mm_per_s\": 18.5, \"psm1_workspace_extent_mm\": [64.9, 86.0, 64.1], \"psm2_path_length_mm\": 450.8, \"psm2_peak_speed_mm_per_s\": 55.6, \"psm2_mean_speed_mm_per_s\": 3.8, \"psm2_workspace_extent_mm\": [31.1, 32.6, 25.6], \"dataset_time_s\": 119.9254, \"dataset_errors\": 2, \"dataset_score\": 149.9254}}"
+  }
+ ],
+ "approvals": [],
+ "recorded": {
+  "model": "qwen3:14b",
+  "at": "2026-11-20 06:57:34",
+  "stop_reason": "final_answer",
+  "answer": "The recorded episode X01_Pea_on_a_Peg_01 lasted **119.92 seconds**. During this time, PSM1 traveled a total distance of **2212.4 mm**.",
+  "model_calls": 2,
+  "tokens": 5391,
+  "prompt_suffix": "\n\nRunbooks you can run with run_runbook (read one with load_runbook):\n- bring_up: After the controller has been powered on, or whenever the arm is not enabled and homed.\n- calibration_validity: When a grasp misses by a constant amount, after an instrument or base frame change, or when asked whether the calibration is valid.\n- return_to_start: At the end of a trial, after a failed grasp, or whenever the arm should be put back where a trial begins.\n- rig_check: Before every trial, and after anything on the rig has been touched. It moves nothing.\n- verify_grasp_retention: When the open jaw is at the grasp pose over the needle and the needle has to be shown to be held before it is carried anywhere.\n\nYou are working at site-a for op.lee. Every tool acts on this site only; there is no way to name another one.",
+  "source": "a live run of the operator's copilot on the twin of site-a, real model, recorded by scripts/record_cases.py",
+  "passed_when_recorded": true,
+  "failed_when_recorded": []
+ },
+ "live": false
+}

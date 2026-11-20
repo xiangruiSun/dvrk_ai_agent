@@ -84,6 +84,29 @@ def build_console(public: bool = False, llm: Any = "default", knowledge: Any = N
     return console
 
 
+def start_fleet_sync(console: Any, every_s: float = 15.0) -> Any:
+    """Each node reports its health and sends its outbox to the fleet store, again and again.
+    Here the store is in the same process; between a lab and a support team it is the HTTP link
+    of vxagent/fleet/sync.py. A node that cannot deliver keeps its records."""
+    import threading
+
+    from ..fleet.sync import DirectLink, sync
+    link = DirectLink(console.desk.store)
+    stop = threading.Event()
+
+    def loop() -> None:
+        while not stop.is_set():
+            for node in console.nodes.values():
+                try:
+                    node.fleet.record_health(node.health())
+                    sync(node.fleet, link)
+                except Exception:                           # the next round tries again; the outbox keeps what was not sent
+                    pass
+            stop.wait(every_s)
+    threading.Thread(target=loop, daemon=True, name="fleet-sync").start()
+    return stop
+
+
 def main() -> int:
     import uvicorn
 
@@ -93,6 +116,7 @@ def main() -> int:
     ap.add_argument("--public", action="store_true", help="public mode: refuses unsafe settings, rations jobs")
     a = ap.parse_args()
     console = build_console(public=a.public)
+    start_fleet_sync(console)
     print(f"console on http://127.0.0.1:{a.port}  (accounts: {accounts_file()})", flush=True)
     uvicorn.run(create_app(console), host="127.0.0.1", port=a.port, log_level="warning")     # never 0.0.0.0: a tunnel connects to it
     return 0

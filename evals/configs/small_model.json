@@ -1,0 +1,5 @@
+{
+ "name": "small_model",
+ "model": "qwen3:4b",
+ "about": "PLANTED REGRESSION: the small model in place of the large one for the copilot."
+}

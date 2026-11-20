@@ -14,6 +14,7 @@ from report_rag import rag
 from report_agent_tasks import SECTIONS as AGENT_TASKS  # noqa: E402
 from report_agent_more import SECTIONS as AGENT_MORE    # noqa: E402
 from report_agent_trials import SECTIONS as AGENT_TRIALS  # noqa: E402
+from report_agent_roles import SECTIONS as AGENT_ROLES    # noqa: E402
 from report_rag_tasks import SECTIONS as RAG_TASKS      # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -130,7 +131,7 @@ def t01(d: dict[str, Any]) -> str:
     return "\n".join(out)
 
 
-SECTIONS = [("t01_tool_calling", t01), *[(name, lambda d, fn=fn: fn(d, table)) for name, fn in [*AGENT_TASKS, *AGENT_MORE, *AGENT_TRIALS]],
+SECTIONS = [("t01_tool_calling", t01), *[(name, lambda d, fn=fn: fn(d, table)) for name, fn in [*AGENT_TASKS, *AGENT_MORE, *AGENT_TRIALS, *AGENT_ROLES]],
             ("rag_experiments", lambda d: rag(d, table)),
             *[(name, lambda d, fn=fn: fn(d, table)) for name, fn in RAG_TASKS]]
 

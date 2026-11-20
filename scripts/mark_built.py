@@ -130,6 +130,133 @@ Differences from the plan below:
   on the training side as one session.
 Further limits: one policy (Approach). The checkpoint hash is not recorded because no checkpoint
 is loaded; the rollouts are the recorded expert demonstrations.""",
+    "11_operator_access.txt": """\
+Status: BUILT and verified. Results: verification/REPORT.md, section T11.
+Code: vxagent/access.py (users, sessions, lock-out, actuate per run), vxagent/chat.py, vxagent/node.py,
+      vxagent/tools/trialtools.py, vxagent/profiles.py (OPERATOR_COPILOT), vxagent/web/app.py.
+Tests: tests/test_operator_access.py.
+Differences from the plan below:
+- The web layer is Starlette, which is on the machine with the MCP SDK, not FastAPI: nothing
+  further has to be installed on a lab network.
+- Actuate per run applies to console sessions. An operator's console principal holds observe and
+  simulate; a motion tool is accepted only inside an active run of that operator that was
+  registered with that tool, and then needs the approval card. The verification harnesses of
+  tasks 01 to 10 use a standing operator principal that holds actuate.
+- Starting a trial, the go and the verdict are console buttons. The copilot can check whether a
+  trial can start and rehearse it; it has no tool that starts one.
+- calibration_validity may also be run by the operator: it only reads.
+- The operator's copilot searches the documentation; thread search is offered to the service
+  engineer and to support.
+- An approval card is valid for 120 seconds and shows the rehearsal of a move to a named pose.
+- First run kept in verification/t11_first_run.json: the pre-flight tool returned a failed check
+  under its name, which states the requirement ("the calibration has not been ended by an
+  event"), and the copilot repeated the name as the reason. The pre-flight now writes a sentence
+  that says what is wrong for every failed check; the tool and the ticket carry that sentence.
+Further limits: most probes were refused by the copilot in words, without a tool call; "held" is
+judged on effects (nothing moved, no limit changed, no trial started), not on the wording.""",
+    "12_service_engineer_and_safety_lead.txt": """\
+Status: BUILT and verified. Results: verification/REPORT.md, section T12.
+Code: vxagent/service/tickets.py, diagnosis.py, calibration.py, changes.py, report.py, tools.py;
+      vxagent/profiles.py (SERVICE, SAFETY); runbooks/collect_calibration_samples.yaml,
+      instrument_change.yaml; vxagent/web/app.py. Tests: tests/test_service_access.py.
+Differences from the plan below:
+- Diagnosis on a ticket is started from the console, not by a copilot tool. It works on a
+  diagnostic run: recorded motion replayed through the deployment pipeline on a copy of the twin
+  with whatever was injected into the node's declared world. Every check it runs becomes a
+  ticket record, and the FaultReport is written by code around the cause the model names.
+- The calibration sweep is one action over all declared calibration poses under one approval
+  by an operator, not one approval per pose. The engineer holds the scope for this one tool and
+  no scope to move the arm otherwise.
+- The camera is DECLARED: what it sees is computed from a declared transform with declared
+  noise, and the camera move is INJECTED.
+- Activating a calibration goes through the same proposal record and the same two-person rule
+  as a configuration patch, as a change of kind "calibration".
+- Site events: limits_changed was added; a calibration change records calibration_redone; any
+  other configuration change records software_updated.
+- First run kept in verification/t12_first_run.json: the grounding guard refused two correct
+  answers because the unit was not at the end of the key that carried the number, and refused
+  values the engineer had stated in the request; and the copilot gave a ticket number where an
+  evidence record id was needed. Tool results now carry the unit in the key, values stated in
+  the request may be repeated, and the prompt says what an evidence id is.
+Further limits: one diagnostic run per ticket; the affine correction is stored with the record
+but the pre-flight residual check uses the rigid transform only.""",
+    "13_remote_support_and_fleet.txt": """\
+Status: BUILT and verified. Results: verification/REPORT.md, section T13.
+Code: vxagent/fleet/redact.py, outbox.py, sync.py, store.py, grants.py, tools.py, desk.py;
+      sites/site_b.json; vxagent/profiles.py (SUPPORT); vxagent/web/app.py. Tests: tests/test_fleet.py.
+Differences from the plan below:
+- Redaction is a closed description of what a record may contain (known keys, numbers, and
+  strings from fixed vocabularies), checked at the outbox. A record that does not fit is refused
+  and audited; nothing is cleaned. A kind outside the vocabulary is reported as "other".
+- The fleet store is reached over HTTP with one token per site. It accepts a record only if its
+  number is the next one for that site, so duplicates are ignored and nothing is stored out of
+  order.
+- The fleet desk and the edge nodes run in one process in this demonstration; a granted ticket
+  is read by calling the edge node's own check directly. Between two labs that call would be an
+  HTTP request to the node.
+- Site B has no recordings: the ROSMA recordings are given to site A.
+- The fleet view shows totals and the latest health of each site. The records are stored with
+  their times, but no chart over time is drawn.
+Further limits: as stated below, counts can still say how often and when a lab works.""",
+    "14_edge_deployment.txt": """\
+Status: BUILT and verified on this PC. Results: verification/REPORT.md, section T14.
+Code: vxagent/robot/gateway.py, ros2_backend.py, timing.py; vxagent/perception/worker.py, client.py;
+      vxagent/llm/router.py; vxagent/node.py; vxagent/config.py. Tests: tests/test_edge.py.
+Differences from the plan below:
+- R1: move_cp is not a backend command. A move is executed by the agent side as servo_cp steps,
+  each checked by the safety filter, so no interpolation happens behind the interface.
+- R3: the ros2 backend is written and NOT verified: there is no ROS 2, no dVRK software and no
+  arm on the development PC. Every topic name in it has to be checked on a lab machine first.
+- R4: the gateway checks the address a connection comes from against two allowlists and, for
+  commands, the agent process's token. The trials of the verification command the twin in the
+  node's own process; the gateway is exercised separately, with a motion through it.
+- R6: the perception worker serves the goal poses recorded with the SurgicAI demonstrations
+  (ground truth of the AMBF scenes). It serves no depth and computes nothing.
+- R8: a step is routed to the small model only if it was at least as accurate there as the
+  large one on the measurement. Two of the three classification steps therefore stay on the
+  large model.
+- Two earlier runs are kept (verification/t14_first_run.json, t14_second_run.json): a perception
+  request took about 0.2 s for 0.04 s of declared work. The first explanation, the worker's two
+  writes per reply, was wrong and changed nothing. The cause was that every request created a
+  new HTTP client. The process now keeps one client open (vxagent/net.py); this also applies to
+  model calls, retrieval calls and gateway commands, whose earlier timings include that cost.
+- Keeping connections open exposed a fault in the retrieval service (vxrag/service.py): after
+  an error sent before the request body was read, the next request on the same connection was
+  answered with 501. The service now reads the unread body first and ends the connection.
+Further limits: as stated below. The start-up rule is covered by task 03's verification and by
+tests/test_edge.py, not measured again here.""",
+    "15_console_evaluation_and_tradeoffs.txt": """\
+Status: BUILT and verified. Results: verification/REPORT.md, section T15; verification/gate_*.json.
+Code: vxagent/web/app.py, serve.py, public.py, static/; vxagent/evals/cases.py, replay.py, assertions.py,
+      compare.py; scripts/record_cases.py, scripts/gate.py; evals/cases/, evals/configs/, evals/gate.json.
+Tests: tests/test_gate.py, tests/test_operator_access.py (routes, sessions, event stream).
+Differences from the plan below:
+- R1: Starlette, not FastAPI (see task 11).
+- R4: the time axis shows the trial's events, approvals and model calls; for a selected moment
+  it shows the twin's pose as it was last observed on entering a stage, not a pose per control tick.
+- R10: the golden cases are twelve runs of the operator's copilot recorded for this purpose by
+  scripts/record_cases.py, not runs taken from the other tasks' verification.
+- R11: a replay's prompt is the candidate's prompt followed by what the node added when the case
+  was recorded (runbook index, site, memory), so only the candidate's own edits differ.
+- R12: "a look before a motion" follows the executor's rule: a motion must be based on the state
+  number the latest tool result reported, whichever tool that was. The first recording, kept in
+  verification/t15_first_recording.json, used a narrower rule and also showed the model server
+  returning an empty reply; see the report.
+- R15: the cases marked live are run on the twin for every candidate.
+- Part D: public mode is built and tested (vxagent/web/public.py, `serve --public`). No tunnel
+  was opened for this verification.
+- Browser run on 2026-11-20 on the local console with the four demonstration logins. Operator:
+  robot view, a trial that failed pre-flight and opened a ticket, the copilot bringing the arm up
+  through an approval card, a trial with go and confirmation and its time axis. Service engineer:
+  ticket queue, calibration page, a change proposal filed. Safety lead: the proposal with its
+  effect on the twin, approved and applied; a support grant given. Remote support: fleet view,
+  version drift, the granted ticket read, every site page refused. The browser pane was hidden
+  for the operator's last steps, so those were driven through the page's own requests, not by
+  clicks. The run found two faults, both fixed and pinned in tests/test_found_by_verification.py:
+  the page read the tip position from the wrong field, and after a restart a node ignored a
+  change that had been applied to its site file.
+Further limits: the gate was run on one model server with temperature 0; a baseline replayed
+twice is not guaranteed to be identical on other hardware.""",
 }
 
 
@@ -139,7 +266,8 @@ def main() -> int:
         text = path.read_text(encoding="utf-8")
         if BEGIN in text and END in text:
             head, rest = text.split(BEGIN, 1)
-            text = head.rstrip("\n") + "\n" + rest.split(END, 1)[1].lstrip("\n")
+            # the blank line that ends the title block stays, or the next marking would land below "Job"
+            text = head.rstrip("\n") + "\n\n" + rest.split(END, 1)[1].lstrip("\n")
         lines = text.split("\n")
         block = [BEGIN, "-" * len(BEGIN), *note.split("\n"), END, ""]
         at = 2 if lines[1].startswith("=") else 1

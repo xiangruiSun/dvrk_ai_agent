@@ -311,7 +311,19 @@ from verify_t08 import t08                                                 # noq
 from verify_t09 import t09                                                 # noqa: E402
 from verify_t10 import t10                                                 # noqa: E402
 
-TASKS = {"t01": t01, "t02": t02, "t03": t03, "t04": t04, "t05": t05, "t06": t06, "t07": t07, "t08": t08, "t09": t09, "t10": t10}
+
+
+def _later(module: str, name: str):
+    """Tasks 11 to 14 start services of their own; their scripts are imported when they are run."""
+    def run() -> dict[str, Any]:
+        import importlib
+        return getattr(importlib.import_module(module), name)()
+    return run
+
+
+TASKS = {"t01": t01, "t02": t02, "t03": t03, "t04": t04, "t05": t05, "t06": t06, "t07": t07, "t08": t08, "t09": t09, "t10": t10,
+         "t11": _later("verify_t11", "t11"), "t12": _later("verify_t12", "t12"), "t13": _later("verify_t13", "t13"),
+         "t14": _later("verify_t14", "t14")}
 
 
 def main() -> int:

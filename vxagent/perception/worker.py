@@ -73,6 +73,8 @@ class Worker:
 
 def make_handler(worker: Worker) -> type[BaseHTTPRequestHandler]:
     class Handler(BaseHTTPRequestHandler):
+        disable_nagle_algorithm = True            # headers and body are two writes; neither should wait for the other
+
         def log_message(self, *a: Any) -> None:           # quiet
             pass
 

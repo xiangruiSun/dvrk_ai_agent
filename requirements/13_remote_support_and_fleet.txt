@@ -2,6 +2,27 @@ TASK 13 - REMOTE SUPPORT AND FLEET
 ===================================
 dVRK focus: the support team that keeps several sites running without seeing their research.
 
+As built
+--------
+Status: BUILT and verified. Results: verification/REPORT.md, section T13.
+Code: vxagent/fleet/redact.py, outbox.py, sync.py, store.py, grants.py, tools.py, desk.py;
+      sites/site_b.json; vxagent/profiles.py (SUPPORT); vxagent/web/app.py. Tests: tests/test_fleet.py.
+Differences from the plan below:
+- Redaction is a closed description of what a record may contain (known keys, numbers, and
+  strings from fixed vocabularies), checked at the outbox. A record that does not fit is refused
+  and audited; nothing is cleaned. A kind outside the vocabulary is reported as "other".
+- The fleet store is reached over HTTP with one token per site. It accepts a record only if its
+  number is the next one for that site, so duplicates are ignored and nothing is stored out of
+  order.
+- The fleet desk and the edge nodes run in one process in this demonstration; a granted ticket
+  is read by calling the edge node's own check directly. Between two labs that call would be an
+  HTTP request to the node.
+- Site B has no recordings: the ROSMA recordings are given to site A.
+- The fleet view shows totals and the latest health of each site. The records are stored with
+  their times, but no chart over time is drawn.
+Further limits: as stated below, counts can still say how often and when a lab works.
+(end of as built)
+
 Job
 ---
 Let a support engineer outside the lab see whether each site's agents and robot node are

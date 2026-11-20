@@ -195,12 +195,14 @@ def _trial_view(node: Node, run_id: str) -> dict[str, Any] | None:
             for e in events]
     line += [{"at": s["started"], "what": "model_call", "robot_seq": None, "data": {"name": s["name"], "ms": round(s["latency_ms"], 1)}}
              for s in spans]
+    # The twin's pose, as it was observed on entering each node: what the page shows for a selected moment.
+    poses = [{"at": e["at"], **(json.loads(e["data"] or "{}").get("pose") or {})} for e in events if e["type"] == "observed"]
     line.sort(key=lambda r: r["at"] or 0)
     return {"run_id": run_id, "status": (st.get("task") or {}).get("status"), "outcome": d.get("outcome"), "waiting_for": st.get("waiting_for"),
             "stages_run": [h["node"] for h in st.get("history", [])], "preflight": d.get("preflight"), "rehearsal": d.get("dry_run"),
             "verdict": d.get("verdict"), "operator_verdict": d.get("operator_verdict"), "summary": d.get("summary"),
             "summary_source": d.get("summary_source"), "repairs": d.get("repairs"), "needle": "DECLARED",
-            "timeline": line[-400:]}
+            "timeline": [r for r in line if r["what"] != "observed"][-400:], "poses": poses}
 
 
 @route("/api/trials", ("GET",), SITE)
@@ -220,7 +222,7 @@ def post_trial(c: Console, who: Principal, node: Node, request: Request, body: d
         return _json({"error": f"the policy's demonstrations are not on this node: {exc}"}, 503)
     if res.status == "finished" and res.state["data"].get("outcome") == "preflight_failed" and body.get("open_ticket"):
         failed = res.state["data"]["preflight"]["failed"]
-        tid = tickets.open_ticket(node.db, node.name, "Pre-flight failed: " + "; ".join(f["check"] for f in failed)[:400],
+        tid = tickets.open_ticket(node.db, node.name, tickets.preflight_symptom(failed),
                                   "failed_preflight", who.user_id, {"failed_checks": failed, "run": res.run_id})
         return {**(_trial_view(node, res.run_id) or {}), "ticket_id": tid}
     return _trial_view(node, res.run_id)
@@ -617,6 +619,8 @@ def create_app(console: Console) -> Starlette:
             resp.headers["Content-Security-Policy"] = "default-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
             if request.url.path.startswith("/api/"):
                 resp.headers["Cache-Control"] = "no-store"
+            else:                                   # the page and its script are checked with the server every time
+                resp.headers["Cache-Control"] = "no-cache"
             return resp
 
     app = Starlette(routes=routes, middleware=[Middleware(Headers)])

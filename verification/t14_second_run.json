@@ -1,0 +1,550 @@
+{
+ "task": "t14_edge_deployment",
+ "ran": "2026-11-20 06:23:39",
+ "models": {
+  "large": "qwen3:14b",
+  "small": "qwen3:4b"
+ },
+ "backend": "twin",
+ "not_verified_here": "the ros2 backend (vxagent/robot/ros2_backend.py): no ROS 2, no dVRK software and no arm on this PC",
+ "timing_note": "a Windows desktop is not a real-time system; period and jitter are as measured",
+ "a_control_loop": {
+  "trials": 6,
+  "control_rate_hz": 10.0,
+  "period": {
+   "ticks": 792,
+   "periods": 776,
+   "nominal_ms": 100.0,
+   "mean_ms": 102.09,
+   "p50_ms": 101.31,
+   "p95_ms": 109.13,
+   "max_ms": 119.38,
+   "jitter_std_ms": 2.63,
+   "worst_late_ms": 19.38
+  },
+  "model_calls_inside_an_action_in_all_trials": 0,
+  "model_calls_in_all_trials": 6,
+  "perception_requests": {
+   "n": 16,
+   "p50_ms": 201.1,
+   "p95_ms": 231.8,
+   "max_ms": 250.5
+  },
+  "rows": [
+   {
+    "trial": 1,
+    "needle_declared": "holds",
+    "outcome": "success",
+    "actions": 13,
+    "model_calls": 1,
+    "model_calls_inside_an_action": 0,
+    "model_ms": 876.5,
+    "tokens": 540,
+    "seconds": 18.1
+   },
+   {
+    "trial": 2,
+    "needle_declared": "holds",
+    "outcome": "success",
+    "actions": 13,
+    "model_calls": 1,
+    "model_calls_inside_an_action": 0,
+    "model_ms": 688.5,
+    "tokens": 540,
+    "seconds": 18.0
+   },
+   {
+    "trial": 3,
+    "needle_declared": {
+     "slips_on_lift": true
+    },
+    "outcome": "failed_recovered",
+    "actions": 12,
+    "model_calls": 1,
+    "model_calls_inside_an_action": 0,
+    "model_ms": 1140.6,
+    "tokens": 557,
+    "seconds": 15.1
+   },
+   {
+    "trial": 4,
+    "needle_declared": "holds",
+    "outcome": "success",
+    "actions": 13,
+    "model_calls": 1,
+    "model_calls_inside_an_action": 0,
+    "model_ms": 870.4,
+    "tokens": 539,
+    "seconds": 18.0
+   },
+   {
+    "trial": 5,
+    "needle_declared": {
+     "slips_while_holding": true
+    },
+    "outcome": "failed_recovered",
+    "actions": 12,
+    "model_calls": 1,
+    "model_calls_inside_an_action": 0,
+    "model_ms": 1014.0,
+    "tokens": 559,
+    "seconds": 14.9
+   },
+   {
+    "trial": 6,
+    "needle_declared": "holds",
+    "outcome": "success",
+    "actions": 13,
+    "model_calls": 1,
+    "model_calls_inside_an_action": 0,
+    "model_ms": 873.3,
+    "tokens": 539,
+    "seconds": 18.1
+   }
+  ]
+ },
+ "b_perception_worker": {
+  "process": "a separate Python process reached over HTTP on this machine; it serves recorded poses and computes nothing",
+  "source": "recorded ground truth (SurgicAI Approach demonstrations, AMBF)",
+  "time_limit_s": 0.5,
+  "latency": {
+   "n": 201,
+   "p50_ms": 204.0,
+   "p95_ms": 275.8,
+   "max_ms": 357.2
+  },
+  "a_request_slower_than_the_limit_INJECTED": {
+   "extra_ms": 700,
+   "result": "unavailable: ReadTimeout after 0.69 s (limit 0.5 s)",
+   "gave_up_after_s": 0.69,
+   "pre_flight_then": "preflight_failed",
+   "motions_commanded": 0
+  },
+  "worker_stopped_before_pre_flight": {
+   "health": {
+    "reachable": false,
+    "error": "ConnectTimeout"
+   },
+   "outcome": "preflight_failed",
+   "failed_checks": [
+    "the perception source answered within its time limit"
+   ],
+   "repair": [
+    "rig_check"
+   ],
+   "motions_commanded": 0
+  },
+  "worker_stopped_during_a_stage": {
+   "place": {
+    "worker_alive_after": false,
+    "outcome": "success",
+    "stages_run": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "retention",
+     "place",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "grasp_stopped_for": null,
+    "needle_pose_in_place": "carried from the last reliable needle-to-gripper relation (perception unavailable)",
+    "machine_verdict": "success"
+   },
+   "grasp": {
+    "worker_alive_after": false,
+    "outcome": "failed_recovered",
+    "stages_run": [
+     "preflight",
+     "rehearse",
+     "operator_go",
+     "stage",
+     "reach",
+     "grasp",
+     "recover",
+     "verdict",
+     "confirm",
+     "record"
+    ],
+    "grasp_stopped_for": "perception_unavailable",
+    "needle_pose_in_place": null,
+    "machine_verdict": "failed_recovered"
+   }
+  }
+ },
+ "c_degraded_modes": {
+  "model_server_down": {
+   "model_health": {
+    "reachable": false,
+    "models_installed": 0,
+    "model": "qwen3:14b",
+    "error": "ConnectTimeout"
+   },
+   "trial_outcome": "success",
+   "trial_summary_written_by": "template (model unavailable)",
+   "runbook_rig_check": "completed",
+   "copilot_answer": "The copilot is unavailable: the language model could not be reached. The robot view, the runbooks and the trial pipeline do not need it and still work from the console.",
+   "copilot_says_it_is_unavailable": true
+  },
+  "perception_worker_down": {
+   "see": "b_perception_worker.worker_stopped_before_pre_flight",
+   "pre_flight_fails_closed": true
+  },
+  "retrieval_missing": {
+   "robot_question": {
+    "question": "Is the arm enabled and homed?",
+    "asked_by": "op.lee",
+    "status": "completed",
+    "stop_reason": "final_answer",
+    "tools": [
+     {
+      "tool": "get_robot_state",
+      "ok": true,
+      "error_kind": null
+     }
+    ],
+    "tools_called": [
+     "get_robot_state"
+    ],
+    "approvals": [],
+    "answer": "The arm is enabled and homed.",
+    "model_calls": 2,
+    "tokens": 5248,
+    "seconds": 1.4,
+    "guard_repairs": 0,
+    "run_id": "run_d5647f7bc449"
+   },
+   "documentation_question": {
+    "question": "How are the potentiometers of a PSM calibrated? Look it up in the documentation.",
+    "asked_by": "op.lee",
+    "status": "completed",
+    "stop_reason": "final_answer",
+    "tools": [
+     {
+      "tool": "search_docs",
+      "ok": false,
+      "error_kind": "knowledge_unavailable"
+     }
+    ],
+    "tools_called": [
+     "search_docs"
+    ],
+    "approvals": [],
+    "answer": "The documentation could not be searched at this time. Please try again later or contact support for further assistance.",
+    "model_calls": 2,
+    "tokens": 5211,
+    "seconds": 9.4,
+    "guard_repairs": 0,
+    "run_id": "run_38318f094e94"
+   },
+   "robot_question_answered_from_a_look": true,
+   "search_failed_as_a_tool_error": true,
+   "answer_says_the_search_is_unavailable": true
+  },
+  "fleet_link_down": {
+   "trial_outcome": "success",
+   "sync": {
+    "delivered": 0,
+    "duplicates_ignored_by_the_store": 0,
+    "link": "down",
+    "why": "ConnectTimeout",
+    "backlog": 16
+   },
+   "outbox_before": 14,
+   "outbox_after": 16,
+   "outbox_grew": true
+  }
+ },
+ "d_model_routing": {
+  "label_ticket": {
+   "data": "the 20 labelled dVRK issue threads of task 04 (title and opening post)",
+   "classes": 7,
+   "large": {
+    "cases": 20,
+    "correct": 15,
+    "no_answer": 0,
+    "median_ms": 354.9,
+    "median_tokens": 363.0,
+    "wrong": [
+     {
+      "text": "Compile error on branch feature-ecm\nIt appears the auto-generated mtsTeleoperati",
+      "expected": "version_mismatch",
+      "chose": "software_defect"
+     },
+     {
+      "text": "patient_cart.launch file not found when compiling dVRK 2.3.0 as per the document",
+      "expected": "documentation",
+      "chose": "version_mismatch"
+     },
+     {
+      "text": "ECM Teleoperation Issue After Upgrading to dVRK 2.4.0\nHi,\n\nAfter upgrading the d",
+      "expected": "configuration",
+      "chose": "software_defect"
+     },
+     {
+      "text": "dvrk_python commands block and do not move the robot\nI think after a recent upda",
+      "expected": "environment",
+      "chose": "software_defect"
+     },
+     {
+      "text": "Setting up gscam in ROS\nI am using a `Blackmagic DeckLink Duo 2` video card and ",
+      "expected": "environment",
+      "chose": "version_mismatch"
+     }
+    ]
+   },
+   "small": {
+    "cases": 20,
+    "correct": 10,
+    "no_answer": 0,
+    "median_ms": 296.6,
+    "median_tokens": 360.5,
+    "wrong": [
+     {
+      "text": "Compile error on branch feature-ecm\nIt appears the auto-generated mtsTeleoperati",
+      "expected": "version_mismatch",
+      "chose": "software_defect"
+     },
+     {
+      "text": "Help!!DVRK control Si system\nHello\r\n\r\nI am new to DVRK community.  My uni has bo",
+      "expected": "unsupported",
+      "chose": "software_defect"
+     },
+     {
+      "text": "ROS2: XLM Config/Version must be at least 5\nWe already have dVRK running with RO",
+      "expected": "version_mismatch",
+      "chose": "software_defect"
+     },
+     {
+      "text": "Calibration and example with Ethernet connection\nI am using the Si arm and just ",
+      "expected": "unsupported",
+      "chose": "software_defect"
+     },
+     {
+      "text": "Error: failed to turn on brake amplifiers\nI am now trying to run and set up the ",
+      "expected": "hardware",
+      "chose": "software_defect"
+     },
+     {
+      "text": "patient_cart.launch file not found when compiling dVRK 2.3.0 as per the document",
+      "expected": "documentation",
+      "chose": "software_defect"
+     },
+     {
+      "text": "ECM Teleoperation Issue After Upgrading to dVRK 2.4.0\nHi,\n\nAfter upgrading the d",
+      "expected": "configuration",
+      "chose": "software_defect"
+     },
+     {
+      "text": "dvrk_python commands block and do not move the robot\nI think after a recent upda",
+      "expected": "environment",
+      "chose": "software_defect"
+     },
+     {
+      "text": "Setting up gscam in ROS\nI am using a `Blackmagic DeckLink Duo 2` video card and ",
+      "expected": "environment",
+      "chose": "software_defect"
+     },
+     {
+      "text": "libDeckLinkAPI.so: cannot open shared object file: No such file or directory [FA",
+      "expected": "environment",
+      "chose": "software_defect"
+     }
+    ]
+   },
+   "route_in_code": "large"
+  },
+  "choose_runbook": {
+   "data": "evals/t14_runbook_requests.json, over the index of all runbooks",
+   "classes": 7,
+   "large": {
+    "cases": 7,
+    "correct": 7,
+    "no_answer": 0,
+    "median_ms": 326.5,
+    "median_tokens": 298.0,
+    "wrong": []
+   },
+   "small": {
+    "cases": 7,
+    "correct": 7,
+    "no_answer": 0,
+    "median_ms": 275.2,
+    "median_tokens": 296.0,
+    "wrong": []
+   },
+   "route_in_code": "small"
+  },
+  "route_request": {
+   "data": "evals/t14_route_requests.json, hand-labelled",
+   "classes": 4,
+   "large": {
+    "cases": 18,
+    "correct": 15,
+    "no_answer": 0,
+    "median_ms": 279.2,
+    "median_tokens": 150.5,
+    "wrong": [
+     {
+      "text": "The grasp misses by a constant few millimetres to one side. Find out why.",
+      "expected": "service",
+      "chose": "operator"
+     },
+     {
+      "text": "Give the support engineer read access to ticket 14 until tomorrow.",
+      "expected": "safety",
+      "chose": "support"
+     },
+     {
+      "text": "Across the labs, where do most pre-flight failures come from?",
+      "expected": "support",
+      "chose": "service"
+     }
+    ]
+   },
+   "small": {
+    "cases": 18,
+    "correct": 14,
+    "no_answer": 0,
+    "median_ms": 294.2,
+    "median_tokens": 148.5,
+    "wrong": [
+     {
+      "text": "Run the rig check before I begin.",
+      "expected": "operator",
+      "chose": "service"
+     },
+     {
+      "text": "The grasp misses by a constant few millimetres to one side. Find out why.",
+      "expected": "service",
+      "chose": "operator"
+     },
+     {
+      "text": "Which trial verdicts did operators override this week, and with what reasons?",
+      "expected": "safety",
+      "chose": "operator"
+     },
+     {
+      "text": "Give the support engineer read access to ticket 14 until tomorrow.",
+      "expected": "safety",
+      "chose": "support"
+     }
+    ]
+   },
+   "route_in_code": "large"
+  }
+ },
+ "e_egress_guard": {
+  "profile": "onprem",
+  "allowlist": [
+   "perception.lab",
+   "fleet.lab"
+  ],
+  "cases": 7,
+  "match": 7,
+  "rows": [
+   {
+    "url": "http://127.0.0.1:11434/api/chat",
+    "expected": "allowed",
+    "got": "allowed",
+    "match": true
+   },
+   {
+    "url": "http://localhost:8300/api/robot",
+    "expected": "allowed",
+    "got": "allowed",
+    "match": true
+   },
+   {
+    "url": "http://perception.lab:8401/estimate",
+    "expected": "allowed",
+    "got": "allowed",
+    "match": true
+   },
+   {
+    "url": "https://fleet.lab/v1/ingest",
+    "expected": "allowed",
+    "got": "allowed",
+    "match": true
+   },
+   {
+    "url": "https://api.example.com/v1/chat",
+    "expected": "blocked",
+    "got": "blocked",
+    "match": true
+   },
+   {
+    "url": "http://perception.lab.example.org/estimate",
+    "expected": "blocked",
+    "got": "blocked",
+    "match": true
+   },
+   {
+    "url": "http://192.168.1.20:11434/api/chat",
+    "expected": "blocked",
+    "got": "blocked",
+    "match": true
+   }
+  ],
+  "model_client_pointed_at_an_external_host": "failed before sending: egress_blocked",
+  "perception_client_at_an_external_host": "unavailable, nothing sent",
+  "fleet_link_at_an_external_host": "blocked by the egress guard: on-prem profile: outbound call to 'fleet.example.co",
+  "requests_that_reached_the_network_layer": 0
+ },
+ "f_gateway": {
+  "through_the_gateway": {
+   "backend_name": "twin@gateway",
+   "motion": "succeeded",
+   "final_error_mm": 0.0,
+   "arm_behind_the_gateway_moved": true
+  },
+  "command_with_another_token": {
+   "status": 401,
+   "arm_still_enabled": true
+  },
+  "from_a_host_not_on_the_allowlists": {
+   "peer_address": "127.0.0.1",
+   "allowlist": [
+    "10.0.0.5"
+   ],
+   "state_request": 403,
+   "command": 403,
+   "arm_enabled_by_it": false
+  },
+  "refusals_recorded_by_the_gateways": [
+   "not the agent process's token",
+   "host not on the state allowlist",
+   "host not on the command allowlist"
+  ]
+ },
+ "g_sizing": {
+  "per_chat_run": {
+   "model_calls": 2,
+   "tokens": 5281,
+   "seconds": 1.2
+  },
+  "per_trial_that_ran_to_the_end": {
+   "trials": 4,
+   "median_seconds": 18.05,
+   "median_model_ms": 871.8499999999999,
+   "median_tokens": 539.5
+  },
+  "perception_request_ms": {
+   "n": 201,
+   "p50_ms": 204.0,
+   "p95_ms": 275.8,
+   "max_ms": 357.2
+  },
+  "control_period_ms": {
+   "nominal_ms": 100.0,
+   "mean_ms": 102.09,
+   "p95_ms": 109.13,
+   "max_ms": 119.38,
+   "jitter_std_ms": 2.63
+  }
+ }
+}

@@ -2,6 +2,36 @@ TASK 14 - EDGE DEPLOYMENT BESIDE THE ROBOT
 ===========================================
 dVRK focus: the controller network, the control loop, and compute that is split across machines.
 
+As built
+--------
+Status: BUILT and verified on this PC. Results: verification/REPORT.md, section T14.
+Code: vxagent/robot/gateway.py, ros2_backend.py, timing.py; vxagent/perception/worker.py, client.py;
+      vxagent/llm/router.py; vxagent/node.py; vxagent/config.py. Tests: tests/test_edge.py.
+Differences from the plan below:
+- R1: move_cp is not a backend command. A move is executed by the agent side as servo_cp steps,
+  each checked by the safety filter, so no interpolation happens behind the interface.
+- R3: the ros2 backend is written and NOT verified: there is no ROS 2, no dVRK software and no
+  arm on the development PC. Every topic name in it has to be checked on a lab machine first.
+- R4: the gateway checks the address a connection comes from against two allowlists and, for
+  commands, the agent process's token. The trials of the verification command the twin in the
+  node's own process; the gateway is exercised separately, with a motion through it.
+- R6: the perception worker serves the goal poses recorded with the SurgicAI demonstrations
+  (ground truth of the AMBF scenes). It serves no depth and computes nothing.
+- R8: a step is routed to the small model only if it was at least as accurate there as the
+  large one on the measurement. Two of the three classification steps therefore stay on the
+  large model.
+- Two earlier runs are kept (verification/t14_first_run.json, t14_second_run.json): a perception
+  request took about 0.2 s for 0.04 s of declared work. The first explanation, the worker's two
+  writes per reply, was wrong and changed nothing. The cause was that every request created a
+  new HTTP client. The process now keeps one client open (vxagent/net.py); this also applies to
+  model calls, retrieval calls and gateway commands, whose earlier timings include that cost.
+- Keeping connections open exposed a fault in the retrieval service (vxrag/service.py): after
+  an error sent before the request body was read, the next request on the same connection was
+  answered with 501. The service now reads the unread body first and ends the connection.
+Further limits: as stated below. The start-up rule is covered by task 03's verification and by
+tests/test_edge.py, not measured again here.
+(end of as built)
+
 Job
 ---
 Make the agent stack run on a machine next to the robot controller: commands and measurements

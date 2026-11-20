@@ -488,7 +488,7 @@ def test_agent_search_tools_and_the_citation_guard(service, env):
     denied = execute_tool(reg, ToolCall("c3", "search_docs", {"query": "pots"}), ctx)
     assert not denied.ok and denied.error_kind == "unauthorized" and denied.attempts == 1
 
-    server.slow(1, 1.0)                                              # one late response, then normal again
+    server.slow(1, 0.6)                                              # one late response, then normal again
     ctx.extras["knowledge"] = KnowledgeClient(server.url, tokens["alpha"], timeout_s=0.3)
     late = execute_tool(reg, ToolCall("c4", "search_docs", {"query": "calibrate pots"}), ctx)
     assert late.ok and late.attempts == 2
@@ -497,3 +497,15 @@ def test_agent_search_tools_and_the_citation_guard(service, env):
     down = execute_tool(reg, ToolCall("c5", "search_docs", {"query": "calibrate pots now"}), ctx)
     assert not down.ok and down.error_kind == "knowledge_unavailable" and down.attempts == 3
     server.httpd = type("Closed", (), {"shutdown": lambda self: None, "server_close": lambda self: None})()
+
+
+def test_a_kept_connection_ends_after_an_error_sent_before_the_body_was_read(service):
+    """Found when the agents began to keep one HTTP client open: after a 401 the unread request
+    body was taken for the next request on the same connection, which was answered with 501."""
+    import httpx
+
+    server, tokens, _ = service
+    with httpx.Client(timeout=5) as c:
+        bad = c.post(server.url + "/v1/search", json={"query": "pots", "k": 3}, headers={"Authorization": "Bearer vx_wrong"})
+        good = c.post(server.url + "/v1/search", json={"query": "pots", "k": 3}, headers={"Authorization": f"Bearer {tokens['alpha']}"})
+    assert bad.status_code == 401 and bad.headers.get("connection") == "close" and good.status_code == 200

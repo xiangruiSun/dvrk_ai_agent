@@ -102,10 +102,32 @@ def make_handler(holder: EngineHolder, keys: KeyRing, fault: dict[str, float] | 
                 self.send_response(status)
                 self.send_header("Content-Type", "application/json; charset=utf-8")
                 self.send_header("Content-Length", str(len(data)))
+                if status >= 400:
+                    # An error may be decided before the request body was read (a missing key, a body
+                    # that is too large). The body is read and dropped first: left unread, it would be
+                    # taken for the next request on a kept connection, and closing a connection with
+                    # unread data can destroy the error reply on its way. Then the connection ends.
+                    self._drain()
+                    self.send_header("Connection", "close")
+                    self.close_connection = True
                 self.end_headers()
                 self.wfile.write(data)
             except ConnectionError:              # the caller gave up waiting; there is nobody to tell
                 self.close_connection = True
+
+        def _drain(self) -> None:
+            if getattr(self, "_body_read", True):
+                return
+            self._body_read = True
+            try:
+                left = min(int(self.headers.get("Content-Length") or 0), 4 * MAX_BODY)
+                while left > 0:
+                    chunk = self.rfile.read(min(left, 65536))
+                    if not chunk:
+                        break
+                    left -= len(chunk)
+            except (ValueError, OSError):
+                pass
 
         def _principal(self):
             header = self.headers.get("Authorization", "")
@@ -124,6 +146,7 @@ def make_handler(holder: EngineHolder, keys: KeyRing, fault: dict[str, float] | 
             length = int(self.headers.get("Content-Length") or 0)
             if length > MAX_BODY:
                 raise _Problem(413, "too_large", f"a request body may be at most {MAX_BODY} bytes")
+            self._body_read = True
             try:
                 return model.model_validate_json(self.rfile.read(length) or b"{}")
             except ValidationError as exc:
@@ -132,6 +155,7 @@ def make_handler(holder: EngineHolder, keys: KeyRing, fault: dict[str, float] | 
                                f"{'.'.join(str(x) for x in first['loc']) or 'body'}: {first['msg']}") from exc
 
         def _handle(self, method: str) -> None:
+            self._body_read = method != "POST"         # a POST has a body that someone has to read
             if fault and fault["requests"] > 0:                # used by tests and fault injection only
                 fault["requests"] -= 1
                 time.sleep(fault["delay_s"])
@@ -191,7 +215,20 @@ class Server:
 
     def __init__(self, holder: EngineHolder, keys: KeyRing, host: str = "127.0.0.1", port: int = 0):
         self.fault = {"requests": 0, "delay_s": 0.0}
-        self.httpd = ThreadingHTTPServer((host, port), make_handler(holder, keys, self.fault))
+        base = make_handler(holder, keys, self.fault)
+        open_connections: set[Any] = set()
+
+        class Tracked(base):                          # so that stop() can end connections a caller keeps open
+            def setup(self) -> None:
+                super().setup()
+                open_connections.add(self.connection)
+
+            def finish(self) -> None:
+                open_connections.discard(self.connection)
+                super().finish()
+
+        self._connections = open_connections
+        self.httpd = ThreadingHTTPServer((host, port), Tracked)
         self.httpd.daemon_threads = True
         self.host, self.port = self.httpd.server_address[0], self.httpd.server_address[1]
         self.url = f"http://{self.host}:{self.port}"
@@ -205,5 +242,13 @@ class Server:
         self.fault.update(requests=requests, delay_s=delay_s)
 
     def stop(self) -> None:
+        """Stop listening and end the connections that are still open. Without the second part a
+        caller that keeps its connection would go on being served by a "stopped" service."""
+        import socket
         self.httpd.shutdown()
         self.httpd.server_close()
+        for conn in list(getattr(self, "_connections", ())):
+            try:
+                conn.shutdown(socket.SHUT_RDWR)
+            except OSError:
+                pass

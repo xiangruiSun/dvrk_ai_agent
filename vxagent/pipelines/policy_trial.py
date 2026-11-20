@@ -99,7 +99,7 @@ def preflight(rt: Runner) -> Step:
                          perception=x.get("perception"), tool_dir=x.get("tool_dir"))
     for r in rows:
         trial._check(rt, "preflight", r["check"], r["ok"], r["detail"])
-    failed = [{"check": r["check"], "detail": r["detail"], "repair": r["repair"]} for r in rows if not r["ok"]]
+    failed = [{"check": r["check"], "problem": r["problem"], "detail": r["detail"], "repair": r["repair"]} for r in rows if not r["ok"]]
     if failed:
         return Step("failed", {"data": {"preflight": {"checks": len(rows), "failed": failed}, "outcome": "preflight_failed"}})
     return Step("passed", {"data": {"preflight": {"checks": len(rows), "failed": []}}})

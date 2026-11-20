@@ -3,7 +3,6 @@ calibration procedure, change proposals. Nothing here applies a change. A propos
 for the safety lead; a calibration fit is a draft."""
 from __future__ import annotations
 
-import math
 from typing import Any, Literal
 
 import numpy as np
@@ -77,8 +76,12 @@ def read_config(a: ReadConfigArgs, ctx: ToolContext) -> dict[str, Any]:
     if value is cfg.MISSING:
         return {"target": a.target, "version": version, "path": a.path, "set": False}
     text = cfg.canonical(value)
-    return {"target": a.target, "version": version, "path": a.path, "set": True,
-            "value": value if len(text) <= 1500 else {"shortened": text[:1500] + " ..."}}
+    out = {"target": a.target, "version": version, "path": a.path, "set": True,
+           "value": value if len(text) <= 1500 else {"shortened": text[:1500] + " ..."}}
+    leaf = a.path.rsplit("/", 1)[-1]
+    if isinstance(value, (int, float)) and not isinstance(value, bool) and leaf != "value":
+        out[leaf] = value                     # the key carries the unit (near_step_mm), so the number can be checked with it
+    return out
 
 
 class TargetArgs(Args):
@@ -183,8 +186,8 @@ def compare_calibrations(a: NoArgs, ctx: ToolContext) -> dict[str, Any]:
     h = draft["held_out_residual"]
     status = proposals.calibration(ctx.db, site)
     return {"record_in_use": {"calibration_id": old["id"], "valid": bool(status["valid"]), "validity_note": status["why"],
-                              "mean_mm_on_the_new_held_out_points": (h.get("record_in_use") or {}).get("mean_mm")},
-            "draft": {"calibration_id": draft["id"], "status": draft["status"], "mean_mm_on_the_new_held_out_points": h["rigid"]["mean_mm"],
+                              "mean_on_the_new_held_out_points_mm": (h.get("record_in_use") or {}).get("mean_mm")},
+            "draft": {"calibration_id": draft["id"], "status": draft["status"], "mean_on_the_new_held_out_points_mm": h["rigid"]["mean_mm"],
                       "with_affine_mean_mm": h["rigid_plus_affine"]["mean_mm"]},
             "difference": {"shift_in_the_workspace_mm": d["shift_in_the_workspace_mm"], "rotation_deg": d["rotation_deg"]},
             "held_out_points": len(draft["touched_m"])}
@@ -307,5 +310,3 @@ def register_service_work(reg: ToolRegistry) -> ToolRegistry:
                       side_effect=True, timeout_s=5))
     return reg
 
-
-__all__ = ["register_service_work", "math"]

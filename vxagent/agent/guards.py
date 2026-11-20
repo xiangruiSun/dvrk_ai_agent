@@ -87,6 +87,15 @@ def collect(state: Any) -> tuple[dict[str, list[float]], list[float], dict[str, 
         if isinstance(payload, dict) and "enabled" in payload and "homed" in payload:
             last_state = payload
         ids.update(_QUOTED_ID.findall(m["content"]))
+    # A value with its unit that the person wrote in their own request may be repeated back to them.
+    # Only the request itself counts: later user-role messages are the guard's own corrections.
+    task = getattr(state, "task", "") or ""
+    for unit, pattern in _UNITS:
+        for m in pattern.finditer(task):
+            try:
+                by_unit[unit].append(float(m.group(1).replace(",", ".")))
+            except ValueError:
+                pass
     for text in getattr(state, "injected_states", []):       # a state the system showed the model is a look too
         try:
             payload = json.loads(text)

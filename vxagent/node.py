@@ -19,7 +19,6 @@ import numpy as np
 
 from . import access
 from .config import get_settings
-from .memory import site as site_memory
 from .robot.needle import DeclaredNeedle
 from .robot.site import build_site
 from .runtime.graph import Runner, apply_restart_rule
@@ -131,13 +130,14 @@ class Node:
         # Start-up rule: after a restart the arm is assumed disabled, and runs that were moving
         # must be looked at by a person before they go on.
         self.needs_reverification = apply_restart_rule(db)
+        self.adopt_stored_site()
         if demo_state:
             self.declare_demo_state()
 
     # ------------------------------------------------------------------ construction
 
     @classmethod
-    def open(cls, site_name: str = "site_a", db: Database | None = None, **kw: Any) -> "Node":
+    def open(cls, site_name: str = "site_a", db: Database | None = None, runtime: Path | None = None, **kw: Any) -> "Node":
         from .robot.kinematics import load_chain
         s = get_settings()
         path = s.sites_dir / f"{site_name}.json"
@@ -145,7 +145,7 @@ class Node:
         spec["_file"] = path.name
         chain = load_chain(s.dvrk_dir / spec["kinematic_file"], s.dvrk_dir / spec["instrument_file"])
         site = build_site(spec, chain)
-        runtime = s.runtime_dir / site.name
+        runtime = (runtime or s.runtime_dir) / site.name
         runtime.mkdir(parents=True, exist_ok=True)
         if "rosma_dir" not in kw:
             # Recordings belong to a site. This demonstration gives the ROSMA recordings to site A.
@@ -174,6 +174,15 @@ class Node:
         seen = self.needle.observe()
         return {"visible": bool(seen.get("visible", True)), "latency_s": 0.04, "source": "declared"}
 
+    def adopt_stored_site(self) -> bool:
+        """At start-up: if changes were applied to the site file before this process started, the
+        site in force is the stored version, not the file as published. (Found in the browser run:
+        after a restart an applied limit was shown, and enforced, as it was before the change.)"""
+        if self.store is None or not self.store.versions(self.site_target):
+            return False
+        self.reload_site()
+        return True
+
     def reload_site(self) -> None:
         """Take the site description from the configuration store after a change was applied."""
         if self.store is None:
@@ -185,6 +194,8 @@ class Node:
             new = build_site(doc, self.site.chain)
             self.site, self.spec = new, doc
             self.needle.site = new
+        if self.fleet is not None:                          # the fleet sees that this site's configuration moved on
+            self.fleet.meta["config_version"] = str(self.store.current(self.site_target)[2])
         self.bus.publish("site", {"profile_version": str(new.profile.version)})
 
     @property
@@ -346,5 +357,3 @@ def robot_view(node: Node) -> dict[str, Any]:
                 "needle": {**node.needle.observe(), "source": "DECLARED"}})
     return out
 
-
-__all__ = ["Bus", "Node", "RunBox", "build_registry", "dumps", "robot_view", "site_memory"]

@@ -1,0 +1,12 @@
+{
+  "about": "Service requests with the runbook each calls for, for the model-routing measurement of task 14. The first five are the distinct requests of task 05 without their verdict instruction; the last two were written for the service runbooks of task 12. One labeller.",
+  "requests": [
+    ["The controller has just been switched on. Bring the arm up.", "bring_up"],
+    ["Check the rig before a trial.", "rig_check"],
+    ["Is the calibration still valid?", "calibration_validity"],
+    ["The open jaw is at the grasp pose over the needle. Verify that the needle is held.", "verify_grasp_retention"],
+    ["Put the arm back where a trial begins.", "return_to_start"],
+    ["The camera arm was moved. Collect new calibration samples and fit a new calibration.", "collect_calibration_samples"],
+    ["The needle driver was taken off and another one put on. Record that.", "instrument_change"]
+  ]
+}

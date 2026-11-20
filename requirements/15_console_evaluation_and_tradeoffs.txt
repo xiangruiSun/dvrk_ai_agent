@@ -3,6 +3,41 @@ TASK 15 - OPERATOR CONSOLE, EVALUATION GATE AND PRODUCTION TRADE-OFFS
 Covers: concept C21 (reliability, latency, cost, security; workflow versus agent versus
 multi-agent), the console with four kinds of login, and the gate a change must pass.
 
+As built
+--------
+Status: BUILT and verified. Results: verification/REPORT.md, section T15; verification/gate_*.json.
+Code: vxagent/web/app.py, serve.py, public.py, static/; vxagent/evals/cases.py, replay.py, assertions.py,
+      compare.py; scripts/record_cases.py, scripts/gate.py; evals/cases/, evals/configs/, evals/gate.json.
+Tests: tests/test_gate.py, tests/test_operator_access.py (routes, sessions, event stream).
+Differences from the plan below:
+- R1: Starlette, not FastAPI (see task 11).
+- R4: the time axis shows the trial's events, approvals and model calls; for a selected moment
+  it shows the twin's pose as it was last observed on entering a stage, not a pose per control tick.
+- R10: the golden cases are twelve runs of the operator's copilot recorded for this purpose by
+  scripts/record_cases.py, not runs taken from the other tasks' verification.
+- R11: a replay's prompt is the candidate's prompt followed by what the node added when the case
+  was recorded (runbook index, site, memory), so only the candidate's own edits differ.
+- R12: "a look before a motion" follows the executor's rule: a motion must be based on the state
+  number the latest tool result reported, whichever tool that was. The first recording, kept in
+  verification/t15_first_recording.json, used a narrower rule and also showed the model server
+  returning an empty reply; see the report.
+- R15: the cases marked live are run on the twin for every candidate.
+- Part D: public mode is built and tested (vxagent/web/public.py, `serve --public`). No tunnel
+  was opened for this verification.
+- Browser run on 2026-11-20 on the local console with the four demonstration logins. Operator:
+  robot view, a trial that failed pre-flight and opened a ticket, the copilot bringing the arm up
+  through an approval card, a trial with go and confirmation and its time axis. Service engineer:
+  ticket queue, calibration page, a change proposal filed. Safety lead: the proposal with its
+  effect on the twin, approved and applied; a support grant given. Remote support: fleet view,
+  version drift, the granted ticket read, every site page refused. The browser pane was hidden
+  for the operator's last steps, so those were driven through the page's own requests, not by
+  clicks. The run found two faults, both fixed and pinned in tests/test_found_by_verification.py:
+  the page read the tip position from the wrong field, and after a restart a node ignored a
+  change that had been applied to its site file.
+Further limits: the gate was run on one model server with temperature 0; a baseline replayed
+twice is not guaranteed to be identical on other hardware.
+(end of as built)
+
 Part A - the console
 --------------------
 R1  One FastAPI process serves the API and a single-page app (plain JavaScript, no build step):

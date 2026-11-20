@@ -19,3 +19,7 @@ verification/run.log
 
 # Console logs of verification runs (the JSON evidence and REPORT.md are committed)
 verification/*.log
+
+# A golden case whose recording holds passages of the dVRK documentation, which is not
+# redistributed here. scripts/record_cases.py records it again on a machine that has the corpus.
+evals/cases/10_documentation.json
