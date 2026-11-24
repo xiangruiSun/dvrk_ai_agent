@@ -1,0 +1,137 @@
+E07 - THE MODEL STAGES, THE REASONS, AND "NOTHING FITS"
+=======================================================
+Owner: the intern, with Engineers B and D. Month 4 (weeks 13-14). Depends on: E02-E06, S3.
+
+As built
+--------
+Status: BUILT and run on the fixed dev subset. Results: REPORT.md, "Model stages" and "Reasons and
+'nothing fits'".
+Code: vxfind/eval/answers.py; scripts/vxfind_eval.py (llm_stages, answers).
+Differences from the plan below:
+- R4 earned its place. Measured directly, the first reading prompt ("do not guess a robot") left the
+  robot empty for almost every need that names one and missed most stated numbers; with it, hard
+  filters helped set A a little and wrecked set B. The prompt was rewritten field by field, a second
+  reader (the large model) was added as a setting, and the robot became a boost instead of a filter
+  (a name matched as text cannot bridge "Universal Robots" and "ur5e"). The first run is kept
+  (verification/vxfind_llm_stages_first_run.json, vxfind_answers_first_run.json) and quoted in the report.
+- The largest gain of the whole evaluation is here: stated numbers, which every retriever ignores
+  (set A), are honoured once the need is read and the numbers become filters. The configuration is
+  put to the release gate on the test queries as a candidate (E12); it is not yet the serving one,
+  because it adds a model call to every question and that is the lead's decision.
+- Reranking and selection are judged, on set C, by the same model family that performs them; the
+  report says so and leans on sets A and B for those comparisons.
+- The select prompt was not revised after measurement: its weaknesses are reported as found.
+- The check of reasons by code had a false alarm (digits inside a table's own name); fixed and pinned.
+Further limits: one run per configuration; latencies are from one machine with a local model.
+(end of as built)
+
+Job
+---
+Three stages of the read path call a language model: understanding the need, reranking, and
+selecting what to show with a reason. Each costs seconds. Measure what each buys, on which kind
+of need, and measure two things no ranking metric sees: whether the reasons shown to the person
+are true, and whether the system says "nothing fits" when nothing fits.
+
+Part 1 - what each model stage buys
+-----------------------------------
+R1  Configurations: the serving configuration, plus one stage at a time and the useful
+    combinations (harness.LLM_CONFIGS): understand soft; understand hard; rerank with the small
+    model; rerank with the large model; select; rerank + select; understand hard + select.
+R2  Queries: all dev queries of A, C and D and a fixed random half of B (model calls are slow;
+    the subset is fixed by seed and stated). Top-up judging for tables the new orders bring
+    into the top ten (E04 R7).
+R3  Per configuration: headline metrics per set with intervals; paired comparison against the
+    serving configuration; latency per stage (p50, p95). Report quality and seconds in the same
+    table: the question is always "is it worth the wait".
+R4  Understanding, measured directly. For attribute needs the stated constraints are known
+    (the spec). For each constraint type, the share of needs where the form filled by the
+    model has the right value (episodes, frame rate, cameras, format) and the share where it
+    names a robot. A filter built from a wrong reading removes the right tables, so this error
+    bounds what "hard" can do.
+R5  Expected and to be confirmed or refuted by the numbers: hard filters help set A (the
+    constraints become exact) and can hurt set C (a misread constraint removes good tables);
+    reranking helps where the right table is in the top 20 but not on top (see E06 R9 for the
+    ceiling); selection lowers the count shown and should raise precision.
+
+Part 2 - are the reasons true (groundedness)
+--------------------------------------------
+R6  For every (table, reason) the select stage produced on the query subset:
+      by code    every number in the reason must occur in the table's text or metadata, or in
+                 the need itself ("you asked for 200" is not a claim about the table). A number
+                 found nowhere is an unsupported claim (answers.unsupported_numbers).
+      by model   a model is asked whether the table's text states or directly implies
+                 everything the sentence claims, and to name the unsupported claim if not
+                 (answers.supported).
+R7  The model check is run with two models: the one that wrote the reasons (a self-check) and a
+    different one. The report shows both and says which is which. A self-check alone is not
+    evidence.
+R8  Report: reasons checked; share with an unsupported number; share the model calls
+    unsupported; empty reasons; at least eight examples with the claim that is not supported.
+R9  Typical failure to look for, seen in the first run on this catalog: the reason states the
+    robot of the NEED as a fact about a table whose text does not name a robot ("a Franka
+    robot opening a drawer" for a table that only says "drawer").
+
+Part 3 - honesty about "nothing fits" (abstention)
+--------------------------------------------------
+R10 Run the select configurations on set D (after removing the D needs that turned out to have
+    an answer, E02 R5) and on the answerable needs. Report per set: how often nothing was
+    shown, how many tables were shown on average, and how often the system said what is
+    missing (answers.abstention).
+R11 Two kinds of no-answer need are reported separately: "absent" (the catalog has no such
+    data) and "size" (it has the robot and the task, not the size). The second is the hard one.
+R12 Both errors count: showing tables for a need with no answer (false answer), and showing
+    nothing for a need that has one (false abstention). A system can make either number
+    perfect by always or never abstaining; they are always reported together.
+R13 Typical failure, seen in the first run: for "MRI brain scans with tumour segmentation
+    masks" the selection showed six tables whose names contain "mask" and at the same time
+    said that MRI data is missing. The note was right and the list was wrong.
+
+Implementation instructions
+---------------------------
+1. Reuse the stored-run machinery with a tag so model-stage runs are cached separately. A full
+   pass over the subset takes tens of minutes; a re-run after a crash must not repeat it.
+2. Derive the model-stage configurations from the SERVING configuration, not from the plain
+   baseline, so the comparison is "what does the stage add to what we ship".
+3. For R4, compare numbers as numbers (30 equals 30.0; "v3.0" equals "3.0").
+4. For R6, extract numbers with one regular expression that handles "1,200" and "36k"; build
+   the set of known numbers from the judge's text, the numeric metadata fields, camera names,
+   the table id, and the need.
+5. Read thirty reasons yourself before trusting either automatic check. Write down what kinds
+   of false statement occur; if a kind is invisible to both checks, say so in the report.
+6. Abstention is counted from the stored run: zero ids = showed nothing; a note starting
+   "missing:" = said what is missing.
+
+Deliverables
+------------
+vxfind/eval/answers.py; the llm_stages and answers stages of scripts/vxfind_eval.py;
+verification/vxfind_llm_stages.json, verification/vxfind_answers.json; report sections "Model
+stages" and "Reasons and abstention".
+
+Acceptance
+----------
+- Each model stage has quality and latency in one table, against the serving configuration.
+- Groundedness is reported by code, by self-check and by the other model, with examples.
+- Abstention is reported for answerable and unanswerable needs together, and for the two kinds
+  of no-answer need separately.
+- Every weakness found is written as a sentence in the report, next to its number.
+
+Pitfalls
+--------
+- "The reranker improved nDCG" measured with judgments from the same model that reranks. The
+  judge and the reranker share blind spots; lean on set A (computed truth) and set B (target)
+  for this comparison and say that set C is the weakest evidence here.
+- Reporting only the abstention rate on set D.
+- Counting a fluent reason as a true one.
+- Tuning the select prompt on set D's test half.
+
+Stretch
+-------
+- A second prompt for selection that requires the task to be stated in the table's text before
+  a table may be shown; measure the trade between false answers and false abstentions.
+- Reasons constrained to quoted fields (robot, episodes, cameras) instead of free sentences.
+
+References
+----------
+RAGAS and the "RAG triad" (context relevance, groundedness, answer relevance); work on
+selective prediction and abstention; Uber and LinkedIn write-ups on an intent / understanding
+step before table retrieval.

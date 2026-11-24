@@ -1,0 +1,115 @@
+E03 - METRICS AND THE STATISTICS THAT SAY WHETHER A DIFFERENCE IS REAL
+======================================================================
+Owner: the intern. Month 1 (week 3). Depends on: nothing. Needed by: E04-E12.
+
+As built
+--------
+Status: BUILT, with hand-worked tests. Code: vxfind/eval/metrics.py, harness.py. Tests: tests/test_vxfind.py.
+Differences from the plan below:
+- The paired bootstrap and the randomization test can disagree at the margin, and did (an interval
+  excluding zero beside p above 0.05 in the first run). The selection rule and the gate use the
+  randomization test; the report prints both.
+Further limits: no correction for multiple comparisons is applied; the report states how many
+comparisons a table holds.
+(end of as built)
+
+Job
+---
+Write the small library every number in every report comes from, with conventions fixed once
+and tests worked by hand. Two halves: metrics for one ranked list, and statistics for comparing
+two systems over many queries. The second half is the one most evaluation projects skip, and it
+is the one that stops the team from shipping noise.
+
+Conventions (fixed here, stated at the top of the module, never varied silently)
+--------------------------------------------------------------------------------
+  grade       0, 1, 2, 3 as defined in E01 R7
+  relevant    grade >= 2, unless a metric says otherwise
+  unjudged    a returned table with no grade. It counts as grade 0 in every metric (the
+              conservative reading) AND is reported separately as unjudged@k.
+  undefined   a query with no relevant table has no recall and no nDCG. It is left out of
+              those means and counted. It is never scored as 0 or 1.
+  k           10 everywhere unless stated, because an answer shows ten tables.
+
+Requirements
+------------
+R1  Per-list metrics (vxfind/eval/metrics.py), each a pure function of (ranked ids, qrels, k):
+      ndcg_at        gain 2^grade - 1, discount log2(rank + 1), ideal from all judged tables
+      recall_at      relevant in the top k / relevant known for the query
+      precision_at   relevant in the top k / k (not / returned: a short list is not rewarded)
+      success_at     1 if the top k holds at least one relevant table
+      mrr_at         1 / rank of the first relevant table within k, else 0
+      unjudged_at    share of the top k with no judgment
+      hit_at, rank_of   for known-item needs
+R2  Headline metric per query set, chosen for what the set can support (harness.HEADLINE):
+      A  fit@10    share of the top ten that satisfy every stated constraint. Not recall:
+                   hundreds or thousands of tables match, so recall@10 is meaningless.
+      B  mrr@10    the target's reciprocal rank. With hit@1, hit@5, hit@10 beside it.
+      C  ndcg@10   graded and position-aware, over judged pools. With precision@10, success@10
+                   and unjudged@10 beside it.
+    One headline per set keeps comparisons honest: you cannot pick the metric after the run.
+R3  repeat@10: the share of the top ten that is a near-identical copy of a table shown above
+    it (same family). This catalog's own metric; ranking metrics do not see ten copies of one
+    recording as a problem.
+R4  Mean with a confidence interval: percentile bootstrap over queries (resample queries with
+    replacement, 2,000 times, fixed seed), 95%.
+R5  Paired comparison of two systems on the same queries (paired_bootstrap): the per-query
+    difference, its mean, a 95% interval from resampling queries, and wins / losses / ties.
+R6  A paired randomization test (randomization_test): flip the sign of each per-query
+    difference at random 10,000 times; the p-value is the share of flips with a mean at least
+    as extreme as observed. No normality assumption; right for bounded, lumpy metrics.
+R7  Power (minimum_detectable_effect and meta.power): from the standard deviation of per-query
+    paired differences and the number of queries, the smallest true difference that would be
+    detected with 80% power at the 5% level, and the number of queries a given difference
+    would need. Reported with every result table (E11).
+R8  Agreement statistics for labels: Cohen's kappa (binary relevant / not), quadratic-weighted
+    kappa for the four grades (a 3 against a 0 costs more than a 3 against a 2), and Kendall's
+    tau for the agreement of two orderings of systems.
+R9  No dependency beyond the standard library for the metrics themselves. Seeds are arguments
+    with fixed defaults: the same inputs give the same intervals.
+R10 Tests (tests/test_vxfind.py): every metric against a case worked by hand; the undefined
+    cases; the paired tests on a real difference (must detect) and on noise (must not).
+
+Implementation instructions
+---------------------------
+1. Work the examples on paper first. Take four tables with grades 3, 2, 0, 1 and a ranked list
+   with one unjudged table in it. Compute every metric by hand. Those numbers are your tests.
+2. nDCG: the ideal ranking comes from ALL judged tables of the query, not from the returned
+   ones (otherwise a system that returns only junk has a perfect score against its own ideal).
+   For set A the ideal is known exactly: min(10, number of fully matching tables) threes.
+3. per_query(run, qrels, metric) returns {query id: value} with undefined queries absent. Every
+   comparison function takes two such dictionaries and uses the intersection of their keys.
+4. Bootstrap: resample query INDICES, not values of each system separately; the pairing is the
+   whole point.
+5. Write the conventions as the module's docstring. When someone asks "how is unjudged
+   treated", the answer is one place.
+6. Decide before the first experiment which metric is the headline for which set, and write it
+   in code (HEADLINE). The gate (E12) and the selection rule (E06) read it from there.
+
+Deliverables
+------------
+vxfind/eval/metrics.py; the scoring part of vxfind/eval/harness.py (per_query, summarise,
+compare); tests.
+
+Acceptance
+----------
+- All hand-worked tests pass.
+- A query with no relevant table changes no mean of recall or nDCG.
+- For two systems that differ by a constant 0.2 on 60 queries the interval excludes zero and
+  p < 0.01; for two that differ by +-0.01 at random, p > 0.3.
+- A result table produced by summarise carries, for every metric, the mean, the interval and
+  the number of queries it was computed over.
+
+Pitfalls
+--------
+- precision = relevant / returned. A system that returns one table would score 1.0.
+- Averaging nDCG over queries where it is undefined as zero: punishes every system equally and
+  shrinks all differences.
+- An unpaired test on paired data: throws away most of your power.
+- Reporting p-values for twenty comparisons without saying that one in twenty will be "significant"
+  by chance. Report all comparisons, state how many there were, and lean on the test set (E06).
+- Three decimals of a mean over eighteen queries.
+
+References
+----------
+Jarvelin and Kekalainen (nDCG); Sakai on statistical testing and topic set size in IR; Smucker,
+Allan and Carterette on randomization tests for IR; Efron on the bootstrap.

@@ -23,3 +23,6 @@ verification/*.log
 # A golden case whose recording holds passages of the dVRK documentation, which is not
 # redistributed here. scripts/record_cases.py records it again on a machine that has the corpus.
 evals/cases/10_documentation.json
+
+# Scratch store of the judge's repeatability check (rewritten on every run)
+evals/vxfind/qrels/scratch/

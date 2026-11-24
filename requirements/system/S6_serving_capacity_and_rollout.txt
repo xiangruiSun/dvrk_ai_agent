@@ -1,0 +1,141 @@
+TASK S6 - SERVING, CAPACITY AND ROLL-OUT
+========================================
+Owner: the lead, with Engineer E (serving). Months 5-8. Depends on: S2-S5.
+Evaluated by: E12 (feedback and the release gate), and the capacity measurements below.
+
+As built
+--------
+Status: PARTLY BUILT. Measured: capacity, storage, growth, the feedback path (SCRIPTED sessions), the
+release gate. Not built: a service, deployment, dashboards, real roll-out stages. Results: REPORT.md,
+"Capacity" and "Roll-out and the release gate".
+Code: vxfind/eval/capacity.py, feedback.py, gate.py; scripts/vxfind_ops.py.
+Differences from the plan below:
+- R2's first run measured the client, not the engine: with the search client's default of ten
+  connections, callers queued inside the client and the queueing appeared as a tail of seconds. The
+  pool is now sized for the callers; first run kept (verification/vxfind_capacity_first_run.json).
+  Throughput stops growing between 4 and 16 callers, and it was not separated whether the Python
+  load generator or the engine is the limit there.
+- R7's decision changed character once E08 was run: the dead addresses are in the source, not a
+  product of index age, so the missing piece is a deletion sweep in the write path, and the live
+  check is what protects users until that exists.
+- R8: no stage beyond the builder's own use has happened. There are no users.
+- R1's latency targets are not set; the measured latencies are reported for the lead to set them.
+Further limits: one machine; the load generator, the engine and the embedding model share it.
+(end of as built)
+
+Job
+---
+Take the system from "works on my machine" to "new people use it every week and we know when it
+breaks". The mentor's notes for this part: storage, several TB, QPS, real-time update, monthly
+growth; roll-out: self-test, open to users, feedback, write eval.
+
+This is the lead's task because it is mostly decisions with numbers behind them: what the system
+promises, what it costs, what happens when a part fails, and when it is allowed to change.
+
+Requirements
+------------
+R1  The serving contract, written down and versioned:
+      - an answer shows at most ten tables; every address shown was checked live for this answer
+        or is marked "could not be verified"
+      - an answer says nothing fits when nothing fits
+      - a person sees only tables their groups may see
+      - target latency for the fixed pipeline without model stages, and separately with them
+      - the age of the index is known and shown when it matters
+R2  Capacity numbers, measured on the real index (vxfind/eval/capacity.py):
+      - searches per second and p50 / p95 / p99 latency, per retriever (lexical, vector, fused),
+        for 1, 4, 16 and 32 concurrent callers, closed loop
+      - the same with the query vector computed per search, to show what the embedding call costs
+      - index size on disk, bytes per table, and how much of that is vectors
+    The report states what the numbers are (one workstation; engine, load generator and
+    embedding model sharing it; one shard) and what they are not (a cluster forecast).
+R3  Growth, from the catalog's own history: tables created per month, the recent monthly rate,
+    a straight-line projection of table count and index size for twelve months, and the point at
+    which one node stops being enough (vectors no longer fit in memory; rebuild time exceeds the
+    update interval).
+R4  "Several TB": say precisely what is that large. The catalog DESCRIBES tens of TB of
+    recordings. The retrieval system stores metadata and vectors, under a GB. The system never
+    reads the recordings. If a later feature needs them (statistics per column, example frames),
+    that is a different system with a different budget; write that down so nobody assumes it.
+R5  Degraded modes, each with a decided behaviour and a test:
+      embedding model down     lexical retrieval only; the answer says search quality is reduced
+      language model down      the ranked list is shown without selection and reasons
+      the site unreachable or over budget    addresses are shown marked "could not be verified"
+      search engine down       no answer; say so; do not answer from the model's memory
+      catalog database down    search still works; details and requests do not
+R6  Index update policy. Daily batch plus incremental sync (S2). A rebuild is a new index
+    version; the alias switch is the release; the previous version is the rollback and is kept
+    for a fixed number of days.
+R7  "Real-time update": decided NOT to build a streaming index. The reason is a measurement
+    (E08): the share of shown addresses that are dead or moved, and the cost of the live check
+    per answer. The live check at answer time covers deletion, moves and changes for the ten
+    tables that matter, at the cost of ten requests. What it does not cover is a NEW table
+    missing from the index; the daily sync bounds that to a day. Revisit if newcomers ask for
+    tables created the same day.
+    E08 also found that the source never reports deletions, so a fresher index would not have
+    removed the dead entries: they are in the source. What removes them is a deletion sweep in
+    the write path (ask the site about every table on a schedule, or reconcile against the
+    listing and confirm by a live check, since absence from the listing alone is wrong for
+    about a third of the tables it flags). That sweep is the first item of "Not built".
+R8  Roll-out in stages, each with an entry condition:
+      stage 0  self-test: the engineers and the intern use it for a week; every bad answer is
+               written down by hand (this is where E01's failure taxonomy comes from)
+      stage 1  dogfood: the wider team; the feedback log is on; the release gate runs on every
+               change to search or prompts
+      stage 2  first newcomers, with their mentors told; weekly review of triaged feedback
+      stage 3  all teams; the gate blocks; the weekly evaluation report goes to the lead
+    Moving to the next stage needs: no open leak or dead-address finding, the gate green, and
+    the previous stage's feedback triaged.
+R9  The feedback log (vxfind/eval/feedback.py): per event the question, the table ids shown and
+    the action (opened, useful, not useful, nothing fits, asked again, requested access), with
+    an opaque session id and the release name. No names, no free-text comments. Retention and
+    who may read it are written down before stage 1.
+R10 Releases. Every change to search settings, prompts, tool descriptions, the model, or the
+    index mapping is a release with a name; the gate's decision and the evaluation numbers for
+    it are stored. A release that fails the gate does not ship without the lead signing a
+    written exception.
+R11 Observability: per answer, the configuration name, the stage timings, the number of tables
+    dropped by the live check, the live-check budget left, whether the answer check sent the
+    answer back. Dashboards are team scope; the fields exist.
+R12 Cost per answer: model tokens and seconds per stage, live-check requests, for the pipeline
+    and for the agent, from the evaluation runs.
+
+Implementation notes
+--------------------
+- Run the load test on an idle machine, after the evaluation runs, never during them: the
+  judge and the load generator would measure each other.
+- Report throughput where it stops growing with more callers, not the largest number seen.
+- Write R5 as a table of (failure, what the user sees, test) before writing any code for it.
+- The roll-out stages are a checklist in the repository, not a slide.
+
+Code
+----
+vxfind/eval/capacity.py; vxfind/eval/feedback.py; vxfind/eval/gate.py; scripts/vxfind_ops.py
+
+Verification
+------------
+python scripts/vxfind_ops.py capacity      -> verification/vxfind_capacity.json
+python scripts/vxfind_ops.py rollout       -> verification/vxfind_rollout.json
+Figures: verification/REPORT.md, sections "Capacity" and "Roll-out and the release gate".
+
+Acceptance
+----------
+- The capacity table exists for three retrievers and four levels of concurrency, with the
+  machine described.
+- The growth projection is computed from the catalog's creation dates, not assumed.
+- The gate fails a planted regression and passes the serving configuration against itself.
+- Every degraded mode in R5 has a decided behaviour (built: the three that the code paths
+  already cover; see "Not built").
+
+Not built here (team scope)
+---------------------------
+- An HTTP service, authentication at the edge, deployment, dashboards, alerting, on-call.
+- Real users: stages 1-3 have not happened. The feedback path is exercised by SCRIPTED sessions
+  and the report says so wherever it matters.
+- Degraded modes for the engine and the catalog database being down (decided above, not coded).
+- Multi-node capacity tests, replicas, shard sizing.
+- Online comparison of two configurations on live traffic (interleaving).
+
+Known limits
+------------
+Every latency here is from one machine with a local model. The growth projection is a straight
+line through a curve that has been bending upward.

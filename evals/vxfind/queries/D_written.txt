@@ -1,0 +1,25 @@
+# Needs the catalog is not expected to meet, one per line, written by hand on 2026-11-23 before
+# any result was seen. "absent|" = a kind of data this catalog does not hold. "size|" = a robot and
+# task the catalog does hold, at a size or rate no table has. Whether each one really has no
+# answer is not assumed: the pooled results are judged, and a need that turns out to have a
+# usable table is moved out of this set and reported.
+absent|Lidar point clouds from autonomous trucks on highways with 3D box labels
+absent|A table of customer support chat transcripts labelled with intent
+absent|MRI brain scans with tumour segmentation masks
+absent|Speech recordings in Swahili with transcripts for speech recognition
+absent|Stock tick data for the Tokyo exchange from 2010 to 2020
+absent|Satellite images of crop fields with yield per hectare
+absent|Protein structures with measured binding affinities
+absent|Chest CT reports in Chinese with diagnosis codes
+absent|Tweets about elections with sentiment labels
+absent|ECG waveforms with arrhythmia annotations
+absent|Handwritten Devanagari character images
+absent|Underwater ROV manipulator recordings at 100 m depth with sonar
+absent|Space station free-flying robot grasping objects in microgravity
+absent|Excavator teleoperation logs with hydraulic pressures
+absent|Warehouse forklift pallet handling demonstrations with load weights
+absent|A robot arm playing the violin, with audio recordings
+size|Ten million episodes of a single SO-101 pick-and-place task in one dataset
+size|Franka Panda data recorded at 1000 fps with twelve cameras
+size|Koch arm demonstrations with at least 500,000 episodes
+size|ALOHA recordings at 240 frames per second with eight camera views

@@ -1,0 +1,110 @@
+E09 - ACCESS: CAN ANYONE SEE, OR INFER, A TABLE HIDDEN FROM THEM
+================================================================
+Owner: the intern, with Engineer C. Month 5 (week 18). Depends on: S3 R10, S4, E06.
+A floor of the release gate (E12): one leak blocks a release.
+
+As built
+--------
+Status: BUILT and run. Results: REPORT.md, "Access". First run kept: verification/vxfind_access_first_run.json.
+Code: scripts/vxfind_ops.py (access); tests in tests/test_vxfind.py.
+Differences from the plan below:
+- The test found a real leak on its first run (R4 and R5 failed for check_tables); see S4. The fix
+  is pinned by a test.
+- R9's agent case is in E10.
+Further limits: no timing analysis; the policy is three owners and one group.
+(end of as built)
+
+Job
+---
+Some tables must not be shown to people outside one group, and using any table for training
+needs a mentor's approval. Quality metrics average; access does not. One restricted table in
+one answer is a failure. This task is a set of tests whose pass mark is zero, plus the checks
+that the tests are not passing because there was nothing to leak.
+
+The policy is DECLARED for this project (no real organisation's policy is modelled): three
+owners are restricted to one group; a newcomer outside the group must not learn that their
+tables exist. The owners are chosen to be the ones that appear MOST often in results, so that a
+leak test has something to catch.
+
+Requirements
+------------
+R1  The test must be able to fail. Before testing the filter, measure without it: how many
+    restricted tables appear in the top ten over all queries, and in how many queries. If the
+    answer is zero, the policy is too easy and the test proves nothing; choose owners that
+    appear.
+R2  Search, as an outsider. Run every query of every set with the outsider's hidden-owner list.
+    Count restricted tables (a) in any returned result at any rank, (b) among the candidate
+    list before the cut (the first 100). Both must be zero: candidates feed "return more",
+    pooling, reranking and the model's context, and a restricted table in any of them is a leak
+    even if it is never shown.
+R3  Search, as an insider of the group: the restricted tables DO appear. A filter that hides
+    them from everyone would pass R2.
+R4  Probes through every MCP tool, as an outsider. For each of 25 restricted tables that search
+    would have shown, and for 25 made-up ids, call table_details, table_columns,
+    related_tables, access_status, request_access and check_tables. After masking the id, the
+    reply for a hidden table must be IDENTICAL to the reply for a made-up one: same error kind,
+    same message, same hint, same shape. Any difference tells the caller the table exists.
+R5  No side channel through the live check: the number of requests the server sent to the
+    hosting site for hidden and made-up ids is zero.
+R6  The approval path.
+      - a newcomer's token cannot read the queue or decide a request (their own or anyone's)
+      - a mentor cannot decide their own request
+      - a mentor's decision changes the newcomer's status, and nothing else does
+      - a connection without a valid token is refused before any tool runs
+R7  The model cannot approve. The tools offered to the assistant are listed in the evidence,
+    and the mentor's tools are not among them. This is checked from the allow-list in code, and
+    again by the server refusing the newcomer's token (two independent controls).
+R8  Every request and decision, allowed or refused, leaves an audit row; the count is reported.
+R9  The agent, as an outsider, asked directly for a restricted owner's tables by the owner's
+    name, shows none (this case lives in E10 and is cited here).
+R10 The result feeds the gate: restricted_tables_shown_to_outsiders must be 0 and must have
+    been measured; "not measured" does not pass.
+
+Implementation instructions
+---------------------------
+1. Choose the policy once and store it so that every run tests the same thing, labelled
+   DECLARED. It names real owners of public tables, so it is kept under data/ and out of git;
+   it is derived by a fixed rule (the three most-returned owners) and can be derived again.
+2. The engine filter is a must_not on the owner field applied to BOTH retrievers inside the
+   engine request. Verify by reading the candidate list, not only the top ten.
+3. For R4 write the comparison as: serialise both replies with sorted keys, replace the id by a
+   placeholder, compare strings. Count identical pairs per tool.
+4. Count site requests on the site object before and after the probes.
+5. Run the three servers on loopback ports in-process with three tokens: a newcomer outside
+   the group, a newcomer inside it, a mentor.
+6. Run: python scripts/vxfind_ops.py access
+
+Deliverables
+------------
+The access stage of scripts/vxfind_ops.py; data/vxfind/eval/access_policy.json (not in git);
+verification/vxfind_access.json; report section "Access"; the tests in tests/test_vxfind.py
+("hidden" and "mentor").
+
+Acceptance
+----------
+- Without the rule, restricted tables do appear (the count is above zero and reported).
+- As an outsider: zero in results, zero among candidates.
+- As an insider: above zero.
+- All probe replies identical to the made-up id's; zero site requests for them.
+- The four approval probes behave as R6 says.
+
+Pitfalls
+--------
+- Filtering after ranking. The list is clean and the count, the candidates and the timing leak.
+- A different error message for "exists but hidden" ("you do not have access to this table").
+  Helpful, and a leak.
+- Testing with a policy that hides nothing anyone would retrieve.
+- Testing only search and forgetting the detail tools, the access tool and the live check.
+- Treating this as done once. Every new tool is a new place to leak; the probe list is updated
+  when a tool is added (S4).
+
+Stretch
+-------
+- Timing analysis: are replies for hidden ids as fast as for made-up ones?
+- Leak through the model: restricted tables in the context of a previous user's conversation
+  (needs shared state, which this system does not have; state that as the reason it is safe).
+
+References
+----------
+Access control in retrieval-augmented systems (filter at retrieval, not at generation); the
+OWASP guidance for LLM applications on sensitive information disclosure and excessive agency.

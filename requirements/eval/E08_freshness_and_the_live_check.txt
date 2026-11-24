@@ -1,0 +1,120 @@
+E08 - FRESHNESS: DEAD, MOVED AND CHANGED ADDRESSES, BEFORE AND AFTER THE LIVE CHECK
+==================================================================================
+Owner: the intern, with Engineer C. Month 5 (week 17). Depends on: E06 (serving), S4 (vx-site).
+Decides: S6 R7 (whether a real-time index is needed).
+
+As built
+--------
+Status: BUILT and run against the live site. Results: REPORT.md, "Freshness".
+Code: vxfind/eval/fresh.py; scripts/vxfind_ops.py (fresh). Record: data/vxfind/eval/site_answers.json.
+Differences from the plan below:
+- R9 was added after the first run. The dead share was far larger than a month could explain; the
+  check showed that every dead table found is still in the newer dump and that the newer dump
+  dropped nothing. The number measures the source, not the index's age.
+- The listing is not a safe cheap signal: it catches every dead table and also flags many live ones.
+- "Gone" cannot be told from "made private" from outside, and is not.
+Further limits: one day's measurement; the stretch (the same measurement after the sync) was not run.
+(end of as built)
+
+Job
+---
+The mentor's reason for the MCP check: the retrieval index and the table list have delay, so
+before an address is shown someone must ask whether the table still exists, has moved, or has
+changed. Turn that into numbers. How often would the assistant hand a person a dead address
+without the check? What does the check cost per answer? Is a cheaper signal good enough? The
+answers decide an architecture question (live check versus a fresher index), so they must be
+measured on real change, not on injected faults.
+
+Set-up: three ages on purpose
+-----------------------------
+The search index is built from a catalog snapshot about a month old. The site is asked today.
+Nothing is injected in this task: every dead, moved or changed table found here is real.
+
+Requirements
+------------
+R1  What to check: every distinct table the serving configuration shows in the top ten for
+    every query of every set (dev and test), plus a random sample of 300 tables of the index
+    (for a catalog-wide rate that does not depend on what search likes to return).
+R2  How: the same function the vx-site server uses (S4 R6), under the same rate budget, with
+    the cache off for the measurement. Every answer that is a fact is recorded with its time in
+    data/vxfind/eval/site_answers.json; later runs and the agent cases replay the record.
+R3  Before the check (fresh.staleness). Over what was shown: the share of addresses that are
+    dead, moved, changed since indexed; the share of ANSWERS with at least one dead address
+    (this is the number a user feels); the same per query set.
+R4  After the check: dead addresses shown (zero by construction for the pipeline; measured for
+    the agent in E10), the mean number of tables removed per answer, and whether the list can
+    still be filled to ten from the next candidates.
+R5  Catalog-wide rate from the random sample, with a 95% interval, and the comparison with the
+    rate among shown tables. If shown tables are fresher or staler than the catalog, say which
+    and why it matters (search may prefer popular, maintained tables, or the opposite).
+R6  Staleness by age: the dead share by the year a table was created. Is it old tables that
+    vanish, or new ones?
+R7  The cheap signal. The site's listing is one bulk download a day. Is "absent from the
+    listing" a usable stand-in for "dead"? Treat the live check as truth and report the
+    listing's precision and recall. If precision is poor, a nightly listing sweep CANNOT
+    replace the live check (it would hide live tables); if recall is poor, it cannot either.
+R8  The cost. Seconds added to one answer by checking its ten tables, one after another and
+    four at a time; requests used per answer; how many answers per window the site's rate
+    limit allows; what happens when the budget runs out (tables are marked "could not be
+    verified", never "gone").
+R9  Say what the dead share is a measure OF. Check whether the source ever drops a deleted
+    table: count the dead tables that the newer dump still carries, and the tables the newer
+    dump dropped. If the source never reports deletions (it does not, here), dead entries pile
+    up in the source itself, and the number you measured is "how far an index built from this
+    source is from the live site", not "how much dies in a month". The two call for different
+    fixes: the first needs a deletion sweep in the write path; the second a fresher index.
+R9b The conclusion, in the report in words: the measured dead share, what it is a measure of,
+    the measured cost of the check, and therefore the recommendation for S6 R7.
+R10 The record is dated. A freshness number is true for one index age on one day; the report
+    states both.
+
+Implementation instructions
+---------------------------
+1. Count before you start: distinct shown tables x 1 request (2 for a moved table). With the
+   site's limit of a few hundred requests per five minutes, 1,500 tables take about twenty
+   minutes of mostly waiting. Use a limiter that waits for the window instead of failing, and
+   three workers; save the record every 200 answers so a crash loses little.
+2. Send only the table id. Use a generic client name. Do not follow redirects automatically:
+   the redirect IS the finding.
+3. "Changed" compares the site's last-modified time with the time in the snapshot the index was
+   built from, to the second.
+4. Keep "could not ask" out of every rate: it is neither dead nor alive. Report its count.
+5. For R8 use tables that are known to be live and a fresh site object per answer, so nothing
+   is answered from memory.
+6. Run: python scripts/vxfind_ops.py fresh --limit 1500
+
+Deliverables
+------------
+vxfind/eval/fresh.py; the fresh stage of scripts/vxfind_ops.py; verification/vxfind_fresh.json;
+report section "Freshness".
+
+Acceptance
+----------
+- The before/after table exists for all query sets, with counts, not only shares.
+- The catalog-wide rate has an interval.
+- The listing-as-signal question has a precision and a recall and a one-line verdict.
+- The cost of the check is in seconds per answer, measured.
+- The recommendation for S6 R7 cites these numbers.
+
+Pitfalls
+--------
+- Measuring only injected faults. They prove the plumbing, not the need.
+- Counting a rate-limited request as a dead table.
+- Reporting the dead share per address only. One dead address in ten makes the whole answer
+  feel broken; report the share of answers.
+- Hammering the site. Stay under the budget; the measurement is not urgent.
+- Treating the number as stable. It grows with the age of the index; measure it again after
+  every rebuild interval change.
+
+Stretch
+-------
+- The same measurement on an index one day old (after the incremental sync) to show how much of
+  the staleness the sync removes and how much only the live check can.
+- Re-read the schema of changed tables from the newer catalog database and report how often a
+  change is a schema change that would break a training pipeline.
+
+References
+----------
+Work on index freshness and link rot in web search; the MCP specification's guidance on tools
+with side-effect-free checks; LinkedIn's validation step that checks model-proposed tables
+against the live catalog.

@@ -1,4 +1,139 @@
-# dVRK Agent Tools
+# Training-Data Finder, and its evaluation built from zero
+
+An assistant for onboarding: a new team member says what they need ("SO-101 pick-and-place, a few
+hundred episodes, with a wrist camera") and gets at most ten training-data tables with working
+addresses and a reason each, or an honest "nothing fits". Behind it: retrieval over a catalog of
+about 100,000 tables (RAG), a language model that chooses what to show, MCP servers that check
+every table live because the index and the table list are always behind, and a mentor's approval
+before a table is used for training.
+
+**The focus of this repository is the evaluation.** It started with no questions, no labels, no
+metric code and no judge, and ends with a release gate. The system around it is built to the
+extent needed to have something real to evaluate.
+
+**Research demonstration on public data.** The catalog is real: the public Hugging Face Hub
+collection of robot-learning datasets (metadata only, never the recordings). Three things are not
+real and are labelled wherever they are used: the access policy is DECLARED, the faults in agent
+cases are INJECTED, and user sessions are SCRIPTED, because there are no users.
+
+## Where this came from
+
+The repository first held agent tools for a surgical-robot (dVRK) console and a retrieval system
+over its documentation. After a review with the team's mentor those job tasks were set aside as
+the main line: they describe a product without a client, and their retrieval evaluation used
+labels derived from document structure instead of from what a user asks. They are kept with
+their code and evidence ([`requirements/archive/`](requirements/archive/README.txt), and the
+second half of this file). The new work reuses their agent loop, tool registry and MCP client.
+
+## The job tasks
+
+Start with [`requirements/00_overview.txt`](requirements/00_overview.txt): the problem, the
+users, the architecture, who builds what, the roadmap for months 1 to 8, and what was read to
+design it.
+
+| | Scope | Files |
+|---|---|---|
+| System | A senior engineer leading four to five engineers | [`requirements/system/`](requirements/system/): S1 sources and the catalog record, S2 write path (Spark, embeddings, index versions, incremental sync), S3 read path (BM25 + kNN, rank fusion, family collapse, rerank, select), S4 MCP servers, S5 agent and fixed pipeline, S6 serving, capacity and roll-out |
+| Evaluation | One intern (new graduate), six months, from zero to one | [`requirements/eval/`](requirements/eval/): E00 the plan, E01 failure analysis before metrics, E02 query sets with four sources of truth, E03 metrics and statistics, E04 pooling and the judge, E05 judge calibration and hand labels, E06 retrieval experiments and the selection rule, E07 model stages, reasons and abstention, E08 freshness and the live check, E09 access and leak tests, E10 agent trajectories, E11 evaluating the evaluation, E12 feedback loop and release gate |
+
+Each file states its requirements, step-by-step implementation instructions, deliverables,
+acceptance criteria and pitfalls, and begins with an "As built" block saying what was built here,
+what differs from the plan, and what is team scope that was not built.
+
+## What is built
+
+| Layer | What it does | Code |
+|---|---|---|
+| Catalog record | One record per table from its card: schema, sizes, cameras, a person's description if any, scratch flag, hashes, a generated summary | `vxfind/catalog/parse.py` |
+| Write path | PySpark job (select, parse, enrich, families, validate, diff against the previous snapshot); embeddings with a cache keyed by content; Elasticsearch index versions behind an alias; incremental sync | `vxfind/ingest/` |
+| Catalog database | The system of record (newer than the index, on purpose) | `vxfind/catalog/store.py` |
+| Read path | BM25 over names, descriptions, summaries and columns; kNN over summary vectors; client-side reciprocal rank fusion; one table per family; scratch demotion; optional understanding, reranking and selection by a model that can only choose among numbered candidates | `vxfind/search/engine.py` |
+| MCP servers | `vx-catalog`, `vx-site` (live check with a rate budget), `vx-access` (requests and a mentor's decisions), with JSON Schemas for arguments and results; a hidden table is answered exactly like a missing one | `vxfind/mcp/` |
+| Assistant | A tool-calling agent and a fixed pipeline over the same parts; an answer is refused if it shows an address no tool returned, one that was not checked live, or one the site says is gone | `vxfind/agent.py` |
+| Evaluation | Query sets, metrics and tests of significance, pooling, a versioned judge, calibration, experiments, meta-evaluation, freshness, leak tests, agent cases, feedback triage, release gate, load test | `vxfind/eval/`, `scripts/vxfind_*.py`, `evals/vxfind/` |
+
+## What the evaluation found
+
+Every figure is in [`verification/REPORT.md`](verification/REPORT.md), Part 1, generated from
+`verification/vxfind_*.json`. In words:
+
+- **The first judge was wrong half the time, and only a comparison with computed truth showed it.**
+  The language-model judge called "usable" tables that contradicted the request, while writing the
+  contradiction into its own reason. Its rubric was rewritten as an ordered procedure and measured
+  again on the same pairs and on held-out pairs. The first run is kept as evidence.
+- **Reading the judge's disagreements also exposed faults in the "truth".** Tables with no episodes
+  counted as matches, and one robot family's wording excluded its own variants. Truth computed by
+  code is only as good as the code.
+- **The query sets disagree, and that is information.** Questions written by a model from a table's
+  description favour lexical search; hand-written questions favour fusion; questions with stated
+  numbers are answered badly by every retriever, because retrieval alone ignores stated numbers.
+- **Reading the need fixes the stated-numbers problem, and the gate still refused it.** The first
+  reading prompt left the robot empty for almost every need. Rewritten, it turns stated numbers into
+  filters and multiplies the score on attribute needs. On the locked test queries the same change
+  loses significantly on known-item needs, so the release gate fails it. A dev-only evaluation, or
+  one query set, would have shipped it.
+- **The first search ever run exposed a ranking fault** (question words such as "a" matched tables
+  whose whole name is "a"). The old behaviour is kept as a setting so its cost is measured.
+- **A large share of the addresses the system would show are dead, and the cause is the source.** The
+  catalog dump never drops a deleted table. The live check through MCP removes them at answer time
+  for a fraction of a second; absence from the site's listing is not a safe substitute.
+- **The leak test caught a real leak.** One tool answered a hidden table and a made-up id with
+  different wording. Fixed; the first run is kept.
+- **The agent cases caught a failure that looked like a pass.** A search reply was too large for the
+  harness, the model gave up, and the run "passed" because no property required an answer. Both the
+  tool and the evaluation were fixed; the agent still lists tables for needs that have no answer.
+- **The evaluation was tested too.** Large planted faults are detected on every query set; a fault
+  of one result in ten is at the edge; reordering the top ten is invisible to the judged set, whose
+  grades are nearly two-valued. Each result table carries the smallest difference it can show.
+- **No human labels exist yet.** The sheet is prepared (`evals/vxfind/labels/hand_labels.csv`) and
+  the report says "filled by a person: 0" until someone fills it.
+
+## Run it
+
+```
+python -m pip install -r requirements.txt
+python scripts/fetch_hub_catalog.py                 # metadata only, about 2 GB, two snapshots
+python scripts/elastic_local.py install             # a local single-node Elasticsearch, loopback only
+python scripts/elastic_local.py run                 # leave running
+python -m vxfind.ingest.spark_job --snapshot old
+python -m vxfind.ingest.spark_job --snapshot new --previous old
+python -m vxfind.ingest.embed --snapshot old --model nomic-embed-text     # and bge-m3; then --snapshot new
+python -m vxfind.ingest.index build --snapshot old
+python -m vxfind.catalog.store build --snapshot new
+```
+
+The models are local (Ollama): `nomic-embed-text` and `bge-m3` for vectors, `qwen3:14b` and
+`qwen3:4b` for judging, understanding, reranking, selection and the agent.
+
+## Evaluate it
+
+```
+python scripts/vxfind_queries.py A        # then: CD, and B --n 110
+python scripts/vxfind_eval.py retrieval   # configurations, pooling, judging, the serving choice, test
+python scripts/vxfind_eval.py judge       # the judge against computed truth; the hand-label sheet
+python scripts/vxfind_eval.py llm_stages  # understanding, reranking, selection
+python scripts/vxfind_eval.py answers     # reasons and "nothing fits"
+python scripts/vxfind_eval.py meta        # planted faults, power, agreement between query sets
+python scripts/vxfind_failures.py
+python scripts/vxfind_ops.py fresh        # asks the hosting site about shown tables (rate limited)
+python scripts/vxfind_ops.py access
+python scripts/vxfind_ops.py agent
+python scripts/vxfind_ops.py rollout
+python scripts/vxfind_ops.py capacity
+python -m vxfind.ingest.index sync --from old --to new    # last: the evaluation wants the stale index
+python scripts/vxfind_ops.py write_path
+python scripts/build_report.py
+python -m pytest tests/test_vxfind.py -q  # hermetic: no engine, no network, no model
+```
+
+Data, sources and licences: [`data/README.md`](data/README.md). Nothing downloaded is in git.
+
+---
+
+# Archived work: dVRK agent tools
+
+What follows describes the earlier line of work (see "Where this came from"). Its requirement
+files are now under `requirements/archive/`.
 
 Role-scoped AI agent tools for operating and servicing a da Vinci Research Kit (dVRK): an operator
 who runs trials, a service engineer who calibrates and repairs, a safety lead who approves anything
@@ -16,9 +151,9 @@ The repository holds two packages, in the same relation as the earlier pair
 - **`vxrag`**, a retrieval system over the dVRK documentation, issue threads, change log,
   configuration schemas and sites' own notes, run as an HTTP service. It imports nothing from the
   agents and can be moved to its own repository unchanged. Requirements:
-  [`requirements/rag/`](requirements/rag/R00_overview.txt).
+  [`requirements/archive/rag/`](requirements/archive/rag/R00_overview.txt).
 - **`vxagent`**, the agent tools that call it over HTTP. Requirements:
-  [`requirements/`](requirements/00_overview.txt).
+  [`requirements/archive/agent/`](requirements/archive/agent/00_overview.txt).
 
 **Status.** Built and measured on real data: the retrieval system (ten tasks) and the fifteen agent
 tasks. Each requirement file starts with an "As built" block that says what differs from its plan, and

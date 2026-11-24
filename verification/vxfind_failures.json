@@ -1,0 +1,600 @@
+{
+ "serving": "serving",
+ "split": "dev",
+ "counts_by_query_set": {
+  "A": {
+   "queries": 31,
+   "results": 310,
+   "scratch_tables_in_top_10": 19,
+   "queries_with_a_scratch_table": 8,
+   "tables_with_no_description_in_top_10": 151,
+   "repeated_family_in_top_10": 0,
+   "F3_wrong_robot": 142,
+   "F6_right_robot_constraint_missed": 126,
+   "queries_with_no_fully_matching_table": 12
+  },
+  "B": {
+   "queries": 57,
+   "results": 570,
+   "scratch_tables_in_top_10": 13,
+   "queries_with_a_scratch_table": 10,
+   "tables_with_no_description_in_top_10": 162,
+   "repeated_family_in_top_10": 0,
+   "F12_target_not_in_top_10": 11,
+   "F12_target_within_first_100_but_not_top_10": 6
+  },
+  "C": {
+   "queries": 18,
+   "results": 180,
+   "scratch_tables_in_top_10": 4,
+   "queries_with_a_scratch_table": 2,
+   "tables_with_no_description_in_top_10": 67,
+   "repeated_family_in_top_10": 0,
+   "unjudged": 0,
+   "grade_0": 31,
+   "grade_1_related_only": 52,
+   "queries_with_no_usable_table": 1
+  },
+  "D": {
+   "queries": 11,
+   "results": 110,
+   "scratch_tables_in_top_10": 7,
+   "queries_with_a_scratch_table": 3,
+   "tables_with_no_description_in_top_10": 62,
+   "repeated_family_in_top_10": 0,
+   "unjudged": 0,
+   "grade_0": 82,
+   "grade_1_related_only": 28,
+   "queries_with_no_usable_table": 11
+  }
+ },
+ "lowest_scoring_queries": {
+  "A": [
+   {
+    "qid": "A71f6dc05",
+    "need": "Looking for datasets of the OMX arm that includes a wrist camera view, stored as format v2.1 and no fewer than 50 episodes.",
+    "fit@10": 0.0,
+    "expected": {
+     "family": "omx",
+     "constraints": {
+      "camera": "wrist",
+      "format": "v2.1",
+      "min_episodes": 50
+     }
+    },
+    "top_5": [
+     {
+      "table_id": "CarolinePascal/omx_setup",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "inhandplus/egocentric-wrist-view-camera-IMU-data",
+      "note": "another robot"
+     },
+     {
+      "table_id": "Juhee0123/omx_f_data1_20260508_184454",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "cpstroum/so101-brachiomimus-50ep",
+      "note": "another robot"
+     },
+     {
+      "table_id": "TensorAuto/so101_right_hand_protein_vertical_horizontal_2_orient",
+      "note": "another robot"
+     }
+    ]
+   },
+   {
+    "qid": "A33437e31",
+    "need": "Looking for datasets of the UFACTORY xArm in the v2.1 dataset format and 2 or more cameras.",
+    "fit@10": 0.0,
+    "expected": {
+     "family": "xarm",
+     "constraints": {
+      "format": "v2.1",
+      "min_cameras": 2
+     }
+    },
+    "top_5": [
+     {
+      "table_id": "hanyiyuxi/xarm_pickobj_v2",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "Makolon0321/teleop_block_in_bowl",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "dpak0724/xarm_recording_20251222_131301",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "mtbui2010/xarm_3cams",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "skpro19/v2.1",
+      "note": "another robot"
+     }
+    ]
+   },
+   {
+    "qid": "A292ca4da",
+    "need": "Franka Panda arm demonstrations, two-arm (bimanual) set-up",
+    "fit@10": 0.0,
+    "expected": {
+     "family": "franka",
+     "constraints": {
+      "bimanual": true
+     }
+    },
+    "top_5": [
+     {
+      "table_id": "DecentVLA/moplan_Cube_Red_on_Blue_franka_claim1_set2_client_a",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "DecentVLA/moplan_Cube_Red_on_Blue_franka_claim1_set2_client_d",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "DecentVLA/moplan_Cube_Red_on_Blue_franka_right",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "CSCSXX/Franka_adjust_bottle",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "DecentVLA/moplan_Cube_Red_on_Blue_franka_claim1_set2_client_c",
+      "note": "right robot, a constraint is missed"
+     }
+    ]
+   },
+   {
+    "qid": "A01511a53",
+    "need": "For training I want Franka Panda arm data two-arm (bimanual) set-up and 2 or more cameras.",
+    "fit@10": 0.0,
+    "expected": {
+     "family": "franka",
+     "constraints": {
+      "bimanual": true,
+      "min_cameras": 2
+     }
+    },
+    "top_5": [
+     {
+      "table_id": "CSCSXX/Franka_adjust_bottle",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "CSCSXX/Franka_place_containter_plate",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "CSCSXX/Franka_place_container_plate",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "CSCSXX/Franka_place_phone_stand",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "CSCSXX/Franka_beat_block_hammer",
+      "note": "right robot, a constraint is missed"
+     }
+    ]
+   },
+   {
+    "qid": "Aba40e543",
+    "need": "Which tables have Universal Robots arm (any UR model) recordings bimanual?",
+    "fit@10": 0.0,
+    "expected": {
+     "family": "ur",
+     "constraints": {
+      "bimanual": true
+     }
+    },
+    "top_5": [
+     {
+      "table_id": "faizaladin/Bimanual-Recordings",
+      "note": "another robot"
+     },
+     {
+      "table_id": "crislmfroes/openarm-bimanual-open-microwave-sim-with-pos-rand-mimic-generated-50-joint-pos-only-v3",
+      "note": "another robot"
+     },
+     {
+      "table_id": "zeroanuj/ur7_b_into_a_600",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "crislmfroes/openarm-bimanual-open-microwave-sim-with-pos-rand-oracle-generated-50",
+      "note": "another robot"
+     },
+     {
+      "table_id": "lololok/zip-bag-newdata-100-0908",
+      "note": "another robot"
+     }
+    ]
+   },
+   {
+    "qid": "Ab8c26f08",
+    "need": "Looking for datasets of the Franka Panda arm stored as format v3.0, at 50 frames per second and 50 episodes or more.",
+    "fit@10": 0.0,
+    "expected": {
+     "family": "franka",
+     "constraints": {
+      "format": "v3.0",
+      "fps": 50,
+      "min_episodes": 50
+     }
+    },
+    "top_5": [
+     {
+      "table_id": "VivekSai07/franka_stacking_50",
+      "note": "another robot"
+     },
+     {
+      "table_id": "aromanus/Franka_demo_12_3",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "SinjaeKang/fatigue-injection-pi0.5-cube-stacking",
+      "note": "another robot"
+     },
+     {
+      "table_id": "hyzhang01/GCA_parallel_franka_a03_20d_50ah",
+      "note": "right robot, a constraint is missed"
+     },
+     {
+      "table_id": "lithyeon/franka_pnp_big100_base",
+      "note": "another robot"
+     }
+    ]
+   }
+  ],
+  "B": [
+   {
+    "qid": "B913ac905",
+    "need": "a dataset of a humanoid robot performing tasks in a cluttered indoor environment, with synchronized video streams from stereo and infrared cameras on the head and wrists, along with detailed joint and end-effector pose information",
+    "mrr@10": 0.0,
+    "expected": "unitreerobotics/G1_Dex1_Take_Stationery",
+    "top_5": [
+     {
+      "table_id": "Voxel51/tavis-head-gr1t2-800ep",
+      "note": ""
+     },
+     {
+      "table_id": "skyzos/humanoid-packing",
+      "note": ""
+     },
+     {
+      "table_id": "Voxel51/tavis-head-reachy2-800ep",
+      "note": ""
+     },
+     {
+      "table_id": "lucasngoo/humanoid-packing",
+      "note": ""
+     },
+     {
+      "table_id": "BitRobot/HIW-500-LeRobot",
+      "note": ""
+     }
+    ]
+   },
+   {
+    "qid": "B9e3d3407",
+    "need": "a dataset of a Franka FR3 robot performing the task of closing a drawer in a real-world setting, with video from two cameras (primary and wrist, 256x256 resolution) and robot state information including joint positions, gripper status, and target positions",
+    "mrr@10": 0.0,
+    "expected": "continuallearning/real_3_close_drawer",
+    "top_5": [
+     {
+      "table_id": "jaeikkim/fr3_gello_20260817_145826",
+      "note": ""
+     },
+     {
+      "table_id": "rajmeet83/fr3_pick_place",
+      "note": ""
+     },
+     {
+      "table_id": "DAVIAN-Robotics/0528_bk_config1_open_drawer",
+      "note": ""
+     },
+     {
+      "table_id": "DAVIAN-Robotics/droid_v3",
+      "note": ""
+     },
+     {
+      "table_id": "haibozzz/blocks-v12-4task-lerobot-v30-camgeom",
+      "note": ""
+     }
+    ]
+   },
+   {
+    "qid": "Bc75e1e16",
+    "need": "I need a dataset of a small robot manipulating a blue sponge in a controlled environment, using dual cameras, with smooth low-frequency motion data.",
+    "mrr@10": 0.0,
+    "expected": "aHiroakiIshikawa/openarm_mini_dual_camera_blue_sponge_0529_01_right_only_lpf1hz",
+    "top_5": [
+     {
+      "table_id": "QianGroup/lekiwi_pick_sponge",
+      "note": ""
+     },
+     {
+      "table_id": "ujss/smolvla_move_blue_sponge",
+      "note": ""
+     },
+     {
+      "table_id": "unitreerobotics/G1_DualRobot_Clean_Table",
+      "note": ""
+     },
+     {
+      "table_id": "VMuccio/blue_cube_f_20260915_184302",
+      "note": ""
+     },
+     {
+      "table_id": "schweppesxu/G1_DualRobot_Clean_Table",
+      "note": ""
+     }
+    ]
+   },
+   {
+    "qid": "Be7ca3e9b",
+    "need": "I need a dataset of a Panda robot performing a variety of manipulation tasks, including spatial reasoning, object interaction, goal-directed actions, and long-horizon tasks, with video and corresponding control data at 10 fps.",
+    "mrr@10": 0.0,
+    "expected": "openroboto-ai/libero-datapool",
+    "top_5": [
+     {
+      "table_id": "imishutk0410/long-horizon-tamp-trajectories",
+      "note": ""
+     },
+     {
+      "table_id": "lqs2015/manipulation_dataset_2",
+      "note": ""
+     },
+     {
+      "table_id": "ases200q2/libero_object",
+      "note": ""
+     },
+     {
+      "table_id": "lqs2015/manipulation_dataset",
+      "note": ""
+     },
+     {
+      "table_id": "di-techinnova/so-arm-101-pouring-0.1",
+      "note": ""
+     }
+    ]
+   },
+   {
+    "qid": "B200853f9",
+    "need": "I need a dataset where a robot is sorting colored blocks into boxes based on a verbal instruction, using a SO-101 follower robot with top and wrist RealSense cameras. The task involves placing a red block in the right box and a blue block in the left box, with human assistance during the grasping phase but autonomous movement and release.",
+    "mrr@10": 0.0,
+    "expected": "Harumo/eval_smolvla_sorting_action_expert_ft_121ep_step160000_A_IID_boxdiag_hand_v1",
+    "top_5": [
+     {
+      "table_id": "lsalomme/so101-d1v1-cube-pick-place",
+      "note": ""
+     },
+     {
+      "table_id": "upna/pickup_blue_block_into_the_yellow_tray",
+      "note": ""
+     },
+     {
+      "table_id": "LambdaJin/so101_pick_cube_train_n1",
+      "note": ""
+     },
+     {
+      "table_id": "CoRL2026-CSI/SO101-teleop_stack_RGBblock_on_bluedish_100epi_more",
+      "note": ""
+     },
+     {
+      "table_id": "VShirokun/office-rover-grasp-hd-v21",
+      "note": ""
+     }
+    ]
+   },
+   {
+    "qid": "B9d40cfa1",
+    "need": "I need a dataset of a robot performing block stacking tasks in a living room setting, using a two-finger end-effector controlled by a VR controller, with multiple RGB cameras capturing the action.",
+    "mrr@10": 0.0,
+    "expected": "RoboCOIN/AI2_Alphabot_2_stack_blocks",
+    "top_5": [
+     {
+      "table_id": "CoRL2026-CSI/SO101-teleop_stack_RGBblock_on_bluedish_100epi_more",
+      "note": ""
+     },
+     {
+      "table_id": "LightwheelAI/Lightwheel-Tasks-G1-Controller",
+      "note": ""
+     },
+     {
+      "table_id": "Wangzhaowu/rebot_b601_rs_single_arm_block_stacking",
+      "note": ""
+     },
+     {
+      "table_id": "vraiRobotLab/multicolor_block_tiles",
+      "note": ""
+     },
+     {
+      "table_id": "Hannibal52Barca/icl-dataset-end-effector-space",
+      "note": ""
+     }
+    ]
+   }
+  ],
+  "C": [
+   {
+    "qid": "C034",
+    "need": "which datasets were recorded at 50 Hz or faster with at least 3 cameras",
+    "ndcg@10": 0.104,
+    "expected": null,
+    "top_5": [
+     {
+      "table_id": "Zak-Y/so100_three_cameras_dataset",
+      "note": "grade 1: Step 1: Dataset is about robot activity but frame rate is 30 fps, not 50 Hz or faster."
+     },
+     {
+      "table_id": "nurtayev-d/samedrawer-ag-1000ep",
+      "note": "grade 1: Step 2. Dataset states 10 Hz, which contradicts the 50 Hz or faster requirement."
+     },
+     {
+      "table_id": "Delcastillo8/libero90_frying_pan_phone_50",
+      "note": "grade 0: Step 1. Dataset is about robot demonstrations, not frame rate or number of cameras."
+     },
+     {
+      "table_id": "nik658/ur10e_pi0_dataset_50hz",
+      "note": "grade 1: Step 1: Dataset has only 1 camera, not at least 3."
+     },
+     {
+      "table_id": "kimyg119/aw_robot_joint_h",
+      "note": "grade 0: Step 1: Dataset has 1 camera and 15 fps, not matching 50 Hz or faster with at least 3 cameras"
+     }
+    ]
+   },
+   {
+    "qid": "C036",
+    "need": "I want to train a policy to press buttons or flip switches",
+    "ndcg@10": 0.193,
+    "expected": null,
+    "top_5": [
+     {
+      "table_id": "yuchensong/glide_data",
+      "note": "grade 1: Step 1. The dataset shows tasks like tomato plate transfer and marker handover, not button pressing or switch flipping."
+     },
+     {
+      "table_id": "StefanWagnerWandelbots/eval_pusht_keyboard_policy_100k",
+      "note": "grade 0: Step 1: Dataset has 0 episodes and 0 frames, so it cannot be used for training a policy."
+     },
+     {
+      "table_id": "pravsels/busybox_buttons_bimanual",
+      "note": "grade 3: Step 4. The robot (SO-101), the task (button-press), and all stated requirements are confirmed by the text."
+     },
+     {
+      "table_id": "kevin-ys-zhang/robomimic_lift_mh",
+      "note": "grade 0: Step 1. Dataset is about lifting, not pressing buttons or flipping switches"
+     },
+     {
+      "table_id": "primordial-spork/lerobot_eval_move_cube",
+      "note": "grade 1: Step 1. Dataset shows a different task (pick up block and place on blue square) than the request (press buttons or flip switches)."
+     }
+    ]
+   },
+   {
+    "qid": "C026",
+    "need": "Tables where a robot arm writes or draws with a pen",
+    "ndcg@10": 0.21,
+    "expected": null,
+    "top_5": [
+     {
+      "table_id": "Ethgar/so101-pen-sim-50",
+      "note": "grade 1: Step 1. Dataset shows pen pick-and-drop, not writing or drawing with a pen"
+     },
+     {
+      "table_id": "Ethgar/so101-pen-office-300",
+      "note": "grade 1: Step 1. Dataset shows pen pick-and-drop, not writing or drawing with a pen."
+     },
+     {
+      "table_id": "wangdx25/xtac_umi_g1_place_pen_into_holder",
+      "note": "grade 1: Step 1. Dataset shows a robot placing a pen, not writing or drawing with it."
+     },
+     {
+      "table_id": "alicheraghi/robot-arm-filtered",
+      "note": "grade 1: Step 1: Dataset is about robot arm activity, but does not mention writing or drawing with a pen"
+     },
+     {
+      "table_id": "CooperLiConduit/printer-tending-dagger",
+      "note": "grade 1: Step 1. Dataset shows robot arm tending a printer, not writing or drawing with a pen."
+     }
+    ]
+   },
+   {
+    "qid": "C003",
+    "need": "looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam",
+    "ndcg@10": 0.319,
+    "expected": null,
+    "top_5": [
+     {
+      "table_id": "YasmineMakni/so100_cam",
+      "note": "grade 0: Step 1: Dataset is not the kind of data the request asks for; it lacks wrist and top cameras."
+     },
+     {
+      "table_id": "liamlau/svla_so100_sorting",
+      "note": "grade 3: Step 4. The robot (so100), task (sorting), cameras (top, wrist), and format (v2.1) match the request."
+     },
+     {
+      "table_id": "qualia-robotics/openarm-cube-in-box-v1",
+      "note": "grade 0: Step 1: Dataset is for a different robot (OpenArm) and different task (placing a cube in a box) than requested (SO-100, unspecified task)."
+     },
+     {
+      "table_id": "samanthalhy/so100_smol_test_1",
+      "note": "grade 3: Step 1: Dataset is for so100_follower, which is a variant of so100, and includes a top cam and hand cam (wrist cam)."
+     },
+     {
+      "table_id": "Ahi-Yu/smolvla_test1__so100_pick_place_dataset",
+      "note": "grade 1: Step 1: Dataset is for a different robot (so100, but no wrist or top cam mentioned)"
+     }
+    ]
+   },
+   {
+    "qid": "C015",
+    "need": "kitchen tasks: putting dishes in a rack, loading a dishwasher, wiping a table",
+    "ndcg@10": 0.498,
+    "expected": null,
+    "top_5": [
+     {
+      "table_id": "flex-pi/kitchen_organization",
+      "note": "grade 1: Step 1. The dataset is about kitchen tasks (tidying, placing plates, cups, and spoons onto a dish rack) but does not mention loading a dishwasher or wiping a ta"
+     },
+     {
+      "table_id": "wangdx25/uniflow_put_spoon_on_rack",
+      "note": "grade 1: Step 1. Dataset shows a kitchen task (putting spoons in a rack) but does not mention other requested tasks (loading a dishwasher, wiping a table)."
+     },
+     {
+      "table_id": "THULab/uniflow_put_spoon_on_rack",
+      "note": "grade 3: Step 1. Dataset is about putting spoons in a rack, which is a kitchen task; robot is yam_bimanual, which is a variant of a bimanual robot."
+     },
+     {
+      "table_id": "exaFLOPs09/sink10k_mug",
+      "note": "grade 1: Step 1. The dataset shows a different task (putting a mug in the sink) than the requested kitchen tasks (putting dishes in a rack, loading a dishwasher, wiping "
+     },
+     {
+      "table_id": "flex-pi/put_plate_on_the_rack",
+      "note": "grade 3: Step 1. The dataset is about putting plates in a rack, which matches one of the requested kitchen tasks."
+     }
+    ]
+   },
+   {
+    "qid": "C005",
+    "need": "I want teleoperated demonstrations of pouring liquid or beads from one cup into another.",
+    "ndcg@10": 0.5,
+    "expected": null,
+    "top_5": [
+     {
+      "table_id": "unitreerobotics/G1_Dex3_Pouring_Dataset",
+      "note": "grade 3: Step 1. The dataset is about pouring water into a glass cup, which matches the request for pouring liquid from one cup into another."
+     },
+     {
+      "table_id": "RoboCOIN/Agilex_Cobot_Magic_pour_water_bottle_cup_cup",
+      "note": "grade 1: Step 1. The dataset is about pouring but does not explicitly mention teleoperation."
+     },
+     {
+      "table_id": "lmsforAI/so101_bimanual_beverage_powder_v1",
+      "note": "grade 1: Step 1. The dataset contains pouring actions but not liquid or beads; it is powder."
+     },
+     {
+      "table_id": "RoboCOIN/Agilex_Cobot_Magic_pour_drink_bottle_cup_cup",
+      "note": "grade 1: Step 1. The dataset shows pouring but does not explicitly mention teleoperation."
+     },
+     {
+      "table_id": "Bigenlight/cube_in_cup_lerobot_v3",
+      "note": "grade 1: Step 1: Dataset shows putting a cube in a cup, not pouring liquid or beads"
+     }
+    ]
+   }
+  ]
+ },
+ "ran": "2026-11-23 22:28"
+}

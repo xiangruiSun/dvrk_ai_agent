@@ -45,3 +45,33 @@ the published ones for a simulated Classic PSM1.
 
 `evals/t02_change_requests.json` holds the change requests of task 02 with their reference patches
 and the negative controls. They and the "records" attached to them were written for this project.
+
+## The training-data catalog (vxfind)
+
+| Folder | What | Source | Licence | Script |
+|---|---|---|---|---|
+| `hub/dump/<revision>/` | Two revisions, about a month apart, of the daily dump of dataset cards with metadata: one row per public dataset on the Hugging Face Hub (id, owner, dates, tags, counts, card text). About 1 GB each. `hub/MANIFEST.json` records revision, publication time, size and checksum of every file | `librarian-bots/dataset_cards_with_metadata` | each card carries its dataset's own licence (mostly Apache-2.0); the dump has none of its own stated | `scripts/fetch_hub_catalog.py` |
+| `hub/listing/` | The Hub's listing of datasets tagged `LeRobot`: id, revision, gating, private, disabled | the Hub's public API | metadata | `scripts/fetch_hub_catalog.py` |
+| `vxfind/old`, `vxfind/new` | Output of the Spark job per snapshot (records, changes, statistics), the vectors and their statistics | produced here | | `python -m vxfind.ingest.spark_job`, `vxfind.ingest.embed` |
+| `vxfind/emb/` | The embedding cache, keyed by the hash of the text | produced here | | |
+| `vxfind/catalog.db` | The catalog database (newer snapshot) | produced here | | `python -m vxfind.catalog.store build` |
+| `vxfind/eval/` | Stored search runs, the recorded answers of the hosting site, the scripted feedback log | produced here | | `scripts/vxfind_eval.py`, `scripts/vxfind_ops.py` |
+| `tools/elasticsearch-9.2.1`, `es/` | A local single-node Elasticsearch and its data | elastic.co, checked against the published SHA-512 | Elastic License 2.0 (basic) | `scripts/elastic_local.py` |
+
+Only metadata is downloaded: never the recordings or the video the cards describe. The cards are
+other people's text. They are read locally to build the index and are **not redistributed**: what is
+in git is table ids (public), questions written here or by a local model, grades with one-line reasons
+written by a local model, and in the hand-label sheet an excerpt of at most 300 characters of the
+generated summary per table.
+
+The live check (`vxfind/mcp/hub.py`) sends one request per table to the Hub's public metadata
+endpoint with the table's public id and a generic client name. No user text and no identity is sent.
+It stays under 420 requests per 300 seconds (the Hub allows 500).
+
+The local Elasticsearch listens on 127.0.0.1 only, with its security features switched off because
+nothing else can reach it. Do not use that configuration on a network.
+
+The access policy (`vxfind/eval/access_policy.json`, under this folder and so not in git) is **declared
+for this project**: the three owners that appear most often in results are treated as restricted to one
+group so that the leak tests have something to catch. It says nothing about those owners or their
+datasets, which is why they are not named in git or in the report.

@@ -1,0 +1,123 @@
+E11 - EVALUATING THE EVALUATION
+===============================
+Owner: the intern. Month 4 (weeks 15-16), repeated when a query set or the judge changes.
+Depends on: E02-E06. Needed by: E12 (the gate's thresholds), every claim in the report.
+
+As built
+--------
+Status: BUILT and run on dev and test. Results: REPORT.md, "Can these numbers be trusted".
+Code: vxfind/eval/meta.py; scripts/vxfind_eval.py (meta).
+Differences from the plan below:
+- R8's one-page trust statement is the report section itself, not a separate page.
+- R1 (the judge) is answered in E05 with a held-out measurement and three rubric versions.
+- What it found, in words: large planted faults are seen on every set, on dev and on test. A fault
+  of one result in ten is at the edge of what the sets can see. Reordering the top ten does not move
+  nDCG on the written needs significantly, because the judge's grades are nearly two-valued there:
+  set C measures WHICH tables are shown far better than their order, and the order is measured by
+  set B. The model-written set ranks configurations differently from the other two.
+Further limits: no topic-set-size analysis and no judge-swap (the stretch goals).
+(end of as built)
+
+Job
+---
+You have query sets, labels, metrics and tests. Before the team stakes release decisions on
+them, test the instrument itself. Four questions, each answered by a measurement:
+
+  1. Does the judge agree with truth that no model produced?            (done in E05; cited here)
+  2. Does the evaluation notice a system that was made worse on purpose?
+  3. How small a difference can this many queries show?
+  4. Do the query sets rank systems the same way?
+
+If the answer to 2 is "not always" or the answer to 3 is "only large ones", the result tables
+say less than they appear to, and the report must say so next to them.
+
+Requirements
+------------
+R1  Planted faults (meta.degraded). From the serving configuration's stored run, make worse
+    copies WITHOUT searching again:
+      one_random       one of the ten replaced by a random table        (a small fault)
+      half_random      five of the ten replaced by random tables        (a large fault)
+      second_page      ranks 11-20 shown as if they were 1-10
+      shuffled_top10   the same ten in random order
+      reversed_top10   the same ten in reverse order
+    Score each against the original, paired, on each set's headline metric.
+R2  Detection (meta.detected). A fault is "seen" on a set when the difference is negative and
+    the randomization p-value is below 0.05. Report per fault and per set: difference,
+    interval, p, seen or not.
+R3  What must happen, and what a miss means:
+      half_random, second_page   must be seen on every set. A miss means the set or its labels
+                                 cannot support any conclusion.
+      one_random                 may be missed. A miss here is the size of the evaluation's
+                                 blind spot: a change that ruins one result in ten is invisible.
+      shuffled / reversed        must be seen by rank-aware metrics (mrr, ndcg) and must NOT
+                                 change set metrics (fit@10, precision@10). This is a control:
+                                 a metric that moves when it should not is broken.
+R4  Run R1-R3 on dev and on test. The conclusions must hold on both.
+R5  Power (meta.power). From the standard deviation of per-query paired differences between
+    two real configurations (plain fusion and the serving one) and the number of queries:
+    the smallest true difference detectable with 80% power at 5%, per set; and the number of
+    queries needed to detect a difference of 0.05 and of 0.02. This number is the honest
+    answer to "is 0.01 better real?" and sets the gate's thresholds (E12).
+R6  Agreement between query sets (meta.set_agreement). Rank all configurations of E06 by each
+    set's headline metric; report Kendall's tau between the rankings of A and B, A and C, B and
+    C, and each set's top three. Interpretation is part of the deliverable:
+      near 1    the cheap sets (computed, model-written) can stand in for the costly one
+      near 0    a gain on one set says nothing about another: all sets must be run and reported
+      negative  the sets reward opposite behaviour (expected here between exact attribute
+                needs and task needs); the serving choice is a trade and must be stated as one
+R7  The known bias of the model-written set, measured: B rewards lexical overlap with indexed
+    text. Compare the ranking of {bm25, vectors, fused} on B with their ranking on C. If B
+    favours lexical retrieval and C does not, say so; B is then a regression check for
+    "can a described table be found", not a measure of search quality.
+R8  A one-page trust statement for the report, generated from R2, R5, R6 and E05: what the
+    evaluation can see, what it cannot, and at what size of effect.
+
+Implementation instructions
+---------------------------
+1. Degradations operate on stored runs: {qid: {ids, families}} -> a modified copy. Use a fixed
+   seed. For random replacements draw from all table ids of the catalog.
+2. Reuse per_query and compare from the harness; the meta-evaluation must use exactly the
+   scoring code the experiments use, or it tests something else.
+3. For the control in R3, compare the per-query fit@10 of the original and of the shuffled
+   copy value by value; they must be identical, not merely close.
+4. Power: z(0.975) + z(0.8) = 2.80; smallest detectable difference = 2.80 x sd / sqrt(n);
+   queries needed for a difference d = (2.80 x sd / d)^2. Implement the normal quantile; do
+   not hard-code 2.80.
+5. For R6 build the table {configuration: {set: headline mean}} from the retrieval evidence
+   file, not by re-scoring.
+6. Run: python scripts/vxfind_eval.py meta
+
+Deliverables
+------------
+vxfind/eval/meta.py; the meta stage of scripts/vxfind_eval.py; verification/vxfind_meta.json;
+report section "Can these numbers be trusted".
+
+Acceptance
+----------
+- Large planted faults are seen on every set, on dev and on test; if one is not, the report
+  says which set failed and that set's results are marked as unreliable.
+- The order-only faults leave set metrics exactly unchanged.
+- Each result table in the report carries the smallest detectable difference for its set.
+- The agreement between query sets is reported with its interpretation in words.
+
+Pitfalls
+--------
+- Only planting catastrophic faults. Everyone detects random results; the useful information
+  is the smallest fault you can see.
+- Reporting power from the variance of scores instead of the variance of paired differences
+  (far too pessimistic for a paired design).
+- Treating a high tau between two model-derived sets as validation of both.
+- Doing this once. A new query set, a new judge prompt or a much better system changes all
+  four answers.
+
+Stretch
+-------
+- Topic-set-size analysis: recompute detection with random halves and quarters of each set.
+- Stability of the system ranking under resampling of queries (how often does the winner change).
+- Judge-swap: rescore set C with the second judge's labels and compare the system ranking.
+
+References
+----------
+Sakai on topic set size design and statistical power in IR evaluation; Voorhees on the
+stability of system rankings under different assessors; recent work showing that rankings from
+synthetic benchmarks can disagree with those from human-written queries (arXiv 2508.11758).

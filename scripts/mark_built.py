@@ -9,8 +9,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from built_notes_vxfind import NOTES as VXFIND_NOTES
+
 ROOT = Path(__file__).resolve().parents[1]
 BEGIN, END = "As built", "(end of as built)"
+# Where a requirement file may be: the current job tasks, then the archived ones.
+FOLDERS = ("system", "eval", "archive/agent", "archive", "")
 
 NOTES: dict[str, str] = {
     "04_diagnostic_reasoning_and_planning.txt": """\
@@ -261,8 +265,8 @@ twice is not guaranteed to be identical on other hardware.""",
 
 
 def main() -> int:
-    for name, note in NOTES.items():
-        path = ROOT / "requirements" / name
+    for name, note in {**NOTES, **VXFIND_NOTES}.items():
+        path = next(p for p in (ROOT / "requirements" / d / name for d in FOLDERS) if p.exists())
         text = path.read_text(encoding="utf-8")
         if BEGIN in text and END in text:
             head, rest = text.split(BEGIN, 1)

@@ -1,0 +1,127 @@
+E01 - LOOK FIRST: FAILURE ANALYSIS BEFORE ANY METRIC
+====================================================
+Owner: the intern. Month 1 (weeks 1-2, presented in week 4), then repeated after every release.
+Depends on: a running index (S2) and BM25 search (S3). Needed by: every later eval task.
+
+As built
+--------
+Status: PARTLY DONE. The taxonomy (evals/vxfind/failure_taxonomy.md) was written by the builder from
+the runs in this repository, with real examples; the generated part (scripts/vxfind_failures.py ->
+verification/vxfind_failures.json, REPORT.md "Where the serving configuration fails") is built.
+Differences from the plan below:
+- R1 (100 rows read end to end with a tally sheet) and R2's count of 50 needs were not done as
+  written: 40 needs were written before any result was seen, and the catalog was studied through
+  its distributions and through the first searches, not through a row-by-row sheet.
+- R7's sign-off by a team did not happen; the four grades are the builder's.
+- The value of looking first showed immediately: the function-word fault (F1) and the
+  contradiction-blind judge were both found by reading results, not by a metric.
+(end of as built)
+
+Job
+---
+Before choosing a metric, find out how this system actually fails, by reading. Produce a
+taxonomy of failures with real examples and counts, and for each failure say which later
+evaluation task will be able to see it. An evaluation built without this step measures what was
+convenient, and the team discovers the real failures from users.
+
+Why you start here
+------------------
+You do not yet know what "bad" looks like for this catalog. It is not what a textbook says. On
+this catalog the first search ever run for "a Franka arm opening a drawer" returned a table
+whose entire name is "a". No ranking metric was needed to see it, and no ranking metric would
+have told you why. Reading did.
+
+Requirements
+------------
+R1  Read 100 random catalog rows completely: the raw card, the parsed record, the generated
+    summary. For each row note: does the summary say what the table holds? Could you tell what
+    task was recorded? What would you search for to find it? What is missing?
+    Deliverable: a sheet with one line per row and a tally (for example: task not stated
+    anywhere; name is the only clue; description is the template; schema missing; scratch).
+R2  Write 50 needs in a newcomer's words BEFORE running any of them (these become part of set C
+    in E02). Then run each against the current system and read the top ten.
+R3  For every result that should not be there, write one line: what is wrong with it. Do not
+    use categories yet. Write what you see.
+R4  Open coding, then grouping. Group the lines into failure types. Keep going until new
+    results stop producing new types. Expect ten to fifteen types. For this catalog the list
+    will include at least:
+      F1  function or request words matched against names ("a", "data", "test")
+      F2  right robot, wrong task (the need's task is not stated anywhere in the table)
+      F3  right task words, wrong robot or wrong size
+      F4  near-identical copies fill the list (one recording session, forty tables)
+      F5  scratch tables outrank real ones
+      F6  a stated number is ignored ("at least 200 episodes" returns tables with 10)
+      F7  word collision with another meaning ("mask" for MRI masks -> image-mask datasets)
+      F8  nothing in the catalog fits, and the system shows ten tables anyway
+      F9  the table fits but its address is dead, moved, or it has changed
+      F10 the table fits but the person may not see or use it
+      F11 the reason given for a table states something the table does not say
+      F12 the best table exists but is beyond the first ten
+R5  Count. For each type: in how many of the 50 needs it appears, and how many of the 500
+    results it accounts for. A type that appears twice is an anecdote; one that appears in a
+    third of the needs is a requirement for the search engineer.
+R6  Map each type to the measurement that will see it and to the stage that could fix it:
+      F1 -> E06 (a setting, measured on all sets)         fix: S3 R4
+      F2, F3 -> E02 set A (computed truth), E04 (judge)   fix: understand, rerank
+      F4 -> repeat@10 in E06                              fix: collapse
+      F5 -> E06                                           fix: scratch demotion
+      F6 -> set A, E07 (reading of the need)              fix: understand (hard filters)
+      F7, F8 -> set D, E07 (abstention)                   fix: select
+      F9 -> E08                                           fix: live check
+      F10 -> E09                                          fix: filters at engine and servers
+      F11 -> E07 (groundedness)                           fix: select prompt, answer check
+      F12 -> E06 R9 (found in first k)                    fix: fusion, window, "return more"
+    A failure type with no measurement is a gap in the evaluation plan; say so.
+R7  Agree on the meaning of "relevant" with the team, in four grades, using twenty of your
+    examples as the reference set:
+      3  meets the need: robot, task and every stated requirement match what the table says
+      2  usable: task or robot matches, nothing contradicts, one requirement is unconfirmed
+      1  related only: same robot or same kind of task, not what was asked; or a contradiction
+      0  not relevant, or the table says too little to tell
+    The hard cases decide the rubric: a table that does not say what task it shows cannot get
+    more than 1 for a need about a task. Write the hard cases down; they go into the judge
+    prompt (E04) and the labelling guide (E05).
+R8  Repeat a small version after every release: the twenty worst-scoring dev queries, read by a
+    person, with the taxonomy updated when a new type appears.
+
+Implementation instructions
+---------------------------
+1. Rows: sample with a fixed seed from data/vxfind/old/tables.parquet; write the sheet as CSV
+   (table_id, what the summary says, what is missing, your tags). Do not skim: the tally is only
+   as good as the reading.
+2. Needs: write all 50 in one sitting, in a text file, with the date and a note that no result
+   was seen. Vary them: a robot only; a task only; a size; a camera; a benchmark's name; vague
+   ("something for sorting"); impossible. Use the words a newcomer would use, including sloppy ones.
+3. Running: use the plain fused retriever with every optional stage off. You are looking at the
+   system's raw behaviour.
+4. For the generated part of this task, python scripts/vxfind_failures.py lists, for the serving
+   configuration on the dev queries: the lowest-scoring queries with what was returned and the
+   judge's reason for each wrong table, and counts of the failure types that code can detect
+   (scratch in the top ten, repeated family, wrong robot on attribute needs, unjudged tables).
+   It does not replace reading; it tells you where to read.
+5. Present the taxonomy with three real examples per type. People remember examples.
+
+Deliverables
+------------
+- evals/vxfind/failure_taxonomy.md: the types, examples, counts, and the mapping of R6.
+- The 50 needs (in evals/vxfind/queries/C_written.txt).
+- The grade definitions with their hard cases (in vxfind/eval/judge.py and E05's guide).
+- verification/vxfind_failures.json from the script, for the current serving configuration.
+
+Acceptance
+----------
+- Every failure type has at least three real examples with table ids.
+- Every type is mapped to a measurement or declared a gap.
+- The team has signed off the four grades on the twenty reference examples.
+
+Pitfalls
+--------
+- Categories first. If you start from a list of categories, you will find those categories.
+- Reading only the top three. Half of this catalog's problems are at ranks four to ten.
+- Fixing while reading. Note it; the fix is the search engineer's and must be measured.
+- Treating your 50 needs as what users ask. They are your guess until the roll-out (E12).
+
+References
+----------
+Error-analysis-first evaluation practice; qualitative open coding; "Who Validates the
+Validators" on how grading criteria shift while grading (which is why R7 fixes them with examples).

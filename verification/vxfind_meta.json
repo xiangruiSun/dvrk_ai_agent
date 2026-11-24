@@ -1,0 +1,448 @@
+{
+ "dev": {
+  "queries": {
+   "A": 31,
+   "B": 57,
+   "C": 18,
+   "D": 11
+  },
+  "planted_faults": {
+   "one_random": {
+    "A": {
+     "metric": "fit@10",
+     "difference": -0.0194,
+     "ci95": [
+      -0.0323,
+      -0.0065
+     ],
+     "p": 0.0317,
+     "seen_as_a_loss": true
+    },
+    "B": {
+     "metric": "mrr@10",
+     "difference": -0.0439,
+     "ci95": [
+      -0.0994,
+      -0.0029
+     ],
+     "p": 0.1233,
+     "seen_as_a_loss": false
+    },
+    "C": {
+     "metric": "ndcg@10",
+     "difference": -0.0733,
+     "ci95": [
+      -0.1004,
+      -0.0484
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    }
+   },
+   "half_random": {
+    "A": {
+     "metric": "fit@10",
+     "difference": -0.0839,
+     "ci95": [
+      -0.1258,
+      -0.0484
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    },
+    "B": {
+     "metric": "mrr@10",
+     "difference": -0.3356,
+     "ci95": [
+      -0.452,
+      -0.2244
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    },
+    "C": {
+     "metric": "ndcg@10",
+     "difference": -0.3076,
+     "ci95": [
+      -0.3874,
+      -0.2319
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    }
+   },
+   "second_page": {
+    "A": {
+     "metric": "fit@10",
+     "difference": -0.0581,
+     "ci95": [
+      -0.1065,
+      -0.0097
+     ],
+     "p": 0.0375,
+     "seen_as_a_loss": true
+    },
+    "B": {
+     "metric": "mrr@10",
+     "difference": -0.5401,
+     "ci95": [
+      -0.6552,
+      -0.423
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    },
+    "C": {
+     "metric": "ndcg@10",
+     "difference": -0.1453,
+     "ci95": [
+      -0.257,
+      -0.0384
+     ],
+     "p": 0.0216,
+     "seen_as_a_loss": true
+    }
+   },
+   "shuffled_top10": {
+    "A": {
+     "metric": "fit@10",
+     "difference": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "seen_as_a_loss": false
+    },
+    "B": {
+     "metric": "mrr@10",
+     "difference": -0.333,
+     "ci95": [
+      -0.4449,
+      -0.2174
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    },
+    "C": {
+     "metric": "ndcg@10",
+     "difference": -0.0298,
+     "ci95": [
+      -0.0761,
+      0.0108
+     ],
+     "p": 0.2065,
+     "seen_as_a_loss": false
+    },
+    "control_fit@10_changed": false
+   },
+   "reversed_top10": {
+    "A": {
+     "metric": "fit@10",
+     "difference": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "seen_as_a_loss": false
+    },
+    "B": {
+     "metric": "mrr@10",
+     "difference": -0.4302,
+     "ci95": [
+      -0.5492,
+      -0.31
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    },
+    "C": {
+     "metric": "ndcg@10",
+     "difference": -0.0552,
+     "ci95": [
+      -0.1065,
+      -0.0048
+     ],
+     "p": 0.0553,
+     "seen_as_a_loss": false
+    },
+    "control_fit@10_changed": false
+   }
+  },
+  "power_from_serving_vs_rrf": {
+   "A": {
+    "metric": "fit@10",
+    "queries": 31,
+    "sd_of_paired_differences": 0.0892,
+    "smallest_detectable_difference": 0.0449,
+    "queries_needed_for_0.05": 25,
+    "queries_needed_for_0.02": 157
+   },
+   "B": {
+    "metric": "mrr@10",
+    "queries": 57,
+    "sd_of_paired_differences": 0.1299,
+    "smallest_detectable_difference": 0.0482,
+    "queries_needed_for_0.05": 53,
+    "queries_needed_for_0.02": 331
+   },
+   "C": {
+    "metric": "ndcg@10",
+    "queries": 18,
+    "sd_of_paired_differences": 0.1264,
+    "smallest_detectable_difference": 0.0835,
+    "queries_needed_for_0.05": 51,
+    "queries_needed_for_0.02": 314
+   }
+  }
+ },
+ "test": {
+  "queries": {
+   "A": 29,
+   "B": 53,
+   "C": 22,
+   "D": 9
+  },
+  "planted_faults": {
+   "one_random": {
+    "A": {
+     "metric": "fit@10",
+     "difference": -0.0207,
+     "ci95": [
+      -0.0345,
+      -0.0069
+     ],
+     "p": 0.0289,
+     "seen_as_a_loss": true
+    },
+    "B": {
+     "metric": "mrr@10",
+     "difference": -0.1343,
+     "ci95": [
+      -0.2286,
+      -0.0553
+     ],
+     "p": 0.0021,
+     "seen_as_a_loss": true
+    },
+    "C": {
+     "metric": "ndcg@10",
+     "difference": -0.0729,
+     "ci95": [
+      -0.0957,
+      -0.0522
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    }
+   },
+   "half_random": {
+    "A": {
+     "metric": "fit@10",
+     "difference": -0.0655,
+     "ci95": [
+      -0.1138,
+      -0.0241
+     ],
+     "p": 0.0075,
+     "seen_as_a_loss": true
+    },
+    "B": {
+     "metric": "mrr@10",
+     "difference": -0.2716,
+     "ci95": [
+      -0.3875,
+      -0.1631
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    },
+    "C": {
+     "metric": "ndcg@10",
+     "difference": -0.3763,
+     "ci95": [
+      -0.42,
+      -0.3321
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    }
+   },
+   "second_page": {
+    "A": {
+     "metric": "fit@10",
+     "difference": -0.0552,
+     "ci95": [
+      -0.1,
+      -0.0103
+     ],
+     "p": 0.0284,
+     "seen_as_a_loss": true
+    },
+    "B": {
+     "metric": "mrr@10",
+     "difference": -0.5055,
+     "ci95": [
+      -0.6324,
+      -0.369
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    },
+    "C": {
+     "metric": "ndcg@10",
+     "difference": -0.3599,
+     "ci95": [
+      -0.4671,
+      -0.25
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    }
+   },
+   "shuffled_top10": {
+    "A": {
+     "metric": "fit@10",
+     "difference": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "seen_as_a_loss": false
+    },
+    "B": {
+     "metric": "mrr@10",
+     "difference": -0.2616,
+     "ci95": [
+      -0.3734,
+      -0.153
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    },
+    "C": {
+     "metric": "ndcg@10",
+     "difference": -0.0339,
+     "ci95": [
+      -0.0716,
+      -0.0
+     ],
+     "p": 0.0846,
+     "seen_as_a_loss": false
+    },
+    "control_fit@10_changed": false
+   },
+   "reversed_top10": {
+    "A": {
+     "metric": "fit@10",
+     "difference": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "seen_as_a_loss": false
+    },
+    "B": {
+     "metric": "mrr@10",
+     "difference": -0.4504,
+     "ci95": [
+      -0.5547,
+      -0.3455
+     ],
+     "p": 0.0,
+     "seen_as_a_loss": true
+    },
+    "C": {
+     "metric": "ndcg@10",
+     "difference": -0.0317,
+     "ci95": [
+      -0.0794,
+      0.014
+     ],
+     "p": 0.2055,
+     "seen_as_a_loss": false
+    },
+    "control_fit@10_changed": false
+   }
+  },
+  "power_from_serving_vs_rrf": {
+   "A": {
+    "metric": "fit@10",
+    "queries": 29,
+    "sd_of_paired_differences": 0.1187,
+    "smallest_detectable_difference": 0.0618,
+    "queries_needed_for_0.05": 45,
+    "queries_needed_for_0.02": 277
+   },
+   "B": {
+    "metric": "mrr@10",
+    "queries": 53,
+    "sd_of_paired_differences": 0.1156,
+    "smallest_detectable_difference": 0.0445,
+    "queries_needed_for_0.05": 42,
+    "queries_needed_for_0.02": 263
+   },
+   "C": {
+    "metric": "ndcg@10",
+    "queries": 22,
+    "sd_of_paired_differences": 0.0674,
+    "smallest_detectable_difference": 0.0402,
+    "queries_needed_for_0.05": 15,
+    "queries_needed_for_0.02": 90
+   }
+  }
+ },
+ "agreement_between_query_sets_dev": {
+  "configurations": 25,
+  "best_by_set": {
+   "A": [
+    "knn_nomic",
+    "rrf_names_match_function_words",
+    "rrf_c100"
+   ],
+   "B": [
+    "bm25_no_summary",
+    "bm25",
+    "rrf_scratch_0.5_described_1.5"
+   ],
+   "C": [
+    "rrf_scratch_0.2",
+    "rrf_scratch_0.5",
+    "rrf_no_collapse"
+   ]
+  },
+  "tau_A_B": 0.02,
+  "tau_A_C": 0.653,
+  "tau_B_C": 0.193
+ },
+ "configurations_ranked": {
+  "A": [
+   "knn_nomic",
+   "rrf_names_match_function_words",
+   "rrf_c100",
+   "rrf",
+   "rrf_c10",
+   "rrf_no_collapse"
+  ],
+  "B": [
+   "bm25_no_summary",
+   "bm25",
+   "rrf_scratch_0.5_described_1.5",
+   "rrf_described_2",
+   "rrf_described_1.5",
+   "bm25_no_schema"
+  ],
+  "C": [
+   "rrf_scratch_0.2",
+   "rrf_scratch_0.5",
+   "rrf_no_collapse",
+   "rrf_c100",
+   "rrf_w200",
+   "rrf"
+  ]
+ },
+ "ran": "2026-11-23 22:28"
+}

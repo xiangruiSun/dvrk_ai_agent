@@ -1,174 +1,237 @@
-DVRK AGENT TOOLS - REQUIREMENTS OVERVIEW
-========================================
+TRAINING-DATA FINDER (vxfind) - OVERVIEW OF THE JOB TASKS
+==========================================================
 
-Status
-------
-BUILT. All fifteen tasks and the retrieval system (requirements/rag) are built and verified on
-real data. Each requirement file starts with an "As built" block that says what differs from the
-plan written below it; the plan itself is left as it was written. The measured results are in
-verification/REPORT.md. Not verified, and said so where it applies: the ROS 2 backend of task 14,
-anything on a physical robot, and the public mode behind a tunnel.
+Read this file first. It says what is being built, for whom, who builds which part, and where
+each job task is written down. The job tasks themselves are in requirements/system/ (the
+engineering team) and requirements/eval/ (the evaluation, built from nothing by one intern).
 
-Purpose
--------
-Role-scoped AI agent tools for operating and servicing a da Vinci Research Kit (dVRK) in a
-surgical-robotics lab: an edge node next to the robot controller, used by the operator who runs
-trials and by the engineer who calibrates and repairs the system, with a safety lead who approves
-anything that moves or changes a limit, and a remote support team that sees fleet health without
-seeing the lab's data. Everything here runs on public data with a local model and a kinematic
-twin of the arm. It is a research demonstration. It is not connected to a robot, it is not a
-medical device, and nothing in it is a statement about clinical use.
+The earlier job tasks of this repository (fifteen agent tasks around a surgical-robot console and
+eleven retrieval tasks over robot documentation) were reviewed with the team's mentor. The
+verdict: several of them were not what a company with clients would staff. They describe an
+agent for a robot nobody is paying for yet, and they evaluate with labels derived from document
+structure, not from what a user asked. They are kept, with their code and their evidence, under
+requirements/archive/. What follows replaces them as the main line of work.
 
-Engagement (to be stated by the project owner)
-----------------------------------------------
-The company context of this work (which organisation, which client, which dates, which part was
-the author's) is not written here yet. It will be filled in by the project owner and nothing in
-these files should be read as describing it.
 
-How to read these files
+1. The problem
+--------------
+A new team member's first real task is to train or fine-tune a model. Before they can, they
+have to find data. The team's training data is a catalog of about 100,000 "tables" (datasets of
+recorded robot episodes), each with an address (URL), a schema (columns: cameras, joint states,
+actions), a size, an owner, and sometimes a description. The catalog is the pain:
+
+  - Most tables say nothing about themselves. About 5 in 100 have a description a person wrote.
+  - Nearly one in five is scratch work with a name like "test_3" or "record-tmp".
+  - Tables come in families of near-identical copies (the same recording session uploaded as
+    fifty tables). The largest family has nearly two hundred members.
+  - The robot is spelled in more than 1,200 ways.
+  - Tables are deleted, made private, renamed to another owner and changed, every day. Any list
+    of tables is out of date by the time it is read.
+  - Using a table for training needs a mentor's approval, and some tables must not be shown to
+    people outside one group at all.
+
+Today a newcomer asks around, gets a few addresses in chat, finds that two are dead, and spends
+days before the first training run. The mentor's time goes into answering the same question for
+every newcomer.
+
+The product: an assistant the newcomer asks in plain words ("SO-101 pick-and-place, a few
+hundred episodes, with a wrist camera"). It returns at most ten tables with working addresses
+and one sentence each on why they fit, says honestly when nothing fits, and files the request
+for the mentor's approval when asked. Behind it: retrieval over the catalog (RAG), a language
+model that decides which tables to show, and live checks through MCP servers, because the
+retrieval index and the table list are always behind the real world.
+
+How we know it works is the hard part and the focus of this repository. "It returned ten tables"
+is not a result. Which ten, compared to what, judged by whom, how sure, and would we notice if
+it got worse next month: that is the evaluation, and it did not exist. It is built here from
+zero.
+
+
+2. Who uses it
+--------------
+  newcomer   a new engineer (ours, or a client's engineer being onboarded to the platform).
+             Asks for data, reads descriptions, asks for access. May see only what their groups
+             may see.
+  mentor     approves or refuses requests to use a table for training. Never approves their own.
+  the team   reads the evaluation reports and decides what ships.
+
+There are no real users in this repository. Where a result depends on user behaviour, a script
+plays the user and the report says SCRIPTED. Where a policy is needed (who may see what), it is
+DECLARED for the project and labelled so. Where a fault is needed to test a reaction (a table
+that vanished), it is INJECTED and labelled so. The catalog itself is real.
+
+
+3. The data: a real catalog standing in for the company's
+---------------------------------------------------------
+The catalog is the public Hugging Face Hub's collection of robot-learning datasets in the
+LeRobot format: about 100,000 tables from 9,000 owners, describing 17 million episodes and 6
+billion frames, roughly 50 TB of data and video by the tables' own declaration. It has every
+property listed in section 1, at real scale, and it changes daily (the measured figures are in verification/REPORT.md, "Write path"; the ones
+here are rounded). Two snapshots a month apart
+give real growth and real change; the live site gives real deletions, moves and gating.
+
+What is downloaded is metadata only (dataset cards and listings, about 2 GB), never the data or
+the video. Nothing downloaded is redistributed: data/ is not in git. See data/README.md.
+
+Three views of the same catalog, deliberately at three ages, as in production:
+
+  search index       built from the older snapshot (about one month old)
+  catalog database   loaded from the newer snapshot (the system of record, hours to days old)
+  the site           asked live, per table, at answer time
+
+
+4. Architecture
+---------------
+
+  WRITE PATH (batch, then incremental)                       READ PATH (per question)
+
+  catalog dump + listing + pipeline docs                     need in plain words
+            |                                                       |
+            v                                                       v
+  Spark job: select, parse cards,                            understand (optional, small model):
+  extract schema, describe, flag scratch,                    robot, size, cameras -> filters
+  group families, validate, diff vs previous                        |
+            |                                                       v
+            v                                                BM25 (names, descriptions, columns)
+  embeddings (cached by content hash)                        + kNN (summary vectors)
+            |                                                       |
+            v                                                       v
+  Elasticsearch index version  <------ alias switch          reciprocal rank fusion (RRF)
+  catalog database (SQLite here)                                    |
+                                                                    v
+                                                             collapse families, demote scratch
+                                                                    |
+                                                                    v
+                                                             rerank (optional, model)
+                                                                    |
+                                                                    v
+                                                             select <= 10 with reasons (model)
+                                                                    |
+                                                                    v
+  MCP servers:                                               live check through MCP (vx-site):
+    vx-catalog  the catalog database                         drop gone, follow moved, flag changed
+    vx-site     the hosting site, live                              |
+    vx-access   requests and approvals                              v
+                                                             answer: <= 10 addresses + why
+                                                             (or: nothing fits, and what is missing)
+
+Two front ends over the same parts: a fixed pipeline (the steps above in code, at most one model
+call) and an agent (a tool-calling loop that decides the steps itself, can take follow-up
+questions and file an access request). Both are checked by code before a person sees the answer.
+
+
+5. The team and who owns what
+-----------------------------
+A senior engineer leads four to five engineers for eight months. One intern (a new graduate,
+six months) owns the evaluation. The split below is how the job tasks are written.
+
+  Lead (senior)          architecture, the serving contract, capacity plan, release decisions,
+                         review of every design below. Owns S6 and the roadmap.
+  Engineer A (data)      sources and the catalog record (S1); the Spark write path (S2).
+  Engineer B (search)    the index and the read path: analyzers, hybrid retrieval, fusion,
+                         collapse, rerank, select (S3).
+  Engineer C (platform)  the MCP servers, their schemas, authentication, rate limits (S4).
+  Engineer D (agent)     the agent, its tools, the answer check, the fixed pipeline (S5).
+  Engineer E (serving)   API, logging, the feedback log, deployment and operations (S6, with the lead).
+  Intern (evaluation)    everything under requirements/eval/: E00-E12. Starts with nothing:
+                         no queries, no labels, no metrics code, no judge, no gate.
+
+The intern does not tune the system. They build the instrument that says whether a change by
+engineers A-E made things better, and they are the person who says "we cannot tell" when the
+instrument cannot.
+
+
+6. Roadmap (months 1-8)
 -----------------------
-One file per job task. Each file states the job, the numbered requirements, the planned code, the
-real data it runs on, and the command that verifies it. Measured results are never typed into
-these files: they will be written by scripts/verify.py into verification/*.json and summarised in
-verification/REPORT.md.
+  Month 1   S1: sources, record model, first Spark job on one snapshot. S3: first index, BM25.
+            Eval E01: read 100 real catalog rows and 50 hand-run searches, write the failure
+            taxonomy. E03: metrics library with tests.
+  Month 2   S2: embeddings with cache, index versions and alias switch. S3: kNN and RRF.
+            Eval E02: the four query sets, splits, the locked test set. E04: pooling and the judge.
+  Month 3   S3: family collapse, scratch demotion, "understand". S4: MCP servers with schemas.
+            Eval E05: judge calibration against computed truth; the hand-label sheet. E06: first
+            full ablation and the rule that chooses the serving configuration.
+  Month 4   S5: the agent and the answer check; the fixed pipeline. S2: incremental sync.
+            Eval E07: reasons (groundedness) and "nothing fits" (abstention). E11: planted faults,
+            power, agreement between query sets.
+  Month 5   Self-test inside the team (dogfood). S6: API, logging, feedback log.
+            Eval E08: freshness, before and after the live check. E09: access and leak tests.
+            E10: agent trajectories.
+  Month 6   Open to the first newcomers. S6: capacity tests, growth plan.
+            Eval E12: feedback -> candidate cases -> labelled cases; the release gate in CI.
+  Month 7   Open to all teams. Weekly evaluation report; the gate blocks releases.
+  Month 8   Hand-over: runbook, on-call, what the evaluation cannot see and how to find out.
 
-Relation to the earlier project
--------------------------------
-The earlier project (ai_agent_tools_deepwise) covers the same concept list for a chest CT service.
-There the agents read records and draft text that a radiologist signs. Here the agents sit beside
-a machine that moves: state changes while the model is thinking, actions take seconds and can be
-cancelled, a physical step cannot be retried or assumed still true after a restart, and the
-knowledge base is engineering documentation, support threads, configuration and telemetry.
-Every concept is kept; every job task and the skill it exercises is different. Three tasks close
-limits the earlier project stated about itself: plan steps that could not use another step's
-output (task 04), an MCP server reachable only over stdio (task 07), and a fleet view across
-sites that was not built (task 13).
+The intern's six months are months 1-6 above; E00 lays their plan out week by week.
 
-Data (all public, all downloaded by scripts, none committed)
-------------------------------------------------------------
-dVRK documentation     dvrk.readthedocs.io, the published user and maintenance documentation
-                       (234 reStructuredText files). Retrieval corpus.
-dVRK issue threads     161 threads of sawIntuitiveResearchKit and dvrk-ros (138 closed), with
-                       205 replies. Most were opened by the maintainers themselves as bug and
-                       enhancement notes; about a fifth by other users. They are not a help-desk
-                       archive, and are described as issue threads, not support cases.
-Retrieval system       The documentation, the threads, the change log and the configuration
-                       schemas are indexed by the package vxrag, specified in requirements/rag/
-                       and called by the agents as a tool.
-dVRK configuration     sawIntuitiveResearchKit/share: 18 JSON Schemas (share/schemas), 10
-                       kinematic files (share/kinematic, including PSM.json and ECM.json), 56
-                       instrument files (share/tool, including LARGE_NEEDLE_DRIVER_400006.json)
-                       12 arm files (share/arm) and 33 system files (share/system) for
-                       simulated arms and systems. The folders jhu-dVRK and jhu-dVRK-Si in that
-                       repository hold only a README: real site configurations live in the
-                       separate dvrk-config repositories and are not used. Used for configuration
-                       validation and for the kinematic twin. GitHub reports no detected licence
-                       for the repository: the licence file must be read before the first
-                       download script is written.
-ROSMA                  Zenodo record 3932964, CC BY 4.0, 22.3 GB in 416 files: recorded dVRK
-                       kinematics (209 CSV files, 1.64 GB, sampled at 50 Hz) with video (207
-                       MP4 files, 20.7 GB) for three training tasks: pea on a peg, post and
-                       sleeve, wire chaser. File names carry an operator prefix. Only the CSV
-                       files are fetched. Which signals each CSV holds (joint, Cartesian, jaw)
-                       is read from the files when they are fetched, and tasks that need a
-                       signal the files do not hold say so in their evidence.
-                       ROSMAG40 (Zenodo 10719748, CC BY 4.0, 3.98 GB) adds gesture annotations
-                       for 22 of the videos.
-SurgicAI episodes      Expert demonstrations (MIT) and AMBF needle-pose scenes (CC BY-SA 4.0)
-                       recorded in the Surgical Robotics Challenge simulator. Policy-side episodes
-                       and ground-truth needle poses.
-Deployment settings    The example calibration, pad-plane and setting files published in
-                       github.com/xiangruiSun/On-Transferring-Surgical-Policies-from-Simulation-
-                       to-Reality (calibration_tcp.json, pad.json, scene_inputs.json,
-                       full_run/setting). That repository states no licence.
-Not used               The recorded trials behind that paper (images, disparities, attempts) are
-                       not public and are not used. If the project owner supplies them, task 08
-                       gains a real labelled set; until then its faults are injected and labelled
-                       as injected.
 
-Robot
------
-No robot and no ROS installation is assumed. The default backend is a kinematic twin written in
-Python from the real dVRK kinematic and instrument files: it integrates commanded poses, applies
-joint limits and reports measured and setpoint poses, which is what the dVRK software's own
-kinematic simulation mode does. It has no contact, no needle and no camera. A second backend
-speaks the CRTK command set over ROS 2 for use on a lab machine; it counts as verified only for
-the runs actually made there. The interface is the same for both (task 14).
+7. Where everything is
+----------------------
+  requirements/system/S1..S6     the engineering job tasks (team scope)
+  requirements/eval/E00..E12     the evaluation job tasks (intern scope, 0 to 1)
+  requirements/archive/          the earlier job tasks, kept as they were
+  vxfind/catalog                 the record model and the catalog database
+  vxfind/ingest                  Spark job, embeddings, index build and sync
+  vxfind/search                  the read path
+  vxfind/mcp                     the three MCP servers, the live check, the access store
+  vxfind/agent.py                the agent, the answer check, the fixed pipeline
+  vxfind/eval                    the evaluation library
+  evals/vxfind                   query sets, judgments, cases, gate rules (in git)
+  scripts/vxfind_*.py            the runs that produce the evidence
+  verification/vxfind_*.json     evidence, written by scripts only
+  verification/REPORT.md         every measured number, generated from the evidence
+  tests/test_vxfind.py           hermetic tests (no engine, no network, no model)
 
-Model
------
-qwen3:14b and qwen3:4b served by Ollama on the local GPU. The language model is never inside the
-control loop. The on-prem profile blocks any outbound call that is not to an allowed host.
+Rule for numbers: a figure appears in REPORT.md only if a script measured it and wrote it to a
+JSON file. Nothing is typed in by hand. A first run that exposed a wrong design is kept.
 
-Job tasks and the agent skills each one covers
-----------------------------------------------
-Numbers in brackets refer to the concept list (C1-C21) and lab list (L1-L6) at the end.
 
-01 Tool calling against a live system     L1, C1, C2, C4, C9, C10, C12, C17
-02 Structured change proposals            L2, C11
-03 Event-driven trial runtime             L3, C3, C16, C17
-04 Diagnostic reasoning and planning      C5, C6, C7, C8
-05 Runbooks as skills                     L4, C13
-06 Memory and technical retrieval         C14
-07 MCP as the robot boundary              L5, C15
-08 Multi-agent incident triage            L6, C18, C19, C20
-09 Trial pipeline                         dVRK focus: taking a policy to a physical trial
-10 Policy onboarding and episode data     dVRK focus: policy interfaces and training data
-11 Operator access                        dVRK focus: the person who runs trials
-12 Service engineer and safety lead       dVRK focus: calibration, repair, approvals
-13 Remote support and fleet               dVRK focus: support across sites without lab data
-14 Edge deployment beside the robot       dVRK focus: controller network, split compute
-15 Operator console, evaluation gate and production trade-offs     C21
+8. What was read to design this (and what was taken from each)
+--------------------------------------------------------------
+Table and dataset discovery at companies
+  Uber, QueryGPT: an intent step before retrieval narrows the tables searched; specialised
+    agents per step. Taken: "understand" as a separate, measurable stage (S3 R6).
+  LinkedIn, SQL Bot: embedding retrieval over table descriptions; tables without a description
+    are a first-order quality problem; a step that checks the model's table names against the
+    catalog. Taken: generated summaries for every table (S2 R4), ids never taken from the model (S5 R4).
+  Pinterest, text-to-SQL: table summaries are indexed, the model picks K of N retrieved; offline
+    evaluation is a sanity check and real usage decides. Taken: select stage (S3 R9), E12.
+Benchmarks and methods for evaluating retrieval and RAG
+  TARGET (table retrieval benchmark): recall@k of the right table drives everything downstream.
+  TREC pooling and Cranfield practice: depth-k pools, unjudged documents, bias against systems
+    that were not pooled. Taken: E04.
+  UMBRELA and Thomas et al. (LLM relevance judgments, used in the TREC 2024 RAG track): a
+    graded prompt, one document per call, can stand in for assessors for system ranking; less so
+    for absolute scores. Taken: the judge prompt and its limits (E04, E05).
+  ARES: a small human-labelled set (about 150) corrects an automatic judge statistically. Taken:
+    the hand-label sheet as a required deliverable (E05).
+  RAGAS / TruLens "RAG triad": context relevance, groundedness, answer relevance as separate
+    measurements. Taken: E07 measures reasons separately from retrieval.
+  "Who Validates the Validators" (criteria drift): rubrics change as people grade; version the
+    prompt, keep every judgment. Taken: E04 R6.
+  Work on synthetic queries (e.g. arXiv 2508.11758): rankings from synthetic benchmarks can
+    disagree with human ones. Taken: E11 measures the agreement instead of assuming it.
+  Error-analysis-first evaluation practice: look at failures before choosing metrics. Taken: E01.
+Search engineering
+  Elasticsearch documentation on RRF and linear retrievers, rank_constant and rank_window_size.
+    Taken: S3 R5; fusion is done by the caller because the engine's own RRF is a paid feature
+    (verified on the installed engine, see REPORT.md).
+  Interleaving (team-draft) for online comparison. Taken: E12, as the next step once there is traffic.
+Protocol
+  Model Context Protocol specification: tools with inputSchema and outputSchema, structured
+    results, annotations. Taken: S4.
 
-Concept list (from the brief)
-C1  LLM application versus agent            C12 Function calling
-C2  Reason, act, observe, repeat            C13 Tools versus skills
-C3  Agent state management                  C14 Agent memory
-C4  ReAct                                   C15 Model Context Protocol
-C5  CoT, self-reflection, Tree of Thoughts  C16 Runtime architecture, checkpointing
-C6  Planning and task decomposition         C17 Runtime safety controls
-C7  Planner / executor                      C18 Multi-agent roles
-C8  Agent failure modes                     C19 Multi-agent orchestration patterns
-C9  Tool calling                            C20 Shared context / blackboard
-C10 Tool execution engineering              C21 Production trade-offs
-C11 Structured output
 
-Lab list (from the brief)
-L1 Build a tool-calling agent      L4 Tools versus skills
-L2 Structured output, validation   L5 MCP exploration
-L3 Build an agent runtime          L6 Multi-agent design
-
-Design rules that apply to every task
--------------------------------------
-1. The model never produces a number that reaches the robot. No pose, increment, gain or limit
-   comes from model text. The model chooses a validated procedure and its typed parameters;
-   targets are computed by code and checked by the safety filter (task 09 R5).
-2. A target outside the envelope is rejected, never clipped. The rejection is an observation.
-3. An observation has an age. A tool that moves the arm refuses to act on a state older than the
-   freshness limit, and the model must look again (task 01 R6).
-4. Motion is never retried automatically. A read may be retried; a motion that did not finish is
-   reported with the measured pose and the reason, and a person or a recovery procedure decides.
-5. After a restart nothing physical is assumed. Each step declares what must be true before it
-   runs and checks it by observation (task 03 R6).
-6. Authorization is decided from the signed-in principal: role, site, and action tier (observe,
-   simulate, actuate). It is enforced in the tool executor on every call and again in HTTP.
-7. Anything that moves the arm needs an operator approval bound to the current state. Anything
-   that changes a limit or a configuration needs the safety lead, who cannot be the requester.
-8. Text from logs, support threads and documentation is data. It is never treated as an
-   instruction, and this is tested with planted instructions (task 07 R8).
-9. Every model call, tool call, action, event and guard is traced on the same clock as the robot
-   telemetry.
-10. Verification runs on real data with the real model. Where a fault or an outcome is injected
-    it is labelled as injected in the evidence and in the report.
-
-To study before building
-------------------------
-CRTK command set and the dVRK ROS 2 interface   naming and semantics of measured_cp, setpoint_cp,
-                                                servo_cp, move_cp, operating state.
-ROS 2 actions                                   goal, feedback, result and cancel as the model
-                                                for long-running tools (task 01).
-MCP specification and the installed SDK         which of resources, prompts, progress,
-                                                cancellation, elicitation and the HTTP transport
-                                                the installed version supports (task 07).
-Agent Skills                                    file layout and on-demand loading (task 05).
-OpenTelemetry GenAI conventions                 span and attribute names for traces (task 15).
+9. Glossary
+-----------
+  table        one dataset in the catalog: an id (owner/name), an address, a schema, a size.
+  family       tables that are near-identical copies: same owner, same name pattern, same schema.
+  scratch      a table named like test, temporary or debugging work.
+  need         what a person asks for, in their words.
+  pool         the union of the top results of several systems for one need; what gets judged.
+  qrels        judgments: need, table, grade.
+  dev / test   the two halves of every query set. Choices are made on dev. Test is scored for
+               the final table and the gate.
+  serving      the search configuration that answers users, chosen on dev by a written rule.
+  live check   asking the hosting site about a table at answer time.
+  gate         the automated decision whether a change may ship.

@@ -1,0 +1,141 @@
+TASK S3 - THE READ PATH: FROM A NEED TO AT MOST TEN TABLES
+==========================================================
+Owner: Engineer B (search). Reviewer: the lead. Months 1-4. Depends on: S1, S2.
+Needed by: S5 (the agent's search tool), all evaluation tasks. Evaluated by: E06, E07.
+
+As built
+--------
+Status: BUILT and evaluated (E06, E07). Results: REPORT.md, "Retrieval" and "Model stages".
+Code: vxfind/search/engine.py. Tests: tests/test_vxfind.py.
+Differences from the plan below:
+- R4 was not in the first design. It was added after the first search on the real index returned a
+  table named "a" for a question containing "a". The old behaviour is the setting ident_stop=False
+  and is one of the measured configurations.
+- The reranker is a general language model reading summaries, not a cross-encoder.
+- The serving configuration is chosen by E06's rule and stored in evals/vxfind/serving.json; the
+  engine has no opinion about which settings are good.
+- R6 changed after E07 measured it: the reading prompt was rewritten (the first one made the model
+  leave the robot empty), the reader can be the small or the large model, and in "hard" only numbers
+  and the format filter; the robot's name boosts.
+Further limits: the robot is matched as text, not by family, so a need for "Universal Robots" is not
+tied to "ur5e"; the family rules belong to the evaluation and are deliberately not used by search
+(search using the rules that also define set A's truth would make that set circular).
+(end of as built)
+
+Job
+---
+Given a need in plain words, return at most ten tables, best first, fast enough to be used in a
+conversation. The mentor's notes for this path: embedding, Elasticsearch, reranking, return ten
+tables, QPS, RRF, and "return more".
+
+The path is a chain of stages. Each stage is a named setting of one configuration object, so
+that the evaluation can switch any stage on or off and compare. A stage that cannot be switched
+off cannot be shown to help. Nothing in this task decides whether a stage helps: E06 and E07 do.
+
+Requirements
+------------
+R1  One configuration object (vxfind/search/engine.py, SearchConfig): immutable, with every
+    setting below as a field and a method to derive a variant. An experiment is two
+    configurations and nothing else.
+R2  One result object: the ranked hits (id, rank, score, the stored fields, the rank each
+    retriever gave it, a reason if the model wrote one), the time each stage took, what the
+    understanding stage read, notes for the caller, and the candidate ids before the cut (for
+    pooling in the evaluation and for "return more").
+R3  Lexical retrieval. BM25 over name, description, generated summary, column names and robot
+    type. Per-field boosts are settings. Fields are combined by dis_max with a tie-breaker (the
+    best field counts most; a need that matches in two fields gets some credit for the second).
+R4  Identifier fields do not match function words. A need like "a Franka arm opening a drawer"
+    must not return the table whose whole name is "a". FOUND BY RUNNING the first search on the
+    real index: function words are common in running text (and score nothing) but rare in
+    names (and score highly). The need is stripped of function words and request words before
+    it is matched against name, column and robot fields. The old behaviour stays available as a
+    setting so its cost is measured (E06).
+R5  Vector retrieval and fusion. Approximate kNN over the summary vectors of the configured
+    embedding model, with num_candidates as a setting. The two lists are fused by reciprocal
+    rank fusion in the caller: score = sum over lists of 1 / (rank_constant + rank). The depth
+    each retriever is asked for (window) and rank_constant are settings. Fusion is done by the
+    caller because the engine's built-in RRF is not available under the free licence (verified;
+    see REPORT.md); a client-side fusion is also what makes the per-retriever ranks visible.
+R6  Understanding the need (optional; off, soft, hard). A model (small or large: a setting)
+    fills a fixed form from the need through a JSON schema: search words, robot, minimum
+    episodes, frame rate, minimum number of cameras, format. It fills a field only from words
+    in the need; anything not stated is null. The prompt says per field what counts as stated
+    and has a version, which is part of the configuration. In "soft" everything read is a
+    boost. In "hard" the numbers and the format are filters (a number is a fact) and the
+    robot's name is a boost (a name matched as text cannot be trusted to filter: "Universal
+    Robots" and "ur5e" share no word). Generic words ("arm", "robot", "any") are dropped from
+    the robot before it is used. If the model fails or returns something that does not fit the
+    schema, the need is searched as plain text.
+    The first version did none of this well: see the "As built" block and E07.
+R7  The catalog's mess, handled at ranking time:
+      collapse   one table per family in the result; the number of siblings is shown, and the
+                 siblings are one tool call away (S4, related_tables). To keep ten after
+                 collapsing, each retriever is asked for three times the window.
+      scratch    a multiplier below one on tables with a scratch name (a setting).
+      described  a multiplier above one on tables a person described (a setting).
+    None of these is a filter. A table is never made unfindable by a heuristic.
+R8  Reranking (optional; off, small model, large model). The model sees the need and a numbered
+    list of the first rerank_depth summaries and returns the numbers in order. Numbers that are
+    repeated or out of range are dropped; tables the model left out keep their order after the
+    ones it placed. On any failure the order is unchanged and a note says so.
+R9  Selection (optional). The large model sees the need and numbered candidates and chooses at
+    most k, with one reason each, or none, saying what is missing. It may only choose among the
+    numbers it was given. A table id or an address is NEVER taken from model output: the model
+    returns numbers, and ids and addresses are copied from the index.
+R10 Visibility. The caller passes the owners hidden from the current person; they are excluded
+    inside the engine query for both retrievers (a filter, before ranking), not removed from
+    the list afterwards. Removing afterwards leaks through counts, through "return more", and
+    through the candidate list.
+R11 "Return more". k is a setting up to the window; the agent's search tool exposes it as a
+    flag (ten or twenty). How much a longer list helps is measured (E06 R9), because a longer
+    list costs the reader and the model's context.
+R12 Timing. Every stage is timed in every call. Query vectors are cached per (model, text) for
+    the life of the process, bounded.
+
+Implementation notes
+--------------------
+- Start with BM25 alone on the real index and look at twenty results before adding anything.
+  The function-word fault (R4) was visible in the first result list.
+- Keep retrieval, fusion, collapse, rerank and select as separate methods that take and return
+  lists of hits. fuse and collapse are static and tested without an engine.
+- Rerank and select prompts are short and say what "better" means for THIS catalog (names the
+  robot, the task and the size asked for; says nothing about the task -> lower; scratch names
+  last). They are prompts for a model with no memory of this project: state the criteria, do
+  not assume them.
+- Give the model the generated summary cut to about 400 characters per candidate. Twenty
+  candidates then fit comfortably in a small context and the call stays under a few seconds.
+- All model calls use temperature 0 and a JSON schema for the output. Parse defensively anyway.
+
+Code
+----
+vxfind/search/engine.py
+
+Verification
+------------
+python -m pytest tests/test_vxfind.py -q -k "fusion or reorder or reading"
+python scripts/vxfind_eval.py retrieval      (E06)     python scripts/vxfind_eval.py llm_stages   (E07)
+Figures: verification/REPORT.md, sections "Retrieval" and "Model stages".
+
+Acceptance
+----------
+- With every optional stage off, a search needs no model and no network beyond the engine and
+  the embedding model.
+- A model reply with numbers outside the candidate list changes nothing but the note.
+- With hidden owners passed, no hit, no candidate id and no count involves a hidden table (E09).
+- Each stage can be switched independently and the result object says how long it took.
+
+Not built here (team scope)
+---------------------------
+- A trained cross-encoder reranker. The reranker here is a general model reading summaries; a
+  cross-encoder fine-tuned on this catalog's judgments (E04 produces them) is the obvious next
+  step and was not built because it needs a model download nobody asked for.
+- Learned fusion weights (a linear combination tuned on judged queries) as an alternative to RRF.
+- Query suggestions, spelling correction, synonyms for robot names beyond the analyzer.
+- Result caching across users.
+
+Known limits
+------------
+One embedding per table, of a generated summary: a table is as findable as its metadata is
+informative, and for 95% of tables that is name, robot, numbers and column names. The model
+stages add seconds; whether they add enough quality to pay for that is an evaluation result,
+not an assumption (see E07 and the report).

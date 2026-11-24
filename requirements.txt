@@ -7,3 +7,8 @@ pytest==9.2.0
 pyyaml==6.0.2
 starlette==1.10.0
 uvicorn==0.54.0
+# vxfind (training-data finder): Spark write path, Elasticsearch read path
+pyspark==4.3.0
+pyarrow==26.0.1
+pandas==2.3.3
+elasticsearch==9.5.1

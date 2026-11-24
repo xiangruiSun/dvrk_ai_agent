@@ -1,0 +1,386 @@
+qid,need,table_id,url,table_text,your_grade
+C036,I want to train a policy to press buttons or flip switches,ayatakagreentea/eval_policy_output_makeup_container_train_120326_test,https://huggingface.co/datasets/ayatakagreentea/eval_policy_output_makeup_container_train_120326_test,"Dataset eval_policy_output_makeup_container_train_120326_test by ayatakagreentea. Recorded: robot so_follower, 30 fps, 0 episodes, 0 frames, format v3.0. Cameras: front, side. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C003,"looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam",murk1sh/jelly_color_sort_red,https://huggingface.co/datasets/murk1sh/jelly_color_sort_red,"Dataset jelly_color_sort_red by murk1sh. Ongoing pick-and-place dataset.
+Episode Definition:
+Setup: Take a red / pink post-it note and stick it to a surface within the robot's reach.
+Get two red jin jin jellies and put them randomly on the table within the robot's reach.
+1. Take the cloest jelly and",
+C035,Data collected in Isaac Sim or Isaac Lab,indraneelpatil/isaac_sim_pick_lift_sim3,https://huggingface.co/datasets/indraneelpatil/isaac_sim_pick_lift_sim3,"Dataset isaac_sim_pick_lift_sim3 by indraneelpatil. Recorded: 10 fps, 5 episodes, 1452 frames, 1 tasks, format v3.0. Cameras: front, wrist. Action of 4 values. Also: complementary_info.discrete_penalty.",
+C040,quadruped or legged locomotion data,mncai/G1_Dex3_Trash_LocoManipulation,https://huggingface.co/datasets/mncai/G1_Dex3_Trash_LocoManipulation,"Dataset G1_Dex3_Trash_LocoManipulation by mncai. # G1 Dex3 Trash Loco-Manipulation
+Released by **GenON Physical AI LAB**.
+Teleoperated demonstrations of a **Unitree G1** humanoid with **Dex3-1 hands** picking a
+plastic trash bag off the floor and putting it into a bin. Whole-body loco-manipulation:
+",
+C036,I want to train a policy to press buttons or flip switches,kevin-ys-zhang/robomimic_tool_hang_ph,https://huggingface.co/datasets/kevin-ys-zhang/robomimic_tool_hang_ph,"Dataset robomimic_tool_hang_ph by kevin-ys-zhang. **robomimic tool_hang (PH)**, converted to LeRobot v3.0 format with camera images **re-rendered** from the recorded simulator states.
+No robomimic simulation release ships rendered images. This dataset starts from robomimic's robosuite-1.4.1 release ",
+C029,xArm or UFactory datasets of pick and place with multiple camera views,ys903/xarm6_pick_place_50_episodes_red_apple_v1,https://huggingface.co/datasets/ys903/xarm6_pick_place_50_episodes_red_apple_v1,"Dataset xarm6_pick_place_50_episodes_red_apple_v1 by ys903. Recorded: robot UFACTORY Robot, 30 fps, 50 episodes, 19299 frames, 1 tasks, format v3.0. Cameras: front, wrist. Action: J1.pos, J2.pos, J3.pos, J4.pos, J5.pos, J6.pos, gripper.pos.",
+C035,Data collected in Isaac Sim or Isaac Lab,indraneelpatil/isaac_sim_pick_lift_sim,https://huggingface.co/datasets/indraneelpatil/isaac_sim_pick_lift_sim,"Dataset isaac_sim_pick_lift_sim by indraneelpatil. Recorded: 10 fps, 10 episodes, 3126 frames, 1 tasks, format v3.0. Action of 4 values. Also: complementary_info.discrete_penalty.",
+C005,I want teleoperated demonstrations of pouring liquid or beads from one cup into another.,ammiellewb/so101_liquid_pouring,https://huggingface.co/datasets/ammiellewb/so101_liquid_pouring,"Dataset so101_liquid_pouring by ammiellewb. Recorded: robot so_follower, 30 fps, 51 episodes, 53409 frames, 1 tasks, format v3.0. Cameras: front. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C027,metaworld or robomimic simulation datasets,ML-GOD/metaworld_mt50,https://huggingface.co/datasets/ML-GOD/metaworld_mt50,"Dataset metaworld_mt50 by ML-GOD. This dataset contains 50 demonstrations per task from the Meta-world simulation benchmarks. Demonstrations are generated using expert policies.
+Meta-world: https://arxiv.org/abs/1910.10897
+We reposition the camera and flip the rendered images as follow: Recorded: ro",
+C022,Data recorded with a UR5 using a gripper to pick parts out of a bin,gribes02/ur5e_rtde_bt_apple_pick_place_box_2cameras_300ep,https://huggingface.co/datasets/gribes02/ur5e_rtde_bt_apple_pick_place_box_2cameras_300ep,"Dataset ur5e_rtde_bt_apple_pick_place_box_2cameras_300ep by gribes02. Recorded: robot ur5e, 30 fps, 288 episodes, 87124 frames, 1 tasks, format v2.1. Cameras: image, wrist_images. Action: x, y, z, roll, pitch, yaw, gripper.",
+C040,quadruped or legged locomotion data,jmeth/trick-or-treat2,https://huggingface.co/datasets/jmeth/trick-or-treat2,"Dataset trick-or-treat2 by jmeth. Recorded: robot so101_follower, 30 fps, 10 episodes, 5839 frames, 1 tasks, format v3.0. Cameras: top, wrist. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C007,"Which tables have a humanoid robot doing manipulation with both hands, ideally a Unitree G1?",Xense/xtac-umi-g1-clean-plates-with-a-sponge,https://huggingface.co/datasets/Xense/xtac-umi-g1-clean-plates-with-a-sponge,"Dataset xtac-umi-g1-clean-plates-with-a-sponge by Xense. Recorded: robot xtac_umi_g1, 30 fps, 100 episodes, 88861 frames, 1 tasks, format v3.0. Cameras: head_left, head_right, left_tactile_left, left_tactile_right, left_wrist, right_tactile_left, right_tactile_right, right_wrist. Action: left_tcp.x,",
+C003,"looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam",espejelomar/so101-can-butler,https://huggingface.co/datasets/espejelomar/so101-can-butler,"Dataset so101-can-butler by espejelomar. # SO-101 Can Butler
+Teleoperated demonstrations of a **human-triggered can handover** on a low-cost SO-101 arm: the robot stays still until a person's hand appears on the mat, then reaches, grasps a can, and hands it over.
+A SmolVLA fine-tune on this data — 2",
+C006,"datasets with a mobile base that drives around and manipulates things, like LeKiwi",bukoi/lekiwi_driving_05,https://huggingface.co/datasets/bukoi/lekiwi_driving_05,"Dataset lekiwi_driving_05 by bukoi. Recorded: robot lekiwi_client, 10 fps, 10 episodes, 3000 frames, 1 tasks, format v3.0. Cameras: front. Action: x.vel, y.vel, theta.vel.",
+C019,"Need depth images, not only RGB. Which datasets include a depth camera?",HankLL/depth_camera_test,https://huggingface.co/datasets/HankLL/depth_camera_test,"Dataset depth_camera_test by HankLL. Recorded: robot so101_follower, 30 fps, 1 episodes, 522 frames, 1 tasks, format v3.0. Cameras: overhead_depth. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C026,Tables where a robot arm writes or draws with a pen,Oskrt/haller_put_the_green_pen_in_the_green_slot,https://huggingface.co/datasets/Oskrt/haller_put_the_green_pen_in_the_green_slot,"Dataset haller_put_the_green_pen_in_the_green_slot by Oskrt. # Haller (XLeRobot): put the green pen in the green slot
+**Code, results and demo videos:** github.com/Javgilavi/liminal (team Liminal, ERH Physical AI Hackathon 2026).
+Recorded on 18 October 2026 at the ERH Physical AI Hackathon (track ""I",
+C035,Data collected in Isaac Sim or Isaac Lab,ankile/franka-lift-v2-100,https://huggingface.co/datasets/ankile/franka-lift-v2-100,"Dataset franka-lift-v2-100 by ankile. Recorded: robot isaac_sim, 50 fps, 100 episodes, 5093 frames, 1 tasks, format v2.1. Cameras: image_front, image_side. Action: action_0, action_1, action_2, action_3, action_4, action_5, action_6, action_7.",
+C022,Data recorded with a UR5 using a gripper to pick parts out of a bin,binhpham/portal-rebot-pick-microcontroller,https://huggingface.co/datasets/binhpham/portal-rebot-pick-microcontroller,"Dataset portal-rebot-pick-microcontroller by binhpham. # portal-rebot-pick-microcontroller
+A LeRobot dataset of a 6-DOF arm picking a
+microcontroller and placing it in a box. Episodes were collected by teleoperating a real
+robot over the network with LiveKit Portal, using a
+human-in-the-loop recordi",
+C016,ALOHA datasets for transferring a cube from one arm to the other,filesmuggler/experiment-cube-cup-100-l_diagonal-full,https://huggingface.co/datasets/filesmuggler/experiment-cube-cup-100-l_diagonal-full,"Dataset experiment-cube-cup-100-l_diagonal-full by filesmuggler. # Cube → cup pick-and-place (SO-ARM, L-shape + diagonal)
+Teleoperated demonstrations of **picking a small dark cube and placing it into an orange cup** on a white table. Recorded on an SO-ARM follower (`robot_type: so_follower`) with L",
+C022,Data recorded with a UR5 using a gripper to pick parts out of a bin,LeRobot-worldwide-hackathon/157-Pas_de_bras_Pas_de_Chocolat-Strawberries,https://huggingface.co/datasets/LeRobot-worldwide-hackathon/157-Pas_de_bras_Pas_de_Chocolat-Strawberries,"Dataset 157-Pas_de_bras_Pas_de_Chocolat-Strawberries by LeRobot-worldwide-hackathon. # strawberries_merged
+**This dataset was generated using a phospho starter pack.**
+This dataset contains a series of episodes recorded with a robot and multiple cameras. It can be directly used to train a policy usi",
+C003,"looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam",T1g3rGE/so100_pickplace_small_20250407_171912,https://huggingface.co/datasets/T1g3rGE/so100_pickplace_small_20250407_171912,"Dataset so100_pickplace_small_20250407_171912 by T1g3rGE. ##  Acknowledgements
+This dataset is created by SIGS MMlab and supported in part by Shenzhen Science and Technology Program
+(Grant No. JCYJ20220818101014030 and KJZD20240903102300001). Recorded: robot so100, 30 fps, 10 episodes, 17930 frames,",
+C027,metaworld or robomimic simulation datasets,nikriz/metaworld_mt50,https://huggingface.co/datasets/nikriz/metaworld_mt50,"Dataset metaworld_mt50 by nikriz. Recorded: robot metaworld, 80 fps, 2500 episodes, 204806 frames, 49 tasks, format v3.0. Cameras: image. Action of 4 values. Also: observation.environment_state, task_id.",
+C034,which datasets were recorded at 50 Hz or faster with at least 3 cameras,defneerkan/merged_fold_cloth_50hz_3,https://huggingface.co/datasets/defneerkan/merged_fold_cloth_50hz_3,"Dataset merged_fold_cloth_50hz_3 by defneerkan. Recorded: robot bi_so_follower, 50 fps, 299 episodes, 405074 frames, 2 tasks, format v3.0. Cameras: left_gripper_left, left_middle, right_gripper_right. Action: left_shoulder_pan.pos, left_shoulder_lift.pos, left_elbow_flex.pos, left_wrist_flex.pos, le",
+C026,Tables where a robot arm writes or draws with a pen,studyco/eval_ichigo-robot-arm-20260201093434,https://huggingface.co/datasets/studyco/eval_ichigo-robot-arm-20260201093434,"Dataset eval_ichigo-robot-arm-20260201093434 by studyco. Recorded: robot so_follower, 30 fps, 0 episodes, 0 frames, format v3.0. Cameras: top, front. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C006,"datasets with a mobile base that drives around and manipulates things, like LeKiwi",paszea/place_2bb,https://huggingface.co/datasets/paszea/place_2bb,"Dataset place_2bb by paszea. Recorded: robot lekiwi, 30 fps, 2 episodes, 934 frames, 1 tasks, format v2.1. Action: shoulder_pan, shoulder_lift, elbow_flex, wrist_flex, wrist_roll, gripper. Also: observation.environment_state.",
+C029,xArm or UFactory datasets of pick and place with multiple camera views,mohsinarf/so101_pick_blue_cube_into_tray,https://huggingface.co/datasets/mohsinarf/so101_pick_blue_cube_into_tray,"Dataset so101_pick_blue_cube_into_tray by mohsinarf. # SO-ARM101 — Pick Blue Cube into Blue Tray
+A LeRobot imitation-learning dataset of an
+**SO-ARM101** 6-DOF robot arm performing a **pick-and-place** task: grasp a **blue cube**
+and place it into a **blue tray**. Recorded via teleoperation with syn",
+C027,metaworld or robomimic simulation datasets,jufedf/metaworld-pick-place-rgb-state,https://huggingface.co/datasets/jufedf/metaworld-pick-place-rgb-state,"Dataset metaworld-pick-place-rgb-state by jufedf. Recorded: robot metaworld, 80 fps, 50 episodes, 2661 frames, 1 tasks, format v3.0. Cameras: image. Action: x, y, z, gripper. Also: task_id.",
+C027,metaworld or robomimic simulation datasets,purewater-TRI/robomimic_square,https://huggingface.co/datasets/purewater-TRI/robomimic_square,"Dataset robomimic_square by purewater-TRI. Recorded: robot robomimic, 20 fps, 200 episodes, 29348 frames, 1 tasks, format v3.0. Cameras: agentview, robot0_eye_in_hand. Action: robot0_eef_delta_pos_x, robot0_eef_delta_pos_y, robot0_eef_delta_pos_z, robot0_eef_delta_rot_rx, robot0_eef_delta_rot_ry, ro",
+C040,quadruped or legged locomotion data,kaixiyao/widowxai_grape_grasping_V4_position4_train,https://huggingface.co/datasets/kaixiyao/widowxai_grape_grasping_V4_position4_train,"Dataset widowxai_grape_grasping_V4_position4_train by kaixiyao. Recorded: robot widowxai_follower_robot, 30 fps, 32 episodes, 19120 frames, 1 tasks, format v3.0. Cameras: wrist, right. Action: joint_0.pos, joint_1.pos, joint_2.pos, joint_3.pos, joint_4.pos, joint_5.pos, left_carriage_joint.pos.",
+C007,"Which tables have a humanoid robot doing manipulation with both hands, ideally a Unitree G1?",cloudwalk-research/psi0-g1-he-pickplace-9x40ep,https://huggingface.co/datasets/cloudwalk-research/psi0-g1-he-pickplace-9x40ep,"Dataset psi0-g1-he-pickplace-9x40ep by cloudwalk-research. # psi0-g1-he-pickplace-9x40ep
+**9 curated pick-and-place tasks from the Humanoid-Everyday (HE) dataset, re-targeted from the Unitree G1 + Dex3-1 3-finger hands onto our G1 + Inspire RH56DFTP 6-DoF lockstep schema** — so it can be mixed direc",
+C016,ALOHA datasets for transferring a cube from one arm to the other,willRicard/aloha_live_cube,https://huggingface.co/datasets/willRicard/aloha_live_cube,"Dataset aloha_live_cube by willRicard. Recorded: robot aloha, 30 fps, 2 episodes, 596 frames, 1 tasks, format v2.1. Cameras: cam_high, cam_low, cam_left_wrist, cam_right_wrist. Action: left_waist, left_shoulder, left_shoulder_shadow, left_elbow, left_elbow_shadow, left_forearm_roll, left_wrist_angle",
+C026,Tables where a robot arm writes or draws with a pen,dreamerparadise/so-arm-101-table-cleanup,https://huggingface.co/datasets/dreamerparadise/so-arm-101-table-cleanup,"Dataset so-arm-101-table-cleanup by dreamerparadise. Recorded: robot so101_follower, 30 fps, 12 episodes, 12591 frames, 1 tasks, format v3.0. Cameras: wrist, front. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C023,I'm looking for demos of opening a bottle or unscrewing a cap,JensenYuan/20260724_unscrew_bottle_cap_v2,https://huggingface.co/datasets/JensenYuan/20260724_unscrew_bottle_cap_v2,"Dataset 20260724_unscrew_bottle_cap_v2 by JensenYuan. # Unscrew Bottle Cap (v2)
+One of the six evaluation tasks in DexTacWAM.
+96 episodes, 58,064 frames at 30 fps, on a Dexmate torso with two Sharpa Wave dexterous hands.
+> Unscrew the cap off the bottle and set it down.
+Unscrewing is the task in thi",
+C029,xArm or UFactory datasets of pick and place with multiple camera views,changminbark/mars-construction-arm,https://huggingface.co/datasets/changminbark/mars-construction-arm,"Dataset mars-construction-arm by changminbark. Recorded: robot mars_pick_place_arm, 10 fps, 1 episodes, 1625 frames, 1 tasks, format v3.0. Cameras: image. Action: d_yaw, d_shoulder, d_elbow, d_wrist, gripper. Also: godmode.",
+C040,quadruped or legged locomotion data,hojjunekim/legs_locomani_50_aug_uni,https://huggingface.co/datasets/hojjunekim/legs_locomani_50_aug_uni,"Dataset legs_locomani_50_aug_uni by hojjunekim. # LEGS Task 2, loco-manipulation: LEGS-AUG (50)
+A training set of the paper's LEGS-AUG (50) condition for Task 2 (loco-manipulation), from
+LEGS (code, paper).
+Rendered by compositing the robot and object meshes over the wood-table or the blue-table Gau",
+C015,"kitchen tasks: putting dishes in a rack, loading a dishwasher, wiping a table",zeno-labs/egostation-smartphone-lerobot-sample,https://huggingface.co/datasets/zeno-labs/egostation-smartphone-lerobot-sample,"Dataset egostation-smartphone-lerobot-sample by zeno-labs. # EgoStation Smartphone — playable sample
+Five short first-person clips of everyday household work, one per task, laid out
+in **LeRobot v2.1** so they can be scrubbed directly in the
+dataset visualiser.
+This is a **preview**, not the corpus.",
+C027,metaworld or robomimic simulation datasets,rj-bos/test-metaworld-fixed,https://huggingface.co/datasets/rj-bos/test-metaworld-fixed,"Dataset test-metaworld-fixed by rj-bos. Recorded: robot metaworld_sim, 30 fps, 1 episodes, 957 frames, 1 tasks, format v3.0. Cameras: pixels. Action: 0, 1, 2, 3.",
+C022,Data recorded with a UR5 using a gripper to pick parts out of a bin,rdoshi21/ur5-rope,https://huggingface.co/datasets/rdoshi21/ur5-rope,"Dataset ur5-rope by rdoshi21. Recorded: robot ur5, 10 fps, 25 episodes, 7731 frames, 1 tasks, format v2.1. Cameras: top_image, ur5_wrist_image. Also: state, actions.",
+C007,"Which tables have a humanoid robot doing manipulation with both hands, ideally a Unitree G1?",lyl472324464/insert_washer_shaft_both_hands,https://huggingface.co/datasets/lyl472324464/insert_washer_shaft_both_hands,"Dataset insert_washer_shaft_both_hands by lyl472324464. Recorded: robot aloha, 50 fps, 130 episodes, 130000 frames, 1 tasks, format v3.0. Cameras: cam_high, cam_low, cam_left_wrist, cam_right_wrist. Action: ['left_waist', 'left_shoulder', 'left_elbow', 'left_forearm_roll', 'left_wrist_angle', 'left_",
+C024,"Are there datasets of handling cables, ropes or other deformable things?",leledeyuan/mating_cable,https://huggingface.co/datasets/leledeyuan/mating_cable,"Dataset mating_cable by leledeyuan. Recorded: 15 fps, 101 episodes, 66463 frames, 4 tasks, format v3.0. Cameras: front, wrist_l, wrist_r, wrist_l_depth, wrist_r_depth. Action: ee_x_l, ee_y_l, ee_z_l, ee_qx_l, ee_qy_l, ee_qz_l, ee_qw_l, force_x_l, force_y_l, force_z_l, torque_x_l, torque_y_l, torque_",
+C015,"kitchen tasks: putting dishes in a rack, loading a dishwasher, wiping a table",hinoarashi/stack_sml_dishes_on_shelf_test,https://huggingface.co/datasets/hinoarashi/stack_sml_dishes_on_shelf_test,"Dataset stack_sml_dishes_on_shelf_test by hinoarashi. Recorded: robot bi_so101_follower, 30 fps, 1 episodes, 3978 frames, 1 tasks, format v3.0. Cameras: top, right, left. Action: left_shoulder_pan.pos, left_shoulder_lift.pos, left_elbow_flex.pos, left_wrist_flex.pos, left_wrist_roll.pos, left_grippe",
+C034,which datasets were recorded at 50 Hz or faster with at least 3 cameras,RyotaYoneyamaNN/move_rabbit_bear_at_home,https://huggingface.co/datasets/RyotaYoneyamaNN/move_rabbit_bear_at_home,"Dataset move_rabbit_bear_at_home by RyotaYoneyamaNN. Recorded: robot so101_follower, 30 fps, 51 episodes, 21794 frames, 1 tasks, format v2.1. Cameras: top. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C016,ALOHA datasets for transferring a cube from one arm to the other,zjt24/aloha_dining_table,https://huggingface.co/datasets/zjt24/aloha_dining_table,"Dataset aloha_dining_table by zjt24. # ALOHA Dining Table TsFile
+This dataset is a TsFile conversion of the Hugging Face dataset
+`htrbao/aloha-dining-table`,
+which uses the LeRobot v2.1 format.
+Modalities: Time-series. The original dataset also includes three video streams,
+`observation.images.color",
+C036,I want to train a policy to press buttons or flip switches,ankile/real01b-marker-insert-d1-baseline-uniform-r3-dmxl-ef25cov25-heval-s2026061701-policy-rollouts,https://huggingface.co/datasets/ankile/real01b-marker-insert-d1-baseline-uniform-r3-dmxl-ef25cov25-heval-s2026061701-policy-rollouts,"Dataset real01b-marker-insert-d1-baseline-uniform-r3-dmxl-ef25cov25-heval-s2026061701-policy-rollouts by ankile. Recorded: robot franka, 15 fps, 50 episodes, 16105 frames, 1 tasks, format v3.0. Cameras: 18650758_left, 25916956_left. Action: vel_x, vel_y, vel_z, vel_roll, vel_pitch, vel_yaw, gripper_",
+C019,"Need depth images, not only RGB. Which datasets include a depth camera?",toddChavezz/test_depth_camera,https://huggingface.co/datasets/toddChavezz/test_depth_camera,"Dataset test_depth_camera by toddChavezz. Recorded: robot so101_follower, 30 fps, 5 episodes, 511 frames, 1 tasks, format v2.1. Cameras: front, depth. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C026,Tables where a robot arm writes or draws with a pen,aaronhary/pen_in_bowl_20260604_132912,https://huggingface.co/datasets/aaronhary/pen_in_bowl_20260604_132912,"Dataset pen_in_bowl_20260604_132912 by aaronhary. Recorded: robot so_follower, 30 fps, 30 episodes, 12591 frames, 1 tasks, format v3.0. Cameras: top. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C026,Tables where a robot arm writes or draws with a pen,lsalomme/so101-d3v1-pen-cup,https://huggingface.co/datasets/lsalomme/so101-d3v1-pen-cup,"Dataset so101-d3v1-pen-cup by lsalomme. # SO-101 orange pen into a cup (D3, v1)
+!Episode 31: front camera (left) and wrist camera (right)
+Teleoperated demonstrations on a LeRobot **SO-101** arm: pick up an orange metal pen lying on the
+table and put it in a cup. Recorded with LeRobot (dataset format",
+C026,Tables where a robot arm writes or draws with a pen,vo2yager/pen_uncap_all,https://huggingface.co/datasets/vo2yager/pen_uncap_all,"Dataset pen_uncap_all by vo2yager. Recorded: robot aloha, 50 fps, 250 episodes, 120800 frames, 1 tasks, format v2.0. Cameras: cam_high, cam_left_wrist, cam_right_wrist. Action: ['right_waist', 'right_shoulder', 'right_elbow', 'right_forearm_roll', 'right_wrist_angle', 'right_wrist_rotate', 'right_gr",
+C022,Data recorded with a UR5 using a gripper to pick parts out of a bin,isYes/mycobot280_amr_pickplace,https://huggingface.co/datasets/isYes/mycobot280_amr_pickplace,"Dataset mycobot280_amr_pickplace by isYes. # mycobot280 — AMR Pick-and-Place with Factored Shape / Pose / Viewpoint Variation
+A real-robot imitation-learning dataset of a **7-DoF myCobot 280** picking up a casting and
+placing it into a bin carried by a small **AMR** (autonomous mobile robot).
+What m",
+C015,"kitchen tasks: putting dishes in a rack, loading a dishwasher, wiping a table",YOLO2431/kitchen_rack_combo,https://huggingface.co/datasets/YOLO2431/kitchen_rack_combo,"Dataset kitchen_rack_combo by YOLO2431. Recorded: robot yam_bimanual, 30 fps, 196 episodes, 258673 frames, 1 tasks, format v2.1. Cameras: head, left_wrist, right_wrist. Action: ['left_pos_x', 'left_pos_y', 'left_pos_z', 'left_rot6d_0', 'left_rot6d_1', 'left_rot6d_2', 'left_rot6d_3', 'left_rot6d_4', ",
+C036,I want to train a policy to press buttons or flip switches,ni25y/puzzlemate-pick-flip-7d-105epi,https://huggingface.co/datasets/ni25y/puzzlemate-pick-flip-7d-105epi,"Dataset puzzlemate-pick-flip-7d-105epi by ni25y. # puzzlemate-pick-flip-7d-105epi
+遵循 LeRobot v3.0 规范。
+可视化链接: https://huggingface.co/spaces/lerobot/visualize_dataset?path=ni25y/puzzlemate-pick-flip-7d-105epi",
+C040,quadruped or legged locomotion data,eunjuri/pick_and_place_for_train_no_tac,https://huggingface.co/datasets/eunjuri/pick_and_place_for_train_no_tac,"Dataset pick_and_place_for_train_no_tac by eunjuri. Recorded: robot Unitree_G1_Inspire, 30 fps, 1035 episodes, 322070 frames, 14 tasks, format v3.0. Cameras: cam_left_high. Action: ['kLeftShoulderPitch', 'kLeftShoulderRoll', 'kLeftShoulderYaw', 'kLeftElbow', 'kLeftWristRoll', 'kLeftWristPitch', 'kLe",
+C026,Tables where a robot arm writes or draws with a pen,villekuosmanen/agilex_put_marker_pen_in_cup,https://huggingface.co/datasets/villekuosmanen/agilex_put_marker_pen_in_cup,"Dataset agilex_put_marker_pen_in_cup by villekuosmanen. Recorded: robot arx5_bimanual, 25 fps, 19 episodes, 6964 frames, 1 tasks, format v2.0. Cameras: cam_high, cam_left_wrist, cam_right_wrist. Action of 14 values. Also: observation.effort.",
+C029,xArm or UFactory datasets of pick and place with multiple camera views,anvil-robotics/openarm-pick-and-place-ikea-red-block,https://huggingface.co/datasets/anvil-robotics/openarm-pick-and-place-ikea-red-block,"Dataset openarm-pick-and-place-ikea-red-block by anvil-robotics. # openarm-pick-and-place-ikea-red-block
+Single-arm OpenArm dataset for pick-and-place of an IKEA red block, collected with Quest VR teleop (right arm only). 250 episodes at 50 fps in LeRobot v3.0 format. 8-dim joint-space observation/a",
+C003,"looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam",Kuioma00614/so100,https://huggingface.co/datasets/Kuioma00614/so100,"Dataset so100 by Kuioma00614. Recorded: robot so100, 30 fps, 4 episodes, 3485 frames, 1 tasks, format v2.1. Cameras: laptop, phone. Action: main_shoulder_pan, main_shoulder_lift, main_elbow_flex, main_wrist_flex, main_wrist_roll, main_gripper.",
+C010,Anything with tactile or force sensor readings alongside the camera images?,aryankakad/tactile_charger_plugging,https://huggingface.co/datasets/aryankakad/tactile_charger_plugging,"Dataset tactile_charger_plugging by aryankakad. Recorded: robot so_tactile_follower, 30 fps, 0 episodes, 0 frames, format v3.0. Cameras: gripper, top. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos. Also: observation.tactile.primary.",
+C015,"kitchen tasks: putting dishes in a rack, loading a dishwasher, wiping a table",aliy98/vr_datasets_abs_joint_abs_joint_30hz_colored,https://huggingface.co/datasets/aliy98/vr_datasets_abs_joint_abs_joint_30hz_colored,"Dataset vr_datasets_abs_joint_abs_joint_30hz_colored by aliy98. # vr_datasets_abs_joint_abs_joint_30hz_colored
+Derived from `aliy98/vr_datasets_abs_joint_abs_joint_30hz` with language instructions rewritten from
+""the other rack"" to the destination rack color inferred from the
+end-effector Y pose at ",
+C040,quadruped or legged locomotion data,ruanafan/evo-rl-data,https://huggingface.co/datasets/ruanafan/evo-rl-data,"Dataset evo-rl-data by ruanafan. Recorded: robot piper_follower, 30 fps, 2 episodes, 801 frames, 1 tasks, format v3.0. Cameras: wrist, front. Action: joint_1.pos, joint_2.pos, joint_3.pos, joint_4.pos, joint_5.pos, joint_6.pos, gripper.pos. Also: complementary_info.policy_action, complementary_info.",
+C035,Data collected in Isaac Sim or Isaac Lab,CoRL2026-CSI/IsaacLab-SO101-Phase1-pick_place-80episode-10fps,https://huggingface.co/datasets/CoRL2026-CSI/IsaacLab-SO101-Phase1-pick_place-80episode-10fps,"Dataset IsaacLab-SO101-Phase1-pick_place-80episode-10fps by CoRL2026-CSI. ## FPS Downsample Derivation
+This derivative dataset downsamples an existing LeRobot v3 dataset without modifying the source dataset.
+- Source repo: `CoRL2026-CSI/IsaacLab-SO101-Phase1-pick_place-80episode`
+- Output repo: `CoR",
+C010,Anything with tactile or force sensor readings alongside the camera images?,EdwardoSunny/xarm_charger_binmarker,https://huggingface.co/datasets/EdwardoSunny/xarm_charger_binmarker,"Dataset xarm_charger_binmarker by EdwardoSunny. # xarm_charger_binmarker
+xArm7 phone-teleop dataset for **charger** (`""pick up the charger and plug it into the nearest plug""`) with the **binmarker**
+tactile overlay burned into the camera frames: one arrow per gripper finger
+(anchored at the finger c",
+C019,"Need depth images, not only RGB. Which datasets include a depth camera?",CarolinePascal/depth_dataset_images_20260628_201544,https://huggingface.co/datasets/CarolinePascal/depth_dataset_images_20260628_201544,"Dataset depth_dataset_images_20260628_201544 by CarolinePascal. Recorded: robot so_follower, 30 fps, 2 episodes, 697 frames, 1 tasks, format v3.0. Cameras: wrist, top, top_depth. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C036,I want to train a policy to press buttons or flip switches,dopaul/1500_chess_moves,https://huggingface.co/datasets/dopaul/1500_chess_moves,"Dataset 1500_chess_moves by dopaul. # 1500 chess moves
+This dataset contains a series of episodes recorded with a robot and multiple cameras. It can be directly used to train a policy using imitation learning. It's compatible with LeRobot and RLDS.",
+C006,"datasets with a mobile base that drives around and manipulates things, like LeKiwi",yuzhous/lekiwi_second_floor_0916_environment,https://huggingface.co/datasets/yuzhous/lekiwi_second_floor_0916_environment,"Dataset lekiwi_second_floor_0916_environment by yuzhous. Recorded: robot lekiwi, 30 fps, 50 episodes, 15084 frames, 1 tasks, format v2.1. Cameras: side. Action: shoulder_pan, shoulder_lift, elbow_flex, wrist_flex, wrist_roll, gripper, x_mm, y_mm, theta.",
+C023,I'm looking for demos of opening a bottle or unscrewing a cap,Grigorij/I-m-not-a-robot_20260608_143658,https://huggingface.co/datasets/Grigorij/I-m-not-a-robot_20260608_143658,"Dataset I-m-not-a-robot_20260608_143658 by Grigorij. Recorded: robot so_follower, 30 fps, 30 episodes, 13470 frames, 1 tasks, format v3.0. Cameras: front, arm. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C029,xArm or UFactory datasets of pick and place with multiple camera views,aswinkumar99/LeRobot-SO101-task2-multiple-sponges-no-distractors-fixed-locations,https://huggingface.co/datasets/aswinkumar99/LeRobot-SO101-task2-multiple-sponges-no-distractors-fixed-locations,"Dataset LeRobot-SO101-task2-multiple-sponges-no-distractors-fixed-locations by aswinkumar99. # LeRobot-SO101-task2-multiple-sponges-no-distractors-fixed-locations
+## Dataset Summary
+Real-world SO101 pick-and-place dataset for multiple sponges with no distractors. This split uses fixed workspace layo",
+C034,which datasets were recorded at 50 Hz or faster with at least 3 cameras,kimyg119/aw_mix_joint_hcp,https://huggingface.co/datasets/kimyg119/aw_mix_joint_hcp,"Dataset aw_mix_joint_hcp by kimyg119. # aw_mix_joint_hcp
+One cell of the 3-axis AI-Worker comparison grid (`aw_ _ _ `).
+- **Source**: co-training merge: robot exo data (episodes 0-59) + UMI VR data (episodes 60-105), 106 eps / 37,153 frames
+- **State/Action representation**: 14-dim joint positions (",
+C034,which datasets were recorded at 50 Hz or faster with at least 3 cameras,nik658/ur10e_pi0_dataset_50hz,https://huggingface.co/datasets/nik658/ur10e_pi0_dataset_50hz,"Dataset ur10e_pi0_dataset_50hz by nik658. Recorded: 50 fps, 1 episodes, 1582 frames, 1 tasks, format v2.1. Cameras: kinect_rgb, kinect_depth. Action of 4 values. Also: language_instruction.",
+C026,Tables where a robot arm writes or draws with a pen,vo2yager/pen_uncap_all_filtered,https://huggingface.co/datasets/vo2yager/pen_uncap_all_filtered,"Dataset pen_uncap_all_filtered by vo2yager. Recorded: robot aloha, 50 fps, 101 episodes, 50500 frames, 1 tasks, format v2.0. Cameras: cam_high, cam_left_wrist, cam_right_wrist. Action: ['right_waist', 'right_shoulder', 'right_elbow', 'right_forearm_roll', 'right_wrist_angle', 'right_wrist_rotate', '",
+C015,"kitchen tasks: putting dishes in a rack, loading a dishwasher, wiping a table",zeno-labs/sim-teleop,https://huggingface.co/datasets/zeno-labs/sim-teleop,"Dataset sim-teleop by zeno-labs. # ZenO Sim-Teleop — Franka Panda Manipulation (Sample)
+Teleoperated **Franka Emika Panda** manipulation trajectories collected in a MuJoCo
+simulation, packaged in the **LeRobot v2.1** format with synchronized **front** and
+**wrist** camera video.
+This repository is a",
+C003,"looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam",Ahi-Yu/smolvla_test1__so100_pick_place_dataset,https://huggingface.co/datasets/Ahi-Yu/smolvla_test1__so100_pick_place_dataset,"Dataset smolvla_test1__so100_pick_place_dataset by Ahi-Yu. Recorded: robot so100, 20 fps, 1 episodes, 398 frames, 1 tasks, format v2.1. Cameras: laptop, phone. Action: main_shoulder_pan, main_shoulder_lift, main_elbow_flex, main_wrist_flex, main_wrist_roll, main_gripper.",
+C026,Tables where a robot arm writes or draws with a pen,lsalomme/so101-d2v1-case-open,https://huggingface.co/datasets/lsalomme/so101-d2v1-case-open,"Dataset so101-d2v1-case-open by lsalomme. # SO-101 flip open a headphone case (D2, v1)
+!Episode 8: front camera (left) and wrist camera (right)
+Teleoperated demonstrations on a LeRobot **SO-101** arm: flip open a closed clamshell headphone
+case whose zipper is **already open** (the task does not inc",
+C003,"looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam",wangdx25/piper_isaacsim_top_wrist_d0a_1anchor_100ep,https://huggingface.co/datasets/wangdx25/piper_isaacsim_top_wrist_d0a_1anchor_100ep,"Dataset piper_isaacsim_top_wrist_d0a_1anchor_100ep by wangdx25. # piper_isaacsim_top_wrist_d0a_1anchor_100ep (TsFile)
+Apache TsFile version of `shenj/piper_isaacsim_top_wrist_D0a_1anchor_100ep_50ep_2`.
+## Overview
+A LeRobot `v3.0` manipulation dataset recorded with a `isaac_piper` robot arm, convert",
+C010,Anything with tactile or force sensor readings alongside the camera images?,photosynth-satoshi/tactile_test_20260831_000406,https://huggingface.co/datasets/photosynth-satoshi/tactile_test_20260831_000406,"Dataset tactile_test_20260831_000406 by photosynth-satoshi. Recorded: robot so_follower, 30 fps, 2 episodes, 820 frames, 1 tasks, format v3.0. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C027,metaworld or robomimic simulation datasets,kevin-ys-zhang/robomimic_square_ph,https://huggingface.co/datasets/kevin-ys-zhang/robomimic_square_ph,"Dataset robomimic_square_ph by kevin-ys-zhang. **robomimic square (PH)**, converted to LeRobot v3.0 format with camera images **re-rendered** from the recorded simulator states.
+No robomimic simulation release ships rendered images. This dataset starts from robomimic's robosuite-1.4.1 release (`http",
+C024,"Are there datasets of handling cables, ropes or other deformable things?",DecentVLA/moplan_Cube_Green_on_Blue_franka_right,https://huggingface.co/datasets/DecentVLA/moplan_Cube_Green_on_Blue_franka_right,"Dataset moplan_Cube_Green_on_Blue_franka_right by DecentVLA. > ## ⚠️ Read before mixing this with other DecentVLA data
+> **This is a `Franka Panda` in simulation, driven by a motion planner.**
+> Every other dataset in this organisation is **SO-101 hardware, teleoperated by a
+> human**. Two things th",
+C024,"Are there datasets of handling cables, ropes or other deformable things?",dexsuite/pick_place_mug_franka_allegro_mg,https://huggingface.co/datasets/dexsuite/pick_place_mug_franka_allegro_mg,Dataset pick_place_mug_franka_allegro_mg by dexsuite. Machine-generated DexSuite data for **pick_place_mug** with the Franka arm and the **allegro** end-effector: 200 successful rollouts of the paper's low-dimensional (state) diffusion policy checkpoint trained on the 50 human demonstrations (checkp,
+C006,"datasets with a mobile base that drives around and manipulates things, like LeKiwi",vladfatu/lekiwi_move_and_grab,https://huggingface.co/datasets/vladfatu/lekiwi_move_and_grab,"Dataset lekiwi_move_and_grab by vladfatu. Recorded: robot lekiwi, 30 fps, 2 episodes, 1792 frames, 1 tasks, format v2.1. Cameras: front, wrist. Action: shoulder_pan, shoulder_lift, elbow_flex, wrist_flex, wrist_roll, gripper, x_mm, y_mm, theta.",
+C040,quadruped or legged locomotion data,Flimdejong/eval_smolvla_block_or_pen_test_2,https://huggingface.co/datasets/Flimdejong/eval_smolvla_block_or_pen_test_2,"Dataset eval_smolvla_block_or_pen_test_2 by Flimdejong. Recorded: robot so101_follower, 30 fps, 10 episodes, 4400 frames, 1 tasks, format v3.0. Cameras: camera1, camera2. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C006,"datasets with a mobile base that drives around and manipulates things, like LeKiwi",williamdgomez/lekiwi-dataset,https://huggingface.co/datasets/williamdgomez/lekiwi-dataset,"Dataset lekiwi-dataset by williamdgomez. Recorded: robot lekiwi_client, 5 fps, 15 episodes, 3274 frames, 1 tasks, format v3.0. Cameras: front, wrist, top. Action: arm_shoulder_pan.pos, arm_shoulder_lift.pos, arm_elbow_flex.pos, arm_wrist_flex.pos, arm_wrist_roll.pos, arm_gripper.pos, x.vel, y.vel, t",
+C029,xArm or UFactory datasets of pick and place with multiple camera views,charlieK123/gripper_Top_Base_Camera_Views_Continued_Extra,https://huggingface.co/datasets/charlieK123/gripper_Top_Base_Camera_Views_Continued_Extra,"Dataset gripper_Top_Base_Camera_Views_Continued_Extra by charlieK123. Recorded: robot so_follower, 30 fps, 24 episodes, 12017 frames, 1 tasks, format v3.0. Cameras: gripperCam, bevCam, baseCam. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C010,Anything with tactile or force sensor readings alongside the camera images?,ydaichi/tactile_test,https://huggingface.co/datasets/ydaichi/tactile_test,"Dataset tactile_test by ydaichi. Recorded: robot so_tactile_follower, 30 fps, 0 episodes, 0 frames, format v3.0. Cameras: front. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos. Also: observation.tactile.primary.",
+C005,I want teleoperated demonstrations of pouring liquid or beads from one cup into another.,villekuosmanen/agilex_stir_liquid_inside_cup,https://huggingface.co/datasets/villekuosmanen/agilex_stir_liquid_inside_cup,"Dataset agilex_stir_liquid_inside_cup by villekuosmanen. Recorded: robot arx5_bimanual, 25 fps, 20 episodes, 6597 frames, 1 tasks, format v2.0. Cameras: cam_high, cam_left_wrist, cam_right_wrist. Action of 14 values. Also: observation.effort.",
+C026,Tables where a robot arm writes or draws with a pen,wangdx25/xtac_umi_g1_place_pen_into_holder,https://huggingface.co/datasets/wangdx25/xtac_umi_g1_place_pen_into_holder,"Dataset xtac_umi_g1_place_pen_into_holder by wangdx25. # xtac_umi_g1_place_pen_into_holder (TsFile)
+Apache TsFile version of `TacVerse/xtac-umi-g1-place-pen-into-holder`.
+## Overview
+A LeRobot `v3.0` manipulation dataset recorded with a `xtac_umi_g1` robot arm, converted to a single Apache TsFile ta",
+C040,quadruped or legged locomotion data,zjt24/real01b_square_d2_final_trio_back50_ours_iql_s1final_heval_s2026070101_policy_rollouts,https://huggingface.co/datasets/zjt24/real01b_square_d2_final_trio_back50_ours_iql_s1final_heval_s2026070101_policy_rollouts,"Dataset real01b_square_d2_final_trio_back50_ours_iql_s1final_heval_s2026070101_policy_rollouts by zjt24. # Real01b Square D2 Policy Rollouts (TsFile)
+This is an Apache TsFile conversion of the numeric time-series data in
+`ankile/real01b-square-d2-final-trio-back50-ours-iql-s1final-heval-s2026070101-",
+C006,"datasets with a mobile base that drives around and manipulates things, like LeKiwi",rainbowrobotics/open_door_mobile_20260814_061354,https://huggingface.co/datasets/rainbowrobotics/open_door_mobile_20260814_061354,"Dataset open_door_mobile_20260814_061354 by rainbowrobotics. RB-Y1 mobile door-opening demonstration dataset.
+This dataset contains demonstrations of the RB-Y1 robot approaching a door using its mobile base and performing a door-opening task.
+## Dataset Information
+- Framework: LeRobot
+- Robot: RB-Y",
+C026,Tables where a robot arm writes or draws with a pen,sapanostic/pen-placement-home,https://huggingface.co/datasets/sapanostic/pen-placement-home,"Dataset pen-placement-home by sapanostic. Recorded: robot so101_follower, 30 fps, 10 episodes, 5829 frames, 1 tasks, format v3.0. Cameras: side, wrist. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C040,quadruped or legged locomotion data,cortex-ext/yambox-store-coffee-beans-or-ground-coffee,https://huggingface.co/datasets/cortex-ext/yambox-store-coffee-beans-or-ground-coffee,"Dataset yambox-store-coffee-beans-or-ground-coffee by cortex-ext. Recorded: robot bi_yam_follower, 30 fps, 33 episodes, 59311 frames, 1 tasks, format v3.0. Cameras: right, left, top. Action: left_joint_0.pos, left_joint_1.pos, left_joint_2.pos, left_joint_3.pos, left_joint_4.pos, left_joint_5.pos, l",
+C005,I want teleoperated demonstrations of pouring liquid or beads from one cup into another.,aailabkaist/so101_coffee_subtask_3,https://huggingface.co/datasets/aailabkaist/so101_coffee_subtask_3,"Dataset so101_coffee_subtask_3 by aailabkaist. # so101_coffee_subtask_3
+2,140 teleoperated SO-101 demonstrations of a coffee-making routine, recorded as
+**10 separately instructed steps**. Every step was recorded with two cup variants — a
+**red**-banded paper cup and a **white** one — giving 20 (ste",
+C040,quadruped or legged locomotion data,THU-MARS/OMG-Data,https://huggingface.co/datasets/THU-MARS/OMG-Data,"Dataset OMG-Data by THU-MARS. # OMG-Data
+Official LeRobotDataset v3.0 release for OMG.
+It contains Unitree G1 reference motion with text, audio, human reference conditioning.
+## Dataset
+- Episodes: 798181
+- Frames: 121171939
+- FPS: 30
+- Robot: Unitree G1, 29 actuated joints
+- `train`: episodes 0:636",
+C010,Anything with tactile or force sensor readings alongside the camera images?,Tachintech/Fixed_Viewpoint_Tactile_Dataset,https://huggingface.co/datasets/Tachintech/Fixed_Viewpoint_Tactile_Dataset,"Dataset Fixed_Viewpoint_Tactile_Dataset by Tachintech. # Fixed Viewpoint Tactile Dataset
+基于固定机位动捕设备的动捕-触觉数据集。
+- 格式：LeRobot v3.0
+- fps: 20
+- episodes: 160，frames: 59158
+- 观测：动捕位置/四元数、20 路触觉、RGB + Depth 视频
+- 机器人类型：tactile_hand_motion_321_340
+## 安装依赖
+## 快速开始
+## 字段说明（30 个键）
+| 键 | 维度 | 含义 |
+| `index` / `",
+C022,Data recorded with a UR5 using a gripper to pick parts out of a bin,rajmeet83/fr3_pick_place,https://huggingface.co/datasets/rajmeet83/fr3_pick_place,"Dataset fr3_pick_place by rajmeet83. # fr3_pick_place
+This dataset was recorded using a **Franka FR3** robot teleoperated via a **Force Dimension Lambda.7** haptic device.
+| Property | Value |
+| Robot | Franka FR3 (7-DOF + gripper) |
+| Master | Force Dimension Lambda.7 |
+| Episodes | 2 |
+| Total Fra",
+C003,"looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam",fport/tic-tac-toe-so101-x-round1-clean-v1,https://huggingface.co/datasets/fport/tic-tac-toe-so101-x-round1-clean-v1,"Dataset tic-tac-toe-so101-x-round1-clean-v1 by fport. # SO-101 tic-tac-toe, X pieces: round 1, clean v1
+45 teleoperated demonstrations of an SO-101 robot arm taking a red X piece from a fixed slot and putting it in one cell of a tic-tac-toe grid: five demonstrations for each of the nine cells. Each ",
+C006,"datasets with a mobile base that drives around and manipulates things, like LeKiwi",ember-lab-berkeley/robocasa365-target-composite-seen,https://huggingface.co/datasets/ember-lab-berkeley/robocasa365-target-composite-seen,"Dataset robocasa365-target-composite-seen by ember-lab-berkeley. # Target (Human) — composite-seen
+Human teleoperation data for 16 composite tasks (500 demos/task) recorded in 10 held-out target kitchens. All tasks are also represented in the pretraining datasets ('composite-seen').
+Part of the **Ro",
+C010,Anything with tactile or force sensor readings alongside the camera images?,EdwardoSunny/xarm_tube_binmarker9,https://huggingface.co/datasets/EdwardoSunny/xarm_tube_binmarker9,"Dataset xarm_tube_binmarker9 by EdwardoSunny. # xarm_tube_binmarker9
+xArm7 phone-teleop dataset for **tube** (`""pick up the tube and put it in the nearest slot""`) with the **binmarker9**
+tactile overlay burned into the camera frames: **9 arrows per gripper finger**
+(one at each of the 9 forward-kine",
+C003,"looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam",o-hisa/eval_pick_lego_triple_cam_a,https://huggingface.co/datasets/o-hisa/eval_pick_lego_triple_cam_a,"Dataset eval_pick_lego_triple_cam_a by o-hisa. ## 評価レポート
+**日付:** 2025-12-04
+**モデル:** o--hisa/act_pick_lego_triple_cam (Last)
+**データセット:** o-hsa/pick_lego_triple_cam (60 episodes)
+### 結果
+| Episode | 成功/失敗 | 備考 |
+| 0 | ✅ 成功 | 一度つかみミスがあったが、そのごに物体を追って掴む |
+| 1 | ❌ 失敗 | 初回のつかみで回転してしまい、その後アプローチできず |
+| 2 | ✅",
+C040,quadruped or legged locomotion data,DaoyuanZhu/wb_handover_pointed_bread,https://huggingface.co/datasets/DaoyuanZhu/wb_handover_pointed_bread,"Dataset wb_handover_pointed_bread by DaoyuanZhu. # wb_handover_pointed_bread
+Whole-body teleoperation data from a **Unitree_G1_WholeBody_RGB**, published in LeRobot **v2.1** format.
+> Published in the **v2.1** layout (one parquet and one video clip per episode) so it loads directly on older `lerobot",
+C022,Data recorded with a UR5 using a gripper to pick parts out of a bin,Harrysunshine/so101-sim-pickplace,https://huggingface.co/datasets/Harrysunshine/so101-sim-pickplace,"Dataset so101-sim-pickplace by Harrysunshine. # SO-101 Sim Pick-and-Place
+Simulated pick-and-place demonstrations for the SO-101
+arm, generated in ManiSkill3 / SAPIEN with a robot
+model, object geometry and camera calibration matched to a real desktop rig.
+| Config | Task prompt | Object | Episodes ",
+C022,Data recorded with a UR5 using a gripper to pick parts out of a bin,RoboCOIN/Leju_Kuavo_4_moving_parts,https://huggingface.co/datasets/RoboCOIN/Leju_Kuavo_4_moving_parts,"Dataset Leju_Kuavo_4_moving_parts by RoboCOIN. # Leju_Kuavo_4_moving_parts
+This dataset uses an extended format based on LeRobot and is fully compatible with LeRobot.
+## Task Preview
+View Video Directly
+### Overview
+- **Total Episodes:** 451
+- **Total Frames:** 677020
+- **FPS:** 30
+- **Dataset Size:",
+C035,Data collected in Isaac Sim or Isaac Lab,RoboSynapse/univtac-isaac51_franka-panda_grasp-classify-v4,https://huggingface.co/datasets/RoboSynapse/univtac-isaac51_franka-panda_grasp-classify-v4,"Dataset univtac-isaac51_franka-panda_grasp-classify-v4 by RoboSynapse. # UniVTAC `grasp_classify_v4` — Isaac Sim 5.1 re-collection (LeRobot v3)
+Demonstrations for the **UniVTAC** visuo-tactile benchmark task `grasp_classify_v4` (100 episodes, 5111 frames, 60 Hz, Franka Panda with GelSight Mini tacti",
+C016,ALOHA datasets for transferring a cube from one arm to the other,kd-forge/aloha_sim_transfer_cube_insertion_scripted,https://huggingface.co/datasets/kd-forge/aloha_sim_transfer_cube_insertion_scripted,"Dataset aloha_sim_transfer_cube_insertion_scripted by kd-forge. Recorded: robot aloha, 50 fps, 100 episodes, 40000 frames, 2 tasks, format v3.0. Cameras: top. Action: left_waist, left_shoulder, left_elbow, left_forearm_roll, left_wrist_angle, left_wrist_rotate, left_gripper, right_waist, right_shoul",
+C026,Tables where a robot arm writes or draws with a pen,Haku-2004/LeRobot_dataset_a,https://huggingface.co/datasets/Haku-2004/LeRobot_dataset_a,"Dataset LeRobot_dataset_a by Haku-2004. Recorded: robot so_follower, 30 fps, 5 episodes, 2175 frames, 1 tasks, format v3.0. Cameras: front. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C024,"Are there datasets of handling cables, ropes or other deformable things?",DORLR/Deformable-1Clip-Routing-v0-Scripted-smoke,https://huggingface.co/datasets/DORLR/Deformable-1Clip-Routing-v0-Scripted-smoke,"Dataset Deformable-1Clip-Routing-v0-Scripted-smoke by DORLR. Recorded: robot isaaclab_ur5, 30 fps, 4 episodes, 840 frames, 1 tasks, format v3.0. Cameras: cam_side2, cam_color. Action: shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint, finger_joint.",
+C036,I want to train a policy to press buttons or flip switches,jinukoo/mug_flip_real_train,https://huggingface.co/datasets/jinukoo/mug_flip_real_train,"Dataset mug_flip_real_train by jinukoo. Recorded: robot ur5, 10 fps, 99 episodes, 15912 frames, 1 tasks, format v2.1. Cameras: camera_0, camera_1, camera_2. Also: robot_eef_pose, gripper_state, actions.",
+C015,"kitchen tasks: putting dishes in a rack, loading a dishwasher, wiping a table",aliy98/gello_datasets_abs_joint_abs_joint_30hz_colored,https://huggingface.co/datasets/aliy98/gello_datasets_abs_joint_abs_joint_30hz_colored,"Dataset gello_datasets_abs_joint_abs_joint_30hz_colored by aliy98. # gello_datasets_abs_joint_abs_joint_30hz_colored
+Derived from `aliy98/gello_datasets_abs_joint_abs_joint_30hz` with language instructions rewritten from
+""the other rack"" to the destination rack color inferred from the
+end-effector Y",
+C007,"Which tables have a humanoid robot doing manipulation with both hands, ideally a Unitree G1?",cagataydev/kimodo-g1-longhorizon-v2,https://huggingface.co/datasets/cagataydev/kimodo-g1-longhorizon-v2,"Dataset kimodo-g1-longhorizon-v2 by cagataydev. # Kimodo G1 Long-Horizon v2
+**10,000 episodes · 9.74M frames · 65 hours of Unitree G1 motion · text-conditioned, long-horizon**
+The largest open text-conditioned long-horizon locomotion+manipulation dataset for the Unitree G1 humanoid. Each episode is ",
+C026,Tables where a robot arm writes or draws with a pen,Flimdejong/eval_smolvla_block_or_pen_amb_pen_2,https://huggingface.co/datasets/Flimdejong/eval_smolvla_block_or_pen_amb_pen_2,"Dataset eval_smolvla_block_or_pen_amb_pen_2 by Flimdejong. Recorded: robot so101_follower, 30 fps, 10 episodes, 15372 frames, 1 tasks, format v3.0. Cameras: camera1, camera2. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C034,which datasets were recorded at 50 Hz or faster with at least 3 cameras,aliy98/gello_datasets_abs_joint_abs_joint_50hz,https://huggingface.co/datasets/aliy98/gello_datasets_abs_joint_abs_joint_50hz,"Dataset gello_datasets_abs_joint_abs_joint_50hz by aliy98. Recorded: robot ur5, 50 fps, 400 episodes, 288509 frames, 7 tasks, format v3.0. Cameras: front, wrist. Action: action.",
+C040,quadruped or legged locomotion data,PranayTest/classified-data,https://huggingface.co/datasets/PranayTest/classified-data,"Dataset classified-data by PranayTest. Recorded: robot agilex_piper_bimanual, 20 fps, 94 episodes, 17849 frames, 1 tasks, format v3.0. Cameras: front, left, right, top. Action: right_joint1, right_joint2, right_joint3, right_joint4, right_joint5, right_joint6, left_joint1, left_joint2, left_joint3, ",
+C035,Data collected in Isaac Sim or Isaac Lab,felsager/GCA_z01_isaac,https://huggingface.co/datasets/felsager/GCA_z01_isaac,"Dataset GCA_z01_isaac by felsager. # GCA_z01_isaac
+- **Robot**: Franka Panda
+- **Episodes**: 20
+- **Frames**: 2,251
+- **FPS**: 10
+- **Cameras**: 2 (top + wrist)
+- **State dim**: 9 (7 joint positions + 2 gripper)
+- **Action dim**: 7 (6 joint deltas + 1 gripper)
+- **Task**: Pick and place (Isaac Sim)
+",
+C027,metaworld or robomimic simulation datasets,kevin-ys-zhang/robomimic_tool_hang_ph,https://huggingface.co/datasets/kevin-ys-zhang/robomimic_tool_hang_ph,"Dataset robomimic_tool_hang_ph by kevin-ys-zhang. **robomimic tool_hang (PH)**, converted to LeRobot v3.0 format with camera images **re-rendered** from the recorded simulator states.
+No robomimic simulation release ships rendered images. This dataset starts from robomimic's robosuite-1.4.1 release ",
+C034,which datasets were recorded at 50 Hz or faster with at least 3 cameras,Claessens14/dataset_three,https://huggingface.co/datasets/Claessens14/dataset_three,"Dataset dataset_three by Claessens14. Recorded: 30 fps, 0 episodes, 0 frames, 1 tasks, format v2.1. Cameras: ego_view. Action of 14 values. Also: observation.qpos.",
+C035,Data collected in Isaac Sim or Isaac Lab,ankile/franka-lift-500-state,https://huggingface.co/datasets/ankile/franka-lift-500-state,"Dataset franka-lift-500-state by ankile. Recorded: robot isaac_sim, 30 fps, 5 episodes, 198 frames, 1 tasks, format v2.1. Action: action_0, action_1, action_2, action_3, action_4, action_5, action_6, action_7. Also: observation.environment_state.",
+C007,"Which tables have a humanoid robot doing manipulation with both hands, ideally a Unitree G1?",unitreerobotics/G1_Dex1_DualRobot_Clean_Table,https://huggingface.co/datasets/unitreerobotics/G1_Dex1_DualRobot_Clean_Table,"Dataset G1_Dex1_DualRobot_Clean_Table by unitreerobotics. - **Task Objective:** Collaborate with a nearby partner to tidy the table.
+- **Operation Duration:** Each operation takes approximately 20 to 40 seconds.
+- **Recording Frequency:** 30 Hz.
+- **Robot Type:** 7-DOF dual-arm G1 robot.
+- **End Eff",
+C026,Tables where a robot arm writes or draws with a pen,wangdx25/vla_grab_dataset_merged,https://huggingface.co/datasets/wangdx25/vla_grab_dataset_merged,"Dataset vla_grab_dataset_merged by wangdx25. # vla_grab_dataset_merged (TsFile)
+Apache TsFile version of `zhengod/vla-grab-dataset-merged`.
+## Overview
+A LeRobot `v2.1` manipulation dataset recorded with a `so101_follower` robot arm, converted to a single Apache TsFile table.
+- **Scale:** 88 episode",
+C023,I'm looking for demos of opening a bottle or unscrewing a cap,Bigenlight/cube_in_cup_lerobot_v3,https://huggingface.co/datasets/Bigenlight/cube_in_cup_lerobot_v3,"Dataset cube_in_cup_lerobot_v3 by Bigenlight. # cube_in_cup — UR7e teleop, ""put the cube in the cup"" (LeRobot v3.0)
+Joint-space imitation-learning dataset: **23 human teleoperation demos** of a UR7e arm picking a
+wooden cube off a table and dropping it into a cup, with two 720p camera views. Ready t",
+C022,Data recorded with a UR5 using a gripper to pick parts out of a bin,iantc104/scooper_ur5,https://huggingface.co/datasets/iantc104/scooper_ur5,"Dataset scooper_ur5 by iantc104. Recorded: robot ur5, 10 fps, 60 episodes, 5517 frames, 2 tasks, format v2.1. Cameras: base_rgb, wrist_rgb. Also: joints, gripper, actions, tcp_pose, target_tcp_pose, tcp_speed, target_tcp_speed.",
+C015,"kitchen tasks: putting dishes in a rack, loading a dishwasher, wiping a table",exaFLOPs09/sink10k_mug_g1_approach,https://huggingface.co/datasets/exaFLOPs09/sink10k_mug_g1_approach,"Dataset sink10k_mug_g1_approach by exaFLOPs09. # sink10k-mug: phase 1, approach
+The first phase only -- from the start of the episode until the gripper is at the mug, cut out of the complete demonstrations.
+An **RB-Y1 mobile manipulator** picking a **mug** off a kitchen worktop and putting it in the",
+C007,"Which tables have a humanoid robot doing manipulation with both hands, ideally a Unitree G1?",Breno-de-Angelo/unitree-g1-pick-cattle-new,https://huggingface.co/datasets/Breno-de-Angelo/unitree-g1-pick-cattle-new,"Dataset unitree-g1-pick-cattle-new by Breno-de-Angelo. Recorded: robot Unitree_G1_Dex3, 30 fps, 49 episodes, 29665 frames, 1 tasks, format v2.1. Cameras: cam_gray_left_high, cam_gray_right_high, cam_rgb_high. Action: ['kLeftShoulderPitch', 'kLeftShoulderRoll', 'kLeftShoulderYaw', 'kLeftElbow', 'kLef",
+C016,ALOHA datasets for transferring a cube from one arm to the other,VShirokun/office-rover-miss-v21,https://huggingface.co/datasets/VShirokun/office-rover-miss-v21,"Dataset office-rover-miss-v21 by VShirokun. # office-rover-miss-v21
+LeRobot **v2.1** dataset for a single SO-101 arm: *""pick up the red / green cube
+and put it in the box""* with both cubes on the table. Two language-conditioned
+tasks (instructions in Russian). Built for fine-tuning NVIDIA Isaac GR00",
+C024,"Are there datasets of handling cables, ropes or other deformable things?",nomagic/bs-shoe-handling,https://huggingface.co/datasets/nomagic/bs-shoe-handling,"Dataset bs-shoe-handling by nomagic. Recorded: 50 fps, 59 episodes, 109169 frames, 1 tasks, format v3.0. Cameras: top, bottom, wrist_left, wrist_right. Also: observation.follower_right_tcp_pose, observation.follower_right_gripper, observation.follower_left_tcp_pose, observation.follower_left_gripper",
+C016,ALOHA datasets for transferring a cube from one arm to the other,DecentVLA/moplan_Cube_Red_on_Blue_franka_claim1_set2_client_a,https://huggingface.co/datasets/DecentVLA/moplan_Cube_Red_on_Blue_franka_claim1_set2_client_a,"Dataset moplan_Cube_Red_on_Blue_franka_claim1_set2_client_a by DecentVLA. > ## ⚠️ Read before mixing this with other DecentVLA data
+> **This is a `Franka Panda` in simulation (Isaac Sim 5.0), driven by a motion
+> planner.** The SO-101 datasets in this organisation are hardware, teleoperated
+> by a h",
+C026,Tables where a robot arm writes or draws with a pen,studyco/eval_ichigo-robot-arm-20260214133309,https://huggingface.co/datasets/studyco/eval_ichigo-robot-arm-20260214133309,"Dataset eval_ichigo-robot-arm-20260214133309 by studyco. Recorded: robot so_follower, 30 fps, 0 episodes, 0 frames, format v3.0. Cameras: top, front. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C026,Tables where a robot arm writes or draws with a pen,HuuKhang2212/pen_in_holder_20260626_150331,https://huggingface.co/datasets/HuuKhang2212/pen_in_holder_20260626_150331,"Dataset pen_in_holder_20260626_150331 by HuuKhang2212. Recorded: robot so_follower, 30 fps, 5 episodes, 3713 frames, 1 tasks, format v3.0. Cameras: OAK_LITE. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C003,"looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam",shylee/so100_pengripG,https://huggingface.co/datasets/shylee/so100_pengripG,"Dataset so100_pengripG by shylee. Recorded: robot so100, 30 fps, 25 episodes, 6558 frames, 1 tasks, format v2.1. Cameras: FrontCam, TopCam, WristCam. Action: main_shoulder_pan, main_shoulder_lift, main_elbow_flex, main_wrist_flex, main_wrist_roll, main_gripper.",
+C010,Anything with tactile or force sensor readings alongside the camera images?,Voxel51/trex-dataset-23ep,https://huggingface.co/datasets/Voxel51/trex-dataset-23ep,"Dataset trex-dataset-23ep by Voxel51. This is a FiftyOne dataset with 23 samples.
+## Installation
+If you haven't already, install FiftyOne:
+## Usage
+!T-Rex Dataset preview
+A 23-episode subset of the **T-Rex Dataset**, a large-scale, tactile-reactive bimanual
+manipulation dataset collected via teleop",
+C010,Anything with tactile or force sensor readings alongside the camera images?,Xense/3588_camera_full_tactile,https://huggingface.co/datasets/Xense/3588_camera_full_tactile,"Dataset 3588_camera_full_tactile by Xense. Recorded: robot mock_robot, 30 fps, 1 episodes, 301 frames, 1 tasks, format v3.0. Cameras: head, left_wrist, right_wrist, left_tactile_0, left_tactile_1, right_tactile_0, right_tactile_1. Action: motor_1.pos, motor_2.pos, motor_3.pos, motor_4.pos, motor_5.p",
+C036,I want to train a policy to press buttons or flip switches,Lisette1231/eval_20260426_act_flipbreadtopot,https://huggingface.co/datasets/Lisette1231/eval_20260426_act_flipbreadtopot,"Dataset eval_20260426_act_flipbreadtopot by Lisette1231. Recorded: robot seeed_b601_dm_follower, 30 fps, 1 episodes, 1436 frames, 1 tasks, format v3.0. Cameras: front, wrist. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_yaw.pos, wrist_roll.pos, gripper.pos. Also",
+C023,I'm looking for demos of opening a bottle or unscrewing a cap,jellyho/seal-water-bottle-cap_rl_224,https://huggingface.co/datasets/jellyho/seal-water-bottle-cap_rl_224,"Dataset seal-water-bottle-cap_rl_224 by jellyho. Recorded: robot yam, 60 fps, 579 episodes, 3089399 frames, 1 tasks, format v3.0. Cameras: cam_left_wrist, cam_right_wrist, cam_high. Action: left_waist, left_shoulder, left_elbow, left_forearm_roll, left_wrist_angle, left_wrist_rotate, left_gripper, r",
+C007,"Which tables have a humanoid robot doing manipulation with both hands, ideally a Unitree G1?",Breno-de-Angelo/unitree-g1-manipulation,https://huggingface.co/datasets/Breno-de-Angelo/unitree-g1-manipulation,"Dataset unitree-g1-manipulation by Breno-de-Angelo. Recorded: robot Unitree_G1_Dex3, 30 fps, 2 episodes, 603 frames, 1 tasks, format v3.0. Cameras: cam_left_high. Action: ['kLeftShoulderPitch', 'kLeftShoulderRoll', 'kLeftShoulderYaw', 'kLeftElbow', 'kLeftWristRoll', 'kLeftWristPitch', 'kLeftWristYaw",
+C040,quadruped or legged locomotion data,vxe-physical-ai/dataset,https://huggingface.co/datasets/vxe-physical-ai/dataset,"Dataset dataset by vxe-physical-ai. # 👟 Shoe Inspection Dataset (LeRobot Format)
+This dataset contains demonstration data for **shoe inspection tasks** collected using Trossen Robotics hardware and the LeRobot framework. It includes fine-grained, timestamp-based subtask annotations to facilitate adv",
+C036,I want to train a policy to press buttons or flip switches,yuchensong/glide_data,https://huggingface.co/datasets/yuchensong/glide_data,"Dataset glide_data by yuchensong. GLIDE:
+Learning Beyond What Humans Can Demonstrate
+Yuchen Song
+,
+Aditya Mittal
+,
+Unnat Jain
+**TL;DR:** GLIDE uses closed-loop, self-refined guardrails to make infeasible
+robot manipulation tasks demonstrable, learnable, and the trained policies more
+reliable to depl",
+C034,which datasets were recorded at 50 Hz or faster with at least 3 cameras,addition-robotics/evals-trail-mix-23-cotrain-50fps,https://huggingface.co/datasets/addition-robotics/evals-trail-mix-23-cotrain-50fps,"Dataset evals-trail-mix-23-cotrain-50fps by addition-robotics. Recorded: robot addition-openarm, 50 fps, 9 episodes, 13234 frames, 2 tasks, format v3.0. Cameras: ego, wrist_left, wrist_right. Action of 16 values.",
+C016,ALOHA datasets for transferring a cube from one arm to the other,kinghanse/RedCube_OtherCube_100epi,https://huggingface.co/datasets/kinghanse/RedCube_OtherCube_100epi,"Dataset RedCube_OtherCube_100epi by kinghanse. Recorded: robot so101_follower, 30 fps, 100 episodes, 29453 frames, 1 tasks, format v3.0. Cameras: camera1. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C034,which datasets were recorded at 50 Hz or faster with at least 3 cameras,scintill-a-86/dual-camera-test-dataset,https://huggingface.co/datasets/scintill-a-86/dual-camera-test-dataset,"Dataset dual-camera-test-dataset by scintill-a-86. Recorded: robot so_follower, 30 fps, 2 episodes, 734 frames, 1 tasks, format v3.0. Cameras: cam0, cam1. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C003,"looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam",Bigenlight/cube_in_cup_lerobot_v3,https://huggingface.co/datasets/Bigenlight/cube_in_cup_lerobot_v3,"Dataset cube_in_cup_lerobot_v3 by Bigenlight. # cube_in_cup — UR7e teleop, ""put the cube in the cup"" (LeRobot v3.0)
+Joint-space imitation-learning dataset: **23 human teleoperation demos** of a UR7e arm picking a
+wooden cube off a table and dropping it into a cup, with two 720p camera views. Ready t",
+C027,metaworld or robomimic simulation datasets,THUgewu/robomimic-mh-can-image-dense-scaled-100,https://huggingface.co/datasets/THUgewu/robomimic-mh-can-image-dense-scaled-100,Dataset robomimic-mh-can-image-dense-scaled-100 by THUgewu.,
+C024,"Are there datasets of handling cables, ropes or other deformable things?",mortiferrr/collect_things_ticks,https://huggingface.co/datasets/mortiferrr/collect_things_ticks,"Dataset collect_things_ticks by mortiferrr. Recorded: robot mcx, 30 fps, 1 episodes, 1739 frames, 1 tasks, format v2.1. Cameras: camera_1, camera_2. Action: joint1.pos, joint2.pos, joint3.pos, joint4.pos, joint5.pos, joint6.pos, gripper.pos.",
+C015,"kitchen tasks: putting dishes in a rack, loading a dishwasher, wiping a table",bot-pi/agibot-sim-make-a-sandwich,https://huggingface.co/datasets/bot-pi/agibot-sim-make-a-sandwich,"Dataset agibot-sim-make-a-sandwich by bot-pi. Recorded: robot a2d, 30 fps, 103 episodes, 534707 frames, 1 tasks, format v2.1. Cameras: head_color, hand_left_color, hand_right_color. Action of 20 values. Also: subtask.",
+C019,"Need depth images, not only RGB. Which datasets include a depth camera?",username-007/bimanual-franka-bin-packing-depth,https://huggingface.co/datasets/username-007/bimanual-franka-bin-packing-depth,"Dataset bimanual-franka-bin-packing-depth by username-007. Recorded: 10 fps, 102 episodes, 21838 frames, 1 tasks, format v2.1. Cameras: rgb_static, rgb_left, rgb_right, depth_left, depth_right. Action: tcp_left_x, tcp_left_y, tcp_left_z, tcp_left_quat_x, tcp_left_quat_y, tcp_left_quat_z, tcp_left_qu",
+C016,ALOHA datasets for transferring a cube from one arm to the other,lerobot/aloha_sim_transfer_cube_human,https://huggingface.co/datasets/lerobot/aloha_sim_transfer_cube_human,"Dataset aloha_sim_transfer_cube_human by lerobot. Recorded: robot aloha, 50 fps, 50 episodes, 20000 frames, 1 tasks, format v2.0. Cameras: top. Action: left_waist, left_shoulder, left_elbow, left_forearm_roll, left_wrist_angle, left_wrist_rotate, left_gripper, right_waist, right_shoulder, right_elbo",
+C005,I want teleoperated demonstrations of pouring liquid or beads from one cup into another.,huzheyuan/ABC-130k-sim-lerobot-v3,https://huggingface.co/datasets/huzheyuan/ABC-130k-sim-lerobot-v3,"Dataset ABC-130k-sim-lerobot-v3 by huzheyuan. # ABC-130k Sim, re-rendered at 352x256 (LeRobot v3.0)
+The simulation part (`data/sim`) of XDOF/ABC-130k (commit
+`d4c79f5`), converted to LeRobot v3.0 with **every camera frame
+re-rendered** at 352x256 from the simulator state shipped with each episode. T",
+C019,"Need depth images, not only RGB. Which datasets include a depth camera?",lerobot/outdoor-depth,https://huggingface.co/datasets/lerobot/outdoor-depth,"Dataset outdoor-depth by lerobot. Recorded: robot realsense, 30 fps, 1 episodes, 181 frames, 1 tasks, format v3.0. Cameras: depth.",
+C005,I want teleoperated demonstrations of pouring liquid or beads from one cup into another.,hojjunekim/teleop_turn_uni,https://huggingface.co/datasets/hojjunekim/teleop_turn_uni,"Dataset teleop_turn_uni by hojjunekim. # LEGS Task 3, long-horizon: Teleop (50)
+A training set of the paper's Teleop (50) condition for Task 3 (long-horizon), from
+LEGS (code, paper).
+Real-robot demonstrations recorded with SONIC's VR teleoperation.
+| Episodes | 50 |
+| Frames | 51,927 at 30 fps |
+| ",
+C036,I want to train a policy to press buttons or flip switches,k-matsushima/push_buttons,https://huggingface.co/datasets/k-matsushima/push_buttons,"Dataset push_buttons by k-matsushima. Recorded: robot so_follower, 30 fps, 144 episodes, 21898 frames, 3 tasks, format v3.0. Cameras: front, wrist. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",
+C024,"Are there datasets of handling cables, ropes or other deformable things?",unitreerobotics/G1_Dex1_Drawstring_Bag_For_Supplies,https://huggingface.co/datasets/unitreerobotics/G1_Dex1_Drawstring_Bag_For_Supplies,"Dataset G1_Dex1_Drawstring_Bag_For_Supplies by unitreerobotics. # Data Structure
+Codebase `v3.0`. All cameras are AV1-encoded, 480×640×3, 30 fps.
+## Video Streams (`observation.images.*`)
+| Key | Description |
+| `head_stereo_left` / `head_stereo_right` | Head stereo cameras (raw) |
+| `head_stereo_le",
+C026,Tables where a robot arm writes or draws with a pen,XNX25/so101_pen_mug,https://huggingface.co/datasets/XNX25/so101_pen_mug,"Dataset so101_pen_mug by XNX25. # so101_pen_mug (TsFile)
+Apache TsFile version of `bjb7/so101_pen_mug`.
+## Overview
+This dataset is a LeRobot v2.1 dataset of an SO-101 arm performing a pen-and-mug manipulation task.
+- **Robot:** SO-101 (so101)
+- **Scale:** 50 episodes, 25,138 frames, 30 fps
+- **Spli",
+C003,"looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam",lerobot/imperialcollege_sawyer_wrist_cam,https://huggingface.co/datasets/lerobot/imperialcollege_sawyer_wrist_cam,"Dataset imperialcollege_sawyer_wrist_cam by lerobot. Recorded: robot unknown, 5 fps, 170 episodes, 7148 frames, 17 tasks, format v3.0. Cameras: image, wrist_image. Action: motor_0, motor_1, motor_2, motor_3, motor_4, motor_5, motor_6, motor_7.",
+C036,I want to train a policy to press buttons or flip switches,TacVerse/taccap-g1-press-remote-buttons-0826,https://huggingface.co/datasets/TacVerse/taccap-g1-press-remote-buttons-0826,"Dataset taccap-g1-press-remote-buttons-0826 by TacVerse. Recorded: robot bi_taccap_gripper, 30 fps, 285 episodes, 495989 frames, 1 tasks, format v3.0. Cameras: left_tactile_left, left_tactile_right, left_wrist, right_tactile_left, right_tactile_right, right_wrist. Action: left_tcp.x, left_tcp.y, lef",
+C026,Tables where a robot arm writes or draws with a pen,vo2yager/aloha_incontext,https://huggingface.co/datasets/vo2yager/aloha_incontext,"Dataset aloha_incontext by vo2yager. # aloha_incontext
+A Mobile ALOHA robot manipulation dataset for in-context imitation learning. It contains
+human-teleoperated demonstrations of pick-and-place, pen uncapping, placing eggs in a
+box and closing it, and additional bimanual tasks.
+**1,328 episodes / ",
+C024,"Are there datasets of handling cables, ropes or other deformable things?",unitreerobotics/G1_Dex1_Load_Shoes_On_Conveyor,https://huggingface.co/datasets/unitreerobotics/G1_Dex1_Load_Shoes_On_Conveyor,"Dataset G1_Dex1_Load_Shoes_On_Conveyor by unitreerobotics. # Data Structure
+Codebase `v3.0`. All cameras are AV1-encoded, 480×640×3, 30 fps.
+## Video Streams (`observation.images.*`)
+| Key | Description |
+| `head_stereo_left` / `head_stereo_right` | Head stereo cameras (raw) |
+| `head_stereo_left_re",
+C024,"Are there datasets of handling cables, ropes or other deformable things?",DecentVLA/moplan_Cube_Red_on_Blue_franka_right,https://huggingface.co/datasets/DecentVLA/moplan_Cube_Red_on_Blue_franka_right,"Dataset moplan_Cube_Red_on_Blue_franka_right by DecentVLA. > ## ⚠️ Read before mixing this with other DecentVLA data
+> **This is a `Franka Panda` in simulation, driven by a motion planner.**
+> Every other dataset in this organisation is **SO-101 hardware, teleoperated by a
+> human**. Two things ther",
+C005,I want teleoperated demonstrations of pouring liquid or beads from one cup into another.,filesmuggler/experiment-cube-cup-100-l_diagonal-full,https://huggingface.co/datasets/filesmuggler/experiment-cube-cup-100-l_diagonal-full,"Dataset experiment-cube-cup-100-l_diagonal-full by filesmuggler. # Cube → cup pick-and-place (SO-ARM, L-shape + diagonal)
+Teleoperated demonstrations of **picking a small dark cube and placing it into an orange cup** on a white table. Recorded on an SO-ARM follower (`robot_type: so_follower`) with L",
+C023,I'm looking for demos of opening a bottle or unscrewing a cap,hEnka11900/pick_bottle_cap,https://huggingface.co/datasets/hEnka11900/pick_bottle_cap,"Dataset pick_bottle_cap by hEnka11900. Recorded: robot koch_follower, 30 fps, 10 episodes, 3000 frames, 1 tasks, format v2.1. Cameras: front. Action: shoulder_pan.pos, shoulder_lift.pos, elbow_flex.pos, wrist_flex.pos, wrist_roll.pos, gripper.pos.",

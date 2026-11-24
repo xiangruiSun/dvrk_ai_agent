@@ -1,0 +1,113 @@
+E04 - RUNS, POOLING AND THE RELEVANCE JUDGE
+===========================================
+Owner: the intern. Month 2 (weeks 7-8). Depends on: E02, E03, S3. Needed by: E05-E12.
+
+As built
+--------
+Status: BUILT and run. Judgments: evals/vxfind/qrels/. Results: REPORT.md, "Retrieval" (the judging block).
+Code: vxfind/eval/harness.py (run, pool), judge.py.
+Differences from the plan below:
+- Implementation step 4 (judge twenty pairs and READ the reasons before the full run) was skipped
+  the first time, and it cost a full re-judging: the first rubric let contradicted requirements
+  through. The rubric is now at its third revision (g2 -> g3 -> g4); every judgment of every
+  version is still in the file, and the first full run is kept as evidence.
+- Under the procedural rubric the judge almost never gives grade 2, so nDCG on set C is close to a
+  binary measure. Stated in the report.
+- Test pools come from fewer configurations than dev pools (the reference points only).
+(end of as built)
+
+Job
+---
+Get graded relevance labels for the written needs (set C) and the no-answer needs (set D), for
+which no truth can be computed. Nobody can label 100,000 tables against 60 needs. You label what
+the systems return: run several different systems, pool their top results, judge the pool. The
+judge is a language model, because there is one of you; that makes the judge an instrument that
+must itself be measured (E05).
+
+Requirements
+------------
+R1  Stored runs (vxfind/eval/harness.py, run). A run is one configuration over a list of
+    queries: per query the ranked ids, their families, the candidate list before the cut, stage
+    timings, notes, and any reasons. Stored on disk under the configuration's name with a key
+    made from the configuration's settings and the index name; a search is repeated only when
+    the configuration, the index or the need changed. Scoring and pooling never search.
+R2  Pooling (harness.pool). For each query, the union of the top 10 of every run, in a fixed
+    order. Pool from DIFFERENT kinds of system (lexical only, vector only with each embedding
+    model, fused, with and without collapse, with each field removed): a pool built from
+    variants of one system finds only what that system finds.
+R3  The judge (vxfind/eval/judge.py). One need and ONE table per call. The table is presented
+    as its generated summary plus what its owner wrote, cut to fixed lengths. The model returns
+    a reason of at most 20 words and then a grade 0-3 through a JSON schema (reason first, so
+    the grade is conditioned on it). Temperature 0.
+R4  The rubric is the four grades of E01 R7, in the prompt, with the hard rule spelled out: a
+    table that does not say what task it shows cannot get more than 1 for a need about a task.
+    The judge is told to judge only from the text given.
+R5  One table per call. A judge shown a list grades the list's order as much as its items, and
+    its grade for one table depends on its neighbours. It costs more calls; it is worth it.
+R6  Every judgment is kept, one per line, in git: a key, query id, table id, grade, reason,
+    judge model, prompt version, and the hash of the table text that was judged. A judgment is
+    reused only if model, prompt version, need text and table text all match. Change the prompt
+    -> bump the version -> everything is judged again, and the old judgments stay in the file.
+R7  Unjudged handling, in this order: (a) report unjudged@10 for every scored run; (b) before
+    comparing a new configuration to the pooled ones, judge its unjudged top-10 tables (a
+    "top-up"); (c) never compare a pooled system with an unpooled one on raw scores.
+R8  Judge failures (a reply that does not parse, a timeout) are counted and the pair stays
+    unjudged; a failure is never turned into a grade.
+R9  Report: pairs judged, the distribution of grades, pairs per query, failures, seconds per
+    judgment, and which configurations were pooled.
+R10 The no-answer set is judged like set C. A D need with any table of grade >= 2 in its pool
+    is listed in the report and removed from the abstention scoring (E02 R5).
+
+Implementation instructions
+---------------------------
+1. Build run storage first. One JSON file per configuration:
+   {config_key, config, index, queries: {qid: {need_key, ids, families, deep, timings_ms, notes}}}.
+   Test that changing one setting changes config_key.
+2. Pool depth 10 because answers show 10. Count the pool before judging:
+   queries x (distinct tables in the union). With twenty-odd configurations expect 40-60 tables
+   per query; with 30 queries that is 1,200-1,800 judgments, about a quarter of an hour on one
+   workstation with a 14B local model and four parallel calls. Know this number before you start.
+3. Fetch the judge's text for many tables with one multi-get from the index; do not search.
+4. Write the prompt, then judge twenty pairs and READ every reason. You are looking for a
+   systematic error (for example: grade 2 for any table of the right robot regardless of
+   task). Fix the rubric wording, bump the version, repeat. Stop after two or three rounds; the
+   remaining error is what E05 measures.
+5. Parallelism: four worker threads against the local model server is the measured sweet spot
+   here; appends to the judgment file are under a lock.
+6. qrels(queries) rebuilds {qid: {table: grade}} from the file, for the current model and
+   prompt version, dropping judgments made for an older wording of a need.
+
+Deliverables
+------------
+vxfind/eval/harness.py (run, pool), vxfind/eval/judge.py; evals/vxfind/qrels/<judge>.jsonl;
+the pooling and judging part of scripts/vxfind_eval.py retrieval; the "judging" block of
+verification/vxfind_retrieval.json.
+
+Acceptance
+----------
+- A second run of the stage judges zero new pairs and gives identical scores.
+- Changing the prompt version causes every pair to be judged again; the file keeps both.
+- Every scored run of set C reports unjudged@10, and for the pooled configurations it is 0.
+- The grade distribution is not degenerate (not all 0, not all 3) and is in the report.
+
+Pitfalls
+--------
+- Judging only the serving system's results. Then the serving system is perfect by definition
+  and every alternative is penalised for its unjudged finds.
+- Listwise judging to save calls.
+- A rubric that a careful person could not apply. If you cannot grade a pair with it, neither
+  can the model.
+- Losing the reasons. They are the only way to audit the judge later.
+- Using the judge's grades as truth in a slide. They are estimates with a measured error.
+
+Stretch
+-------
+- Deeper pools (20) for a subset, to estimate how many relevant tables depth 10 misses.
+- Stratified sampling of the pool with estimators that correct for it, when the pool gets too
+  large to judge completely.
+
+References
+----------
+Cranfield and TREC pooling; Buckley and Voorhees on incomplete judgments; UMBRELA (an open
+reproduction of an LLM relevance assessor) and Thomas et al. (LLM judgments at scale); the TREC
+2024 RAG track's use of automatic judgments.

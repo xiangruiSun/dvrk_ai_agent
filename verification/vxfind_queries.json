@@ -1,0 +1,115 @@
+{
+ "C": {
+  "queries": 40,
+  "dev": 18,
+  "test": 22,
+  "author": "one person, the builder of the system; not a newcomer"
+ },
+ "D": {
+  "queries": 20,
+  "dev": 11,
+  "test": 9,
+  "kinds": {
+   "absent": 16,
+   "size": 4
+  }
+ },
+ "robot_families": {
+  "rules": 16,
+  "tables": 95685,
+  "tables_in_a_family": 76462,
+  "tables_without_robot_type": 7640,
+  "tables_with_a_robot_type_no_rule_matches": 11583,
+  "distinct_robot_type_values": 1237,
+  "distinct_values_matched": 524,
+  "per_family": {
+   "so_arm": 51942,
+   "franka": 4997,
+   "yam": 4883,
+   "omx": 1925,
+   "trossen": 1571,
+   "openarm": 1511,
+   "lekiwi": 1510,
+   "ur": 1306,
+   "koch": 1251,
+   "piper": 1152,
+   "aloha": 1113,
+   "arx": 879,
+   "unitree_g1": 777,
+   "xarm": 604,
+   "fanuc": 546,
+   "rby1": 495
+  }
+ },
+ "A": {
+  "queries": 60,
+  "dev": 31,
+  "test": 29,
+  "families_used": 16,
+  "constraints_used": {
+   "min_episodes": 29,
+   "bimanual": 15,
+   "format": 23,
+   "min_cameras": 17,
+   "camera": 15,
+   "fps": 11
+  },
+  "constraints_per_query": {
+   "1": 19,
+   "2": 32,
+   "3": 9
+  },
+  "matching_tables_median": 108,
+  "share_of_robots_tables_that_match_median": 0.06,
+  "examples": [
+   "Which tables have AgileX Piper arm recordings 50 episodes or more?",
+   "Looking for datasets of the UFACTORY xArm bimanual and no fewer than 50 episodes.",
+   "For training I want OMX arm data bimanual, stored as format v3.0 and with at least 3 camera views.",
+   "Looking for datasets of the AgileX Piper arm that includes a wrist camera view and stored as format v3.0."
+  ]
+ },
+ "B": {
+  "queries": 110,
+  "dev": 57,
+  "test": 53,
+  "written_by": "qwen3:14b",
+  "tables_tried": 112,
+  "discarded": {
+   "contains the identifier 224x224": 1,
+   "contains the identifier 128x128": 1
+  },
+  "seconds": 180.2,
+  "eligible_tables": 3344,
+  "robots": {
+   "other": 41,
+   "so_arm": 14,
+   "franka": 14,
+   "unitree_g1": 10,
+   "openarm": 6,
+   "piper": 5,
+   "ur": 4,
+   "trossen": 3,
+   "koch": 3,
+   "arx": 2,
+   "yam": 2,
+   "aloha": 2,
+   "fanuc": 2,
+   "xarm": 1,
+   "rby1": 1
+  },
+  "examples": [
+   "A dataset of a bipedal robot performing object manipulation tasks, including stereo and infrared camera streams, detailed joint and gripper states, and end-effector poses in multiple reference frames.",
+   "I need a dataset of a robot performing a light-the-candle task, recorded with three cameras, at 15 fps, with 50 episodes and 13,355 frames total.",
+   "I need a dataset showing a human using two robotic grippers to place a kitchen knife into a cutlery tray, with variations in setup, gripper usage, and objects. The dataset should include different table cloths, knife types, and positions, and some episodes should show mistakes like dropping the knife or failed grasps.",
+   "I need a dataset of a robot performing a task in an office setting, where it uses a two-finger gripper to pick up the object closest to an apple and place it in a basket. The robot should be equipped with multiple RGB cameras, including one on the head and two on the wrists, and the task should involve interacting with objects like tables, baskets, and various items on a surface."
+  ]
+ },
+ "A_repaired": {
+  "needs_reworded": 6,
+  "why_reworded": "the family label listed three models and was read as excluding the others",
+  "queries_with_fewer_matching_tables": 25,
+  "why_fewer": "a table with no episodes no longer counts as a match",
+  "queries_now_with_fewer_than_5_matches": [],
+  "matching_tables_median": 105
+ }
+}

@@ -1,0 +1,136 @@
+E02 - QUERY SETS: FOUR SOURCES OF TRUTH, DEV AND TEST
+=====================================================
+Owner: the intern. Month 2 (weeks 5-6). Depends on: E01 (the needs, the grades), S1 (records).
+Needed by: E04-E12.
+
+As built
+--------
+Status: BUILT. Sets A, B, C, D are in evals/vxfind/queries/. Results: REPORT.md, "Query sets".
+Code: vxfind/eval/families.py, queries.py; scripts/vxfind_queries.py.
+Differences from the plan below:
+- Set C has 40 needs by one author (the builder), not 50, and no second author.
+- Set A was repaired in place after the judge calibration showed two faults of the "truth": a table
+  with no episodes counted as a match, and one family's label listed three models and so excluded
+  the others. Ids and specs are unchanged; the counts and six wordings changed (stage A_recount).
+- R5 did its job: needs written as having no answer turned out to have one, and were moved out.
+- Set B's needs often repeat exact figures from the description. They were kept; the bias this
+  gives lexical search is visible in the results and discussed in E11.
+- Set F (from feedback) holds candidates only; nobody has labelled them.
+(end of as built)
+
+Job
+---
+Build the questions the evaluation asks and decide, for each, where the right answer comes
+from. There are no users yet and no labels. You cannot wait for either. You build four sets
+whose weaknesses are different, so that no single weakness decides a result.
+
+The four sets
+-------------
+  A  attribute needs    "Franka data, at least 200 episodes, with a wrist camera."
+       truth: computed by code from the catalog, for EVERY table. No judge, nothing unjudged.
+       weakness: template wording; only what metadata can express (robot, size, cameras, rate,
+       format), nothing about the task.
+  B  known-item needs   a model reads one described table and writes the question a newcomer
+       would ask to find it, without its name.
+       truth: that table and its near-identical siblings.
+       weakness: the question is written from the text that is indexed, which rewards word
+       overlap; other tables that fit equally are not credited; only described tables (5% of
+       the catalog) can be sources.
+  C  written needs      questions written by hand before any result was seen.
+       truth: graded judgments of pooled results (E04).
+       weakness: one author who is not a newcomer; judge error; unjudged results.
+  D  no-answer needs    things the catalog does not hold, or sizes no table has.
+       truth: nothing fits, CONFIRMED by judging the pooled results, not assumed.
+       used for: abstention (E07).
+
+Requirements
+------------
+R1  Robot families (vxfind/eval/families.py). The catalog spells the robot in over a thousand
+    ways. Group the frequent spellings into families by hand-written rules (regular expressions
+    over the lower-cased value), one family per kind of hardware. A value no rule matches
+    belongs to no family and is never counted as a match, so labels built from the rules err
+    toward "not relevant". Report coverage: tables in a family, tables with a robot value no
+    rule matches, tables with no robot value. Check the rules against the 50 most frequent
+    values by eye, and write a test with the confusable ones ("course" must not match "ur").
+R2  Set A (queries.build_attribute). A spec is a robot family plus one to three constraints
+    drawn from: minimum episodes, frame rate, minimum cameras, a named camera, bimanual, format.
+    Keep a spec only if its constraints matter: at least 5 tables satisfy all of them AND at
+    most half of that robot's tables do (otherwise returning any table of the robot scores
+    well and the query tests nothing). Spread over families (a cap per family) so the most
+    common arm is not most of the set. Text is rendered from templates with several phrasings.
+    Grade by code: 3 = robot and all constraints; 1 = robot matches, a constraint fails;
+    0 = another robot or robot not stated.
+R3  Set B (queries.candidates_known_item, write_known_item). Sources: tables with a
+    person-written description of at least 200 characters, not scratch, one per family, capped
+    per robot family. A local model writes one or two sentences; the instruction forbids the
+    table's name, the owner's name and any identifier. Code then checks for leaks (owner name;
+    the flattened table name; identifier-like tokens with digits) and discards or retries.
+    Report how many were discarded and why. Truth: the source table or any table of its family.
+R4  Set C. The needs from E01 R2, one per line in a text file with a header stating date,
+    author and that no result was seen. The file is the record; do not edit a need after
+    seeing its results (add a new one instead).
+R5  Set D. Hand-written, two kinds: "absent" (a kind of data the catalog does not hold) and
+    "size" (a robot and task the catalog holds, at a size or rate no table has). After pooling
+    and judging (E04), any D need for which a table of grade 2 or 3 was found is moved out of D
+    and reported: the claim "nothing fits" is checked, not trusted.
+R6  Identity and splits. Every query has a stable id. Its split is a hash of the id: even ->
+    dev, odd -> test. Never by position in a file, never by hand.
+R7  The test set is locked. It is scored for the final table of a report, for the gate (E12),
+    and for the meta-evaluation's check that conclusions carry over. Any other use is recorded
+    in the report as a use of the test set.
+R8  Everything is in git: the query files (evals/vxfind/queries/*.jsonl), the written sources,
+    the rules. A report can be traced to the exact queries it used.
+R9  Report per set: size, dev and test counts, for A the constraints used and how selective
+    they are, for B the model that wrote the needs, the number discarded, and the spread over
+    robots.
+R10 A fifth set, F, is fed by the roll-out (E12): candidate cases from real feedback, added
+    only after a person has read and labelled each one.
+
+Implementation instructions
+---------------------------
+1. Start with R1. Print the 200 most frequent robot_type values with counts. Write rules. Run
+   them over all values and print, per family, the ten most frequent matches and the 25 most
+   frequent unmatched values. Fix, repeat. Stop when the unmatched list is real other hardware.
+2. For A, load the records once into memory (95,000 rows are small) and precompute the family
+   of each. Generate specs with a seeded random generator; reject those that fail R2's test;
+   stop at the target count. Store with each query: the spec, the number of matching tables and
+   the number of tables of that robot (the ideal ranking for nDCG needs the first).
+3. For B, read twenty generated needs before trusting the generator. You will see needs that
+   copy exact frame counts from the description. Decide whether that is a leak (it makes the
+   query easy for lexical search) and record your decision; here they are kept and the bias is
+   measured in E11 instead of hidden.
+4. For D, write the "size" kind carefully: it is the hard kind (the catalog has the robot and
+   the task; only the size is impossible) and the one a system is most likely to get wrong.
+5. Commands: python scripts/vxfind_queries.py A | B --n 110 | CD
+
+Deliverables
+------------
+evals/vxfind/queries/A.jsonl, B.jsonl, C.jsonl, D.jsonl, C_written.txt, D_written.txt;
+vxfind/eval/families.py, queries.py; verification/vxfind_queries.json.
+
+Acceptance
+----------
+- A: every query has at least 5 fully matching tables and they are at most half of the robot's.
+- B: no need contains its table's name or owner (checked by code; a sample read by a person).
+- C and D: the files state when and by whom they were written and that no result was seen.
+- Re-running the builders with the same seed reproduces the same A queries.
+- dev and test are disjoint by construction, and each set has both.
+
+Pitfalls
+--------
+- Building only B because it is cheap. Model-written questions flatter lexical retrieval.
+- Letting set A be dominated by the commonest robot (cap per family).
+- Constraints that everything satisfies (R2's selectivity test exists for this).
+- Assuming D has no answer. One of your "absent" needs will turn out to exist.
+- Fixing a query after seeing results. That is tuning the test to the system.
+
+Stretch
+-------
+- A second author for set C, and a comparison of system rankings between the two authors.
+- Multi-turn needs (a follow-up that refines the first), for the agent (E10).
+- Needs in the team's second language.
+
+References
+----------
+TARGET (table retrieval benchmarks built from text-to-SQL questions); known-item search in TREC
+practice; work on synthetic test collections and their disagreement with human ones (see E11).

@@ -1,0 +1,70 @@
+{
+ "policy": {
+  "restricted_owners": 3,
+  "restricted_to": "one group",
+  "note": "DECLARED for this project. No real organisation's policy. Owners chosen because they appear most often in results.",
+  "redacted": "the owners' names were removed from this file after the run; no measured value was changed"
+ },
+ "queries": 230,
+ "without_the_rule": {
+  "restricted_tables_in_top_10": 137,
+  "queries_with_one": 38
+ },
+ "outsider": {
+  "restricted_tables_in_any_result": 0,
+  "restricted_tables_among_the_first_100_candidates": 0
+ },
+ "insider_of_the_group": {
+  "restricted_tables_in_top_10": 137
+ },
+ "probes_by_an_outsider": {
+  "hidden_tables_probed": 25,
+  "tools_probed": {
+   "table_details": 25,
+   "table_columns": 25,
+   "related_tables": 25,
+   "request_access": 25,
+   "check_tables": 25,
+   "access_status": 25
+  },
+  "replies_identical_to_a_nonexistent_table": 125,
+  "replies_compared": 150,
+  "requests_sent_to_the_site_for_hidden_or_fake_ids": 25
+ },
+ "approval": {
+  "newcomer_decides_own_request": {
+   "ok": false,
+   "error_kind": "unauthorized",
+   "error": "only a mentor decides a request"
+  },
+  "newcomer_reads_the_queue": {
+   "ok": false,
+   "error_kind": "unauthorized"
+  },
+  "mentor_decides_own_request": {
+   "ok": false,
+   "error_kind": "unauthorized",
+   "error": "a person does not decide their own request"
+  },
+  "mentor_decides_newcomers_request": "approved",
+  "newcomer_status_after": "approved"
+ },
+ "no_token": "refused: McpUnavailable",
+ "tools_offered_to_the_assistant": {
+  "vx-catalog": [
+   "table_details",
+   "table_columns",
+   "related_tables"
+  ],
+  "vx-site": [
+   "check_tables"
+  ],
+  "vx-access": [
+   "access_status",
+   "request_access"
+  ]
+ },
+ "mentor_tools_offered_to_the_assistant": [],
+ "audit_rows": 5,
+ "ran": "2026-11-23 20:22"
+}

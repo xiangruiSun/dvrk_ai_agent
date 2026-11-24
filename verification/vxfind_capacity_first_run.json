@@ -1,0 +1,195 @@
+{
+ "machine": "one workstation; the search engine (1 node, 1 shard, 4 GB heap), the load generator and the embedding model share it",
+ "index": {
+  "alias": "vxfind-tables",
+  "index": "vxfind-tables-old-20261123195450",
+  "tables": 95685,
+  "engine": "9.2.1"
+ },
+ "needs_cycled": 230,
+ "load": [
+  {
+   "retriever": "bm25",
+   "workers": 1,
+   "seconds": 12.0,
+   "searches": 431,
+   "errors": 0,
+   "per_second": 35.9,
+   "p50_ms": 27.7,
+   "p95_ms": 46.0,
+   "p99_ms": 51.7,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "bm25",
+   "workers": 4,
+   "seconds": 12.0,
+   "searches": 1629,
+   "errors": 0,
+   "per_second": 135.5,
+   "p50_ms": 29.8,
+   "p95_ms": 48.4,
+   "p99_ms": 56.3,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "bm25",
+   "workers": 16,
+   "seconds": 12.1,
+   "searches": 3298,
+   "errors": 0,
+   "per_second": 273.5,
+   "p50_ms": 36.1,
+   "p95_ms": 58.0,
+   "p99_ms": 69.2,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "bm25",
+   "workers": 32,
+   "seconds": 12.1,
+   "searches": 3353,
+   "errors": 0,
+   "per_second": 276.7,
+   "p50_ms": 35.9,
+   "p95_ms": 57.9,
+   "p99_ms": 72.6,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "knn_nomic",
+   "workers": 1,
+   "seconds": 12.0,
+   "searches": 1157,
+   "errors": 0,
+   "per_second": 96.4,
+   "p50_ms": 9.9,
+   "p95_ms": 13.5,
+   "p99_ms": 21.6,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "knn_nomic",
+   "workers": 4,
+   "seconds": 12.0,
+   "searches": 4246,
+   "errors": 0,
+   "per_second": 353.5,
+   "p50_ms": 10.7,
+   "p95_ms": 15.6,
+   "p99_ms": 22.5,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "knn_nomic",
+   "workers": 16,
+   "seconds": 12.0,
+   "searches": 5592,
+   "errors": 0,
+   "per_second": 465.0,
+   "p50_ms": 21.2,
+   "p95_ms": 29.4,
+   "p99_ms": 33.6,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "knn_nomic",
+   "workers": 32,
+   "seconds": 12.1,
+   "searches": 5478,
+   "errors": 0,
+   "per_second": 454.0,
+   "p50_ms": 21.7,
+   "p95_ms": 30.4,
+   "p99_ms": 35.5,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "serving",
+   "workers": 1,
+   "seconds": 12.0,
+   "searches": 311,
+   "errors": 0,
+   "per_second": 25.8,
+   "p50_ms": 38.3,
+   "p95_ms": 56.6,
+   "p99_ms": 60.9,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "serving",
+   "workers": 4,
+   "seconds": 12.0,
+   "searches": 1154,
+   "errors": 0,
+   "per_second": 95.8,
+   "p50_ms": 41.0,
+   "p95_ms": 61.6,
+   "p99_ms": 72.9,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "serving",
+   "workers": 16,
+   "seconds": 12.1,
+   "searches": 1978,
+   "errors": 0,
+   "per_second": 163.8,
+   "p50_ms": 60.3,
+   "p95_ms": 84.9,
+   "p99_ms": 113.3,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "serving",
+   "workers": 32,
+   "seconds": 12.2,
+   "searches": 2039,
+   "errors": 0,
+   "per_second": 167.5,
+   "p50_ms": 58.8,
+   "p95_ms": 88.0,
+   "p99_ms": 5965.0,
+   "query_vectors": "computed beforehand"
+  }
+ ],
+ "query_vector_computed_per_search": {
+  "retriever": "serving",
+  "workers": 4,
+  "seconds": 12.0,
+  "searches": 764,
+  "errors": 0,
+  "per_second": 63.5,
+  "p50_ms": 62.3,
+  "p95_ms": 82.0,
+  "p99_ms": 90.6,
+  "query_vectors": "computed per search"
+ },
+ "storage": {
+  "index_mb": 815.5,
+  "bytes_per_table": 8523,
+  "vector_bytes_per_table_raw": 7168,
+  "data_the_catalog_describes_tb": 52.8,
+  "tables_declaring_size": 72631,
+  "frames_described": 5994851856
+ },
+ "growth": {
+  "first_month": "2024-03",
+  "last_full_month": "2026-10",
+  "created_per_month_recent": {
+   "2026-05": 13164,
+   "2026-06": 7068,
+   "2026-07": 7982,
+   "2026-08": 7098,
+   "2026-09": 6501,
+   "2026-10": 4326
+  },
+  "mean_created_per_month_recent": 7690,
+  "tables_now": 100196,
+  "monthly_growth_of_catalog": 0.0767,
+  "projected_tables_in_12_months": 192474,
+  "note": "straight line from the last six full months; the catalog has grown faster than linearly so far",
+  "projected_index_mb_in_12_months": 1640.4
+ },
+ "ran": "2026-11-23 22:30"
+}

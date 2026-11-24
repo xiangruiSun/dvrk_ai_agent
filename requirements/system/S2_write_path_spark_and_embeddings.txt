@@ -1,0 +1,144 @@
+TASK S2 - THE WRITE PATH: SPARK JOB, EMBEDDINGS, INDEX VERSIONS, INCREMENTAL SYNC
+=================================================================================
+Owner: Engineer A (data), with Engineer B for the index mapping. Reviewer: the lead.
+Months 1-4. Depends on: S1. Needed by: S3, S4, every evaluation task.
+
+As built
+--------
+Status: BUILT and run on both snapshots. Results: REPORT.md, "Write path".
+Code: vxfind/ingest/spark_job.py, embed.py, index.py; scripts/elastic_local.py.
+Differences from the plan below:
+- Spark runs in local mode on one Windows workstation. Reading a glob and writing through Spark
+  failed without the Hadoop native helper (the first trial hung for ten minutes); files are passed by
+  explicit URI and the result is written from the driver through Arrow. Noted in the code.
+- The "deleted" branch of the diff and of the sync is coded and has never fired: the source reports
+  no deletions.
+- The incremental sync is measured on a second copy of the index that does not serve, because the
+  evaluation measures an index that is behind on purpose. The synced copy is left in the engine as
+  the next version; the alias was not switched.
+- The engine's own rank fusion is refused under the free licence (verified against the running
+  engine), which is why S3 fuses in the caller.
+Further limits: one node, one shard, no replica; no scheduler; R9 (a build with failures must not
+switch the alias) is not enforced in code, only reported.
+(end of as built)
+
+Job
+---
+Turn the sources into a searchable index and keep it close to the catalog as the catalog
+changes, at a cost that is known. "Write path" in the mentor's notes: data sources (metadata,
+internal documents of the training pipelines; doc, txt, pdf) -> Spark -> embeddings -> the index.
+
+The questions this task must be able to answer with a measurement, not an estimate:
+  How long does a full rebuild take, and which stage takes the time?
+  What does one day's change cost?
+  How big is the index per table, and what does that make it in a year?
+  When a rebuild goes wrong, how do we get the previous index back, and how fast?
+
+Requirements
+------------
+R1  One batch job (vxfind/ingest/spark_job.py), run per snapshot, with named stages and a row
+    count and duration per stage written to data/vxfind/<snapshot>/ingest_stats.json:
+      read       the dump's files, by explicit path
+      select     rows whose tags mark them as tables of this catalog
+      parse      S1's parse_row over every row (a pandas UDF over batches; the function itself
+                 stays pure Python so it can be tested without Spark)
+      enrich     join the listing (gating, revision, private, disabled); compute the family key,
+                 family size, the head of each family (a window function), the month created
+      validate   counts per schema_status, per problem; rows in, rows out; no row lost
+      diff       against the previous snapshot's output: created, changed (content_hash
+                 differs), deleted; and for changed rows whether the schema changed
+      write      one columnar file of records, and one file of changes
+R2  The job is idempotent: the same snapshot gives the same output, byte for byte in the
+    record fields. Hashes, not timestamps, decide what changed.
+R3  Schema of the output is declared in code (a StructType), not inferred. Nested fields travel
+    as JSON strings with a _json suffix.
+R4  Embeddings (vxfind/ingest/embed.py). One vector per table summary per embedding model. A
+    cache on disk keyed by the hash of (model, text): a snapshot that shares 95% of its tables
+    with the previous one computes 5% of the vectors. Models that were trained with task
+    prefixes get them (document side and query side differ). Vectors are L2-normalised. Two
+    models are embedded so that the choice between them is an experiment (E06), not an opinion.
+R5  Index mapping (vxfind/ingest/index.py), decided with Engineer B:
+      - dynamic: strict. A field nobody declared is an error, not a new column.
+      - names, column names and robot types use an identifier analyzer: split at punctuation,
+        case changes and letter-digit boundaries, keep the unsplit form too.
+      - descriptions and summaries use the standard analyzer.
+      - keyword fields for filters (owner, robot_type, gated, family, codebase_version).
+      - numeric fields for range filters (fps, episodes, cameras).
+      - one dense_vector field per embedding model, cosine, indexed for approximate search.
+R6  Index versions. A build creates a new index named after the snapshot and the build time,
+    loads it with refresh off, refreshes, merges segments, and only then moves the alias
+    "vxfind-tables" to it in one request. Readers use the alias. The previous index stays until
+    deleted: that is the rollback, and it is one alias switch.
+R7  Incremental sync. Given the changes file of a snapshot, delete what was deleted and write
+    what was created or changed into the serving index, without a rebuild. Report rows and
+    seconds for each. The same change applied twice leaves the index as after once.
+R8  Throughput and size are measured on every build and written to index_stats.json: documents
+    per second, merge time, bytes on disk, bytes per table.
+R9  Failure behaviour. A failed bulk item is counted and its first three errors logged; a build
+    with failures does not switch the alias. A build that dies half way leaves an index nobody
+    reads.
+R10 Freshness is a number: for the serving index, the publication time of the snapshot it was
+    built from, exposed to the read path and shown in answers when it matters (S5).
+
+Implementation notes
+--------------------
+- Local mode on one workstation is the development target; the job is written so that the same
+  code runs on a cluster (no driver-side loops over rows, no collect of the full table except
+  the final write here, which is noted in the code).
+- On Windows without the Hadoop native helper, reading a glob and writing through Spark fail
+  (first run: a 600-second hang, then UnsatisfiedLinkError). The fix kept here: pass explicit
+  file URIs to the reader, and write the result from the driver through Arrow. On a cluster,
+  write with Spark.
+- Family size and head need the whole snapshot: do them in Spark with a window over the family
+  key, not in the parser.
+- For the diff, a full outer join on table_id between the two snapshots' (table_id,
+  content_hash, schema_hash). Deleted rows come only from the previous side.
+- Embedding 100,000 summaries is the slowest stage of a first build and nearly free afterwards.
+  Batch the calls (128 texts), save the cache every so often, and make the run resumable.
+- Truncate summaries to a fixed number of characters before embedding and include the
+  truncation length in the cache key, or a change of the limit silently reuses old vectors.
+
+Code
+----
+vxfind/ingest/spark_job.py, embed.py, index.py; scripts/elastic_local.py (a local single-node
+engine, bound to the loopback interface only, security features off because nothing else can
+reach it; never use this configuration on a network)
+
+Verification on real data
+-------------------------
+python -m vxfind.ingest.spark_job --snapshot old
+python -m vxfind.ingest.spark_job --snapshot new --previous old
+python -m vxfind.ingest.embed --snapshot old --model nomic-embed-text      (and bge-m3; then new)
+python -m vxfind.ingest.index build --snapshot old
+python -m vxfind.ingest.index build --snapshot old --no-switch          a copy, not serving
+python -m vxfind.ingest.index sync --from old --to new --index <the copy>
+python scripts/vxfind_ops.py write_path                 -> verification/vxfind_write_path.json
+Figures: verification/REPORT.md, section "Write path".
+
+The sync is measured on a copy of the index that does not serve: the evaluation measures
+freshness (E08) on an index that is a month behind on purpose, and a sync of the serving index
+would change the thing being measured half way through. The synced copy is the next version;
+taking it into service is one alias switch.
+
+Acceptance
+----------
+- Rows out of "select" equal rows written; the sum over schema_status equals the row count.
+- A second run of the job on the same snapshot produces identical record hashes.
+- The second snapshot's embedding run computes vectors only for created and changed tables.
+- After "build", the alias points at the new index and the count equals the record count.
+- After "sync", the index count equals the newer snapshot's count, and a second sync changes nothing.
+
+Not built here (team scope)
+---------------------------
+- Scheduling (a daily run), alerting on a failed run, and backfills.
+- Streaming or near-real-time updates. The mentor's notes ask about "real time update": the
+  design answer is in S6 R7 (the live check covers the gap; the index does not need to be real
+  time), and the measurement that supports it is E08.
+- Document and PDF ingestion (see S1).
+- Vector quantisation. At this size the vectors fit in memory; S6 says when that stops.
+
+Known limits
+------------
+One node, one shard, no replicas: no statement about cluster behaviour is made. The dump adds
+and changes tables but does not report deletions, so "deleted" in the diff is empty here and
+deletions are visible only through the listing and the live check.

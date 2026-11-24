@@ -1,0 +1,207 @@
+{
+ "index_built_from_catalog_of": "2026-10-23T03:06:15.000Z",
+ "site_asked_on": "2026-11-23",
+ "serving_config": {
+  "name": "serving",
+  "retriever": "rrf",
+  "embedding": "nomic-embed-text",
+  "k": 10,
+  "window": 100,
+  "rank_constant": 60,
+  "num_candidates": 400,
+  "collapse": true,
+  "demote_scratch": 0.5,
+  "boost_described": 1.5,
+  "fields": {
+   "name": 3.0,
+   "description": 2.0,
+   "summary": 1.0,
+   "schema_text": 1.0,
+   "robot_type.text": 2.0
+  },
+  "ident_stop": true,
+  "understand": "off",
+  "rerank": "off",
+  "rerank_depth": 20,
+  "select": false
+ },
+ "queries": 230,
+ "distinct_tables_shown": 1571,
+ "live_checks": {
+  "tables_on_record": 1795,
+  "budget": "420 requests per 300 s",
+  "first_answer": "2026-11-23 20:12",
+  "last_answer": "2026-11-23 21:01",
+  "minutes_from_first_to_last_answer_of_the_first_pass": 20.1,
+  "requests_in_this_run": 0,
+  "states": {
+   "gone": 269,
+   "moved": 135,
+   "live": 1391
+  }
+ },
+ "what_was_shown": {
+  "answers": 230,
+  "addresses_shown": 2300,
+  "addresses_checked": 2241,
+  "not_checked": 59,
+  "dead": 328,
+  "moved": 216,
+  "changed_since_indexed": 101,
+  "share_dead": 0.1464,
+  "share_moved": 0.0964,
+  "share_changed": 0.0451,
+  "answers_with_a_dead_address": 151,
+  "share_answers_with_a_dead_address": 0.6565,
+  "answers_with_dead_moved_or_changed": 197,
+  "after_live_check": {
+   "dead_addresses_shown": 0,
+   "mean_removed_per_answer": 1.426,
+   "answers_still_full_after_refill": 227
+  }
+ },
+ "by_query_set": {
+  "A": {
+   "answers": 60,
+   "addresses_shown": 600,
+   "addresses_checked": 600,
+   "not_checked": 0,
+   "dead": 76,
+   "moved": 46,
+   "changed_since_indexed": 30,
+   "share_dead": 0.1267,
+   "share_moved": 0.0767,
+   "share_changed": 0.05,
+   "answers_with_a_dead_address": 39,
+   "share_answers_with_a_dead_address": 0.65,
+   "answers_with_dead_moved_or_changed": 52,
+   "after_live_check": {
+    "dead_addresses_shown": 0,
+    "mean_removed_per_answer": 1.267,
+    "answers_still_full_after_refill": 59
+   }
+  },
+  "B": {
+   "answers": 110,
+   "addresses_shown": 1100,
+   "addresses_checked": 1100,
+   "not_checked": 0,
+   "dead": 191,
+   "moved": 125,
+   "changed_since_indexed": 47,
+   "share_dead": 0.1736,
+   "share_moved": 0.1136,
+   "share_changed": 0.0427,
+   "answers_with_a_dead_address": 76,
+   "share_answers_with_a_dead_address": 0.6909,
+   "answers_with_dead_moved_or_changed": 95,
+   "after_live_check": {
+    "dead_addresses_shown": 0,
+    "mean_removed_per_answer": 1.736,
+    "answers_still_full_after_refill": 108
+   }
+  },
+  "C": {
+   "answers": 40,
+   "addresses_shown": 400,
+   "addresses_checked": 400,
+   "not_checked": 0,
+   "dead": 46,
+   "moved": 33,
+   "changed_since_indexed": 23,
+   "share_dead": 0.115,
+   "share_moved": 0.0825,
+   "share_changed": 0.0575,
+   "answers_with_a_dead_address": 26,
+   "share_answers_with_a_dead_address": 0.65,
+   "answers_with_dead_moved_or_changed": 36,
+   "after_live_check": {
+    "dead_addresses_shown": 0,
+    "mean_removed_per_answer": 1.15,
+    "answers_still_full_after_refill": 40
+   }
+  },
+  "D": {
+   "answers": 20,
+   "addresses_shown": 200,
+   "addresses_checked": 141,
+   "not_checked": 59,
+   "dead": 15,
+   "moved": 12,
+   "changed_since_indexed": 1,
+   "share_dead": 0.1064,
+   "share_moved": 0.0851,
+   "share_changed": 0.0071,
+   "answers_with_a_dead_address": 10,
+   "share_answers_with_a_dead_address": 0.5,
+   "answers_with_dead_moved_or_changed": 14,
+   "after_live_check": {
+    "dead_addresses_shown": 0,
+    "mean_removed_per_answer": 0.75,
+    "answers_still_full_after_refill": 20
+   }
+  }
+ },
+ "the_source_does_not_report_deletions": {
+  "dead_tables_found": 269,
+  "of_which_still_in_the_newer_dump": 269,
+  "tables_the_newer_dump_dropped": 0,
+  "tables_the_newer_dump_added": 4511,
+  "reading": "the dump never drops a table. Deleted and privatised tables stay in it with their last card, so dead entries pile up in the source itself. The dead share measured here is how far an index built from this source is from the live site; it is not the share that died in the month between the snapshot and the check."
+ },
+ "dead_share_by_year_created": {
+  "2024": {
+   "checked": 9,
+   "dead": 1,
+   "share_dead": 0.1111
+  },
+  "2025": {
+   "checked": 262,
+   "dead": 11,
+   "share_dead": 0.042
+  },
+  "2026": {
+   "checked": 1241,
+   "dead": 202,
+   "share_dead": 0.1628
+  }
+ },
+ "random_tables_of_the_index": {
+  "checked": 300,
+  "dead": 55,
+  "share_dead": 0.1833,
+  "ci95": [
+   0.1395,
+   0.2271
+  ],
+  "moved": 9
+ },
+ "listing_as_a_cheap_signal": {
+  "what": "is absence from the site's public listing a usable sign that a table is dead, without asking about each table",
+  "checked_tables": 1818,
+  "not_in_listing": 418,
+  "dead_and_not_in_listing": 270,
+  "alive_but_not_in_listing": 148,
+  "dead_but_in_listing": 0,
+  "precision": 0.6459,
+  "recall": 1.0
+ },
+ "seconds_added_to_one_answer": {
+  "tables_per_answer": 10,
+  "one_after_another_s": {
+   "median": 0.714,
+   "max": 0.871,
+   "answers": 6
+  },
+  "four_at_a_time_s": {
+   "median": 0.201,
+   "max": 0.357,
+   "answers": 6
+  }
+ },
+ "kinds_of_move": {
+  "moved_to_another_owner": 109,
+  "renamed_under_the_same_owner": 27
+ },
+ "ran": "2026-11-23 21:25"
+}

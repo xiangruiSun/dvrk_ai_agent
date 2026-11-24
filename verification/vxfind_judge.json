@@ -1,0 +1,268 @@
+{
+ "judge": "qwen3:14b",
+ "second_judge": "qwen3:4b",
+ "prompt_version": "g4",
+ "one_table_per_call": true,
+ "against_labels_computed_by_code": {
+  "what": "attribute needs (dev): for each need, tables that meet every constraint, tables of the right robot that miss one, tables of another robot that search returned, and random tables",
+  "qwen3:14b": {
+   "pairs": 294,
+   "agreement": 0.9354,
+   "kappa": 0.8454,
+   "judge_precision": 0.8864,
+   "judge_recall": 0.8966,
+   "false_positive_rate": 0.0483,
+   "confusion": {
+    "true_pos": 78,
+    "false_pos": 10,
+    "false_neg": 9,
+    "true_neg": 197
+   },
+   "judge_grade_by_true_grade": {
+    "0": {
+     "0": 35,
+     "1": 68,
+     "3": 7
+    },
+    "1": {
+     "0": 14,
+     "1": 80,
+     "3": 3
+    },
+    "3": {
+     "0": 5,
+     "1": 4,
+     "3": 78
+    }
+   }
+  },
+  "qwen3:4b": {
+   "pairs": 294,
+   "agreement": 0.8401,
+   "kappa": 0.6523,
+   "judge_precision": 0.6695,
+   "judge_recall": 0.908,
+   "false_positive_rate": 0.1884,
+   "confusion": {
+    "true_pos": 79,
+    "false_pos": 39,
+    "false_neg": 8,
+    "true_neg": 168
+   },
+   "judge_grade_by_true_grade": {
+    "0": {
+     "0": 75,
+     "1": 16,
+     "3": 19
+    },
+    "1": {
+     "0": 51,
+     "1": 26,
+     "2": 1,
+     "3": 19
+    },
+    "3": {
+     "0": 5,
+     "1": 3,
+     "2": 1,
+     "3": 78
+    }
+   }
+  },
+  "examples_where_the_judge_is_wrong": [
+   {
+    "need": "Looking for datasets of the AgileX Piper arm that includes a wrist camera view and stored as format v3.0.",
+    "table_id": "Playingyoyo/wetrobo-horizon-petri2microscope",
+    "true_grade": 0,
+    "judge_grade": 3,
+    "judge_reason": "Step 1. The dataset is of the AgileX Piper arm and includes a wrist camera view and is stored as format v3.0."
+   },
+   {
+    "need": "For training I want OpenArm data that includes a front camera view and in the v3.0 dataset format.",
+    "table_id": "20-wasa/openarm-cube-pickup-right_pose_altered_10fps",
+    "true_grade": 1,
+    "judge_grade": 3,
+    "judge_reason": "Step 1: Dataset includes front camera view (head) and is in v3.0 format."
+   },
+   {
+    "need": "Franka Panda arm demonstrations, two-arm (bimanual) set-up",
+    "table_id": "pokeandwiggle/testwithannotations",
+    "true_grade": 3,
+    "judge_grade": 0,
+    "judge_reason": "Step 1: Dataset is about a different robot (dual_fr3_pedestal) than the requested Franka Panda arm."
+   },
+   {
+    "need": "Which tables have Universal Robots arm (any UR model) recordings bimanual?",
+    "table_id": "nodogoro/cell1_20260522_hossam_cable_packaging20260522_214404",
+    "true_grade": 0,
+    "judge_grade": 3,
+    "judge_reason": "Step 1. Dataset has Universal Robots arm (UR arm) recordings bimanual"
+   },
+   {
+    "need": "Looking for datasets of the Franka Panda arm stored as format v3.0, at 50 frames per second and 50 episodes or more.",
+    "table_id": "jmarangola/meta-green-slim-up-corrected",
+    "true_grade": 3,
+    "judge_grade": 1,
+    "judge_reason": "Step 1. The dataset is not for the Franka Panda arm but for fr3_agilex."
+   },
+   {
+    "need": "Looking for datasets of the Franka Panda arm stored as format v3.0, at 50 frames per second and 50 episodes or more.",
+    "table_id": "jmarangola/pde_real_sft",
+    "true_grade": 3,
+    "judge_grade": 1,
+    "judge_reason": "Step 2. The dataset has 443 episodes, which meets the minimum of 50, but the robot is fr3_agilex, not panda (Franka)."
+   },
+   {
+    "need": "Which tables have OpenArm recordings bimanual and no fewer than 200 episodes?",
+    "table_id": "nkmurst/openarm_teleop_udp_d435_merged_20260804_relstats20260725_lerobot",
+    "true_grade": 3,
+    "judge_grade": 0,
+    "judge_reason": "Step 1. Dataset text does not mention number of episodes or bimanual activity."
+   },
+   {
+    "need": "For training I want SO-100 or SO-101 arm data bimanual and no fewer than 50 episodes.",
+    "table_id": "bluephysi01/so101_test40",
+    "true_grade": 3,
+    "judge_grade": 1,
+    "judge_reason": "Step 2. The dataset has 50 episodes, which meets the minimum requirement, but the robot name is bi_so_follower, which is a variant of SO-101."
+   }
+  ],
+  "held_out_pairs_of_the_test_attribute_needs": {
+   "qwen3:14b": {
+    "pairs": 275,
+    "agreement": 0.8509,
+    "kappa": 0.6744,
+    "judge_precision": 0.717,
+    "judge_recall": 0.8736,
+    "false_positive_rate": 0.1596,
+    "confusion": {
+     "true_pos": 76,
+     "false_pos": 30,
+     "false_neg": 11,
+     "true_neg": 158
+    },
+    "judge_grade_by_true_grade": {
+     "0": {
+      "0": 26,
+      "1": 56,
+      "3": 19
+     },
+     "1": {
+      "0": 6,
+      "1": 70,
+      "3": 11
+     },
+     "3": {
+      "0": 4,
+      "1": 7,
+      "2": 2,
+      "3": 74
+     }
+    }
+   },
+   "qwen3:4b": {
+    "pairs": 271,
+    "agreement": 0.738,
+    "kappa": 0.4725,
+    "judge_precision": 0.5564,
+    "judge_recall": 0.8605,
+    "false_positive_rate": 0.3189,
+    "confusion": {
+     "true_pos": 74,
+     "false_pos": 59,
+     "false_neg": 12,
+     "true_neg": 126
+    },
+    "judge_grade_by_true_grade": {
+     "0": {
+      "0": 54,
+      "1": 17,
+      "2": 1,
+      "3": 28
+     },
+     "1": {
+      "0": 36,
+      "1": 19,
+      "2": 2,
+      "3": 28
+     },
+     "3": {
+      "0": 6,
+      "1": 6,
+      "3": 74
+     }
+    }
+   },
+   "qwen3:14b with the first rubric (g2)": {
+    "pairs": 275,
+    "agreement": 0.56,
+    "kappa": 0.2246,
+    "judge_precision": 0.4096,
+    "judge_recall": 0.8851,
+    "false_positive_rate": 0.5904,
+    "confusion": {
+     "true_pos": 77,
+     "false_pos": 111,
+     "false_neg": 10,
+     "true_neg": 77
+    },
+    "judge_grade_by_true_grade": {
+     "0": {
+      "0": 15,
+      "1": 37,
+      "2": 31,
+      "3": 18
+     },
+     "1": {
+      "0": 4,
+      "1": 21,
+      "2": 56,
+      "3": 6
+     },
+     "3": {
+      "1": 10,
+      "2": 15,
+      "3": 62
+     }
+    }
+   }
+  },
+  "note": "the rubric was revised while reading the dev pairs (see vxfind_judge_iterations.json); the held-out pairs were not looked at"
+ },
+ "need_written_from_a_table_judged_against_that_table": {
+  "pairs": 57,
+  "grades": {
+   "0": 1,
+   "1": 12,
+   "3": 44
+  },
+  "share_judged_usable_or_better": 0.7719
+ },
+ "two_judges_on_pooled_pairs_of_written_needs": {
+  "pairs": 293,
+  "exact": 0.57,
+  "within_one": 0.7577,
+  "weighted_kappa": 0.5762,
+  "kappa_relevant": 0.5155,
+  "mean_first": 1.505,
+  "mean_second": 1.713
+ },
+ "same_pair_judged_twice": {
+  "pairs": 60,
+  "same_grade": 58
+ },
+ "hand_labels": {
+  "sheet": "evals/vxfind/labels/hand_labels.csv",
+  "pairs": 153,
+  "filled_by_a_person": 0,
+  "status": "NOT DONE. The sheet hides the judge's grade. Until a person fills it in, agreement between the judge and a person on the written needs is unknown; the comparison with computed truth above is the only comparison with truth."
+ },
+ "cost": {
+  "seconds_per_judgment_qwen3:14b": null,
+  "seconds_per_judgment_qwen3:4b": 2.32,
+  "judgments_stored": 6697,
+  "replies_that_could_not_be_read_qwen3:14b": 0,
+  "replies_that_could_not_be_read_qwen3:4b": 14
+ },
+ "ran": "2026-11-23 22:38"
+}

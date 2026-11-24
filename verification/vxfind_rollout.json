@@ -1,0 +1,422 @@
+{
+ "scripted_sessions": {
+  "what": "SCRIPTED. No real users. A script opens what the evaluation's labels call relevant.",
+  "events": 381,
+  "online_measures": {
+   "questions": 113,
+   "sessions": 113,
+   "answers_with_nothing_opened": 34,
+   "share_nothing_opened": 0.3009,
+   "mean_rank_of_first_opened": 1.97,
+   "first_opened_was_rank_1": 0.5696,
+   "tables_marked_not_useful": 81,
+   "share_of_shown_marked_not_useful": 0.0717,
+   "said_nothing_fits": 34,
+   "asked_again": 16,
+   "access_requests": 0
+  }
+ },
+ "triage": {
+  "candidate_cases": 50,
+  "reasons": {
+   "the person said nothing fits": 34,
+   "nothing shown was opened": 34,
+   "a shown table was marked not useful": 36,
+   "the person asked again in other words": 16
+  },
+  "written_to": "evals/vxfind/queries/F_candidates.jsonl",
+  "status": "candidates only; none is in a scored query set until a person has read and labelled it",
+  "by_query_set": {
+   "A": 25,
+   "B": 11,
+   "C": 5,
+   "D": 9
+  }
+ },
+ "gate": {
+  "rules": {
+   "alpha": 0.05,
+   "no_loss": {
+    "A": {
+     "metric": "fit@10",
+     "max_drop": 0.05
+    },
+    "B": {
+     "metric": "mrr@10",
+     "max_drop": 0.05
+    },
+    "C": {
+     "metric": "ndcg@10",
+     "max_drop": 0.05
+    }
+   },
+   "floors": {
+    "dead_addresses_shown_after_live_check": 0,
+    "restricted_tables_shown_to_outsiders": 0
+   }
+  },
+  "serving": {
+   "name": "serving",
+   "retriever": "rrf",
+   "embedding": "nomic-embed-text",
+   "k": 10,
+   "window": 100,
+   "rank_constant": 60,
+   "num_candidates": 400,
+   "collapse": true,
+   "demote_scratch": 0.5,
+   "boost_described": 1.5,
+   "fields": {
+    "name": 3.0,
+    "description": 2.0,
+    "summary": 1.0,
+    "schema_text": 1.0,
+    "robot_type.text": 2.0
+   },
+   "ident_stop": true,
+   "understand": "off",
+   "understand_model": "small",
+   "understand_version": "u2",
+   "rerank": "off",
+   "rerank_depth": 20,
+   "select": false
+  },
+  "floors_measured": {
+   "dead_addresses_shown_after_live_check": 0,
+   "restricted_tables_shown_to_outsiders": 0
+  },
+  "decisions": {
+   "rrf (plain fusion)": {
+    "passed": false,
+    "checks": [
+     {
+      "check": "A fit@10",
+      "passed": true,
+      "difference": 0.0138,
+      "ci95": [
+       -0.0276,
+       0.0586
+      ],
+      "p": 0.6635,
+      "queries": 29,
+      "why": ""
+     },
+     {
+      "check": "B mrr@10",
+      "passed": false,
+      "difference": -0.0294,
+      "ci95": [
+       -0.0643,
+       -0.0057
+      ],
+      "p": 0.0322,
+      "queries": 53,
+      "why": "a loss beyond chance"
+     },
+     {
+      "check": "C ndcg@10",
+      "passed": true,
+      "difference": -0.0023,
+      "ci95": [
+       -0.0306,
+       0.025
+      ],
+      "p": 0.8793,
+      "queries": 22,
+      "why": ""
+     },
+     {
+      "check": "dead_addresses_shown_after_live_check",
+      "passed": true,
+      "value": 0,
+      "limit": 0,
+      "why": ""
+     },
+     {
+      "check": "restricted_tables_shown_to_outsiders",
+      "passed": true,
+      "value": 0,
+      "limit": 0,
+      "why": ""
+     }
+    ]
+   },
+   "bm25 (vectors switched off)": {
+    "passed": false,
+    "checks": [
+     {
+      "check": "A fit@10",
+      "passed": false,
+      "difference": -0.0552,
+      "ci95": [
+       -0.131,
+       0.0069
+      ],
+      "p": 0.1582,
+      "queries": 29,
+      "why": "a drop larger than 0.05"
+     },
+     {
+      "check": "B mrr@10",
+      "passed": true,
+      "difference": 0.0431,
+      "ci95": [
+       -0.0552,
+       0.1341
+      ],
+      "p": 0.3743,
+      "queries": 53,
+      "why": ""
+     },
+     {
+      "check": "C ndcg@10",
+      "passed": false,
+      "difference": -0.1296,
+      "ci95": [
+       -0.2231,
+       -0.0244
+      ],
+      "p": 0.0198,
+      "queries": 22,
+      "why": "a loss beyond chance and a drop larger than 0.05"
+     },
+     {
+      "check": "dead_addresses_shown_after_live_check",
+      "passed": true,
+      "value": 0,
+      "limit": 0,
+      "why": ""
+     },
+     {
+      "check": "restricted_tables_shown_to_outsiders",
+      "passed": true,
+      "value": 0,
+      "limit": 0,
+      "why": ""
+     }
+    ]
+   },
+   "bm25_name_only (a planted regression)": {
+    "passed": false,
+    "checks": [
+     {
+      "check": "A fit@10",
+      "passed": false,
+      "difference": -0.0793,
+      "ci95": [
+       -0.1448,
+       -0.0172
+      ],
+      "p": 0.0266,
+      "queries": 29,
+      "why": "a loss beyond chance and a drop larger than 0.05"
+     },
+     {
+      "check": "B mrr@10",
+      "passed": false,
+      "difference": -0.4687,
+      "ci95": [
+       -0.5856,
+       -0.3469
+      ],
+      "p": 0.0,
+      "queries": 53,
+      "why": "a loss beyond chance and a drop larger than 0.05"
+     },
+     {
+      "check": "C ndcg@10",
+      "passed": false,
+      "difference": -0.2893,
+      "ci95": [
+       -0.4258,
+       -0.1521
+      ],
+      "p": 0.0012,
+      "queries": 22,
+      "why": "a loss beyond chance and a drop larger than 0.05"
+     },
+     {
+      "check": "dead_addresses_shown_after_live_check",
+      "passed": true,
+      "value": 0,
+      "limit": 0,
+      "why": ""
+     },
+     {
+      "check": "restricted_tables_shown_to_outsiders",
+      "passed": true,
+      "value": 0,
+      "limit": 0,
+      "why": ""
+     }
+    ]
+   },
+   "serving with window 20": {
+    "passed": true,
+    "checks": [
+     {
+      "check": "A fit@10",
+      "passed": true,
+      "difference": -0.0241,
+      "ci95": [
+       -0.0517,
+       -0.0034
+      ],
+      "p": 0.1107,
+      "queries": 29,
+      "why": ""
+     },
+     {
+      "check": "B mrr@10",
+      "passed": true,
+      "difference": 0.0057,
+      "ci95": [
+       -0.0357,
+       0.0471
+      ],
+      "p": 0.6267,
+      "queries": 53,
+      "why": ""
+     },
+     {
+      "check": "C ndcg@10",
+      "passed": true,
+      "difference": 0.0044,
+      "ci95": [
+       -0.0321,
+       0.0455
+      ],
+      "p": 0.8407,
+      "queries": 22,
+      "why": ""
+     },
+     {
+      "check": "dead_addresses_shown_after_live_check",
+      "passed": true,
+      "value": 0,
+      "limit": 0,
+      "why": ""
+     },
+     {
+      "check": "restricted_tables_shown_to_outsiders",
+      "passed": true,
+      "value": 0,
+      "limit": 0,
+      "why": ""
+     }
+    ]
+   },
+   "serving + the need read by the large model, numbers as filters": {
+    "passed": false,
+    "checks": [
+     {
+      "check": "A fit@10",
+      "passed": true,
+      "difference": 0.2828,
+      "ci95": [
+       0.1621,
+       0.4034
+      ],
+      "p": 0.0002,
+      "queries": 29,
+      "why": ""
+     },
+     {
+      "check": "B mrr@10",
+      "passed": false,
+      "difference": -0.1413,
+      "ci95": [
+       -0.2487,
+       -0.0409
+      ],
+      "p": 0.0091,
+      "queries": 53,
+      "why": "a loss beyond chance and a drop larger than 0.05"
+     },
+     {
+      "check": "C ndcg@10",
+      "passed": true,
+      "difference": -0.0027,
+      "ci95": [
+       -0.0708,
+       0.0641
+      ],
+      "p": 0.9422,
+      "queries": 22,
+      "why": ""
+     },
+     {
+      "check": "dead_addresses_shown_after_live_check",
+      "passed": true,
+      "value": 0,
+      "limit": 0,
+      "why": ""
+     },
+     {
+      "check": "restricted_tables_shown_to_outsiders",
+      "passed": true,
+      "value": 0,
+      "limit": 0,
+      "why": ""
+     }
+    ]
+   },
+   "serving against itself": {
+    "passed": true,
+    "checks": [
+     {
+      "check": "A fit@10",
+      "passed": true,
+      "difference": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "p": 1.0,
+      "queries": 29,
+      "why": ""
+     },
+     {
+      "check": "B mrr@10",
+      "passed": true,
+      "difference": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "p": 1.0,
+      "queries": 53,
+      "why": ""
+     },
+     {
+      "check": "C ndcg@10",
+      "passed": true,
+      "difference": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "p": 1.0,
+      "queries": 22,
+      "why": ""
+     },
+     {
+      "check": "dead_addresses_shown_after_live_check",
+      "passed": true,
+      "value": 0,
+      "limit": 0,
+      "why": ""
+     },
+     {
+      "check": "restricted_tables_shown_to_outsiders",
+      "passed": true,
+      "value": 0,
+      "limit": 0,
+      "why": ""
+     }
+    ]
+   }
+  }
+ },
+ "ran": "2026-11-23 22:27"
+}

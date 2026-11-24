@@ -1,0 +1,40 @@
+{"qid": "C001", "kind": "C", "split": "test", "need": "I'm starting on the pick-and-place project. Which datasets show an SO-101 arm picking up a cube and putting it in a box?", "source": "written by hand before any result was seen"}
+{"qid": "C002", "kind": "C", "split": "test", "need": "Need bimanual demos of folding clothes or towels, any robot, the more episodes the better.", "source": "written by hand before any result was seen"}
+{"qid": "C003", "kind": "C", "split": "dev", "need": "looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam", "source": "written by hand before any result was seen"}
+{"qid": "C004", "kind": "C", "split": "test", "need": "Are there any datasets of a Franka arm opening a drawer or a cabinet door?", "source": "written by hand before any result was seen"}
+{"qid": "C005", "kind": "C", "split": "dev", "need": "I want teleoperated demonstrations of pouring liquid or beads from one cup into another.", "source": "written by hand before any result was seen"}
+{"qid": "C006", "kind": "C", "split": "dev", "need": "datasets with a mobile base that drives around and manipulates things, like LeKiwi", "source": "written by hand before any result was seen"}
+{"qid": "C007", "kind": "C", "split": "dev", "need": "Which tables have a humanoid robot doing manipulation with both hands, ideally a Unitree G1?", "source": "written by hand before any result was seen"}
+{"qid": "C008", "kind": "C", "split": "test", "need": "Simulation data for the push-T task", "source": "written by hand before any result was seen"}
+{"qid": "C009", "kind": "C", "split": "test", "need": "I need demonstrations of stacking blocks or cups, several hundred episodes, 30 fps.", "source": "written by hand before any result was seen"}
+{"qid": "C010", "kind": "C", "split": "dev", "need": "Anything with tactile or force sensor readings alongside the camera images?", "source": "written by hand before any result was seen"}
+{"qid": "C011", "kind": "C", "split": "test", "need": "something for training a policy to sort objects by color into bins", "source": "written by hand before any result was seen"}
+{"qid": "C012", "kind": "C", "split": "test", "need": "Where can I find the LIBERO benchmark converted to this format?", "source": "written by hand before any result was seen"}
+{"qid": "C013", "kind": "C", "split": "test", "need": "Open X-Embodiment or DROID style large multi-robot data in lerobot format", "source": "written by hand before any result was seen"}
+{"qid": "C014", "kind": "C", "split": "test", "need": "Data of a robot inserting a peg or plugging in a connector, for a contact-rich insertion task.", "source": "written by hand before any result was seen"}
+{"qid": "C015", "kind": "C", "split": "dev", "need": "kitchen tasks: putting dishes in a rack, loading a dishwasher, wiping a table", "source": "written by hand before any result was seen"}
+{"qid": "C016", "kind": "C", "split": "dev", "need": "ALOHA datasets for transferring a cube from one arm to the other", "source": "written by hand before any result was seen"}
+{"qid": "C017", "kind": "C", "split": "test", "need": "I only have a Koch arm. What recorded data exists for it that I could start from?", "source": "written by hand before any result was seen"}
+{"qid": "C018", "kind": "C", "split": "test", "need": "driving data from a small racecar or RC car with camera images and steering commands", "source": "written by hand before any result was seen"}
+{"qid": "C019", "kind": "C", "split": "dev", "need": "Need depth images, not only RGB. Which datasets include a depth camera?", "source": "written by hand before any result was seen"}
+{"qid": "C020", "kind": "C", "split": "test", "need": "dataset for language-conditioned manipulation where each episode has a text instruction and there are many different tasks", "source": "written by hand before any result was seen"}
+{"qid": "C021", "kind": "C", "split": "test", "need": "evaluation rollouts of a trained policy, not human demos. are there tables of policy eval episodes?", "source": "written by hand before any result was seen"}
+{"qid": "C022", "kind": "C", "split": "dev", "need": "Data recorded with a UR5 using a gripper to pick parts out of a bin", "source": "written by hand before any result was seen"}
+{"qid": "C023", "kind": "C", "split": "dev", "need": "I'm looking for demos of opening a bottle or unscrewing a cap", "source": "written by hand before any result was seen"}
+{"qid": "C024", "kind": "C", "split": "dev", "need": "Are there datasets of handling cables, ropes or other deformable things?", "source": "written by hand before any result was seen"}
+{"qid": "C025", "kind": "C", "split": "test", "need": "small dataset, like 50 episodes, good for a quick sanity check of my training pipeline on SO-101 pick and place", "source": "written by hand before any result was seen"}
+{"qid": "C026", "kind": "C", "split": "dev", "need": "Tables where a robot arm writes or draws with a pen", "source": "written by hand before any result was seen"}
+{"qid": "C027", "kind": "C", "split": "dev", "need": "metaworld or robomimic simulation datasets", "source": "written by hand before any result was seen"}
+{"qid": "C028", "kind": "C", "split": "test", "need": "I need data with end-effector pose actions (cartesian), not joint positions.", "source": "written by hand before any result was seen"}
+{"qid": "C029", "kind": "C", "split": "dev", "need": "xArm or UFactory datasets of pick and place with multiple camera views", "source": "written by hand before any result was seen"}
+{"qid": "C030", "kind": "C", "split": "test", "need": "robot handing an object to a human or taking an object from a human hand", "source": "written by hand before any result was seen"}
+{"qid": "C031", "kind": "C", "split": "test", "need": "Trossen WidowX AI bimanual datasets", "source": "written by hand before any result was seen"}
+{"qid": "C032", "kind": "C", "split": "test", "need": "data for packing items into a box or a bag, like a grocery packing task", "source": "written by hand before any result was seen"}
+{"qid": "C033", "kind": "C", "split": "test", "need": "anything where the robot uses a tool: screwdriver, spatula, hammer or brush", "source": "written by hand before any result was seen"}
+{"qid": "C034", "kind": "C", "split": "dev", "need": "which datasets were recorded at 50 Hz or faster with at least 3 cameras", "source": "written by hand before any result was seen"}
+{"qid": "C035", "kind": "C", "split": "dev", "need": "Data collected in Isaac Sim or Isaac Lab", "source": "written by hand before any result was seen"}
+{"qid": "C036", "kind": "C", "split": "dev", "need": "I want to train a policy to press buttons or flip switches", "source": "written by hand before any result was seen"}
+{"qid": "C037", "kind": "C", "split": "test", "need": "datasets with a dexterous multi-finger hand, for example an Inspire or LEAP hand", "source": "written by hand before any result was seen"}
+{"qid": "C038", "kind": "C", "split": "test", "need": "laundry or cloth manipulation with an OpenArm or any other bimanual robot", "source": "written by hand before any result was seen"}
+{"qid": "C039", "kind": "C", "split": "test", "need": "Is there data of a robot cleaning: wiping a whiteboard, sweeping, or picking up trash?", "source": "written by hand before any result was seen"}
+{"qid": "C040", "kind": "C", "split": "dev", "need": "quadruped or legged locomotion data", "source": "written by hand before any result was seen"}

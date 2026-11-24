@@ -1,0 +1,83 @@
+{
+ "config": {
+  "name": "serving",
+  "retriever": "rrf",
+  "embedding": "nomic-embed-text",
+  "k": 10,
+  "window": 100,
+  "rank_constant": 60,
+  "num_candidates": 400,
+  "collapse": true,
+  "demote_scratch": 0.5,
+  "boost_described": 1.5,
+  "fields": {
+   "name": 3.0,
+   "description": 2.0,
+   "summary": 1.0,
+   "schema_text": 1.0,
+   "robot_type.text": 2.0
+  },
+  "ident_stop": true,
+  "understand": "off",
+  "understand_model": "small",
+  "understand_version": "u2",
+  "rerank": "off",
+  "rerank_depth": 20,
+  "select": false
+ },
+ "chosen": {
+  "settings_taken": [
+   "rrf_scratch_0.5_described_1.5"
+  ],
+  "combined_change": {
+   "demote_scratch": 0.5,
+   "boost_described": 1.5
+  },
+  "combination_vs_rrf_on_dev": {
+   "A": {
+    "n": 31,
+    "mean_difference": -0.0065,
+    "ci95": [
+     -0.0419,
+     0.0194
+    ],
+    "p_two_sided": 0.8268,
+    "wins": 5,
+    "losses": 4,
+    "ties": 22,
+    "p_randomization": 0.8928,
+    "metric": "fit@10"
+   },
+   "B": {
+    "n": 57,
+    "mean_difference": 0.0427,
+    "ci95": [
+     0.0132,
+     0.0795
+    ],
+    "p_two_sided": 0.0,
+    "wins": 9,
+    "losses": 0,
+    "ties": 48,
+    "p_randomization": 0.0037,
+    "metric": "mrr@10"
+   },
+   "C": {
+    "n": 18,
+    "mean_difference": -0.0402,
+    "ci95": [
+     -0.0937,
+     0.016
+    ],
+    "p_two_sided": 0.1668,
+    "wins": 4,
+    "losses": 12,
+    "ties": 2,
+    "p_randomization": 0.1947,
+    "metric": "ndcg@10"
+   }
+  },
+  "combination_kept": true,
+  "top_up_judgments": 0
+ }
+}

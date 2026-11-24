@@ -1,0 +1,21 @@
+{
+ "alpha": 0.05,
+ "no_loss": {
+  "A": {
+   "metric": "fit@10",
+   "max_drop": 0.05
+  },
+  "B": {
+   "metric": "mrr@10",
+   "max_drop": 0.05
+  },
+  "C": {
+   "metric": "ndcg@10",
+   "max_drop": 0.05
+  }
+ },
+ "floors": {
+  "dead_addresses_shown_after_live_check": 0,
+  "restricted_tables_shown_to_outsiders": 0
+ }
+}

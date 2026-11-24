@@ -1,0 +1,168 @@
+{
+ "judge": "qwen3:14b",
+ "second_judge": "qwen3:4b",
+ "prompt_version": "g2",
+ "one_table_per_call": true,
+ "against_labels_computed_by_code": {
+  "what": "attribute needs (dev): for each need, tables that meet every constraint, tables of the right robot that miss one, tables of another robot that search returned, and random tables",
+  "qwen3:14b": {
+   "pairs": 292,
+   "agreement": 0.6438,
+   "kappa": 0.3532,
+   "judge_precision": 0.4677,
+   "judge_recall": 0.9457,
+   "false_positive_rate": 0.495,
+   "confusion": {
+    "true_pos": 87,
+    "false_pos": 99,
+    "false_neg": 5,
+    "true_neg": 101
+   },
+   "judge_grade_by_true_grade": {
+    "0": {
+     "0": 22,
+     "1": 41,
+     "2": 33,
+     "3": 12
+    },
+    "1": {
+     "0": 3,
+     "1": 35,
+     "2": 50,
+     "3": 4
+    },
+    "3": {
+     "1": 5,
+     "2": 13,
+     "3": 74
+    }
+   }
+  },
+  "qwen3:4b": {
+   "pairs": 292,
+   "agreement": 0.8082,
+   "kappa": 0.5894,
+   "judge_precision": 0.65,
+   "judge_recall": 0.8478,
+   "false_positive_rate": 0.21,
+   "confusion": {
+    "true_pos": 78,
+    "false_pos": 42,
+    "false_neg": 14,
+    "true_neg": 158
+   },
+   "judge_grade_by_true_grade": {
+    "0": {
+     "0": 21,
+     "1": 66,
+     "2": 10,
+     "3": 11
+    },
+    "1": {
+     "0": 6,
+     "1": 65,
+     "2": 8,
+     "3": 13
+    },
+    "3": {
+     "0": 5,
+     "1": 9,
+     "2": 7,
+     "3": 71
+    }
+   }
+  },
+  "examples_where_the_judge_is_wrong": [
+   {
+    "need": "For training I want OMX arm data bimanual, stored as format v3.0 and with at least 3 camera views.",
+    "table_id": "YERI84/omx_f_pickuptape_1",
+    "true_grade": 1,
+    "judge_grade": 2,
+    "judge_reason": "Dataset is for OMX robot, but format is v2.1, not v3.0, and only 2 camera views."
+   },
+   {
+    "need": "For training I want OMX arm data bimanual, stored as format v3.0 and with at least 3 camera views.",
+    "table_id": "7smile/omx_f_testcan_2-2",
+    "true_grade": 1,
+    "judge_grade": 2,
+    "judge_reason": "Dataset is for OMX arm but uses format v2.1, not v3.0, and has only one camera view."
+   },
+   {
+    "need": "Looking for datasets of the AgileX Piper arm that includes a wrist camera view and stored as format v3.0.",
+    "table_id": "PranayTest/02062026_single_plate_depth",
+    "true_grade": 1,
+    "judge_grade": 2,
+    "judge_reason": "The dataset does not mention a wrist camera view, but includes the required format v3.0."
+   },
+   {
+    "need": "Looking for datasets of the AgileX Piper arm that includes a wrist camera view and stored as format v3.0.",
+    "table_id": "Faless/rollout_harvest_dagger_20260610_140930",
+    "true_grade": 1,
+    "judge_grade": 2,
+    "judge_reason": "The dataset includes the Piper arm and uses format v3.0, but does not mention a wrist camera."
+   },
+   {
+    "need": "Looking for datasets of the AgileX Piper arm that includes a wrist camera view and stored as format v3.0.",
+    "table_id": "inhandplus/egocentric-wrist-view-camera-IMU-data",
+    "true_grade": 0,
+    "judge_grade": 2,
+    "judge_reason": "The dataset shows a wrist camera view and uses LeRobot v3.0 format, but does not mention AgileX Piper arm."
+   },
+   {
+    "need": "Looking for datasets of the AgileX Piper arm that includes a wrist camera view and stored as format v3.0.",
+    "table_id": "Playingyoyo/wetrobo-horizon-petri2microscope",
+    "true_grade": 0,
+    "judge_grade": 3,
+    "judge_reason": "The dataset includes the AgileX Piper arm, a wrist camera view, and uses format v3.0."
+   },
+   {
+    "need": "For training I want AgileX Piper arm data 50 Hz recordings.",
+    "table_id": "samithva/bimanual_stack_cup_on_bowl_1",
+    "true_grade": 1,
+    "judge_grade": 2,
+    "judge_reason": "The dataset uses the bi_piper_follower robot, but the frame rate is 30 Hz, not 50 Hz."
+   },
+   {
+    "need": "For training I want AgileX Piper arm data 50 Hz recordings.",
+    "table_id": "AnttAI/25",
+    "true_grade": 1,
+    "judge_grade": 2,
+    "judge_reason": "Dataset mentions Piper robot but only 30 fps, not 50 Hz."
+   }
+  ]
+ },
+ "need_written_from_a_table_judged_against_that_table": {
+  "pairs": 57,
+  "grades": {
+   "1": 2,
+   "2": 14,
+   "3": 41
+  },
+  "share_judged_usable_or_better": 0.9649
+ },
+ "two_judges_on_pooled_pairs_of_written_needs": {
+  "pairs": 296,
+  "exact": 0.6014,
+  "within_one": 0.875,
+  "weighted_kappa": 0.674,
+  "kappa_relevant": 0.6051,
+  "mean_first": 1.757,
+  "mean_second": 2.068
+ },
+ "same_pair_judged_twice": {
+  "pairs": 60,
+  "same_grade": 56
+ },
+ "hand_labels": {
+  "sheet": "evals/vxfind/labels/hand_labels.csv",
+  "pairs": 200,
+  "filled_by_a_person": 0,
+  "status": "NOT DONE. The sheet hides the judge's grade. Until a person fills it in, agreement between the judge and a person on the written needs is unknown; (a) below is the only comparison with truth."
+ },
+ "cost": {
+  "seconds_per_judgment_qwen3:14b": 2.09,
+  "seconds_per_judgment_qwen3:4b": 1.47,
+  "judgments_stored": 2821
+ },
+ "ran": "2026-11-23 20:26"
+}

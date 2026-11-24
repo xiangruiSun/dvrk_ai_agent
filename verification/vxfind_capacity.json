@@ -1,0 +1,213 @@
+{
+ "machine": "one workstation; the search engine (1 node, 1 shard, 4 GB heap), the load generator and the embedding model share it",
+ "index": {
+  "alias": "vxfind-tables",
+  "index": "vxfind-tables-old-20261123195450",
+  "tables": 95685,
+  "engine": "9.2.1"
+ },
+ "needs_cycled": 230,
+ "load": [
+  {
+   "retriever": "bm25",
+   "workers": 1,
+   "seconds": 12.0,
+   "searches": 459,
+   "errors": 0,
+   "per_second": 38.2,
+   "p50_ms": 25.8,
+   "p95_ms": 43.1,
+   "p99_ms": 48.7,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "bm25",
+   "workers": 4,
+   "seconds": 12.0,
+   "searches": 1645,
+   "errors": 0,
+   "per_second": 136.9,
+   "p50_ms": 29.5,
+   "p95_ms": 47.6,
+   "p99_ms": 55.6,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "bm25",
+   "workers": 16,
+   "seconds": 12.0,
+   "searches": 3805,
+   "errors": 0,
+   "per_second": 316.0,
+   "p50_ms": 49.9,
+   "p95_ms": 75.7,
+   "p99_ms": 86.4,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "bm25",
+   "workers": 32,
+   "seconds": 12.1,
+   "searches": 3839,
+   "errors": 0,
+   "per_second": 317.9,
+   "p50_ms": 98.5,
+   "p95_ms": 150.5,
+   "p99_ms": 173.0,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "knn_nomic",
+   "workers": 1,
+   "seconds": 12.0,
+   "searches": 1199,
+   "errors": 0,
+   "per_second": 99.8,
+   "p50_ms": 9.8,
+   "p95_ms": 11.5,
+   "p99_ms": 20.0,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "knn_nomic",
+   "workers": 4,
+   "seconds": 12.0,
+   "searches": 4319,
+   "errors": 0,
+   "per_second": 359.6,
+   "p50_ms": 10.7,
+   "p95_ms": 14.6,
+   "p99_ms": 20.5,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "knn_nomic",
+   "workers": 16,
+   "seconds": 12.0,
+   "searches": 5665,
+   "errors": 0,
+   "per_second": 471.0,
+   "p50_ms": 33.3,
+   "p95_ms": 48.3,
+   "p99_ms": 55.9,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "knn_nomic",
+   "workers": 32,
+   "seconds": 12.1,
+   "searches": 5460,
+   "errors": 0,
+   "per_second": 453.0,
+   "p50_ms": 68.3,
+   "p95_ms": 107.6,
+   "p99_ms": 124.7,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "serving",
+   "workers": 1,
+   "seconds": 12.0,
+   "searches": 318,
+   "errors": 0,
+   "per_second": 26.4,
+   "p50_ms": 37.6,
+   "p95_ms": 55.6,
+   "p99_ms": 61.9,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "serving",
+   "workers": 4,
+   "seconds": 12.0,
+   "searches": 1153,
+   "errors": 0,
+   "per_second": 95.7,
+   "p50_ms": 40.6,
+   "p95_ms": 61.9,
+   "p99_ms": 70.0,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "serving",
+   "workers": 16,
+   "seconds": 12.1,
+   "searches": 2004,
+   "errors": 0,
+   "per_second": 165.9,
+   "p50_ms": 95.5,
+   "p95_ms": 126.8,
+   "p99_ms": 145.8,
+   "query_vectors": "computed beforehand"
+  },
+  {
+   "retriever": "serving",
+   "workers": 32,
+   "seconds": 12.1,
+   "searches": 2017,
+   "errors": 0,
+   "per_second": 166.4,
+   "p50_ms": 189.0,
+   "p95_ms": 258.3,
+   "p99_ms": 291.3,
+   "query_vectors": "computed beforehand"
+  }
+ ],
+ "query_vector_computed_per_search": {
+  "retriever": "serving",
+  "workers": 4,
+  "seconds": 12.0,
+  "searches": 752,
+  "errors": 0,
+  "per_second": 62.5,
+  "p50_ms": 63.7,
+  "p95_ms": 85.5,
+  "p99_ms": 94.9,
+  "query_vectors": "computed per search"
+ },
+ "client_connections": 64,
+ "first_run": {
+  "evidence": "vxfind_capacity_first_run.json",
+  "what_it_showed": "with the search client's default of 10 connections, callers queued inside the client: the throughput was the same, but the queueing showed up as a 99th percentile of seconds at 32 callers instead of as latency",
+  "serving_32_callers": {
+   "retriever": "serving",
+   "workers": 32,
+   "seconds": 12.2,
+   "searches": 2039,
+   "errors": 0,
+   "per_second": 167.5,
+   "p50_ms": 58.8,
+   "p95_ms": 88.0,
+   "p99_ms": 5965.0,
+   "query_vectors": "computed beforehand"
+  }
+ },
+ "storage": {
+  "index_mb": 815.5,
+  "bytes_per_table": 8523,
+  "vector_bytes_per_table_raw": 7168,
+  "data_the_catalog_describes_tb": 52.8,
+  "tables_declaring_size": 72631,
+  "frames_described": 5994851856
+ },
+ "growth": {
+  "first_month": "2024-03",
+  "last_full_month": "2026-10",
+  "created_per_month_recent": {
+   "2026-05": 13164,
+   "2026-06": 7068,
+   "2026-07": 7982,
+   "2026-08": 7098,
+   "2026-09": 6501,
+   "2026-10": 4326
+  },
+  "mean_created_per_month_recent": 7690,
+  "tables_now": 100196,
+  "monthly_growth_of_catalog": 0.0767,
+  "mean_created_per_month_in_the_six_months_before": 5129,
+  "projected_tables_in_12_months": 192474,
+  "note": "a straight line from the last six full months. The counts are of tables still carried by the dump, which never drops one, so they are creations, not net growth; the newest months are also the ones whose tables have had the least time to get a card",
+  "projected_index_mb_in_12_months": 1640.4
+ },
+ "ran": "2026-11-23 22:37"
+}

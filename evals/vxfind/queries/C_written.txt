@@ -1,0 +1,44 @@
+# Needs written by hand, one per line, in the words a new team member might use.
+# Written on 2026-11-23 by the builder of this system, BEFORE any search result for them was seen,
+# knowing only the catalog's overall make-up (which robots and cameras are common). One author,
+# who is not a newcomer: this set is a stand-in for real questions until the rollout collects them.
+I'm starting on the pick-and-place project. Which datasets show an SO-101 arm picking up a cube and putting it in a box?
+Need bimanual demos of folding clothes or towels, any robot, the more episodes the better.
+looking for data to finetune pi0 or smolvla on a so100, something with a wrist cam and a top cam
+Are there any datasets of a Franka arm opening a drawer or a cabinet door?
+I want teleoperated demonstrations of pouring liquid or beads from one cup into another.
+datasets with a mobile base that drives around and manipulates things, like LeKiwi
+Which tables have a humanoid robot doing manipulation with both hands, ideally a Unitree G1?
+Simulation data for the push-T task
+I need demonstrations of stacking blocks or cups, several hundred episodes, 30 fps.
+Anything with tactile or force sensor readings alongside the camera images?
+something for training a policy to sort objects by color into bins
+Where can I find the LIBERO benchmark converted to this format?
+Open X-Embodiment or DROID style large multi-robot data in lerobot format
+Data of a robot inserting a peg or plugging in a connector, for a contact-rich insertion task.
+kitchen tasks: putting dishes in a rack, loading a dishwasher, wiping a table
+ALOHA datasets for transferring a cube from one arm to the other
+I only have a Koch arm. What recorded data exists for it that I could start from?
+driving data from a small racecar or RC car with camera images and steering commands
+Need depth images, not only RGB. Which datasets include a depth camera?
+dataset for language-conditioned manipulation where each episode has a text instruction and there are many different tasks
+evaluation rollouts of a trained policy, not human demos. are there tables of policy eval episodes?
+Data recorded with a UR5 using a gripper to pick parts out of a bin
+I'm looking for demos of opening a bottle or unscrewing a cap
+Are there datasets of handling cables, ropes or other deformable things?
+small dataset, like 50 episodes, good for a quick sanity check of my training pipeline on SO-101 pick and place
+Tables where a robot arm writes or draws with a pen
+metaworld or robomimic simulation datasets
+I need data with end-effector pose actions (cartesian), not joint positions.
+xArm or UFactory datasets of pick and place with multiple camera views
+robot handing an object to a human or taking an object from a human hand
+Trossen WidowX AI bimanual datasets
+data for packing items into a box or a bag, like a grocery packing task
+anything where the robot uses a tool: screwdriver, spatula, hammer or brush
+which datasets were recorded at 50 Hz or faster with at least 3 cameras
+Data collected in Isaac Sim or Isaac Lab
+I want to train a policy to press buttons or flip switches
+datasets with a dexterous multi-finger hand, for example an Inspire or LEAP hand
+laundry or cloth manipulation with an OpenArm or any other bimanual robot
+Is there data of a robot cleaning: wiping a whiteboard, sweeping, or picking up trash?
+quadruped or legged locomotion data

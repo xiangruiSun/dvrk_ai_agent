@@ -1,0 +1,1102 @@
+[
+{
+"qid": "A551ee952",
+"table_id": "axiboai/piper_5_coffee_v3"
+},
+{
+"qid": "A551ee952",
+"table_id": "leejaehot/piper_singlearm_cider_pnp_20260814_183105"
+},
+{
+"qid": "A551ee952",
+"table_id": "mmisrunning/package_scan_task1"
+},
+{
+"qid": "A551ee952",
+"table_id": "mimiminsoo/V2_packing_1012_6"
+},
+{
+"qid": "A551ee952",
+"table_id": "jadechoghari/piper-demo-20260205_152658"
+},
+{
+"qid": "A551ee952",
+"table_id": "breezewrf/PiperLeRobot_PPTape_TwoCam_Train"
+},
+{
+"qid": "A551ee952",
+"table_id": "jmarangola/real_demos_more_with_agileX"
+},
+{
+"qid": "A551ee952",
+"table_id": "Smokepord/piper_pick_place_xy_random_50_v1"
+},
+{
+"qid": "A551ee952",
+"table_id": "eslab1234/pick_and_place_onestep_5blocks_all_stages_clockwise_wrist_visible_merged_v1_20260706_225606"
+},
+{
+"qid": "A551ee952",
+"table_id": "jackyckhsu98/so100_test56"
+},
+{
+"qid": "A782c651e",
+"table_id": "JoSTR/rollout_ram_dagger"
+},
+{
+"qid": "A782c651e",
+"table_id": "JoSTR/rm_ram_dagger_merged"
+},
+{
+"qid": "A782c651e",
+"table_id": "kumarhans/ethernetInsertMerged063025Processed"
+},
+{
+"qid": "A782c651e",
+"table_id": "kumarhans/glue_stick"
+},
+{
+"qid": "A782c651e",
+"table_id": "benmayeux/telti_pick_processed_wrist_only"
+},
+{
+"qid": "A782c651e",
+"table_id": "AmmarWaheed/u850-mobile-forward-cup"
+},
+{
+"qid": "A782c651e",
+"table_id": "ys903/xarm6_pick_place_50_episodes_ver2"
+},
+{
+"qid": "A782c651e",
+"table_id": "ys903/xarm6_pick_place_50_episodes"
+},
+{
+"qid": "A782c651e",
+"table_id": "rainbowrobotics/opening_ceremony_0616_20260616_160359"
+},
+{
+"qid": "A782c651e",
+"table_id": "shuowenLLL/record-test-clean"
+},
+{
+"qid": "A83908162",
+"table_id": "xJega/HackathonRobotV2"
+},
+{
+"qid": "A83908162",
+"table_id": "dandantangpopo/record-20251229-2"
+},
+{
+"qid": "A83908162",
+"table_id": "makermods/new_camera_orange_color_merged"
+},
+{
+"qid": "A83908162",
+"table_id": "Norman94/so101_test"
+},
+{
+"qid": "A83908162",
+"table_id": "misawa-t/eval_reach5"
+},
+{
+"qid": "A83908162",
+"table_id": "AkshayM-X/rollout_smolvla_v1_20260716_170256"
+},
+{
+"qid": "A83908162",
+"table_id": "TensorAuto/so101_right_hand_protein_vertical_horizontal_orient"
+},
+{
+"qid": "A83908162",
+"table_id": "aailabkaist/so101_recovery_2task"
+},
+{
+"qid": "A83908162",
+"table_id": "shirasu206/fr5_dataset_20251106_v22"
+},
+{
+"qid": "A90129c36",
+"table_id": "ajaysri/long_cable_insertion_2_subtasks_3cam_combined"
+},
+{
+"qid": "A90129c36",
+"table_id": "ajaysri/long_cable_insertion_2_corrected_raw_plus_dagger2x_completion_N10_tail"
+},
+{
+"qid": "A90129c36",
+"table_id": "villekuosmanen/pick_coffee_capsule_merged"
+},
+{
+"qid": "A90129c36",
+"table_id": "villekuosmanen/agilex_spell_sun"
+},
+{
+"qid": "A90129c36",
+"table_id": "pravsels/eval_delock_block_tower_regular"
+},
+{
+"qid": "A90129c36",
+"table_id": "griffinnosidda/eval_gloveinplanter"
+},
+{
+"qid": "A90129c36",
+"table_id": "Shinkenn/xlerobot_one_arm_raw_all_episodes"
+},
+{
+"qid": "A90129c36",
+"table_id": "Shinkenn/xlerobot_one_arm_all_episodes_clean"
+},
+{
+"qid": "A90129c36",
+"table_id": "martonbodo/pick-and-place-red-expert"
+},
+{
+"qid": "A90129c36",
+"table_id": "KyraLeeChunWei/eval_Acetylcysteine_20k_e150"
+},
+{
+"qid": "Af32b2777",
+"table_id": "hinoarashi/target_small_sl"
+},
+{
+"qid": "Af32b2777",
+"table_id": "haduki33/make_a_softdrink1212"
+},
+{
+"qid": "Af32b2777",
+"table_id": "UNITAmanipulation/bi_so101_pour_water_20260920_194823"
+},
+{
+"qid": "Af32b2777",
+"table_id": "nitred/bimanual-so-handover-cube_20260604_145148"
+},
+{
+"qid": "Af32b2777",
+"table_id": "weeenwang/pick_and_place_object_into_black_box"
+},
+{
+"qid": "Af32b2777",
+"table_id": "kjydb/lerobot_test_155"
+},
+{
+"qid": "Af32b2777",
+"table_id": "hungho77/so101-multitask-calib"
+},
+{
+"qid": "Af32b2777",
+"table_id": "nevertmr/so101_cup_bluecircle_2task"
+},
+{
+"qid": "Af32b2777",
+"table_id": "Dongkkka/ffw_bg2_rev4_1203_graspcrate"
+},
+{
+"qid": "Af2ca3839",
+"table_id": "CoRL2026-CSI/UR7e-CaP-Stack_Block-100epi_10fps_state_tplus1_action"
+},
+{
+"qid": "Af2ca3839",
+"table_id": "pmoller/ww_dataset_abs_joint_abs_joint_TEST_v3"
+},
+{
+"qid": "Af2ca3839",
+"table_id": "hainh22/gym-peg-insertion-square"
+},
+{
+"qid": "Af2ca3839",
+"table_id": "shirasu206/dual_arm_ur5e_ur3e_20260606_v12"
+},
+{
+"qid": "Af2ca3839",
+"table_id": "max-chr/libero_plus_goal_add_object_all_ur5e"
+},
+{
+"qid": "Af2ca3839",
+"table_id": "takeru01/task1_1_5_rgb_recover_up_down_trim_194ep"
+},
+{
+"qid": "Af2ca3839",
+"table_id": "dddw123/so101-left-arm-recordings"
+},
+{
+"qid": "Af2ca3839",
+"table_id": "Bigenlight/banana_in_pot_lerobot_v3"
+},
+{
+"qid": "Af2ca3839",
+"table_id": "frankbossvvvv/record-test0"
+},
+{
+"qid": "Af2ca3839",
+"table_id": "twerdster/koch_test"
+},
+{
+"qid": "A28b3c766",
+"table_id": "villekuosmanen/dAgger_pack_toothbrush_Nov28"
+},
+{
+"qid": "A28b3c766",
+"table_id": "lilkm/pack_electric_toothbrush"
+},
+{
+"qid": "A28b3c766",
+"table_id": "pravsels/eval_delock_block_tower_test3"
+},
+{
+"qid": "A28b3c766",
+"table_id": "nikodembartnik/fold_clothes_dining_annotated"
+},
+{
+"qid": "A28b3c766",
+"table_id": "villekuosmanen/agilex_stack_tomatoes_2"
+},
+{
+"qid": "A28b3c766",
+"table_id": "villekuosmanen/agilex_collect_pen"
+},
+{
+"qid": "A28b3c766",
+"table_id": "geonmin-kim/robodojo-v3"
+},
+{
+"qid": "A28b3c766",
+"table_id": "kemjensak/eval_pi_bin_0320_1"
+},
+{
+"qid": "A28b3c766",
+"table_id": "mrrl-emcnei/trossen_ai_mobile_bimanualPnH"
+},
+{
+"qid": "A8d87e5c6",
+"table_id": "connectorbench/16mm-cylinder_recovery_install"
+},
+{
+"qid": "A8d87e5c6",
+"table_id": "REBOOT26/rca_remove"
+},
+{
+"qid": "A8d87e5c6",
+"table_id": "TrossenRoboticsCommunity/stationary-tshirt-folding-lerobot-v3"
+},
+{
+"qid": "A8d87e5c6",
+"table_id": "tegara/eval_act_trossen_ai_stationary_ope284"
+},
+{
+"qid": "A8d87e5c6",
+"table_id": "Jacob-Xu/shake_hands_trossen"
+},
+{
+"qid": "A8d87e5c6",
+"table_id": "Qipei/Task_data_scaling_09"
+},
+{
+"qid": "A8d87e5c6",
+"table_id": "TrossenRoboticsCommunity/mobile-block-transfer-v3"
+},
+{
+"qid": "A8d87e5c6",
+"table_id": "madokalif/widowx-pick-v1-clean"
+},
+{
+"qid": "A8d87e5c6",
+"table_id": "Fransece/franka_3_cubes_40"
+},
+{
+"qid": "A8d87e5c6",
+"table_id": "MarkusWuenstel/so101-bimanual-fold-tshirt-30-episodes-fix-v21-delta-joint-angles"
+},
+{
+"qid": "Ad614b8c4",
+"table_id": "villekuosmanen/dAgger_bin_pick_pack_coffee_capsules_1.3.1"
+},
+{
+"qid": "Ad614b8c4",
+"table_id": "griffinnosidda/eval_pp3_act_sync_fury_t3"
+},
+{
+"qid": "Ad614b8c4",
+"table_id": "griffinnosidda/pink_pinch_v2"
+},
+{
+"qid": "Ad614b8c4",
+"table_id": "villekuosmanen/agilex_spell_sun"
+},
+{
+"qid": "Ad614b8c4",
+"table_id": "villekuosmanen/agilex_write_board_8"
+},
+{
+"qid": "Ad614b8c4",
+"table_id": "villekuosmanen/agilex_pull_wet_wipe"
+},
+{
+"qid": "Ad614b8c4",
+"table_id": "geonmin-kim/robodojo-v3"
+},
+{
+"qid": "Ad614b8c4",
+"table_id": "rli14/10052025_human_demonstrations_plaintable"
+},
+{
+"qid": "Ad614b8c4",
+"table_id": "yamaisanerd/clean_20260927_124608"
+},
+{
+"qid": "Ad614b8c4",
+"table_id": "robot-learning-group47/eval_ckpt012000_red_nstep10_interp2_135325"
+},
+{
+"qid": "A28e76846",
+"table_id": "kimz1121/lerobot_real_robot_test_2025_08_05_18_45_20"
+},
+{
+"qid": "A28e76846",
+"table_id": "shirasu206/dual_arm_ur5e_ur3e_20260530_v16"
+},
+{
+"qid": "A28e76846",
+"table_id": "ases200q2/UR5_RTDE_SpaceMouse_EE_pick_and_place_object_Easy_ALL_tabletop_filtered"
+},
+{
+"qid": "A28e76846",
+"table_id": "Kaz55/bluecablespeedtorque"
+},
+{
+"qid": "A28e76846",
+"table_id": "rdoshi21/ur5-ordered-sweep"
+},
+{
+"qid": "A28e76846",
+"table_id": "jinukoo/towel_folding_val"
+},
+{
+"qid": "A28e76846",
+"table_id": "Sraghvi/universal_pipeline_test"
+},
+{
+"qid": "A28e76846",
+"table_id": "Bigenlight/banana_in_pot_lerobot_v3"
+},
+{
+"qid": "A28e76846",
+"table_id": "boydbouck/eval_training6"
+},
+{
+"qid": "A28e76846",
+"table_id": "meGirishM/lekiwi_nav_pick1"
+},
+{
+"qid": "A61b9a721",
+"table_id": "radiance-nt/stackcube-20260116-120310"
+},
+{
+"qid": "A61b9a721",
+"table_id": "DistantSky/route"
+},
+{
+"qid": "A61b9a721",
+"table_id": "radiance-nt/trans-20260115-112844"
+},
+{
+"qid": "A61b9a721",
+"table_id": "villekuosmanen/agilex_unscrew_cap"
+},
+{
+"qid": "A61b9a721",
+"table_id": "villekuosmanen/agilex_wipe_whiteboard"
+},
+{
+"qid": "A61b9a721",
+"table_id": "villekuosmanen/agilex_pour_water_bottle2cup_clean"
+},
+{
+"qid": "A61b9a721",
+"table_id": "geonmin-kim/robodojo-v3"
+},
+{
+"qid": "A61b9a721",
+"table_id": "rdoshi21/more-basket-stable-arx"
+},
+{
+"qid": "A61b9a721",
+"table_id": "romanovvv1987/so100_test"
+},
+{
+"qid": "A61b9a721",
+"table_id": "Arouraas/so101_test"
+},
+{
+"qid": "A3088b2d8",
+"table_id": "ilBiondo06/eval_act_so100_movella_A5"
+},
+{
+"qid": "A3088b2d8",
+"table_id": "sergiov2000/so100_movella_ball_usability_u3_push1"
+},
+{
+"qid": "A3088b2d8",
+"table_id": "simonholmes001/cube-dataset-100-v2_20260731_094730"
+},
+{
+"qid": "A3088b2d8",
+"table_id": "rshoff/so101_test"
+},
+{
+"qid": "A3088b2d8",
+"table_id": "uvno/redcircleTouch"
+},
+{
+"qid": "A3088b2d8",
+"table_id": "xBerry/so101_pick_place_mimic"
+},
+{
+"qid": "A3088b2d8",
+"table_id": "shubham4413/so101_wm"
+},
+{
+"qid": "Afee6c058",
+"table_id": "PRFitz/lekiwi-dataset-cross-full"
+},
+{
+"qid": "Afee6c058",
+"table_id": "MateoTaylor/Testing7"
+},
+{
+"qid": "Afee6c058",
+"table_id": "hnghia517/lekiwi_dataset_200"
+},
+{
+"qid": "Afee6c058",
+"table_id": "plzsay/lekiwi_test"
+},
+{
+"qid": "Afee6c058",
+"table_id": "ok1123/lekiwi_pick_and_place_red_cube_recover"
+},
+{
+"qid": "Afee6c058",
+"table_id": "Baptiste-le-Beaudry/lekiwi_go_to_lego"
+},
+{
+"qid": "Afee6c058",
+"table_id": "QianGroup/lekiwi_floor_sweep"
+},
+{
+"qid": "Afee6c058",
+"table_id": "QianGroup/lekiwi_fetch_floor"
+},
+{
+"qid": "Afee6c058",
+"table_id": "DanqingZ/06222025_tic_tac_toe_grid_4"
+},
+{
+"qid": "A438ec36a",
+"table_id": "wiscohumanoids/diffusion_67"
+},
+{
+"qid": "A438ec36a",
+"table_id": "hnghia517/pickcube_130"
+},
+{
+"qid": "A438ec36a",
+"table_id": "joogo/lekiwi_pick_diag50_sim50"
+},
+{
+"qid": "A438ec36a",
+"table_id": "PRFitz/lekiwi_dataset_eval1-fulltotal180"
+},
+{
+"qid": "A438ec36a",
+"table_id": "frostmoon/lekiwi1751176328"
+},
+{
+"qid": "A438ec36a",
+"table_id": "oscarz511/planting_far_field"
+},
+{
+"qid": "A438ec36a",
+"table_id": "QianGroup/lekiwi_floor_sweep"
+},
+{
+"qid": "A438ec36a",
+"table_id": "nurtayev-d/seasondish-ag-1000ep"
+},
+{
+"qid": "A438ec36a",
+"table_id": "reo-koba/record-test_260306_2124"
+},
+{
+"qid": "A5d16f458",
+"table_id": "azorematter/dice_white_pnp_und_500_b02"
+},
+{
+"qid": "A5d16f458",
+"table_id": "azorematter/dice_white_pnp_stream_100"
+},
+{
+"qid": "A5d16f458",
+"table_id": "azorematter/dice_white_pnp_act_joint7"
+},
+{
+"qid": "A5d16f458",
+"table_id": "zijian2022/record-test75"
+},
+{
+"qid": "A5d16f458",
+"table_id": "azorematter/fanuc_dice_eval_20260904_174248"
+},
+{
+"qid": "A5d16f458",
+"table_id": "azorematter/fanuc_dice_eval_20260910_194814"
+},
+{
+"qid": "A5d16f458",
+"table_id": "charlieK123/gripper_Top_Base_Camera_Views_Continued_More"
+},
+{
+"qid": "A5d16f458",
+"table_id": "yixiiiiii/fanuc_pour"
+},
+{
+"qid": "A5d16f458",
+"table_id": "siyulw2025/minions001"
+},
+{
+"qid": "A5d16f458",
+"table_id": "nodogoro/test_dataset_legoPileDissassemblyandSorting"
+},
+{
+"qid": "A1c67ef02",
+"table_id": "avatarrobotics/jones_jul10_tabletop_teleop_auto_left_10hz"
+},
+{
+"qid": "A1c67ef02",
+"table_id": "avatarrobotics/jones_jul10_tabletop_teleop_handpick_success_retry_left_10hz"
+},
+{
+"qid": "A1c67ef02",
+"table_id": "avatarrobotics/asf_left_2026-03-27_v3_10hz"
+},
+{
+"qid": "A1c67ef02",
+"table_id": "tma-hiverobots/pick_toys_21_jan_1cam_head_ia_vla"
+},
+{
+"qid": "A1c67ef02",
+"table_id": "junwan96/11"
+},
+{
+"qid": "A1c67ef02",
+"table_id": "unitreerobotics/G1_Dex3_BlockStacking_Dataset"
+},
+{
+"qid": "A1c67ef02",
+"table_id": "DONG3344/4in12"
+},
+{
+"qid": "A1c67ef02",
+"table_id": "SII-ZhangYiFei/G1-WholeBody-PickPlaceToy"
+},
+{
+"qid": "A1c67ef02",
+"table_id": "jfhahn/lerobot-record-test_20261022_155620"
+},
+{
+"qid": "A1c67ef02",
+"table_id": "Stands99/can_task"
+},
+{
+"qid": "Ae7765eaf",
+"table_id": "IMsubin/red_green_apple_sort_11_25_v3"
+},
+{
+"qid": "Ae7765eaf",
+"table_id": "nitucatalin/dataset_final"
+},
+{
+"qid": "Ae7765eaf",
+"table_id": "jae0311/serving_20260527_140234"
+},
+{
+"qid": "Ae7765eaf",
+"table_id": "EGENIE66/eval_omx_v2"
+},
+{
+"qid": "Ae7765eaf",
+"table_id": "euchxn/pick_strawberry_real2"
+},
+{
+"qid": "Ae7765eaf",
+"table_id": "Leo-Yoon/record-test1"
+},
+{
+"qid": "Ae7765eaf",
+"table_id": "adityx23/pnp_eggplant_on_plate_left_arm"
+},
+{
+"qid": "Ae7765eaf",
+"table_id": "Shinkenn/xlerobot_one_arm_all_episodes_clean"
+},
+{
+"qid": "Ae7765eaf",
+"table_id": "rainbowrobotics/mobile_demo_0707_0"
+},
+{
+"qid": "Ae7765eaf",
+"table_id": "YingYuan0414/pick_card_0908_stiff"
+},
+{
+"qid": "Af7c3681c",
+"table_id": "qyxh/G1_Stack_Block"
+},
+{
+"qid": "Af7c3681c",
+"table_id": "KRAFTON/PAI-Coke_Pick_Avoid"
+},
+{
+"qid": "Af7c3681c",
+"table_id": "eunjuri/towel_weak_train"
+},
+{
+"qid": "Af7c3681c",
+"table_id": "hinoarashi/slide_cup_red_to_white_correction"
+},
+{
+"qid": "Af7c3681c",
+"table_id": "JeffsonYu/CleanTable_v2"
+},
+{
+"qid": "Af7c3681c",
+"table_id": "carroll511/nubjuki_100ep_4cam"
+},
+{
+"qid": "Af7c3681c",
+"table_id": "smilegeng/humanoid_everyday_g1"
+},
+{
+"qid": "Af7c3681c",
+"table_id": "XNX25/g1_05_23"
+},
+{
+"qid": "Af7c3681c",
+"table_id": "mishmish66/metaworld_hard_5_10T"
+},
+{
+"qid": "Af7c3681c",
+"table_id": "Shabimlaa/sock-in-bucket-v1_20260729_081214"
+},
+{
+"qid": "Ae7e2a727",
+"table_id": "Jiafei1224/eval_pi05_pipette_in-distribution"
+},
+{
+"qid": "Ae7e2a727",
+"table_id": "YOLO2431/self-repair-gripper-v2.4"
+},
+{
+"qid": "Ae7e2a727",
+"table_id": "YOLO2431/plug-usb-dagger-v2"
+},
+{
+"qid": "Ae7e2a727",
+"table_id": "nodogoro/cell1_20260522_yasser_cable_packaging20260522_020452"
+},
+{
+"qid": "Ae7e2a727",
+"table_id": "nodogoro/cell1_20260518_mohamed-salah_lego-tower-building20260518_121728test"
+},
+{
+"qid": "Ae7e2a727",
+"table_id": "nodogoro/cell1_20260515_blue-short-sleeve-polo_folding_unfolding_fault_episode-2"
+},
+{
+"qid": "Ae7e2a727",
+"table_id": "kkipngenokoech/abc-molmoact2-yam-mix"
+},
+{
+"qid": "Ae7e2a727",
+"table_id": "angkul07/yam7h-teleop"
+},
+{
+"qid": "Ae7e2a727",
+"table_id": "jasontchan/task4-user7"
+},
+{
+"qid": "Ae7e2a727",
+"table_id": "wangranryan/so101_med"
+},
+{
+"qid": "Aeecde4a7",
+"table_id": "mjung11/pp_fold"
+},
+{
+"qid": "Aeecde4a7",
+"table_id": "GabrielNing/piper_pick_cube_resize_merged"
+},
+{
+"qid": "Aeecde4a7",
+"table_id": "axiboai/piper_5_coffee_v6_ee"
+},
+{
+"qid": "Aeecde4a7",
+"table_id": "jiangyi233/PiperPickPig_lmr"
+},
+{
+"qid": "Aeecde4a7",
+"table_id": "PranayTest/us-plate-pick-2026-09-17"
+},
+{
+"qid": "Aeecde4a7",
+"table_id": "DRMNmadhan/piper_pickdrop_fooditems_102"
+},
+{
+"qid": "Aeecde4a7",
+"table_id": "jmarangola/real_demos_more_with_agileX"
+},
+{
+"qid": "Aeecde4a7",
+"table_id": "NONHUMAN-RESEARCH/yellow-towel-101-piper-640-v2"
+},
+{
+"qid": "Aeecde4a7",
+"table_id": "nodogoro/cell1_20260519_loge-color-sorting_20260519_144135"
+},
+{
+"qid": "Aeecde4a7",
+"table_id": "danchouvzv/day_one_20260906_210127"
+},
+{
+"qid": "Aab11a3d1",
+"table_id": "Xinmiao-Jin/so100-pusht"
+},
+{
+"qid": "Aab11a3d1",
+"table_id": "XiaomanZhang/bimanual_gauze_recording"
+},
+{
+"qid": "Aab11a3d1",
+"table_id": "Tna001/tactile_tube_200"
+},
+{
+"qid": "Aab11a3d1",
+"table_id": "rgarreta/test_obj_det2"
+},
+{
+"qid": "Aab11a3d1",
+"table_id": "fysical/rollout_smolvla_S050_seed3_20260929_191856"
+},
+{
+"qid": "Aab11a3d1",
+"table_id": "FrankYuzhe/lemon_box_05_20260226_131456"
+},
+{
+"qid": "Aab11a3d1",
+"table_id": "nevertmr/so101_cup_to_bluecircle_v1"
+},
+{
+"qid": "Aab11a3d1",
+"table_id": "amiryanj/so101-sim-pick"
+},
+{
+"qid": "Af5fa2f45",
+"table_id": "leopardpanda/red_test01"
+},
+{
+"qid": "Af5fa2f45",
+"table_id": "Grievous-Robot/bimanual-laptop-20260212_190736"
+},
+{
+"qid": "Af5fa2f45",
+"table_id": "HafizHanafiah/new_project_dataset03"
+},
+{
+"qid": "Af5fa2f45",
+"table_id": "villekuosmanen/busybox_push_white_button"
+},
+{
+"qid": "Af5fa2f45",
+"table_id": "imstevenpmwork/test_warning_lowres_readlatest"
+},
+{
+"qid": "Af5fa2f45",
+"table_id": "lt-s/rsj2025_train_lift_the_stacked_blue_dish_and_set_it_down_on_the_table"
+},
+{
+"qid": "Af5fa2f45",
+"table_id": "XvKuoMing/so101_chess_wide"
+},
+{
+"qid": "Af5fa2f45",
+"table_id": "hungho77/so101-multitask-calib"
+},
+{
+"qid": "Ac5c9470c",
+"table_id": "JIUUOO/omx_f_pick_and_place_soju_v3"
+},
+{
+"qid": "Ac5c9470c",
+"table_id": "dlcodnjs/omx_f_pick_and_place_v3_90"
+},
+{
+"qid": "Ac5c9470c",
+"table_id": "cieclr/record-test"
+},
+{
+"qid": "Ac5c9470c",
+"table_id": "RevanthGundala/009-place-towel-in-bowl-10fps-delta"
+},
+{
+"qid": "Ac5c9470c",
+"table_id": "gunheelee72/omx_pick_and_place_v1"
+},
+{
+"qid": "Ac5c9470c",
+"table_id": "kwquqqing/test_20260510_232035"
+},
+{
+"qid": "Ac5c9470c",
+"table_id": "skpro19/v2.1"
+},
+{
+"qid": "Ac5c9470c",
+"table_id": "DAVIAN-Robotics/v2"
+},
+{
+"qid": "Ac5c9470c",
+"table_id": "OrderDraconis/phase2_align_simplified_combined_nofront"
+},
+{
+"qid": "Ac5c9470c",
+"table_id": "junshin02/rollout_v2c5_smolvla_retest_20260804_194404"
+},
+{
+"qid": "A445bfb51",
+"table_id": "ankile/real01b-marker-d2-r3-baseline-nocf-c100k-heval-s2026070201-policy-rollouts"
+},
+{
+"qid": "A445bfb51",
+"table_id": "ankile/real01b-square-d2-baseline-uniform-r3-ef25cov25-nocf"
+},
+{
+"qid": "A445bfb51",
+"table_id": "ankile/real01b-marker-d2-r5-trio-baseline-dp-iql-cfinal-n16-heval-sobolseed2026070704"
+},
+{
+"qid": "A445bfb51",
+"table_id": "Heimrih/libero_spatial_lerobot_mask_depth"
+},
+{
+"qid": "A445bfb51",
+"table_id": "lFelix/droid_test_dataset"
+},
+{
+"qid": "A445bfb51",
+"table_id": "castanetnicolas/robomimic_square_ph_image84"
+},
+{
+"qid": "A445bfb51",
+"table_id": "lidavidsh/franka-pick-kitchen-up-wrist-100ep-genesis"
+},
+{
+"qid": "A445bfb51",
+"table_id": "yukamatsumae/eval_act_drive_new2"
+},
+{
+"qid": "A445bfb51",
+"table_id": "zheng6677/new_so101_test"
+},
+{
+"qid": "A929450a4",
+"table_id": "PranayTest/agilex_test_basic"
+},
+{
+"qid": "A929450a4",
+"table_id": "mjung11/nc_bi_piper_pp_pineapple_pot_sb_kkt_A"
+},
+{
+"qid": "A929450a4",
+"table_id": "mimiminsoo/spam_0718"
+},
+{
+"qid": "A929450a4",
+"table_id": "jj-jjj/eval_piper_LH_food_task_3_DP_120K"
+},
+{
+"qid": "A929450a4",
+"table_id": "jachansantiago/pick_can_place_plate_150_trimmed"
+},
+{
+"qid": "A929450a4",
+"table_id": "vis22/piper3_dataset_train_food_1"
+},
+{
+"qid": "A929450a4",
+"table_id": "videron/openarm_bimanual_shirt_folding_gen3_25_episodes_high_qualty_5_20260824_135820"
+},
+{
+"qid": "A929450a4",
+"table_id": "ankile/nutsquare-paired-auto-v1-r3"
+},
+{
+"qid": "A38b2a8a3",
+"table_id": "YOLO2431/put_pen_into_bag_V3"
+},
+{
+"qid": "A38b2a8a3",
+"table_id": "YOLO2431/key_unlock_v2"
+},
+{
+"qid": "A38b2a8a3",
+"table_id": "YOLO2431/plug_white_usb_cable_v2"
+},
+{
+"qid": "A38b2a8a3",
+"table_id": "nodogoro/cell1_20260522_yasser_cable_packaging20260522_033617"
+},
+{
+"qid": "A38b2a8a3",
+"table_id": "nodogoro/cell2_20260520_hossam_coffee-shop_setting_cycle20260520_223721"
+},
+{
+"qid": "A38b2a8a3",
+"table_id": "nodogoro/cell1_20260523_mina_grocery_bagging_cycle_20260523_044651"
+},
+{
+"qid": "A38b2a8a3",
+"table_id": "kkipngenokoech/abc-molmoact2-yam-mix"
+},
+{
+"qid": "A38b2a8a3",
+"table_id": "chinchinati/yam_bimanual_manipulation"
+},
+{
+"qid": "A38b2a8a3",
+"table_id": "ETHrobotlearning/tv-config1-green-red-blue-clean"
+},
+{
+"qid": "A38b2a8a3",
+"table_id": "mimiminsoo/spam_neck0815_L"
+},
+{
+"qid": "Afc37bad2",
+"table_id": "ases200q2/eval_UR5_RTDE_SpaceMouse_EE_20260706-142640"
+},
+{
+"qid": "Afc37bad2",
+"table_id": "ases200q2/eval_UR10_RTDE_SpaceMouse_EE_20261014-174200"
+},
+{
+"qid": "Afc37bad2",
+"table_id": "shirasu206/dual_arm_ur5e_ur3e_20260529_v33"
+},
+{
+"qid": "Afc37bad2",
+"table_id": "Nicolasrdrgz/aic-demos"
+},
+{
+"qid": "Afc37bad2",
+"table_id": "Kaz55/dg5f_ur5e_red_1.25sq"
+},
+{
+"qid": "Afc37bad2",
+"table_id": "dompfeiffer/eval_test"
+},
+{
+"qid": "Afc37bad2",
+"table_id": "Bigenlight/banana_in_pot_lerobot_v3"
+},
+{
+"qid": "Afc37bad2",
+"table_id": "skpro19/v3.1-night"
+},
+{
+"qid": "Afc37bad2",
+"table_id": "galexyen/eval_2026-01-08-lego-pick-place"
+},
+{
+"qid": "Afc37bad2",
+"table_id": "RLobot-jun/bottle_cw"
+},
+{
+"qid": "A7b823fa5",
+"table_id": "abraranwar/usc_koch_failure_separate_the_red_and_orange_and_orange_cups"
+},
+{
+"qid": "A7b823fa5",
+"table_id": "andabi/D13"
+},
+{
+"qid": "A7b823fa5",
+"table_id": "Gongsta/eval_koch-tshirt-dagger-20260226_160800"
+},
+{
+"qid": "A7b823fa5",
+"table_id": "jackvial/screwdriver-391-new-task-descr2"
+},
+{
+"qid": "A7b823fa5",
+"table_id": "ssaito/koch_test_28"
+},
+{
+"qid": "A7b823fa5",
+"table_id": "zliu157/i3r2"
+},
+{
+"qid": "A7b823fa5",
+"table_id": "THUgewu/koch_bimanual_grasp_3"
+},
+{
+"qid": "A7b823fa5",
+"table_id": "adityx23/pnp_eggplant_on_plate_left_arm"
+},
+{
+"qid": "A7b823fa5",
+"table_id": "juyoungggg/lerobot-dataset-yellow-cup-0323-5"
+},
+{
+"qid": "A7b823fa5",
+"table_id": "villekuosmanen/agilex_put_orange_paperbox"
+},
+{
+"qid": "A489420f9",
+"table_id": "pyrrosk/pure_human_PLD"
+},
+{
+"qid": "A489420f9",
+"table_id": "FT-LLM-2026-RAMEN/aloha_sim_transfer_cube_scripted"
+},
+{
+"qid": "A489420f9",
+"table_id": "iiyudana/2view_random25"
+},
+{
+"qid": "A489420f9",
+"table_id": "lyl472324464/pick_nipper_from_toolbox"
+},
+{
+"qid": "A489420f9",
+"table_id": "lyl472324464/pick_box_randomly_placed_in_cardboard_box"
+},
+{
+"qid": "A489420f9",
+"table_id": "SUZ-tsinghua/RoboTwin_move_stapler_pad_randomized"
+},
+{
+"qid": "A489420f9",
+"table_id": "VGalaxies666/aloha_static_towel"
+},
+{
+"qid": "A489420f9",
+"table_id": "vo2yager/aloha_incontext"
+},
+{
+"qid": "A489420f9",
+"table_id": "LA111111/grab_oranges_v1_20260722_152700"
+},
+{
+"qid": "A489420f9",
+"table_id": "jayp132/green-only-225"
+}
+]

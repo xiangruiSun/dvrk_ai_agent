@@ -1,0 +1,270 @@
+{
+ "selection_model": "qwen3:14b",
+ "queries": {
+  "A": 31,
+  "C": 18,
+  "D": 11,
+  "B": 30
+ },
+ "no_answer_needs_moved_out_because_a_usable_table_exists": [
+  "D014",
+  "D015"
+ ],
+ "configurations": {
+  "serving+select": {
+   "abstention": {
+    "A": {
+     "queries": 31,
+     "showed_nothing": 5,
+     "share_showed_nothing": 0.1613,
+     "mean_tables_shown": 5.23,
+     "said_what_is_missing": 31
+    },
+    "B": {
+     "queries": 30,
+     "showed_nothing": 3,
+     "share_showed_nothing": 0.1,
+     "mean_tables_shown": 7.47,
+     "said_what_is_missing": 30
+    },
+    "C": {
+     "queries": 18,
+     "showed_nothing": 0,
+     "share_showed_nothing": 0.0,
+     "mean_tables_shown": 9.17,
+     "said_what_is_missing": 18
+    },
+    "D": {
+     "queries": 11,
+     "showed_nothing": 10,
+     "share_showed_nothing": 0.9091,
+     "mean_tables_shown": 0.91,
+     "said_what_is_missing": 11,
+     "showed_nothing_absent": "8/9",
+     "showed_nothing_size": "2/2"
+    }
+   },
+   "reasons_fingerprint": "350ed7c53781",
+   "groundedness_checked_by_qwen3:4b": {
+    "reasons": 561,
+    "empty_reasons": 0,
+    "with_a_number_not_in_the_table_text": 10,
+    "share_with_unsupported_number": 0.0178,
+    "checked_by_model": 488,
+    "model_says_unsupported": 58,
+    "share_model_says_unsupported": 0.1189,
+    "examples": [
+     {
+      "qid": "A84058b63",
+      "table_id": "GT-111/agibotworld_alpha_v3_eef",
+      "reason": "Format v3.0 and contains bimanual tasks.",
+      "numbers_not_in_text": [],
+      "model_says_unsupported": "Format v3.0 and contains bimanual tasks."
+     },
+     {
+      "qid": "A81781bb1",
+      "table_id": "zeroanuj/ur7_b_into_a_48h",
+      "reason": "Contains a large number of episodes (from a 48-hour run) with a wrist camera and UR7e model.",
+      "numbers_not_in_text": [
+       "48"
+      ],
+      "model_says_unsupported": null
+     },
+     {
+      "qid": "A59b93749",
+      "table_id": "zeroanuj/ur7_b_into_a_48h",
+      "reason": "Part of a 48-hour run with multiple episodes of a UR7e arm performing a pick-and-place task, which meets the requested 50 episodes.",
+      "numbers_not_in_text": [
+       "48"
+      ],
+      "model_says_unsupported": null
+     },
+     {
+      "qid": "A59b93749",
+      "table_id": "rdoshi21/ur5-more-rope",
+      "reason": "Contains 190 episodes of a UR5 arm performing a task, which meets the requested 50 episodes.",
+      "numbers_not_in_text": [],
+      "model_says_unsupported": "The dataset contains 190 episodes of a UR5 arm performing a task, which meets the requested 50 episodes."
+     },
+     {
+      "qid": "Af72f0e80",
+      "table_id": "THUgewu/coffeecapsule_pickup_la_clrhw_fryertable_2",
+      "reason": "Bimanual robot dataset in v2.1 format with pick-and-place task.",
+      "numbers_not_in_text": [],
+      "model_says_unsupported": "bimanual robot dataset in v2.1 format with pick-and-place task"
+     },
+     {
+      "qid": "A64adda8a",
+      "table_id": "zjt24/openarm_shirt_folding_new_converted",
+      "reason": "format v2.1",
+      "numbers_not_in_text": [],
+      "model_says_unsupported": "format v2.1"
+     },
+     {
+      "qid": "A75712df7",
+      "table_id": "adityx23/pnp_eggplant_on_plate_left_arm",
+      "reason": "Bimanual data from YOR robot with a specific task, though only 1 episode and not SO-100 or SO-101.",
+      "numbers_not_in_text": [
+       "1"
+      ],
+      "model_says_unsupported": null
+     },
+     {
+      "qid": "Ad5c75552",
+      "table_id": "polaris314/xarm7_pick_place",
+      "reason": "3 cameras, 9 episodes",
+      "numbers_not_in_text": [
+       "9"
+      ],
+      "model_says_unsupported": null
+     }
+    ]
+   },
+   "groundedness_checked_by_qwen3:14b": {
+    "reasons": 561,
+    "empty_reasons": 0,
+    "with_a_number_not_in_the_table_text": 10,
+    "share_with_unsupported_number": 0.0178,
+    "checked_by_model": 561,
+    "model_says_unsupported": 105,
+    "share_model_says_unsupported": 0.1872,
+    "examples": [
+     {
+      "qid": "A84058b63",
+      "table_id": "GT-111/robotwin_v3_eef",
+      "reason": "Format v3.0 and contains bimanual tasks.",
+      "numbers_not_in_text": [],
+      "model_says_unsupported": "Format v3.0 and contains bimanual tasks."
+     },
+     {
+      "qid": "A84058b63",
+      "table_id": "GT-111/agibotworld_alpha_v3_eef",
+      "reason": "Format v3.0 and contains bimanual tasks.",
+      "numbers_not_in_text": [],
+      "model_says_unsupported": "Format v3.0 and contains bimanual tasks."
+     },
+     {
+      "qid": "A9577aa81",
+      "table_id": "PranayTest/agilex_piper",
+      "reason": "Includes wrist camera view and is stored in format v3.0.",
+      "numbers_not_in_text": [],
+      "model_says_unsupported": "wrist camera view"
+     },
+     {
+      "qid": "A9577aa81",
+      "table_id": "PranayTest/pick-right-2026-08-14to15-2cam",
+      "reason": "Includes wrist camera view and is stored in format v3.0.",
+      "numbers_not_in_text": [],
+      "model_says_unsupported": "wrist camera view"
+     },
+     {
+      "qid": "A9577aa81",
+      "table_id": "PranayTest/pick-right-2026-08-11-2cam-prxxx",
+      "reason": "Includes wrist camera view and is stored in format v3.0.",
+      "numbers_not_in_text": [],
+      "model_says_unsupported": "wrist camera view"
+     },
+     {
+      "qid": "A9577aa81",
+      "table_id": "PranayTest/pick-right-2026-08-11-2cam",
+      "reason": "Includes wrist camera view and is stored in format v3.0.",
+      "numbers_not_in_text": [],
+      "model_says_unsupported": "wrist camera view"
+     },
+     {
+      "qid": "A8658b7f2",
+      "table_id": "DRMNmadhan/piper_pickdrop_200_50hz",
+      "reason": "This dataset is recorded at 50 Hz, which matches the user's request for 50 Hz recordings of the AgileX Piper arm.",
+      "numbers_not_in_text": [],
+      "model_says_unsupported": "user's request for 50 Hz recordings of the AgileX Piper arm"
+     },
+     {
+      "qid": "A81781bb1",
+      "table_id": "zeroanuj/ur7_b_into_a_48h",
+      "reason": "Contains a large number of episodes (from a 48-hour run) with a wrist camera and UR7e model.",
+      "numbers_not_in_text": [
+       "48"
+      ],
+      "model_says_unsupported": null
+     }
+    ]
+   }
+  },
+  "serving+rerank_large_select": {
+   "abstention": {
+    "A": {
+     "queries": 31,
+     "showed_nothing": 1,
+     "share_showed_nothing": 0.0323,
+     "mean_tables_shown": 7.29,
+     "said_what_is_missing": 31
+    },
+    "B": {
+     "queries": 30,
+     "showed_nothing": 2,
+     "share_showed_nothing": 0.0667,
+     "mean_tables_shown": 8.23,
+     "said_what_is_missing": 30
+    },
+    "C": {
+     "queries": 18,
+     "showed_nothing": 0,
+     "share_showed_nothing": 0.0,
+     "mean_tables_shown": 8.94,
+     "said_what_is_missing": 18
+    },
+    "D": {
+     "queries": 11,
+     "showed_nothing": 9,
+     "share_showed_nothing": 0.8182,
+     "mean_tables_shown": 1.82,
+     "said_what_is_missing": 11,
+     "showed_nothing_absent": "7/9",
+     "showed_nothing_size": "2/2"
+    }
+   },
+   "reasons_fingerprint": "7e51e2103df9",
+   "groundedness_checked_by_qwen3:4b": null,
+   "groundedness_checked_by_qwen3:14b": null
+  },
+  "serving+understand_hard_large_select": {
+   "abstention": {
+    "A": {
+     "queries": 31,
+     "showed_nothing": 3,
+     "share_showed_nothing": 0.0968,
+     "mean_tables_shown": 7.55,
+     "said_what_is_missing": 31
+    },
+    "B": {
+     "queries": 30,
+     "showed_nothing": 1,
+     "share_showed_nothing": 0.0333,
+     "mean_tables_shown": 7.73,
+     "said_what_is_missing": 30
+    },
+    "C": {
+     "queries": 18,
+     "showed_nothing": 0,
+     "share_showed_nothing": 0.0,
+     "mean_tables_shown": 9.28,
+     "said_what_is_missing": 18
+    },
+    "D": {
+     "queries": 11,
+     "showed_nothing": 8,
+     "share_showed_nothing": 0.7273,
+     "mean_tables_shown": 1.91,
+     "said_what_is_missing": 10,
+     "showed_nothing_absent": "7/9",
+     "showed_nothing_size": "1/2"
+    }
+   },
+   "reasons_fingerprint": "020d02cac42c",
+   "groundedness_checked_by_qwen3:4b": null,
+   "groundedness_checked_by_qwen3:14b": null
+  }
+ },
+ "note": "the reasons were written by qwen3:14b; a check by the same model is a self-check and is reported beside the check by the other model and the check by code",
+ "ran": "2026-11-23 21:55"
+}

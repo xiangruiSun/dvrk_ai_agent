@@ -1,0 +1,144 @@
+TASK S1 - SOURCES AND THE CATALOG RECORD
+========================================
+Owner: Engineer A (data). Reviewer: the lead. Months 1-2. Depends on: nothing. Needed by: all.
+
+As built
+--------
+Status: BUILT and run on the real catalog, except what "Not built here" lists. Results: REPORT.md, "Write path".
+Code: scripts/fetch_hub_catalog.py; vxfind/catalog/parse.py, store.py. Tests: tests/test_vxfind.py.
+Differences from the plan below:
+- Source 4 (pipeline documentation, PDFs) is not ingested: there are no company documents here and
+  no download of stand-ins was asked for.
+- The dump holds no card for most gated tables, so gating is nearly absent from the indexed catalog
+  although the listing shows several hundred gated tables. Gating is therefore tested only as a field.
+- R7 turned out to matter more than planned: the dump never drops a deleted table (measured in E08),
+  so "only in the dump" is where the dead tables are, mixed with live ones the listing omits.
+Further limits: the 50-row hand check of the parser (Acceptance) was done on far fewer rows, by the
+builder, while writing it; the tests pin the cases that were seen.
+(end of as built)
+
+Job
+---
+Decide what goes into the retrieval system, where it comes from, and what one record of it looks
+like. Everything downstream (search, the model's choice, the live check, the evaluation's
+computed labels) reads this record. A field that is wrong here is wrong everywhere, and a
+property of the catalog that is not captured here cannot be searched, filtered or measured.
+
+Why this is a task and not a morning's work
+-------------------------------------------
+The mentor's question was "what do you put in the RAG": documents, a database, a website? For a
+catalog of tables the honest answer is: almost none of the tables come with text. Indexing "the
+documents" would index 5% of the catalog. The record has to be built from what every table does
+have (its schema, its numbers, its name) and the system has to know, per table, how much it
+really knows.
+
+Sources
+-------
+  1. The catalog dump. One file set per day, one row per table: id, owner, created, last
+     modified, tags, popularity counts, and the table's card (free text, often a template, with
+     an embedded JSON block describing the schema). Two revisions about 30 days apart are
+     fetched, so that growth and change are real. scripts/fetch_hub_catalog.py
+  2. The site's listing. One line per table currently listed: id, revision, gating, private,
+     disabled. Fetched through the site's API, paged. It is newer than the dump and disagrees
+     with it, which is the point: see R7.
+  3. The site itself, per table, live. Not a source for the index; used at answer time (S4).
+  4. Pipeline documentation (how each training pipeline expects its data: formats, required
+     columns, frame rates). TEAM SCOPE, NOT BUILT HERE: see "Not built".
+
+Requirements
+------------
+R1  Provenance. Every fetched file is recorded in data/hub/MANIFEST.json with the dump revision,
+    its publication time, byte size and checksum (verified against the checksum the host
+    publishes). A record in the index can be traced to a revision of the dump.
+R2  The record (vxfind/catalog/parse.py, parse_row). Pure function from one dump row to one
+    record. No network, no model. Fields, in groups:
+      identity     table_id, owner, name, url
+      time         created, last_modified
+      schema       schema_status (ok | absent | unparsable), codebase_version, robot_type, fps,
+                   total_episodes, total_frames, total_tasks, data_mb, video_mb, columns (name,
+                   dtype, shape, element names, kind: camera | action | state | index | other),
+                   n_columns, cameras, n_cameras, action_dim, state_dim, action_names
+      text         description (what a person wrote, with the template, code blocks, badges and
+                   boilerplate removed), has_description (at least 80 characters remain)
+      quality      is_scratch (name pattern), has_stamp (name ends in a timestamp), problems (a
+                   list: missing schema, zero episodes, fps out of range, ...)
+      hashes       card_hash, schema_hash, content_hash (what the index text was built from)
+      summary      see R4
+R3  A row that cannot be parsed is kept, with schema_status and problems saying why. Dropping
+    bad rows hides the catalog's real state from the people who search it and from the
+    evaluation. The share of each status is reported.
+R4  The generated summary (parse.summary). One paragraph per table, written by code from the
+    record, in a fixed order: name and owner; the person-written description if any; robot,
+    frame rate, episodes, frames, tasks, format; cameras; action names. This is the text that is
+    embedded, the text the model reads when it selects, and the text the judge reads. It exists
+    for every table, including the 95% with no description. It must never state something the
+    record does not hold. (A model-written summary was considered and not built: it would cost
+    100,000 model calls per rebuild and would add statements that cannot be traced. Revisit when
+    E07 shows what the code summary is missing.)
+R5  Scratch detection is a regular expression over the name, kept in one place, with tests. It
+    is a ranking signal, not a filter: a table named "test" may be the only one that fits.
+R6  Families. Tables with the same owner, the same name once digits are replaced by "#", and the
+    same schema_hash are one family (computed in S2 because it needs all rows). One member is
+    the head: the one with the most episodes, ties broken by the latest change, then by id.
+R7  Reconciliation of dump and listing. For every table: in both, only in the dump, only in the
+    listing. "Only in the dump" is a candidate dead table and is measured against the live
+    check in E08; it must not be treated as dead without that measurement.
+R8  Access attributes. gated (no | auto | manual) from the listing, per table. The group policy
+    (who may see which owner's tables) is not in the source; it is DECLARED (E09)
+    and applied in S3 and S4.
+R9  The catalog database (vxfind/catalog/store.py). The records of the NEWER snapshot in a
+    relational store, one row per table, with indexes on owner and family, and a meta table
+    saying which snapshot it holds. Built to a temporary file and renamed, so a reader never
+    sees half a database. This is the system of record that vx-catalog (S4) serves.
+R10 Licences and redistribution. Each table's licence is a field. Nothing fetched is committed
+    or served outside this machine; data/README.md states the source, the licence situation and
+    that the repository redistributes nothing.
+
+Implementation notes
+--------------------
+- Write parse_row against real rows first. Pull 200 random rows, print the card, and write down
+  every shape you see before writing the function. The embedded schema block is found by a
+  regular expression on the "[meta/info.json](meta/info.json):" marker followed by a fenced JSON
+  block; about one row in ten has no block or a broken one.
+- person_text is the difficult function: cards are templates. Remove front matter, fenced code,
+  HTML, badge links, the template's fixed sentences and section headings, then keep what is
+  left. Test with the template alone (must give an empty description) and with one real card.
+- content_hash must change when and only when the text that is indexed changes. It is what
+  makes embedding and judging incremental. Hash the summary and the fields that are indexed,
+  not the raw card.
+- Keep every nested field JSON-serialisable; Spark carries them as JSON strings (S2).
+
+Code
+----
+scripts/fetch_hub_catalog.py; vxfind/catalog/parse.py; vxfind/catalog/store.py
+
+Verification on real data
+-------------------------
+python scripts/fetch_hub_catalog.py                      -> data/hub/MANIFEST.json
+python -m vxfind.catalog.store build --snapshot new      -> data/vxfind/catalog.db
+python -m pytest tests/test_vxfind.py -q -k "card or scratch or hash or families"
+Figures (tables, share described, share scratch, schema status, family sizes, dump vs listing):
+verification/REPORT.md, section "Write path".
+
+Acceptance
+----------
+- Every table of both snapshots has a record; none is dropped.
+- For 50 hand-checked rows, robot_type, fps, episodes and cameras equal what the card says.
+- The template card alone gives has_description = false.
+- Changing one word of a description changes content_hash and not schema_hash.
+
+Not built here (team scope)
+---------------------------
+- Pipeline documentation and PDFs as a second corpus (doc, txt, pdf -> text -> chunks -> the same
+  index with a type field). The mentor's notes list it; it needs the company's documents, which
+  this repository does not have, and a download of public stand-ins was not asked for. The
+  record model leaves room: a document chunk is a record with kind = "doc" and no schema.
+- A model-written description per table (see R4).
+- Column-level statistics (value ranges, missing shares), which need the data itself.
+
+Known limits
+------------
+The catalog is a public one standing in for a company's. Its owners are strangers, not
+colleagues: there is nobody to ask what a table is. The scratch rule is English-only and
+name-only. A family is defined by name pattern and schema, so two different tasks recorded with
+the same rig and numbered names fall into one family.

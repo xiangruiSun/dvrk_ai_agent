@@ -1,0 +1,20 @@
+{"qid": "D001", "kind": "D", "split": "dev", "need": "Lidar point clouds from autonomous trucks on highways with 3D box labels", "why_no_answer": "absent"}
+{"qid": "D002", "kind": "D", "split": "dev", "need": "A table of customer support chat transcripts labelled with intent", "why_no_answer": "absent"}
+{"qid": "D003", "kind": "D", "split": "test", "need": "MRI brain scans with tumour segmentation masks", "why_no_answer": "absent"}
+{"qid": "D004", "kind": "D", "split": "test", "need": "Speech recordings in Swahili with transcripts for speech recognition", "why_no_answer": "absent"}
+{"qid": "D005", "kind": "D", "split": "dev", "need": "Stock tick data for the Tokyo exchange from 2010 to 2020", "why_no_answer": "absent"}
+{"qid": "D006", "kind": "D", "split": "dev", "need": "Satellite images of crop fields with yield per hectare", "why_no_answer": "absent"}
+{"qid": "D007", "kind": "D", "split": "dev", "need": "Protein structures with measured binding affinities", "why_no_answer": "absent"}
+{"qid": "D008", "kind": "D", "split": "test", "need": "Chest CT reports in Chinese with diagnosis codes", "why_no_answer": "absent"}
+{"qid": "D009", "kind": "D", "split": "dev", "need": "Tweets about elections with sentiment labels", "why_no_answer": "absent"}
+{"qid": "D010", "kind": "D", "split": "dev", "need": "ECG waveforms with arrhythmia annotations", "why_no_answer": "absent"}
+{"qid": "D011", "kind": "D", "split": "test", "need": "Handwritten Devanagari character images", "why_no_answer": "absent"}
+{"qid": "D012", "kind": "D", "split": "test", "need": "Underwater ROV manipulator recordings at 100 m depth with sonar", "why_no_answer": "absent"}
+{"qid": "D013", "kind": "D", "split": "dev", "need": "Space station free-flying robot grasping objects in microgravity", "why_no_answer": "absent"}
+{"qid": "D014", "kind": "D", "split": "test", "need": "Excavator teleoperation logs with hydraulic pressures", "why_no_answer": "absent"}
+{"qid": "D015", "kind": "D", "split": "test", "need": "Warehouse forklift pallet handling demonstrations with load weights", "why_no_answer": "absent"}
+{"qid": "D016", "kind": "D", "split": "dev", "need": "A robot arm playing the violin, with audio recordings", "why_no_answer": "absent"}
+{"qid": "D017", "kind": "D", "split": "test", "need": "Ten million episodes of a single SO-101 pick-and-place task in one dataset", "why_no_answer": "size"}
+{"qid": "D018", "kind": "D", "split": "dev", "need": "Franka Panda data recorded at 1000 fps with twelve cameras", "why_no_answer": "size"}
+{"qid": "D019", "kind": "D", "split": "dev", "need": "Koch arm demonstrations with at least 500,000 episodes", "why_no_answer": "size"}
+{"qid": "D020", "kind": "D", "split": "test", "need": "ALOHA recordings at 240 frames per second with eight camera views", "why_no_answer": "size"}

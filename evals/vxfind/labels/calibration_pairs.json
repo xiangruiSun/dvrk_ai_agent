@@ -1,0 +1,1487 @@
+[
+{
+"qid": "A84058b63",
+"table_id": "byeonggi/pickup_0727_1_20260727_024142",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A84058b63",
+"table_id": "jaewoo112/bi_gauze_one",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A84058b63",
+"table_id": "byeonggi/pickup_0809_20260809_130627",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A84058b63",
+"table_id": "YERI84/omx_f_pickuptape_1",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A84058b63",
+"table_id": "7smile/omx_f_testcan_2-2",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A84058b63",
+"table_id": "SunGyu1/pick_and_place",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A84058b63",
+"table_id": "skpro19/v3.1-night",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A84058b63",
+"table_id": "RADTEAM/V3.1_redblock_redtray",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A84058b63",
+"table_id": "FrankYuzhe/eval_act_andy_tube_20260210_225215",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A84058b63",
+"table_id": "kb127/eval_act102k_00",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A9577aa81",
+"table_id": "ruanafan/evo-rl-data-pnp2",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A9577aa81",
+"table_id": "mimiminsoo/spam_0719",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A9577aa81",
+"table_id": "griffinlabs/kevin_20260526_131704",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A9577aa81",
+"table_id": "PranayTest/02062026_single_plate_depth",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A9577aa81",
+"table_id": "Faless/rollout_harvest_dagger_20260610_140930",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A9577aa81",
+"table_id": "Ishan-Axibo/piperx_stack",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A9577aa81",
+"table_id": "inhandplus/egocentric-wrist-view-camera-IMU-data",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A9577aa81",
+"table_id": "Playingyoyo/wetrobo-horizon-petri2microscope",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A9577aa81",
+"table_id": "louis126584/eval_so101_diffusion7",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A9577aa81",
+"table_id": "aractingi/pick_lift_cube_pipeline_test_cropped_resized",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A8658b7f2",
+"table_id": "EverNorif/lw_benchhub_dataset",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A8658b7f2",
+"table_id": "DRMNmadhan/piper_pickdrop_200_50hz",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A8658b7f2",
+"table_id": "samithva/teleop_task_e_0626_1",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A8658b7f2",
+"table_id": "samithva/bimanual_stack_cup_on_bowl_1",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A8658b7f2",
+"table_id": "AnttAI/25",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A8658b7f2",
+"table_id": "PranayTest/agilex_test",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A8658b7f2",
+"table_id": "zeuzei/sort_bolt_nut_rgbd_40eps",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A8658b7f2",
+"table_id": "whosricky/so101_pick_yellow_cube_3cams",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A847ff1d5",
+"table_id": "Tamanenishiki/eval_record_safe_1",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A847ff1d5",
+"table_id": "nkmurst/rollout_openarm-inference-pi05_rel_20260726_212153",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A847ff1d5",
+"table_id": "Tamanenishiki/eval_record_0618",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A847ff1d5",
+"table_id": "lerobot-data-collection/pick-2025-11-02-14-45",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A847ff1d5",
+"table_id": "Rick0331/lerobot-openarm-collect-bowl_depth_third4",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A847ff1d5",
+"table_id": "20-wasa/openarm-cube-pickup-right_pose_altered_10fps",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A847ff1d5",
+"table_id": "openrob-furg/openarm-single-pick-place-lego-wrist",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A847ff1d5",
+"table_id": "inhandplus/egocentric-wrist-view-camera-IMU-data",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A847ff1d5",
+"table_id": "Sanjaya-LeRobot/dataset_3_lego_20260820_091324",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A847ff1d5",
+"table_id": "dpak0724/eval_so101_red_cube",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A81781bb1",
+"table_id": "ravtscheev/nut-assembly-ur5e-eef-eef",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A81781bb1",
+"table_id": "modanqing/shelf_pick_and_place_easy_500",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A81781bb1",
+"table_id": "max-chr/libero_plus_object_noise_all_ur5e",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A81781bb1",
+"table_id": "brucekimrok/sfp2nic_cheatcode_n10_00",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A81781bb1",
+"table_id": "max-chr/libero_plus_10_lighting_all_ur5e",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A81781bb1",
+"table_id": "eyefly2/iso_tt_dd_mod4",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A81781bb1",
+"table_id": "lyl472324464/2026-03-12-two-have-cap-one-right-merged-adjust-pickup",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A81781bb1",
+"table_id": "chensgd/eval_so101_18",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A59b93749",
+"table_id": "zeroanuj/ur7_b_into_a_48h_w2_p01",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A59b93749",
+"table_id": "mohario/sort-3cam-cube",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A59b93749",
+"table_id": "robgenclipboard/nomagic-simple-box",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A59b93749",
+"table_id": "DORLR/Deformable-1Clip-Routing-v0-Scripted-smoke",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A59b93749",
+"table_id": "ases200q2/UR10_RTDE_SpaceMouse_EE_pick_and_place_object_tabletop_v3_filtered",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A59b93749",
+"table_id": "windyhu/eval_ur10e_pi05_test7",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A59b93749",
+"table_id": "vlasil/move_pens_red_first_1028_5ep_2",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A59b93749",
+"table_id": "codenmood/so101_camera_dataset_0036",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Af72f0e80",
+"table_id": "gamzadole/omx_dual_opening_v1",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Af72f0e80",
+"table_id": "gamzadole/ARMCHEMIST_PICKDOWN_BOTTLE1",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Af72f0e80",
+"table_id": "gamzadole/omx_dual_cup_v1_261001",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Af72f0e80",
+"table_id": "karrlleereal/eval_jack6",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Af72f0e80",
+"table_id": "airkfx/omx_pick_doll_mydata_120718",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Af72f0e80",
+"table_id": "karrlleereal/eval_three_item5",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Af72f0e80",
+"table_id": "PranayTest/bimanual-test-2ep-v2",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Af72f0e80",
+"table_id": "skpro19/v2.1",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Af72f0e80",
+"table_id": "DamonSkap/purple-cube_batch2c_20260629_174207",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Af72f0e80",
+"table_id": "thiendmm/so101_dataset_4_20260831_172952",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A56eb4510",
+"table_id": "yianW/grasp03-sim-real-v2",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A56eb4510",
+"table_id": "LuEduSoHu/splatsim_xarm5_lite_10fps_260623_0204",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A56eb4510",
+"table_id": "jjbin2001/xarm_black_white_sorting",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A56eb4510",
+"table_id": "aposadasn/vprint_final",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A56eb4510",
+"table_id": "mhyatt000/demo",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A56eb4510",
+"table_id": "crislmfroes/xarm6-pick-sugar-box-sim-pose-cond-v3",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A56eb4510",
+"table_id": "ys903/xarm6_pick_place_50_episodes_ver2",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A56eb4510",
+"table_id": "ys903/xarm6_pick_place_50_episodes",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A56eb4510",
+"table_id": "Ricky0626/eval_so101_policy_test",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A56eb4510",
+"table_id": "RoboPenguin99/color_test_green_koch_1",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A64adda8a",
+"table_id": "MarkusWuenstel/openarm_test_delta",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A64adda8a",
+"table_id": "Heart22/lerobotv2.1Data_imagetype",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A64adda8a",
+"table_id": "TobiBrtnr/openarm_cup_task",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A64adda8a",
+"table_id": "lerobot-data-collection/hil_rnd1_10",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A64adda8a",
+"table_id": "observee/teleop-0515-relabeled",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A64adda8a",
+"table_id": "Anteid11/pick_and_place_emergency_button_recomputed_stats",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A64adda8a",
+"table_id": "wangdx25/idm_openarm_merged_256_v2",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A64adda8a",
+"table_id": "openrob-furg/openarm-single-pick-place-lego-chest",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A64adda8a",
+"table_id": "alkvolcano/so101_putBlackBoxInWhiteBowl_new_20260513_020825",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A64adda8a",
+"table_id": "continuallearning/test_fixed",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A71f6dc05",
+"table_id": "IMsubin/omx_f_pick_doll_put_in_drawer",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A71f6dc05",
+"table_id": "JIUUOO/omx_f_task1_place_d50",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A71f6dc05",
+"table_id": "JIUUOO/omx_f_omx_task2_full_d50",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A71f6dc05",
+"table_id": "PinkSpam/pick_and_place",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A71f6dc05",
+"table_id": "pepijn223/super_poulain_vqa",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A71f6dc05",
+"table_id": "soonjoon/record-test",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A71f6dc05",
+"table_id": "inhandplus/egocentric-wrist-view-camera-IMU-data",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A71f6dc05",
+"table_id": "cpstroum/so101-brachiomimus-50ep",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A71f6dc05",
+"table_id": "TacVerse/taccap-g1-organize-meeting-table-items-0729",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A71f6dc05",
+"table_id": "kkee123h/ahdataset",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A33437e31",
+"table_id": "Anas0711/Gr00t_lerobot_state_action_180",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A33437e31",
+"table_id": "kumarhans/ethernetInsertMerged063025",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A33437e31",
+"table_id": "Anas0711/orange_bobo_pose_action_state_june3_1130am",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A33437e31",
+"table_id": "AmmarWaheed/u850-mobile-bag-test",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A33437e31",
+"table_id": "rishabhrj11/gym-xarm-grab-6",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A33437e31",
+"table_id": "thanhkt/nexarm_stack_bowls_20260930_170033",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A33437e31",
+"table_id": "ys903/xarm6_pick_place_50_episodes_red_block_long_v2",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A33437e31",
+"table_id": "ys903/xarm6_pick_place_50_episodes_ver2",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A33437e31",
+"table_id": "Jackie7ii/record0",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A33437e31",
+"table_id": "sid003/eval_block_picking-150",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Af790066e",
+"table_id": "Faless/harvest_apples_with_agilex_piper_sim_dagger0623_x2_simdelay3_ee",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Af790066e",
+"table_id": "Faless/hedge_v2_sim_real_20260918_30hz_shuffled",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Af790066e",
+"table_id": "7-in-days/two_block_pnp",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Af790066e",
+"table_id": "nhd2642/piper_test_2000",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Af790066e",
+"table_id": "KeWangRobotics/piper_test_3",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Af790066e",
+"table_id": "griffinlabs/tej_test4",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Af790066e",
+"table_id": "jmarangola/real_demos_more_with_agileX",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Af790066e",
+"table_id": "MrPsarik/rollout_SortPaper_20260529_145930_20260612_170554",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Af790066e",
+"table_id": "adityaGautham/rgb_plastic_20260811_175348",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A292ca4da",
+"table_id": "younghyopark/test_jasminetea_may20_2",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A292ca4da",
+"table_id": "pokeandwiggle/testwithannotations",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A292ca4da",
+"table_id": "younghyopark/pick_tblock_pos0_gw_aug3_uniform",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A292ca4da",
+"table_id": "rdoshi21/place-rope",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A292ca4da",
+"table_id": "ChuyaoFu/my_lerobot_dataset",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A292ca4da",
+"table_id": "windfromthenorth/unquote_bottom_drawer_pi0_3x_beta_0.1",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A292ca4da",
+"table_id": "pythonsniffer/armanual-dinner-table",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A292ca4da",
+"table_id": "sancov/so101-rotate-base-ring",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A292ca4da",
+"table_id": "yamaisanerd/clean_20260927_153529",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A01511a53",
+"table_id": "younghyopark/pick_tblock_pos0_gw_aug3_ep500",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A01511a53",
+"table_id": "danielsanjosepro/tactile-stacking",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A01511a53",
+"table_id": "HuskyMango/eval_red-block-diffusion",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A01511a53",
+"table_id": "ankile/tpa-d0-state-dagger-r5",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A01511a53",
+"table_id": "YunyeXiao/libero_object_10_image_task_6",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A01511a53",
+"table_id": "phawitbinabik/libero-goal-offline-dr-fair-v1",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A01511a53",
+"table_id": "GT-111/intern_a1_v3_eef",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A01511a53",
+"table_id": "ryanxuee/eval_two_arm",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A01511a53",
+"table_id": "jlitch/so100multicam7",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A01511a53",
+"table_id": "Natalish/eval_so101-roller-brush-v2",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Aba40e543",
+"table_id": "takeru01/task1_1_5_rgb_recover_up_down_trim_204ep",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Aba40e543",
+"table_id": "cometkim97/ur3e_banana_to_basket",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Aba40e543",
+"table_id": "shirasu206/dual_arm_ur5e_ur3e_20260530_v2",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Aba40e543",
+"table_id": "Kaz55/dg5f_ur5e_v6_blue89_180ep_gs320",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Aba40e543",
+"table_id": "shoukangyu/ur5_pick_place",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Aba40e543",
+"table_id": "KKLabUR3eLeRobot/ur3e_lerobot_dataset_202605170017",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Aba40e543",
+"table_id": "faizaladin/Bimanual-Recordings",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Aba40e543",
+"table_id": "crislmfroes/openarm-bimanual-open-microwave-sim-with-pos-rand-mimic-generated-50-joint-pos-only-v3",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Aba40e543",
+"table_id": "legalaspro/so101-greenblack-cube-cup-pnp-30hz",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Aba40e543",
+"table_id": "nodogoro/cell1_20260522_hossam_cable_packaging20260522_214404",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ab8c26f08",
+"table_id": "jmarangola/meta-green-slim-up-corrected",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Ab8c26f08",
+"table_id": "hyzhang01/GCA_parallel_iros",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Ab8c26f08",
+"table_id": "jmarangola/pde_real_sft",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Ab8c26f08",
+"table_id": "Calvert0921/SmolVLA_LiftCube_Franka_200",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Ab8c26f08",
+"table_id": "windfromthenorth/fixed_choco_pudding_pi0_3x_beta_0.03",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Ab8c26f08",
+"table_id": "continuallearning/eval_dit_posttrainv2_er_dit_real_0_on_real_0_seed1000",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Ab8c26f08",
+"table_id": "VivekSai07/franka_stacking_50",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ab8c26f08",
+"table_id": "SinjaeKang/fatigue-injection-pi0.5-cube-stacking",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ab8c26f08",
+"table_id": "kb127/eval_wirealltest_0160000204",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ab8c26f08",
+"table_id": "yudai0209/so101_cvs_blackthunder_r3",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A76d12b4f",
+"table_id": "Rick0331/lerobot-openarm-collect-bowl_rgb_merged3",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A76d12b4f",
+"table_id": "nkmurst/openarm_teleop_udp_d435_merged_20260804_relstats20260725_lerobot",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A76d12b4f",
+"table_id": "crislmfroes/openarm-bimanual-pick-exhaust-pipe-sim-v14",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A76d12b4f",
+"table_id": "Houndsito/openarm_pick_tin_fridge_v2",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A76d12b4f",
+"table_id": "lerobot-data-collection/level2_rac2_1",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A76d12b4f",
+"table_id": "Tamanenishiki/record_0618",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A76d12b4f",
+"table_id": "sunparticle/record-test_3",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A76d12b4f",
+"table_id": "hyunduck10/cube_2_seo_20260912_171952",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A75712df7",
+"table_id": "bluephysi01/so101_test40",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A75712df7",
+"table_id": "haduki33/tester_0205ver10",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A75712df7",
+"table_id": "tomato-store/bi_arm_harvest",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A75712df7",
+"table_id": "castlejin/eval_castlejin-testing-SmolVLA",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A75712df7",
+"table_id": "osammotg1/eval1-SALLE-V3",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A75712df7",
+"table_id": "kinghanse/pick_lego_test",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A75712df7",
+"table_id": "cpstroum/so101-brachiomimus-50ep",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A75712df7",
+"table_id": "shubham4413/so101_wm",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A75712df7",
+"table_id": "WillMandil001/libero_spatial_with_depth",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A917bd7f1",
+"table_id": "ankile/real01b-square-d2-r4-quad-baseline-nocf-freecf-iql-s2final-n16-heval-sobolseed2026070304",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A917bd7f1",
+"table_id": "DorianAtSchool/pick_place_combined_robot2",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A917bd7f1",
+"table_id": "ankile/real01b-square-d2-r5-cand3-taub09-c250k-film-c200k-h6bs1024-c200k-heval-sobolseed2026070901",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A917bd7f1",
+"table_id": "hamish-grant/pick_cup_110926",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A917bd7f1",
+"table_id": "locht131/mimicgen_100_kitchen_lerobot",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A917bd7f1",
+"table_id": "Zxlee1811/libero",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A917bd7f1",
+"table_id": "lidavidsh/franka-pick-kitchen-up-wrist-100ep-genesis",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A917bd7f1",
+"table_id": "1clarkj/mimicvla-panda-usb",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A917bd7f1",
+"table_id": "yudai0209/so101_vial_rack_pos3_ok",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A917bd7f1",
+"table_id": "hafeezjimoh/cleantable_pens07",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A0f7fdb61",
+"table_id": "Anas0711/all_data",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A0f7fdb61",
+"table_id": "zijian2022/t93445bp",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A0f7fdb61",
+"table_id": "Anas0711/orange_bobo_pose_action_state_june3_1130am",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A0f7fdb61",
+"table_id": "AmmarWaheed/u850-test678",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A0f7fdb61",
+"table_id": "AmmarWaheed/u850-fridge-drink-test",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A0f7fdb61",
+"table_id": "zijian2022/t9404",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A0f7fdb61",
+"table_id": "ys903/xarm6_pick_place_50_episodes",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A0f7fdb61",
+"table_id": "ys903/xarm6_pick_place_50_episodes_ver2",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A0f7fdb61",
+"table_id": "dominicdx/conversion_test__quality_ideal",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A0f7fdb61",
+"table_id": "L7-Robotics/so101_conveyor_dynamic_merge_v3",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ae7c2de22",
+"table_id": "cheolhyunkim/omx_f_pap_box",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Ae7c2de22",
+"table_id": "dlcodnjs/omx_f_pick_and_place_v3_90",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Ae7c2de22",
+"table_id": "IMsubin/omx_f_red_green_apple_sort_11_25",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Ae7c2de22",
+"table_id": "gjkong/pick_and_place",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Ae7c2de22",
+"table_id": "gwangheeyi/record-test",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Ae7c2de22",
+"table_id": "Thach12/eval_omx_demo6_deploy_v8",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Ae7c2de22",
+"table_id": "skpro19/v2.1",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ae7c2de22",
+"table_id": "DAVIAN-Robotics/v2",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ae7c2de22",
+"table_id": "vasco281204/rollout_benchmark_icra_mix",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ae7c2de22",
+"table_id": "Ason-jay/fetch-lift-iql-tau07-sim",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ad5c75552",
+"table_id": "kasiv008/pick-v30",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Ad5c75552",
+"table_id": "mjuarez4/sweep-single-revised",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Ad5c75552",
+"table_id": "kumarhans/ethernetGrab01234",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Ad5c75552",
+"table_id": "jjbin2001/xarm_black_white_sorting",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Ad5c75552",
+"table_id": "zijian2022/eval123",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Ad5c75552",
+"table_id": "kasiv008/xarm-bottle-pick",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Ad5c75552",
+"table_id": "ys903/xarm6_pick_place_50_episodes",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ad5c75552",
+"table_id": "ys903/xarm6_pick_place_50_episodes_ver2",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ad5c75552",
+"table_id": "thomas0829/fold_the_towel_0226-1",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ad5c75552",
+"table_id": "Drenego/so100_pi0_v1",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Af7fb7ac4",
+"table_id": "yianW/mug-grasp-handle-lerobot-v3",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Af7fb7ac4",
+"table_id": "yianW/handle02-sim-real-v2",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Af7fb7ac4",
+"table_id": "yianW/mug-grasp-topdown-lerobot-v3",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Af7fb7ac4",
+"table_id": "mateoguaman/language_table",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Af7fb7ac4",
+"table_id": "AmmarWaheed/base4-mobile-bag-v1-FV-BC",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Af7fb7ac4",
+"table_id": "AmmarWaheed/base4-test45",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Af7fb7ac4",
+"table_id": "ys903/xarm6_pick_place_50_episodes",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Af7fb7ac4",
+"table_id": "ys903/xarm6_pick_place_50_episodes_ver2",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Af7fb7ac4",
+"table_id": "kaze72/pickplace_v2_50ep",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Af7fb7ac4",
+"table_id": "vicshi97/sock-garbage-merged_3.0",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A909b22c2",
+"table_id": "radiance-nt/stackcube-20260116-120310",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A909b22c2",
+"table_id": "radiance-nt/grasp-20251113-145255",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A909b22c2",
+"table_id": "ajaysri/long_cable_insertion_2_inpainted_center",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A909b22c2",
+"table_id": "villekuosmanen/pick_2_snackbars",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A909b22c2",
+"table_id": "villekuosmanen/agilex_turn_on_light",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A909b22c2",
+"table_id": "villekuosmanen/agilex_sort_fruits",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A909b22c2",
+"table_id": "geonmin-kim/robodojo-v3",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A909b22c2",
+"table_id": "mliu48/telearms-yam-cube-v4-dr",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A909b22c2",
+"table_id": "nirs123/pick_blue_cube",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A909b22c2",
+"table_id": "leninangelov/lerobot-hackathon-2025",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A6fadca39",
+"table_id": "naungth/pi0_augmented_bns",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A6fadca39",
+"table_id": "naungth/3hours_bns",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A6fadca39",
+"table_id": "locht131/robotwin_egocentric_3cam",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A6fadca39",
+"table_id": "typoverflow/robochallenge_aloha",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A6fadca39",
+"table_id": "cadene/aggregate_test",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A6fadca39",
+"table_id": "lyl472324464/2026-05-04_turn_over-lerobot-without-rinse",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A6fadca39",
+"table_id": "twanghcmut/aloha_placing_drawer_kitchen_lerobot",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A6fadca39",
+"table_id": "zjt24/aloha_dining_table",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A6fadca39",
+"table_id": "Xense/newbalance_shoe_insole_retrieval_and_packing_0521",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A6fadca39",
+"table_id": "LennartMnd/eval_battery_180",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A3b037f2b",
+"table_id": "jackvial/koch_screwdriver_attach_orange_panel_19_e5",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A3b037f2b",
+"table_id": "jackvial/koch_screwdriver_attach_orange_panel_e125",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A3b037f2b",
+"table_id": "jackvial/screwdriver_attach_panel_ls_080125_1_e5",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A3b037f2b",
+"table_id": "zding08/eval_koch_data15",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A3b037f2b",
+"table_id": "seeingrain/pick_lego_to_hand",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A3b037f2b",
+"table_id": "ethanCSL/eval_steering_paper_no_steering",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A3b037f2b",
+"table_id": "skpro19/v2.3",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A3b037f2b",
+"table_id": "DAVIAN-Robotics/v2",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A3b037f2b",
+"table_id": "zjandaman/record-test_20260616_155247",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A3b037f2b",
+"table_id": "cortexairobot/27112025-yam-test",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A2ff761d1",
+"table_id": "hongdaaaaaaaa/sim_ram_scripted_3",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A2ff761d1",
+"table_id": "SUZ-tsinghua/RoboTwin_pick_dual_bottles_randomized",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A2ff761d1",
+"table_id": "s-choi/biplay_aloha_pick_place_dataset_merge_ready_v3",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A2ff761d1",
+"table_id": "hugechen/dishwasher",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A2ff761d1",
+"table_id": "lyl472324464/pick_frame_from_rack",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A2ff761d1",
+"table_id": "ccop/aloha-hd5-conversion-test",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A2ff761d1",
+"table_id": "jzpeng/Batonchegg_bimanual_training_recording1",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A2ff761d1",
+"table_id": "VGalaxies666/aloha_static_towel",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A2ff761d1",
+"table_id": "seriintan/frazier_dataset_50episodes_20260922_153817",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A2ff761d1",
+"table_id": "LesserNeoguri/rclab_lerobot_coffeepicker_v02",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ad50d34fd",
+"table_id": "Jiafei1224/20042026-cup-storing-combined",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Ad50d34fd",
+"table_id": "allenai/eval_openvla_pipette_in-distribution",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Ad50d34fd",
+"table_id": "allenai/eval_xvla_candy_sorting_in-distribution",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Ad50d34fd",
+"table_id": "nodogoro/cell1_20260524_mohamed-salah_grocery_bagging_cycle_20260524_092935",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Ad50d34fd",
+"table_id": "nodogoro/cell1_20260519_lego-tower_20260519_121107",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Ad50d34fd",
+"table_id": "nodogoro/cell1_20260515_light-green-short-sleeve-tshirt_folding_unfolding_fault_episode-2-3",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Ad50d34fd",
+"table_id": "chinchinati/yam_bimanual_manipulation",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ad50d34fd",
+"table_id": "shailes-h/yam_bimanual_manipulation",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Ad50d34fd",
+"table_id": "tersoohaan/eval_pi0_inference_only_dataset",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Aa65fc4dc",
+"table_id": "rainbowrobotics/icra_0522_can_20260522_213426",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Aa65fc4dc",
+"table_id": "rainbowrobotics/flowers_sorting_mirrored",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Aa65fc4dc",
+"table_id": "maysmile/icra_0522_can_sub",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Aa65fc4dc",
+"table_id": "rainbowrobotics/simtos_one_item_home_pepsi",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Aa65fc4dc",
+"table_id": "kaiseong/hand_0624_3",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Aa65fc4dc",
+"table_id": "rainbowrobotics/JIMTOF_4ea_20261008_131625",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Aa65fc4dc",
+"table_id": "rainbowrobotics/box_tilting_all",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Aa65fc4dc",
+"table_id": "RB3159/rby1-fold-v1.1",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Aa65fc4dc",
+"table_id": "ola31/abcdefg",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Aa65fc4dc",
+"table_id": "villekuosmanen/pick_coffee_prop_20Hz_3",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A95f8c5e6",
+"table_id": "naungth/toolbox_trossen",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A95f8c5e6",
+"table_id": "aytsaiusc/play_human_fruits_train",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A95f8c5e6",
+"table_id": "Qu3tzal/bridgev2",
+"truth_as_first_computed": 3
+},
+{
+"qid": "A95f8c5e6",
+"table_id": "ahad-j/fold-shirt-nac",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A95f8c5e6",
+"table_id": "aytsaiusc/play_robot_v2_2_eef",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A95f8c5e6",
+"table_id": "aytsaiusc/play_robot_can_16",
+"truth_as_first_computed": 1
+},
+{
+"qid": "A95f8c5e6",
+"table_id": "madokalif/widowx-pick-v1-clean",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A95f8c5e6",
+"table_id": "Ameyapores/push_block_dp_aug_8_2025_staticimg",
+"truth_as_first_computed": 0
+},
+{
+"qid": "A95f8c5e6",
+"table_id": "mishmish66/metaworld_hard_20_5T",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Adfa38420",
+"table_id": "ethanCSL/svla_koch_pick_n_place_vla_steering_speed",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Adfa38420",
+"table_id": "andabi/D4",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Adfa38420",
+"table_id": "ethanCSL/svla_koch_pick_n_place_vla_steering_height_test4_fix_dataset",
+"truth_as_first_computed": 3
+},
+{
+"qid": "Adfa38420",
+"table_id": "shin1107/eval_act_koch_train_block",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Adfa38420",
+"table_id": "manikky/patient_dataset_20260526_152850",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Adfa38420",
+"table_id": "nduque/eval_robustness_e6_2",
+"truth_as_first_computed": 1
+},
+{
+"qid": "Adfa38420",
+"table_id": "inhandplus/egocentric-wrist-view-camera-IMU-data",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Adfa38420",
+"table_id": "dddw123/so101-left-arm-recordings",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Adfa38420",
+"table_id": "omri-manual/leisaac-pick-orange",
+"truth_as_first_computed": 0
+},
+{
+"qid": "Adfa38420",
+"table_id": "yoohoolala/newdepth02",
+"truth_as_first_computed": 0
+}
+]

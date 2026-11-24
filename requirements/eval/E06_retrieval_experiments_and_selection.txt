@@ -1,0 +1,126 @@
+E06 - RETRIEVAL EXPERIMENTS AND THE RULE THAT PICKS THE SERVING CONFIGURATION
+============================================================================
+Owner: the intern, with Engineer B. Month 3 (weeks 11-12), then on every proposed change.
+Depends on: E02-E05, S3. Needed by: S6 (what ships), E07-E12.
+
+As built
+--------
+Status: BUILT and run twice (first with the first rubric, kept as *_first_run; then with the revised one).
+Results: REPORT.md, "Retrieval". The serving configuration: evals/vxfind/serving.json.
+Code: vxfind/eval/harness.py; scripts/vxfind_eval.py (retrieval).
+Differences from the plan below:
+- The rule chose the same configuration under both rubrics, which says the choice does not hinge on
+  the judge: it is driven by set B, whose truth needs no judge.
+- What the rule chose is modest (scratch demotion and a boost for described tables); the larger
+  findings are comparative: which retriever each query set favours, what removing a field costs,
+  and that no retriever handles stated numbers.
+- R10's list of hardest queries is produced by scripts/vxfind_failures.py.
+Further limits: no learned fusion and no trained reranker (the stretch goals).
+(end of as built)
+
+Job
+---
+Answer, with measurements on this catalog, the questions the search engineer argues about:
+lexical or vectors or both; which embedding model; which fields; how to fuse; whether to
+collapse families; whether to push scratch tables down. Then choose the configuration that
+serves users by a rule written before the numbers are seen, and score it once on the test set.
+
+Requirements
+------------
+R1  The experiment list (harness.CONFIGS). Each is the plain fused baseline with ONE thing
+    changed, so each difference has one cause:
+      retriever      bm25 | knn (embedding model 1) | knn (model 2) | fused (1) | fused (2)
+      fields         lexical only, removing one field at a time (name, description, summary,
+                     column names); name only; summary only; all field weights equal
+      identifiers    function words matched against names (the fault of S3 R4) on and off
+      fusion         rank_constant 10 / 60 / 100; window 20 / 50 / 100 / 200
+      the mess       collapse off; scratch multiplier 0.5 / 0.2; description multiplier 1.5 / 2;
+                     both together
+R2  All configurations run on the dev queries of sets A, B, C and D. Results are pooled (E04);
+    the pool is judged; then every configuration is scored on each set's headline metric with
+    a bootstrap interval, plus the secondary metrics, repeat@10 and unjudged@10.
+R3  Every configuration is compared with the baseline, paired, per set: mean difference, 95%
+    interval, randomization p-value, wins / losses / ties (harness.compare).
+R4  The selection rule, written in the code BEFORE the first full run and quoted in the report:
+      1. Start from the plain fused baseline.
+      2. Within each group of settings (embedding, rank constant, window, the mess), take the
+         variant that is significantly better (p < 0.05) on at least one query set and
+         significantly worse on none; if several qualify, the one with the largest summed gain.
+      3. Combine the taken settings into one configuration and run it on dev.
+      4. Keep the combination only if it is not significantly worse than the baseline on any
+         set. Otherwise keep the single best taken setting.
+      5. If nothing qualifies, the baseline serves.
+    The rule cannot pick a configuration because it "looks better" or wins on one set while
+    losing on another.
+R5  The chosen configuration is written to evals/vxfind/serving.json with the reasons (which
+    settings were taken, the comparison of the combination), and every later stage reads it
+    from there.
+R6  Test, once. The chosen configuration and a fixed list of reference points (bm25, vectors,
+    plain fusion, no collapse, name only) are run on the test queries; their top tens are
+    pooled and judged; scores and paired comparisons are reported. Test results are never used
+    to choose.
+R7  Report dev and test side by side. If a gain on dev shrinks or vanishes on test, say so in
+    the report's text: that is what the test set is for.
+R8  Latency beside quality: p50 and p95 per configuration, total and per retriever. A setting
+    that buys 0.01 for 200 ms is a different decision from one that is free.
+R9  "Return more": for known-item needs, the share whose target is in the first 1, 5, 10, 20,
+    50, 100 candidates of the serving configuration. This is the mentor's "return more"
+    question as a curve: how much is gained by showing 20 instead of 10, and what is the
+    ceiling the reranker could reach if it were perfect.
+R10 The hardest queries: for the serving configuration, the dev queries with the lowest
+    headline score, with what was returned (scripts/vxfind_failures.py; see E01 R8).
+R11 Multiple comparisons are stated: the report says how many configurations were compared, and
+    that with that many, about one in twenty "significant" differences is expected by chance.
+    The selection rule's protection is steps 3-4 and the test set, not the p-values alone.
+
+Implementation instructions
+---------------------------
+1. Define the configurations as data (a dictionary name -> SearchConfig), each derived from the
+   baseline with .but(...). Adding an experiment is one line.
+2. Order of work in the stage (scripts/vxfind_eval.py retrieval):
+   run all on dev -> pool -> judge -> score -> compare -> apply the rule -> run the candidate on
+   dev -> top-up judging of its new tables -> re-score -> decide -> run on test -> pool and judge
+   test -> score and compare -> write evidence.
+3. The scoring function takes (queries, run, records, qrels) and returns
+   {set: {metric: {query id: value}}}. Everything else (means, intervals, comparisons, the gate)
+   is computed from that one structure.
+4. For set B a table counts as found when it is the target OR in the target's family (the
+   system collapses families; penalising it for showing a sibling would be measuring the
+   collapse, not retrieval).
+5. Read the per-set results separately before reading any average. On this catalog the sets
+   disagree in instructive ways: vectors help task questions and hurt exact attribute questions.
+6. When a result surprises you, open ten queries and read the lists before believing it.
+
+Deliverables
+------------
+vxfind/eval/harness.py (CONFIGS, compare, latency); the retrieval stage of scripts/vxfind_eval.py;
+evals/vxfind/serving.json; verification/vxfind_retrieval.json; the "Retrieval" section of
+verification/REPORT.md.
+
+Acceptance
+----------
+- Every configuration in R1 has dev scores on three sets with intervals and a paired comparison.
+- The serving configuration is the output of the coded rule, not of a hand edit.
+- Test was scored after the choice, and the report shows dev and test together.
+- Re-running the stage with nothing changed judges nothing new and reproduces every number.
+
+Pitfalls
+--------
+- Changing two things at once and crediting one.
+- Choosing the embedding model from its leaderboard rank instead of from your catalog.
+- Declaring victory on the average of three sets (the sets have different sizes and metrics;
+  an average is a weighting you did not choose).
+- Tuning a multiplier to the third decimal on eighteen queries.
+- Forgetting the top-up: the combined configuration returns tables no pooled run returned.
+
+Stretch
+-------
+- Learned fusion weights on the judged dev queries (a linear combination), against RRF.
+- A cross-encoder trained on the stored judgments, as a rerank stage.
+- Per-failure-type scores (E01's taxonomy as query tags).
+
+References
+----------
+Cormack, Clarke and Buettcher (reciprocal rank fusion); the engine vendor's notes on RRF versus
+linear combination and on tuning with a few dozen judged queries; hybrid retrieval ablations in
+BEIR-style studies; Sakai on comparing many systems.

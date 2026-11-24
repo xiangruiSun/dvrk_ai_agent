@@ -1,0 +1,146 @@
+E12 - CLOSING THE LOOP: FEEDBACK TO CASES, AND THE RELEASE GATE
+===============================================================
+Owner: the intern, with Engineer E and the lead. Month 6 (weeks 21-23). Depends on: E02-E11, S6.
+
+As built
+--------
+Status: BUILT; exercised with SCRIPTED sessions only. Results: REPORT.md, "Roll-out and the release gate".
+Code: vxfind/eval/feedback.py, gate.py; scripts/vxfind_ops.py (rollout). Rules: evals/vxfind/gate.json.
+Differences from the plan below:
+- R12's "real alternative" turned out to be the instructive one: reading the need with a model and
+  filtering by the stated numbers is the largest gain measured on dev, and on the locked test
+  queries it fails the gate, because known-item needs lose significantly. On dev the loss was within
+  noise. Returning to plain fusion also fails (it gives up the gain on set B).
+- R8's max_drop is the same fixed value for every set; E11's smallest detectable differences are
+  close to it for sets A and B and larger for set C on dev. Not yet set per set.
+- There are no users, so R6 (the weekly review) has not happened and every online measure in the
+  report comes from a script that opens what the evaluation's own labels call relevant.
+- The gate is a command, not yet a step of a build pipeline.
+- R14: no exception has been needed or written.
+Further limits: candidates from scripted sessions are the test queries themselves; they show that
+triage works, not what real feedback would add.
+(end of as built)
+
+Job
+---
+The mentor's roll-out sequence: self-test, open to users, feedback, write eval. Everything
+before this task used questions somebody guessed. Once people use the assistant, their
+questions are the better query set and their reactions are free, noisy labels. Build the path
+from an event in a log to a labelled case in the query set, and build the gate that uses the
+evaluation to decide whether a change may ship. With these two, the evaluation stops being a
+project and becomes part of how the team works.
+
+Part 1 - feedback to cases
+--------------------------
+R1  The event log (vxfind/eval/feedback.py, FeedbackLog). One line per event:
+      shown             the question and the table ids shown, in order
+      opened            a table's address was opened (with its rank)
+      useful / not_useful   a mark on one table
+      nothing_fits      the person said nothing shown fits
+      asked_again       the person rephrased
+      requested_access  a request was filed for a table
+    with a time, an opaque session id and the release name. An unknown action is an error, not
+    a new column.
+R2  What is NOT logged: names, e-mail addresses, free-text comments, anything about the person
+    beyond the session id. Questions enter a query set only after a person has read them (a
+    question can contain something that must not be stored in git).
+R3  Online measures per release (feedback.online): questions and sessions; share of answers
+    with nothing opened; mean rank of the first opened table and the share where it was rank 1;
+    share of shown tables marked not useful; "nothing fits" count; rephrase count; access
+    requests. These are signals, not truth: nobody opens a table that looks dull but fits, and
+    people open the first one whatever it is.
+R4  Triage (feedback.triage). An event pattern that says the system failed makes a CANDIDATE
+    case: nothing fits; nothing opened; a table marked not useful; the question was rephrased.
+    One candidate per distinct question; a question already in a query set is not added again.
+    Each candidate carries why it was picked and the weak labels (opened, useful, not useful).
+R5  A candidate is not a case. The path is: candidate -> a person reads it, removes anything
+    that must not be stored, writes or corrects labels using the four grades -> it joins set F
+    with a split by its id's hash. The file of candidates says so in every line's status.
+R6  Weekly, during roll-out: the count of candidates by reason, how many were labelled and
+    added, and the five most instructive ones read aloud in the team meeting.
+R7  There are no users in this repository. The path is exercised by SCRIPTED sessions: a script
+    plays a user over the test queries, opening what the evaluation's own labels call relevant
+    and marking some of what they call irrelevant. The report labels every number from this as
+    SCRIPTED. It shows that the log, the measures and the triage work; it says NOTHING about
+    how people behave, and no conclusion about users may be drawn from it.
+
+Part 2 - the release gate
+-------------------------
+R8  Rules as data (evals/vxfind/gate.json), two kinds (vxfind/eval/gate.py):
+      no_loss   on a query set's headline metric, the candidate must not be worse than the
+                serving configuration beyond chance: fail when the mean difference is negative
+                AND the randomization p-value is below alpha, or when the drop exceeds
+                max_drop whatever the test says.
+      floor     a measured property must hold outright: dead addresses shown after the live
+                check = 0; restricted tables shown to outsiders = 0.
+R9  A floor that was not measured FAILS. "We did not run the leak test" is not a pass.
+R10 The gate reads the locked test queries, compares paired, and judges the candidate's new
+    top-ten tables before comparing (E04 R7): otherwise a candidate is punished for unjudged
+    tables.
+R11 The gate answers "may this ship", not "is this better". A change that is not significantly
+    different passes; the comparison table says how far it moved, and E11's power figure says
+    how large a loss could hide.
+R12 The gate must be shown to work. In the evidence, for the current serving configuration:
+      - against itself: passes
+      - a planted regression (search on table names only): fails, with the failing checks named
+      - a real alternative (plain fusion; lexical only; a smaller window): whatever the numbers
+        say, reported
+R13 The gate's output is stored per release: the rules, the floors as measured, each check with
+    its difference, interval, p and query count, and the decision.
+R14 An exception is possible and is a document: who decided to ship past a failed gate, why,
+    and what will be measured after.
+
+Implementation instructions
+---------------------------
+1. FeedbackLog is append-only JSON lines. questions(events) groups by (session, need); every
+   measure and the triage are functions of that grouping, with tests.
+2. For the scripted sessions use the test queries and the serving run; "opens" up to three
+   tables that truth calls relevant (computed for A, target for B, judged for C); "marks not
+   useful" a random 40% of grade-0 tables; says nothing fits when no shown table is relevant.
+   Fixed seed. Write the word SCRIPTED into the evidence next to the measures.
+3. The gate takes two per-query score structures (E03) and the floors; it returns the list of
+   checks and the decision. No search, no judging inside it: it is a pure function, tested with
+   made-up scores (a clear loss fails, noise passes, a missing floor fails).
+4. Thresholds: start max_drop at the smallest detectable difference of E11, not at a number
+   that feels strict.
+5. Run: python scripts/vxfind_ops.py rollout    (after fresh, access and agent, whose results
+   are the floors)
+
+Deliverables
+------------
+vxfind/eval/feedback.py, gate.py; evals/vxfind/gate.json; evals/vxfind/queries/F_candidates.jsonl;
+the rollout stage of scripts/vxfind_ops.py; verification/vxfind_rollout.json; report section
+"Roll-out and the release gate"; a hand-over note: how to add a query, how to re-judge after a
+prompt change, how to read a failed gate.
+
+Acceptance
+----------
+- An unknown action cannot be logged; a logged question is never in a query set unlabelled.
+- Candidates carry their reason and a status that says they are not truth.
+- The gate passes the serving configuration against itself and fails the planted regression.
+- With a floor missing, the gate fails.
+- The evidence says SCRIPTED wherever a number comes from a script playing a user.
+
+Pitfalls
+--------
+- Treating clicks as relevance. They measure position and curiosity first.
+- Adding feedback questions straight into the test set. They are unlabelled, and the newest
+  questions are the ones the current system fails; a test set of only those makes every
+  release look bad and every fix look brilliant.
+- A gate nobody can fail (thresholds wider than any realistic regression) or nobody can pass
+  (significance demanded for no loss on eighteen queries).
+- A gate that is run "when we remember". It runs on every change to search, prompts, tool
+  descriptions, model or mapping.
+
+Stretch
+-------
+- Interleaving two configurations on live traffic (team-draft) once there are enough sessions.
+- A drift monitor: the share of feedback questions that fall outside every existing query
+  set's topics.
+- Automatic weekly report with the trend of each headline metric per release.
+
+References
+----------
+Pinterest's account of offline evaluation as a sanity check before real usage decides; work on
+click models and position bias; team-draft interleaving (Radlinski and Craswell); continuous
+evaluation practice for LLM applications (regression suites fed by production failures).

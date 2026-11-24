@@ -1,0 +1,124 @@
+E05 - HOW FAR CAN THE JUDGE BE TRUSTED: CALIBRATION AND HAND LABELS
+===================================================================
+Owner: the intern. Month 3 (weeks 9-10). Depends on: E02, E04. Needed by: E06, E11, E12.
+
+As built
+--------
+Status: (a)-(d) BUILT and run for three versions of the rubric, plus a held-out measurement on pairs
+of the test needs. (e) NOT DONE: the sheet of 200 pairs and the guide exist; no person has filled
+it. Results: REPORT.md, "The judge" and "The judge's rubric, version by version".
+Code: vxfind/eval/meta.py; scripts/vxfind_eval.py (judge, calibrate).
+Differences from the plan below:
+- The calibration did more than measure: it drove two revisions of the rubric, and reading the
+  judge's remaining disagreements found two faults in the computed truth (see E02). The pairs are
+  pinned (evals/vxfind/labels/calibration_pairs.json) so versions are compared on the same pairs.
+- Because the rubric was revised while reading the dev pairs, the dev figures flatter it; the
+  held-out pairs are the figure to quote.
+- R9 (a second person) not done. R10's correction with human labels not possible yet.
+- The sheet in git carries a short excerpt per table; the text the judge read is written to data/
+  beside it, because the tables' own text is not redistributed.
+(end of as built)
+
+Job
+---
+Every score on the written needs (set C) rests on a language model's grades. Measure that
+model's error against truth that no model produced, and put the result next to every table that
+uses it. Then start the one thing that cannot be automated: a person's labels.
+
+Five measurements
+-----------------
+(a) Against labels computed by code. For attribute needs (set A) the truth is known for every
+    table. Give the judge (need, table) pairs from set A and compare its grade with the
+    computed one. This is the core measurement: it needs no human and it is exact.
+(b) Known-item sanity. A need written from a table must be judged to fit that table. The share
+    of (B need, its source table) pairs graded 2 or 3 should be near 1.
+(c) Two judges. A second, different model grades the same pooled pairs of set C. Agreement
+    between two models is not accuracy, but disagreement is a warning.
+(d) Repeatability. The same pair judged twice (cache off) gives the same grade.
+(e) A person. 200 pooled pairs of set C, labelled by hand, blind to the judge's grade.
+
+Requirements
+------------
+R1  Sample for (a), per dev attribute need (scripts/vxfind_eval.py judge):
+      3 tables that satisfy every constraint            (true grade 3)
+      3 tables of the right robot that fail one         (true grade 1; the HARD negatives)
+      2 tables of another robot that search returned    (true grade 0, but search liked them)
+      up to 2 random tables                             (true grade 0, easy)
+    The second and third groups are the ones that matter. A judge that only separates random
+    tables from matching ones tells you nothing.
+R2  The comparison is binary and stated: does the judge call relevant (grade >= 2) exactly the
+    pairs where everything matches (true grade 3)? Report agreement, Cohen's kappa, the judge's
+    precision and recall, its false-positive rate, the confusion counts, and the full table of
+    judge grade by true grade (meta.calibrate).
+R3  Show the errors. At least eight examples where the judge is wrong, with the need, the
+    table, the true grade, the judge's grade and its reason. Read them and name the pattern
+    (typically: a stated minimum that the table misses is not noticed; a camera named
+    differently is not recognised).
+R4  Run (a) for both the main judge and the second judge. If the smaller model is as accurate,
+    it is the cheaper judge; if not, you know what the larger one buys.
+R5  (c): a sample of 300 pooled C pairs; exact agreement, agreement within one grade,
+    quadratic-weighted kappa, kappa on relevant / not, and each judge's mean grade (one judge
+    being systematically more generous shows here).
+R6  (d): 60 pairs judged again into a scratch store. Report how many grades are identical.
+R7  (e) The sheet (evals/vxfind/labels/hand_labels.csv): 200 pairs, 50 per judge grade so that
+    every grade is represented, shuffled, with the need, the table's address and text, and an
+    EMPTY grade column. The judge's grade is not in the sheet. A labelling guide with the four
+    grades and the hard cases of E01 goes with it.
+R8  When the sheet is filled, the same script reports judge-versus-person agreement (R5's
+    statistics) and the report replaces "not done" with the numbers. Until then the report
+    says, in words: no human labels; (a) is the only comparison with truth.
+R9  A second person labels 50 of the 200. Person-versus-person agreement is the ceiling: a
+    judge cannot be expected to agree with people more than people agree with each other.
+R10 Consequences are written down, not left implicit:
+      - if the judge's false-positive rate is high, absolute precision on set C is inflated;
+        compare systems, do not quote the level
+      - if the judge is weak on a failure type (for example sizes), that type is evaluated on
+        set A, where truth is computed, and not on set C
+      - a correction of set C scores from the hand labels (prediction-powered inference, as in
+        ARES) becomes possible once the 200 labels exist; it is the stretch goal
+
+Implementation instructions
+---------------------------
+1. For (a), build the pairs with a fixed seed and keep the true grade beside each pair; send
+   the pairs through the same Judge class as the pool (same prompt, same text). Do not write a
+   special prompt for calibration: you are measuring the instrument you use.
+2. The judge reads the generated summary, which states robot, frame rate, episodes, format and
+   cameras. So every constraint of set A is decidable from the text. If the judge fails, it is
+   the judge, not missing information; that is what makes (a) a fair test.
+3. For the sheet, sample from the stored judgments by grade; write CSV with proper quoting; do
+   not include any column that reveals the judge's grade or reason.
+4. Label in two sittings of 100. Use the address to open the table when the text is not
+   enough, and note when you did (the judge could not).
+5. Keep the script idempotent: if the sheet has grades in it, it is read and never overwritten.
+
+Deliverables
+------------
+vxfind/eval/meta.py (calibrate, agreement); the judge stage of scripts/vxfind_eval.py;
+evals/vxfind/labels/hand_labels.csv and the guide; verification/vxfind_judge.json.
+
+Acceptance
+----------
+- (a) is reported for both judges with the confusion table and examples of errors.
+- The report states the number of human labels as a number, including zero.
+- Every result table on set C in the report is followed by a pointer to the judge's measured
+  error.
+
+Pitfalls
+--------
+- Calibrating on easy negatives only. Agreement of 0.98 against random tables is not information.
+- "Two models agree, so they are right." They share training data and failure modes.
+- Showing the judge's grade to the human labeller. The human will agree with it.
+- Treating kappa on 60 items as precise. Give the counts.
+- Postponing human labels until "after launch". They are the only external check you have.
+
+Stretch
+-------
+- Correct set C's metrics with the human labels (prediction-powered inference) and report the
+  corrected interval beside the raw one.
+- Few-shot examples in the judge prompt taken from the hand labels; measure whether (a) improves.
+
+References
+----------
+ARES (automatic RAG evaluation corrected with about 150 human labels); Thomas et al. and the
+UMBRELA reproduction on LLM assessors; "Who Validates the Validators" on aligning automatic
+graders with people; Cohen (kappa), and weighted kappa for ordinal labels.

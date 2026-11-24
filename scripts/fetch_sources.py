@@ -41,7 +41,7 @@ DOCS_COMMIT = "3b231b2a59d223d3b73cd7f55c9e90b04be404bb"          # main on 2026
 SAW_REPO = "jhu-dvrk/sawIntuitiveResearchKit"
 SAW_COMMIT = "7435458dc847b95b9ff77723b33e4a177cfa4f43"           # main on 2026-11-19
 ISSUE_REPOS = ["jhu-dvrk/sawIntuitiveResearchKit", "jhu-dvrk/dvrk-ros"]
-# An earlier state of the documentation, used to measure incremental sync (requirements/rag/R09).
+# An earlier state of the documentation, used to measure incremental sync (requirements/archive/rag/R09).
 DOCS_PREVIOUS_COMMIT = "6f0167fa75"                               # main on 2026-09-13, resolved by git
 # Sites that publish notes of their own beside their configuration files (the github.com/dvrk-config
 # organization). In this project each is a private collection that only that site may read (R07).

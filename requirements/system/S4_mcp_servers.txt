@@ -1,0 +1,138 @@
+TASK S4 - MCP SERVERS IN FRONT OF EACH SYSTEM
+=============================================
+Owner: Engineer C (platform). Reviewer: the lead. Months 3-5. Depends on: S1 (catalog database).
+Needed by: S5. Evaluated by: E08 (live check), E09 (access), E10 (agent).
+
+As built
+--------
+Status: BUILT and tested against the live site and by the leak tests. Results: REPORT.md, "Freshness" and "Access".
+Code: vxfind/mcp/servers.py, hub.py, access.py. Tests: tests/test_vxfind.py.
+Differences from the plan below:
+- R5 was violated by the first version and the leak test caught it: check_tables answered a hidden
+  table itself and passed made-up ids to the site, so the two replies differed in their reason. Now
+  any id the catalog does not hold, or the caller may not see, gets one reply and the site is asked
+  about neither. First run: verification/vxfind_access_first_run.json. Pinned in the tests.
+- A consequence of that fix: the new address of a moved table is not in the catalog database, so a
+  second check of the NEW id answers "not in the catalog". The first check already gives the new
+  address and its state; the agent's answer check accepts it.
+- The three servers run in one process on loopback ports; tokens come from a local table.
+Further limits: check_tables asks about its ids one after another (the evaluation measured what four
+at a time would save); no notification reaches a mentor; approvals do not expire.
+(end of as built)
+
+Job
+---
+Put one MCP server in front of each system the assistant has to ask, with typed tools. The
+mentor builds "MCP connecting each DB" in production; this is the same shape at project size.
+The reason for the live server in particular, from the mentor's notes: the agent calls the
+model, then calls MCP to check whether a table changed or is gone, because the RAG index and
+the table list have delay, and then verifies.
+
+Why servers and not functions inside the agent: each system has an owner, its own credentials
+and its own rules, and more than one client (the assistant, the evaluation harness, a notebook,
+next year another assistant). The rule lives next to the data, once. The agent is one caller.
+
+The three servers
+-----------------
+  vx-catalog   the catalog database (system of record, newer than the search index)
+                 table_details(table_id)      one table's record
+                 table_columns(table_id)      its columns with kind, type, shape, element names
+                 related_tables(table_id)     the other members of its family
+  vx-site      the hosting site, asked live
+                 check_tables(table_ids<=10)  per table: live | moved | gone | unknown, the address
+                                              to show now, the new id if moved, whether it changed
+                                              since it was indexed, gating
+  vx-access    the access desk
+                 access_status(table_ids)     not_requested | pending | approved | refused
+                 request_access(table_id, purpose)     files a request for the caller; grants nothing
+                 pending_requests()           mentors only
+                 decide_request(id, approve)  mentors only; never one's own request
+
+Requirements
+------------
+R1  Schemas both ways. Every tool has a JSON Schema for its arguments (types, bounds, a
+    description per field that tells a model what to pass) and a JSON Schema for its result,
+    both derived from type annotations so they cannot drift from the code. A caller can validate
+    a reply before using it.
+R2  One reply shape. {ok: true, result} or {ok: false, error_kind, error, hint}. A refusal is
+    data a model can read and act on; it is never an exception text. error_kind is from a short
+    fixed list (unauthorized, not_found, invalid_arguments, rate_limited, refused).
+R3  Tool descriptions are written for a reader with no context: what the tool does, when to
+    call it, what to do with each outcome ("a table with state gone must not be shown").
+    Descriptions are part of the interface; changing one changes model behaviour and goes
+    through the evaluation (E10).
+R4  Authentication. A bearer token on every request; no token, no session. A token is a
+    principal: user, role, groups. Authorization is decided from the principal at the server,
+    never from anything in the arguments or the conversation.
+R5  Visibility at the server. A table hidden from the caller is answered EXACTLY like a table
+    that does not exist: same error_kind, same message, same hint, by every tool. The live
+    server does not ask the site about a hidden table (asking would confirm it exists and would
+    show up in timing).
+R6  The live check (vxfind/mcp/hub.py). One request per table to the site's public metadata
+    endpoint, redirects not followed:
+        200            live: last modification, revision, gating
+        301/302/307/308   moved: the Location header gives the new id; one more request reads
+                       the new address (if that is gone, the table is gone)
+        401, 403, 404  gone (the site answers 401 for both missing and private to an anonymous
+                       caller; the two cannot be told apart and are not)
+        429 or network failure   unknown: a failure to ask is not a fact about the table
+    What leaves the machine is the table's public id. No user text, no user identity, no token.
+R7  Rate limit and cache. The site allows a fixed number of requests per window. A sliding-
+    window limiter keeps the server under a budget below it; when the budget is used up the
+    reply is "unknown" with the reason, never "gone". Facts are remembered for a configurable
+    time; a failure to ask is never remembered. The remaining budget is part of the reply.
+R8  "Changed since indexed" is computed at the server from the site's last-modified time and
+    the time the search index holds for that table. The agent does not compare dates.
+R9  Requests and decisions (vxfind/mcp/access.py). Asking twice for the same table returns the
+    open request. Only a mentor decides. Nobody decides their own request. Every request and
+    every decision, allowed or refused, is an audit row.
+R10 Tool annotations: read-only tools are marked read-only and idempotent; request_access and
+    decide_request are marked as writes.
+R11 Limits in the schema, enforced again in code: at most ten ids per call, id length, purpose
+    length. The schema is advice to a well-behaved client; the code is the rule.
+R12 Each server runs on its own loopback port in the same process for development and tests;
+    nothing binds to a network interface.
+
+Implementation notes
+--------------------
+- Write the result models first (one class per result). The SDK derives the output schema from
+  the return annotation; a test asserts that the schema lists the fields you expect.
+- Build the "hidden equals missing" behaviour as one constant reply used by every tool, and
+  test it by comparing the two replies as JSON, not field by field.
+- The limiter takes its clock and its sleep as arguments, so the tests run in no time.
+- Take the site's replies seriously: the first live run showed a real moved table (307 with a
+  Location header) and a 401 for a table that was simply deleted. Write those as test cases.
+- Keep a list of calls on the server side (tool, caller, arguments) for the evaluation; it is
+  how E10 knows a request was really filed.
+
+Code
+----
+vxfind/mcp/servers.py, hub.py, access.py; reuses vxagent/mcp_layer (token table, client, host).
+
+Verification
+------------
+python -m pytest tests/test_vxfind.py -q -k "site or budget or changed or hidden or servers"
+python scripts/vxfind_ops.py fresh      (E08)      python scripts/vxfind_ops.py access     (E09)
+Figures: verification/REPORT.md, sections "Freshness" and "Access".
+
+Acceptance
+----------
+- Listing the tools of each server returns an input schema and an output schema for each.
+- A connection without a valid token is refused before any tool runs.
+- For a hidden id and a made-up id, the replies of every tool are identical once the id is masked.
+- With the budget exhausted, check_tables returns "unknown" for the tables it could not ask about.
+- A newcomer's token cannot read the queue or decide; a mentor cannot decide their own request.
+
+Not built here (team scope)
+---------------------------
+- Real identity (single sign-on) in place of a local token table.
+- A server in front of the production warehouse, the training cluster's job database, and the
+  ticket system (the mentor's "each DB"). The pattern is the one above.
+- Notifications to the mentor when a request is filed, and expiry of approvals.
+- Batch re-verification of the whole index on a schedule (E08 measures what it would find).
+
+Known limits
+------------
+"Gone" and "made private" cannot be told apart from outside. "Changed" is by timestamp: the
+live check does not re-read the schema, so it cannot say what changed, only that something did
+(the catalog database can, once it has the newer snapshot).

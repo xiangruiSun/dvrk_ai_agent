@@ -1,0 +1,167 @@
+E00 - THE EVALUATION, FROM ZERO TO ONE: PLAN FOR SIX MONTHS
+===========================================================
+Owner: the intern (new graduate, six months, full time). Mentor: the lead. Works daily with
+Engineer B (search) and Engineer D (agent).
+
+As built
+--------
+Status: the plan below was carried out in compressed form by the builder of the system, not over six
+months by a newcomer to it. What exists: every deliverable of section 2 as code, evidence and report
+sections. What does not: human relevance labels (E05), a second author of questions (E02), real
+users (E12), repeated agent runs (E10). Each is stated in the report where its number would be.
+(end of as built)
+
+Read requirements/00_overview.txt first. This file is your plan. E01-E12 are your tasks.
+
+
+1. Where you start
+------------------
+On your first day there is a catalog of about 100,000 tables, a search prototype that returns
+something for any text, and a room full of opinions about whether it is good. There is:
+
+  no list of questions people ask            no agreed meaning of "relevant"
+  no label saying which table fits which     no metric code
+  question                                   no way to tell a real improvement from noise
+  no judge, human or automatic               no test that would fail if search got worse
+
+Engineer B changes an analyzer and says results "look better". That sentence is the problem you
+are hired to remove. In six months the team must be able to change anything in the system and
+get, within an hour, a table that says what improved, what got worse, how sure we are, and
+whether the change may ship. And it must be able to trust that table, because you measured the
+instrument too.
+
+
+2. Where you end (what "one" means)
+-----------------------------------
+  E01  A written taxonomy of how this system fails, from reading real rows and real searches.
+  E02  Four query sets with different sources of truth, split into dev and test, test locked.
+  E03  A metrics library with hand-checked tests, confidence intervals and paired tests.
+  E04  Pooled relevance judgments from a versioned judge; every judgment stored.
+  E05  The judge's error, measured against truth no model produced; a hand-label sheet.
+  E06  An ablation of every search setting, and a written rule that picks the serving one.
+  E07  Measurements of what the person reads: reasons (grounded?) and "nothing fits" (honest?).
+  E08  Dead, moved and changed addresses in answers, before and after the live check.
+  E09  Leak tests: can anyone see or infer a table hidden from them.
+  E10  Agent cases with known right behaviour, scored on what the agent did.
+  E11  Evaluation of the evaluation: planted faults, power, agreement between query sets.
+  E12  The loop from user feedback to new cases, and the release gate that blocks a regression.
+
+Plus: one command per stage, evidence in JSON, one generated report. Nobody types a number.
+
+
+3. Principles (read these again whenever you are unsure)
+--------------------------------------------------------
+P1  Look before you measure. Read rows, run searches, write down what goes wrong. A metric
+    chosen before you have seen fifty failures measures what was easy to measure. (E01)
+P2  No single source of truth. Every way of getting labels is biased somewhere: computed
+    labels cover only what metadata expresses; model-written questions echo the indexed text;
+    your own questions are yours; the judge is a model. Use several and report whether they
+    agree. A change that helps on one set and hurts on another is a finding, not a nuisance.
+P3  The judge is an instrument. Version its prompt, keep every judgment, measure its error
+    against truth that no model produced, and say how many human labels you have (even when the
+    number is zero). An unmeasured judge is an opinion with a decimal point.
+P4  A difference is not a result until it is separated from noise. Pair the queries. Report an
+    interval. Know the smallest difference your query count can show, and say "we cannot tell"
+    when a difference is smaller than that.
+P5  Dev is for choosing, test is for reporting. Write the selection rule before you look at
+    the numbers. Never tune on test. If you peek, say so and make a new test set.
+P6  Evaluate the evaluation. Break the system on purpose and check that your numbers fall. If a
+    planted fault does not move a metric, the metric cannot see that kind of fault.
+P7  Unjudged is not irrelevant. A system that was not in the pool is punished for finding things
+    nobody looked at. Report the unjudged share next to every score, and judge before comparing.
+P8  Measure what the person experiences: a working address, an honest "nothing fits", a reason
+    that is true, never a table they must not see. Ranking metrics see none of these.
+P9  Keep the first run. When a run shows that a design was wrong, keep its evidence and write
+    what changed. The history of what failed is worth more than a clean table.
+P10 Say what you did not do. No real users, one author of the written questions, one judge
+    model, one machine. Each limit goes next to the number it limits.
+
+
+4. Month by month
+-----------------
+MONTH 1 - look, and build the ruler
+  Week 1   Set up: run the write path on one snapshot, open the index, run the tests. Read 100
+           random catalog rows end to end (card, schema, summary). Keep notes per row.
+  Week 2   Run 50 searches by hand that you believe a newcomer would ask. For each, read the top
+           ten and write what is wrong with each wrong result. Draft the failure taxonomy (E01).
+  Week 3   Metrics library (E03): nDCG, recall, precision, MRR, success, unjudged share, with
+           tests worked by hand on paper first. Bootstrap interval. Paired tests.
+  Week 4   Present E01 to the team. Agree on what "relevant" means (the four grades). Agree on
+           which failures the evaluation must be able to see. Deliverable: E01 document.
+MONTH 2 - questions and labels
+  Week 5   Robot-family rules; attribute query set A with labels computed by code (E02).
+  Week 6   Known-item set B (model-written, leak-checked). Written set C. No-answer set D.
+           Splits. Lock test.
+  Week 7   Run storage, pooling, the judge with its cache (E04). First judged pool.
+  Week 8   First scores for three retrievers. Review with Engineer B. Deliverable: query sets
+           and judgments in git, first result table.
+MONTH 3 - can the labels be trusted; first real experiment
+  Week 9   Judge calibration against computed labels; second judge; repeatability (E05).
+  Week 10  The hand-label sheet (200 pairs). Label them yourself, blind to the judge. Get a
+           second person for 50 of them. Report agreement.
+  Week 11  Full ablation (E06): retriever, fields, fusion, collapse, scratch, description boost.
+  Week 12  Write the selection rule, apply it on dev, score the chosen configuration on test,
+           once. Deliverable: the serving configuration with its evidence.
+MONTH 4 - answers, and the instrument under test
+  Week 13  Model stages: understand, rerank, select (E07). Latency per stage.
+  Week 14  Groundedness of reasons (by code and by model). Abstention on the no-answer set.
+  Week 15  Meta-evaluation (E11): planted faults, power, agreement between the query sets.
+  Week 16  Mid-term review with the lead: what the evaluation can and cannot see. Deliverable:
+           a one-page "trust statement" for the result tables.
+MONTH 5 - the world moves; people must not see what they must not
+  Week 17  Freshness (E08): ask the site about every shown table; before and after the check.
+  Week 18  Access and leak tests (E09) with Engineer C.
+  Week 19  Agent cases (E10) with Engineer D: properties, injected faults, two models.
+  Week 20  Dogfood week: collect every bad answer the team reports; add cases.
+MONTH 6 - close the loop
+  Week 21  Feedback log schema, online measures, triage into candidate cases (E12).
+  Week 22  The release gate: rules, floors, a planted regression that must fail.
+  Week 23  The weekly report, generated. Hand-over document: how to add a query, re-judge after
+           a prompt change, read a failed gate.
+  Week 24  Final presentation: what improved since month 1, with intervals; what is still unknown.
+
+
+5. How you work with the engineers
+----------------------------------
+- You own the query sets, the judgments, the metrics and the gate. They own the system.
+- When an engineer proposes a change, you run it on dev and return the comparison table with
+  intervals the same day. You do not decide for them; the rule in E06 does.
+- You report the hardest queries with what was expected and what came back. Engineers fix
+  failures they can see.
+- You never change a label to make a result look better. If a label is wrong, fix it, record
+  why, and re-score everything that used it.
+- You say "we cannot tell" out loud when that is the answer.
+
+
+6. Common ways an evaluation project fails (avoid these)
+--------------------------------------------------------
+- One number. A single average hides that attribute questions got better and task questions
+  got worse.
+- Labels only from the system. Pooling only the current system's results makes the current
+  system look perfect and every new idea look bad.
+- A judge nobody checked. The judge agrees with the prompt author's intuition and is wrong in
+  one consistent direction.
+- Test set leakage. Twenty experiments "checked on test just to see" and the test set is now dev.
+- Synthetic questions as the only set. The system learns to answer questions written from its
+  own index.
+- Metrics that cannot fall. A metric that stays the same when half the results are replaced by
+  random tables is decoration.
+- Reporting without limits. "nDCG 0.71" with no interval, no query count, no unjudged share.
+- An evaluation nobody runs. If it takes a day and three manual steps, it will be skipped the
+  week it matters. One command, cached, under an hour.
+
+
+7. Commands
+-----------
+python scripts/vxfind_queries.py A | B | CD        build the query sets (E02)
+python scripts/vxfind_eval.py retrieval            E04 + E06
+python scripts/vxfind_eval.py judge                E05
+python scripts/vxfind_eval.py llm_stages           E07 (stages)
+python scripts/vxfind_eval.py answers              E07 (reasons, abstention)
+python scripts/vxfind_eval.py meta                 E11
+python scripts/vxfind_ops.py fresh                 E08
+python scripts/vxfind_ops.py access                E09
+python scripts/vxfind_ops.py agent                 E10
+python scripts/vxfind_ops.py rollout               E12
+python scripts/build_report.py                     the report, from the evidence
+python -m pytest tests/test_vxfind.py -q           the library's own tests
